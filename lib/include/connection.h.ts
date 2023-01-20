@@ -323,6 +323,7 @@ export const vips_target_writef = {
   parameters: [
     "buffer", // target as VipsTarget *
     "buffer", // fmt as const char *
+    "pointer", // args as void *
   ],
   result: "i32"
 } as const

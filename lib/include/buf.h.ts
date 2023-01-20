@@ -35,6 +35,7 @@ export const vips_buf_appendf = {
   parameters: [
     "pointer", // buf as VipsBuf *
     "buffer", // fmt as const char *
+    "pointer", // args as void *
   ],
   result: "bool"
 } as const
@@ -176,6 +177,7 @@ export const vips_buf_vappendf = {
   parameters: [
     "pointer", // buf as VipsBuf *
     "buffer", // fmt as const char *
+    "pointer", // ap as va_list
   ],
   result: "bool"
 } as const

@@ -279,6 +279,7 @@ export const vips_object_sanity_all = {
 export const vips_object_set = {
   parameters: [
     "buffer", // object as VipsObject *
+    "pointer", // args as void *
   ],
   result: "i32"
 } as const
@@ -321,6 +322,7 @@ export const vips_object_set_static = {
 export const vips_object_set_valist = {
   parameters: [
     "buffer", // object as VipsObject *
+    "pointer", // ap as va_list
   ],
   result: "i32"
 } as const

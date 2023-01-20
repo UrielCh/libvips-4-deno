@@ -274,6 +274,7 @@ export const vips_error = {
   parameters: [
     "buffer", // domain as const char *
     "buffer", // fmt as const char *
+    "pointer", // args as void *
   ],
   result: "void"
 } as const
@@ -302,6 +303,7 @@ export const vips_error_clear = {
 export const vips_error_exit = {
   parameters: [
     "buffer", // fmt as const char *
+    "pointer", // args as void *
   ],
   result: "void"
 } as const
@@ -325,6 +327,7 @@ export const vips_error_system = {
     "i32", // err as int
     "buffer", // domain as const char *
     "buffer", // fmt as const char *
+    "pointer", // args as void *
   ],
   result: "void"
 } as const
@@ -347,6 +350,7 @@ export const vips_verror = {
   parameters: [
     "buffer", // domain as const char *
     "buffer", // fmt as const char *
+    "pointer", // ap as va_list
   ],
   result: "void"
 } as const
@@ -356,6 +360,7 @@ export const vips_verror_system = {
     "i32", // err as int
     "buffer", // domain as const char *
     "buffer", // fmt as const char *
+    "pointer", // ap as va_list
   ],
   result: "void"
 } as const

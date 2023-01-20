@@ -3,6 +3,7 @@
 export const vips_allocate_input_array = {
   parameters: [
     "pointer", // out as VipsImage *
+    "pointer", // args as void *
   ],
   result: "pointer"
 } as const
@@ -32,6 +33,7 @@ export const vips_image_pipelinev = {
   parameters: [
     "pointer", // image as VipsImage *
     "u32", // hint as VipsDemandStyle
+    "pointer", // args as void *
   ],
   result: "i32"
 } as const

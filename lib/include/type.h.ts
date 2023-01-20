@@ -90,6 +90,7 @@ export const vips_array_double_new = {
 export const vips_array_double_newv = {
   parameters: [
     "i32", // n as int
+    "pointer", // args as void *
   ],
   result: "pointer"
 } as const
@@ -127,6 +128,7 @@ export const vips_array_int_new = {
 export const vips_array_int_newv = {
   parameters: [
     "i32", // n as int
+    "pointer", // args as void *
   ],
   result: "pointer"
 } as const
@@ -365,6 +367,7 @@ export const vips_value_set_save_stringf = {
   parameters: [
     "buffer", // value as GValue *
     "buffer", // fmt as const char *
+    "pointer", // args as void *
   ],
   result: "void"
 } as const

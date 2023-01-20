@@ -108,6 +108,7 @@ export const vips_cache_set_trace = {
 export const vips_call = {
   parameters: [
     "buffer", // operation_name as const char *
+    "pointer", // args as void *
   ],
   result: "i32"
 } as const
@@ -132,6 +133,8 @@ export const vips_call_options = {
 export const vips_call_required_optional = {
   parameters: [
     "pointer", // operation as VipsOperation **
+    "pointer", // required as va_list
+    "pointer", // optional as va_list
   ],
   result: "i32"
 } as const
@@ -139,6 +142,8 @@ export const vips_call_required_optional = {
 export const vips_call_split = {
   parameters: [
     "buffer", // operation_name as const char *
+    "pointer", // optional as va_list
+    "pointer", // args as void *
   ],
   result: "i32"
 } as const
@@ -147,6 +152,8 @@ export const vips_call_split_option_string = {
   parameters: [
     "buffer", // operation_name as const char *
     "buffer", // option_string as const char *
+    "pointer", // optional as va_list
+    "pointer", // args as void *
   ],
   result: "i32"
 } as const

@@ -42,6 +42,7 @@ export const vips_array_image_new_from_string = {
 export const vips_array_image_newv = {
   parameters: [
     "i32", // n as int
+    "pointer", // args as void *
   ],
   result: "pointer"
 } as const
@@ -242,6 +243,7 @@ export const vips_image_new_from_buffer = {
     "buffer", // buf as const void *
     "usize", // len as size_t
     "buffer", // option_string as const char *
+    "pointer", // args as void *
   ],
   result: "pointer"
 } as const
@@ -249,6 +251,7 @@ export const vips_image_new_from_buffer = {
 export const vips_image_new_from_file = {
   parameters: [
     "buffer", // name as const char *
+    "pointer", // args as void *
   ],
   result: "pointer"
 } as const
@@ -316,6 +319,7 @@ export const vips_image_new_from_source = {
   parameters: [
     "buffer", // source as VipsSource *
     "buffer", // option_string as const char *
+    "pointer", // args as void *
   ],
   result: "pointer"
 } as const
@@ -342,6 +346,7 @@ export const vips_image_new_matrixv = {
   parameters: [
     "i32", // width as int
     "i32", // height as int
+    "pointer", // args as void *
   ],
   result: "pointer"
 } as const
@@ -435,6 +440,7 @@ export const vips_image_write_to_buffer = {
     "buffer", // suffix as const char *
     "pointer", // buf as void **
     "buffer", // size as size_t *
+    "pointer", // args as void *
   ],
   result: "i32"
 } as const
@@ -443,6 +449,7 @@ export const vips_image_write_to_file = {
   parameters: [
     "pointer", // image as VipsImage *
     "buffer", // name as const char *
+    "pointer", // args as void *
   ],
   result: "i32"
 } as const
@@ -460,6 +467,7 @@ export const vips_image_write_to_target = {
     "pointer", // in as VipsImage *
     "buffer", // suffix as const char *
     "buffer", // target as VipsTarget *
+    "pointer", // args as void *
   ],
   result: "i32"
 } as const
@@ -491,6 +499,7 @@ export const vips_reorder_prepare_many = {
 export const vips_system = {
   parameters: [
     "buffer", // cmd_format as const char *
+    "pointer", // args as void *
   ],
   result: "i32"
 } as const

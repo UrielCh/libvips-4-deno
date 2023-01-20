@@ -8,6 +8,7 @@ export const vips_draw_circle = {
     "i32", // cx as int
     "i32", // cy as int
     "i32", // radius as int
+    "pointer", // args as void *
   ],
   result: "i32"
 } as const
@@ -19,6 +20,7 @@ export const vips_draw_circle1 = {
     "i32", // cx as int
     "i32", // cy as int
     "i32", // radius as int
+    "pointer", // args as void *
   ],
   result: "i32"
 } as const
@@ -30,6 +32,7 @@ export const vips_draw_flood = {
     "i32", // n as int
     "i32", // x as int
     "i32", // y as int
+    "pointer", // args as void *
   ],
   result: "i32"
 } as const
@@ -40,6 +43,7 @@ export const vips_draw_flood1 = {
     "f64", // ink as double
     "i32", // x as int
     "i32", // y as int
+    "pointer", // args as void *
   ],
   result: "i32"
 } as const
@@ -50,6 +54,7 @@ export const vips_draw_image = {
     "pointer", // sub as VipsImage *
     "i32", // x as int
     "i32", // y as int
+    "pointer", // args as void *
   ],
   result: "i32"
 } as const
@@ -63,6 +68,7 @@ export const vips_draw_line = {
     "i32", // y1 as int
     "i32", // x2 as int
     "i32", // y2 as int
+    "pointer", // args as void *
   ],
   result: "i32"
 } as const
@@ -75,6 +81,7 @@ export const vips_draw_line1 = {
     "i32", // y1 as int
     "i32", // x2 as int
     "i32", // y2 as int
+    "pointer", // args as void *
   ],
   result: "i32"
 } as const
@@ -87,6 +94,7 @@ export const vips_draw_mask = {
     "pointer", // mask as VipsImage *
     "i32", // x as int
     "i32", // y as int
+    "pointer", // args as void *
   ],
   result: "i32"
 } as const
@@ -98,6 +106,7 @@ export const vips_draw_mask1 = {
     "pointer", // mask as VipsImage *
     "i32", // x as int
     "i32", // y as int
+    "pointer", // args as void *
   ],
   result: "i32"
 } as const
@@ -109,6 +118,7 @@ export const vips_draw_point = {
     "i32", // n as int
     "i32", // x as int
     "i32", // y as int
+    "pointer", // args as void *
   ],
   result: "i32"
 } as const
@@ -119,6 +129,7 @@ export const vips_draw_point1 = {
     "f64", // ink as double
     "i32", // x as int
     "i32", // y as int
+    "pointer", // args as void *
   ],
   result: "i32"
 } as const
@@ -132,6 +143,7 @@ export const vips_draw_rect = {
     "i32", // top as int
     "i32", // width as int
     "i32", // height as int
+    "pointer", // args as void *
   ],
   result: "i32"
 } as const
@@ -144,6 +156,7 @@ export const vips_draw_rect1 = {
     "i32", // top as int
     "i32", // width as int
     "i32", // height as int
+    "pointer", // args as void *
   ],
   result: "i32"
 } as const
@@ -155,6 +168,7 @@ export const vips_draw_smudge = {
     "i32", // top as int
     "i32", // width as int
     "i32", // height as int
+    "pointer", // args as void *
   ],
   result: "i32"
 } as const

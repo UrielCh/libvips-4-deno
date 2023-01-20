@@ -245,6 +245,7 @@ const typeMapping: { [key: string]: Deno.NativeResultType } = {
     'char': 'i8', // or u8 ?
     "unsigned char": 'u8',
     'guint': 'u32',
+    'va_list': 'pointer',
 }
 
 const retType = allRetTypes.map(a => a.replace('*', '\\*')).join('|')
@@ -272,8 +273,12 @@ for (const method of methods) {
         const type2 = typeMapping[type.trim()];
         const params2 = params.split(/,/g)
             .map(a => a.trim())
-            .filter((a) => a != '...') // TODO need to implements va args
-            .filter((a) => !a.startsWith('va_list')); // TODO need to implements va args
+            .map(a => {
+                if (a === '...') return 'void *args'
+                return a
+            })
+            // .filter((a) => a != '...') // TODO need to implements va args
+            // .filter((a) => !a.startsWith('va_list')); // TODO need to implements va args
         const params3: string[] = [];
         const name3: string[] = [];
         for (let param of params2) {

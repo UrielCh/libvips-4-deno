@@ -114,6 +114,7 @@ export const vips_dbuf_writef = {
   parameters: [
     "pointer", // dbuf as VipsDbuf *
     "buffer", // fmt as const char *
+    "pointer", // args as void *
   ],
   result: "bool"
 } as const

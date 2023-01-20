@@ -104,6 +104,7 @@ export const vips_enum_string = {
 export const vips_existsf = {
   parameters: [
     "buffer", // name as const char *
+    "pointer", // args as void *
   ],
   result: "i32"
 } as const
@@ -153,6 +154,7 @@ export const vips_iscasepostfix = {
 export const vips_isdirf = {
   parameters: [
     "buffer", // name as const char *
+    "pointer", // args as void *
   ],
   result: "i32"
 } as const
@@ -191,6 +193,7 @@ export const vips_map_equal = {
 export const vips_mkdirf = {
   parameters: [
     "buffer", // name as const char *
+    "pointer", // args as void *
   ],
   result: "i32"
 } as const
@@ -213,6 +216,7 @@ export const vips_rename = {
 export const vips_rmdirf = {
   parameters: [
     "buffer", // name as const char *
+    "pointer", // args as void *
   ],
   result: "i32"
 } as const
@@ -290,6 +294,7 @@ export const vips_snprintf = {
     "buffer", // str as char *
     "usize", // size as size_t
     "buffer", // format as const char *
+    "pointer", // args as void *
   ],
   result: "i32"
 } as const
@@ -324,6 +329,7 @@ export const vips_vsnprintf = {
     "buffer", // str as char *
     "usize", // size as size_t
     "buffer", // format as const char *
+    "pointer", // ap as va_list
   ],
   result: "i32"
 } as const

@@ -312,6 +312,7 @@ export const vips_image_history_printf = {
   parameters: [
     "pointer", // image as VipsImage *
     "buffer", // format as const char *
+    "pointer", // args as void *
   ],
   result: "i32"
 } as const
