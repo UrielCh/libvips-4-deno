@@ -6,7 +6,7 @@ export const vips_CMC2LCh = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_CMYK2XYZ = {
@@ -15,7 +15,7 @@ export const vips_CMYK2XYZ = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_col_ab2Ch = {
@@ -25,7 +25,7 @@ export const vips_col_ab2Ch = {
     "buffer", // C as float *
     "buffer", // h as float *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_col_ab2h = {
@@ -33,21 +33,21 @@ export const vips_col_ab2h = {
     "f64", // a as double
     "f64", // b as double
   ],
-  result: "f64"
+  result: "f64" // double
 } as const
 
 export const vips_col_C2Ccmc = {
   parameters: [
     "f32", // C as float
   ],
-  result: "f32"
+  result: "f32" // float
 } as const
 
 export const vips_col_Ccmc2C = {
   parameters: [
     "f32", // Ccmc as float
   ],
-  result: "f32"
+  result: "f32" // float
 } as const
 
 export const vips_col_Ch2ab = {
@@ -57,7 +57,7 @@ export const vips_col_Ch2ab = {
     "buffer", // a as float *
     "buffer", // b as float *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_col_Ch2hcmc = {
@@ -65,7 +65,7 @@ export const vips_col_Ch2hcmc = {
     "f32", // C as float
     "f32", // h as float
   ],
-  result: "f32"
+  result: "f32" // float
 } as const
 
 export const vips_col_Chcmc2h = {
@@ -73,7 +73,7 @@ export const vips_col_Chcmc2h = {
     "f32", // C as float
     "f32", // hcmc as float
   ],
-  result: "f32"
+  result: "f32" // float
 } as const
 
 export const vips_col_dE00 = {
@@ -85,14 +85,14 @@ export const vips_col_dE00 = {
     "f32", // a2 as float
     "f32", // b2 as float
   ],
-  result: "f32"
+  result: "f32" // float
 } as const
 
 export const vips_col_L2Lcmc = {
   parameters: [
     "f32", // L as float
   ],
-  result: "f32"
+  result: "f32" // float
 } as const
 
 export const vips_col_Lab2XYZ = {
@@ -104,21 +104,21 @@ export const vips_col_Lab2XYZ = {
     "buffer", // Y as float *
     "buffer", // Z as float *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_col_Lcmc2L = {
   parameters: [
     "f32", // Lcmc as float
   ],
-  result: "f32"
+  result: "f32" // float
 } as const
 
 export const vips_col_make_tables_CMC = {
   parameters: [
   
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_col_scRGB2BW_16 = {
@@ -129,7 +129,7 @@ export const vips_col_scRGB2BW_16 = {
     "buffer", // g as int *
     "buffer", // og as int *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_col_scRGB2BW_8 = {
@@ -140,7 +140,7 @@ export const vips_col_scRGB2BW_8 = {
     "buffer", // g as int *
     "buffer", // og as int *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_col_scRGB2sRGB_16 = {
@@ -153,7 +153,7 @@ export const vips_col_scRGB2sRGB_16 = {
     "buffer", // b as int *
     "buffer", // og as int *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_col_scRGB2sRGB_8 = {
@@ -166,7 +166,7 @@ export const vips_col_scRGB2sRGB_8 = {
     "buffer", // b as int *
     "buffer", // og as int *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_col_scRGB2XYZ = {
@@ -178,7 +178,7 @@ export const vips_col_scRGB2XYZ = {
     "buffer", // Y as float *
     "buffer", // Z as float *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_col_sRGB2scRGB_16 = {
@@ -190,7 +190,7 @@ export const vips_col_sRGB2scRGB_16 = {
     "buffer", // G as float *
     "buffer", // B as float *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_col_sRGB2scRGB_8 = {
@@ -202,7 +202,7 @@ export const vips_col_sRGB2scRGB_8 = {
     "buffer", // G as float *
     "buffer", // B as float *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_col_XYZ2Lab = {
@@ -214,7 +214,7 @@ export const vips_col_XYZ2Lab = {
     "buffer", // a as float *
     "buffer", // b as float *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_col_XYZ2scRGB = {
@@ -226,7 +226,7 @@ export const vips_col_XYZ2scRGB = {
     "buffer", // G as float *
     "buffer", // B as float *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_colourspace = {
@@ -236,14 +236,14 @@ export const vips_colourspace = {
     "u32", // space as VipsInterpretation
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_colourspace_issupported = {
   parameters: [
     "pointer", // image as const VipsImage *
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_dE00 = {
@@ -253,7 +253,7 @@ export const vips_dE00 = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_dE76 = {
@@ -263,7 +263,7 @@ export const vips_dE76 = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_dECMC = {
@@ -273,7 +273,7 @@ export const vips_dECMC = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_float2rad = {
@@ -282,7 +282,7 @@ export const vips_float2rad = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_HSV2sRGB = {
@@ -291,7 +291,7 @@ export const vips_HSV2sRGB = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_icc_ac2rc = {
@@ -300,7 +300,7 @@ export const vips_icc_ac2rc = {
     "pointer", // out as VipsImage **
     "buffer", // profile_filename as const char *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_icc_export = {
@@ -309,7 +309,7 @@ export const vips_icc_export = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_icc_import = {
@@ -318,7 +318,7 @@ export const vips_icc_import = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_icc_is_compatible_profile = {
@@ -327,14 +327,14 @@ export const vips_icc_is_compatible_profile = {
     "buffer", // data as const void *
     "usize", // data_length as size_t
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_icc_present = {
   parameters: [
   
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_icc_transform = {
@@ -344,7 +344,7 @@ export const vips_icc_transform = {
     "buffer", // output_profile as const char *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_Lab2LabQ = {
@@ -353,7 +353,7 @@ export const vips_Lab2LabQ = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_Lab2LabS = {
@@ -362,7 +362,7 @@ export const vips_Lab2LabS = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_Lab2LCh = {
@@ -371,7 +371,7 @@ export const vips_Lab2LCh = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_Lab2XYZ = {
@@ -380,7 +380,7 @@ export const vips_Lab2XYZ = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_LabQ2Lab = {
@@ -389,7 +389,7 @@ export const vips_LabQ2Lab = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_LabQ2LabS = {
@@ -398,7 +398,7 @@ export const vips_LabQ2LabS = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_LabQ2sRGB = {
@@ -407,7 +407,7 @@ export const vips_LabQ2sRGB = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_LabS2Lab = {
@@ -416,7 +416,7 @@ export const vips_LabS2Lab = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_LabS2LabQ = {
@@ -425,7 +425,7 @@ export const vips_LabS2LabQ = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_LCh2CMC = {
@@ -434,7 +434,7 @@ export const vips_LCh2CMC = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_LCh2Lab = {
@@ -443,7 +443,7 @@ export const vips_LCh2Lab = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_profile_load = {
@@ -452,7 +452,7 @@ export const vips_profile_load = {
     "pointer", // profile as VipsBlob **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_pythagoras = {
@@ -464,7 +464,7 @@ export const vips_pythagoras = {
     "f32", // a2 as float
     "f32", // b2 as float
   ],
-  result: "f32"
+  result: "f32" // float
 } as const
 
 export const vips_rad2float = {
@@ -473,7 +473,7 @@ export const vips_rad2float = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_scRGB2BW = {
@@ -482,7 +482,7 @@ export const vips_scRGB2BW = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_scRGB2sRGB = {
@@ -491,7 +491,7 @@ export const vips_scRGB2sRGB = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_scRGB2XYZ = {
@@ -500,7 +500,7 @@ export const vips_scRGB2XYZ = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_sRGB2HSV = {
@@ -509,7 +509,7 @@ export const vips_sRGB2HSV = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_sRGB2scRGB = {
@@ -518,7 +518,7 @@ export const vips_sRGB2scRGB = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_XYZ2CMYK = {
@@ -527,7 +527,7 @@ export const vips_XYZ2CMYK = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_XYZ2Lab = {
@@ -536,7 +536,7 @@ export const vips_XYZ2Lab = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_XYZ2scRGB = {
@@ -545,7 +545,7 @@ export const vips_XYZ2scRGB = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_XYZ2Yxy = {
@@ -554,7 +554,7 @@ export const vips_XYZ2Yxy = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_Yxy2XYZ = {
@@ -563,5 +563,5 @@ export const vips_Yxy2XYZ = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const

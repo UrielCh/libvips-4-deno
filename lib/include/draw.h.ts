@@ -10,7 +10,7 @@ export const vips_draw_circle = {
     "i32", // radius as int
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_draw_circle1 = {
@@ -22,7 +22,7 @@ export const vips_draw_circle1 = {
     "i32", // radius as int
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_draw_flood = {
@@ -34,7 +34,7 @@ export const vips_draw_flood = {
     "i32", // y as int
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_draw_flood1 = {
@@ -45,7 +45,7 @@ export const vips_draw_flood1 = {
     "i32", // y as int
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_draw_image = {
@@ -56,7 +56,7 @@ export const vips_draw_image = {
     "i32", // y as int
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_draw_line = {
@@ -70,7 +70,7 @@ export const vips_draw_line = {
     "i32", // y2 as int
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_draw_line1 = {
@@ -83,7 +83,7 @@ export const vips_draw_line1 = {
     "i32", // y2 as int
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_draw_mask = {
@@ -96,7 +96,7 @@ export const vips_draw_mask = {
     "i32", // y as int
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_draw_mask1 = {
@@ -108,7 +108,7 @@ export const vips_draw_mask1 = {
     "i32", // y as int
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_draw_point = {
@@ -120,7 +120,7 @@ export const vips_draw_point = {
     "i32", // y as int
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_draw_point1 = {
@@ -131,7 +131,7 @@ export const vips_draw_point1 = {
     "i32", // y as int
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_draw_rect = {
@@ -145,7 +145,7 @@ export const vips_draw_rect = {
     "i32", // height as int
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_draw_rect1 = {
@@ -158,7 +158,7 @@ export const vips_draw_rect1 = {
     "i32", // height as int
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_draw_smudge = {
@@ -170,5 +170,5 @@ export const vips_draw_smudge = {
     "i32", // height as int
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const

@@ -5,14 +5,14 @@ export const vips_array_image_append = {
     "pointer", // array as VipsArrayImage *
     "pointer", // image as VipsImage *
   ],
-  result: "pointer"
+  result: "pointer" // VipsArrayImage *
 } as const
 
 export const vips_array_image_empty = {
   parameters: [
   
   ],
-  result: "pointer"
+  result: "pointer" // VipsArrayImage *
 } as const
 
 export const vips_array_image_get = {
@@ -20,7 +20,7 @@ export const vips_array_image_get = {
     "pointer", // array as VipsArrayImage *
     "buffer", // n as int *
   ],
-  result: "pointer"
+  result: "pointer" // VipsImage **
 } as const
 
 export const vips_array_image_new = {
@@ -28,7 +28,7 @@ export const vips_array_image_new = {
     "pointer", // array as VipsImage **
     "i32", // n as int
   ],
-  result: "pointer"
+  result: "pointer" // VipsArrayImage *
 } as const
 
 export const vips_array_image_new_from_string = {
@@ -36,7 +36,7 @@ export const vips_array_image_new_from_string = {
     "buffer", // string as const char *
     "u32", // flags as VipsAccess
   ],
-  result: "pointer"
+  result: "pointer" // VipsArrayImage *
 } as const
 
 export const vips_array_image_newv = {
@@ -44,70 +44,70 @@ export const vips_array_image_newv = {
     "i32", // n as int
     "pointer", // args as void *
   ],
-  result: "pointer"
+  result: "pointer" // VipsArrayImage *
 } as const
 
 export const vips_band_format_is8bit = {
   parameters: [
     "u32", // format as VipsBandFormat
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_band_format_iscomplex = {
   parameters: [
     "u32", // format as VipsBandFormat
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_band_format_isfloat = {
   parameters: [
     "u32", // format as VipsBandFormat
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_band_format_isint = {
   parameters: [
     "u32", // format as VipsBandFormat
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_band_format_isuint = {
   parameters: [
     "u32", // format as VipsBandFormat
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_filename_get_filename = {
   parameters: [
     "buffer", // vips_filename as const char *
   ],
-  result: "buffer"
+  result: "buffer" // char *
 } as const
 
 export const vips_filename_get_options = {
   parameters: [
     "buffer", // vips_filename as const char *
   ],
-  result: "buffer"
+  result: "buffer" // char *
 } as const
 
 export const vips_get_disc_threshold = {
   parameters: [
   
   ],
-  result: "u64"
+  result: "u64" // guint64
 } as const
 
 export const vips_image_copy_memory = {
   parameters: [
     "pointer", // image as VipsImage *
   ],
-  result: "pointer"
+  result: "pointer" // VipsImage *
 } as const
 
 export const vips_image_decode = {
@@ -115,7 +115,7 @@ export const vips_image_decode = {
     "pointer", // in as VipsImage *
     "pointer", // out as VipsImage **
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_image_decode_predict = {
@@ -124,7 +124,7 @@ export const vips_image_decode_predict = {
     "buffer", // bands as int *
     "buffer", // format as VipsBandFormat *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_image_encode = {
@@ -133,7 +133,7 @@ export const vips_image_encode = {
     "pointer", // out as VipsImage **
     "u32", // coding as VipsCoding
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_image_free_buffer = {
@@ -141,70 +141,70 @@ export const vips_image_free_buffer = {
     "pointer", // image as VipsImage *
     "pointer", // buffer as void *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_image_get_type = {
   parameters: [
   
   ],
-  result: "i64"
+  result: "i64" // GType
 } as const
 
 export const vips_image_hasalpha = {
   parameters: [
     "pointer", // image as VipsImage *
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_image_inplace = {
   parameters: [
     "pointer", // image as VipsImage *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_image_invalidate_all = {
   parameters: [
     "pointer", // image as VipsImage *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_image_is_sequential = {
   parameters: [
     "pointer", // image as VipsImage *
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_image_isfile = {
   parameters: [
     "pointer", // image as VipsImage *
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_image_iskilled = {
   parameters: [
     "pointer", // image as VipsImage *
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_image_isMSBfirst = {
   parameters: [
     "pointer", // image as VipsImage *
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_image_ispartial = {
   parameters: [
     "pointer", // image as VipsImage *
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_image_matrix_from_array = {
@@ -214,28 +214,28 @@ export const vips_image_matrix_from_array = {
     "buffer", // array as const double *
     "i32", // size as int
   ],
-  result: "pointer"
+  result: "pointer" // VipsImage *
 } as const
 
 export const vips_image_memory = {
   parameters: [
   
   ],
-  result: "pointer"
+  result: "pointer" // VipsImage *
 } as const
 
 export const vips_image_minimise_all = {
   parameters: [
     "pointer", // image as VipsImage *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_image_new = {
   parameters: [
   
   ],
-  result: "pointer"
+  result: "pointer" // VipsImage *
 } as const
 
 export const vips_image_new_from_buffer = {
@@ -245,7 +245,7 @@ export const vips_image_new_from_buffer = {
     "buffer", // option_string as const char *
     "pointer", // args as void *
   ],
-  result: "pointer"
+  result: "pointer" // VipsImage *
 } as const
 
 export const vips_image_new_from_file = {
@@ -253,7 +253,7 @@ export const vips_image_new_from_file = {
     "buffer", // name as const char *
     "pointer", // args as void *
   ],
-  result: "pointer"
+  result: "pointer" // VipsImage *
 } as const
 
 export const vips_image_new_from_file_raw = {
@@ -264,14 +264,14 @@ export const vips_image_new_from_file_raw = {
     "i32", // bands as int
     "u64", // offset as guint64
   ],
-  result: "pointer"
+  result: "pointer" // VipsImage *
 } as const
 
 export const vips_image_new_from_file_RW = {
   parameters: [
     "buffer", // filename as const char *
   ],
-  result: "pointer"
+  result: "pointer" // VipsImage *
 } as const
 
 export const vips_image_new_from_image = {
@@ -280,7 +280,7 @@ export const vips_image_new_from_image = {
     "buffer", // c as const double *
     "i32", // n as int
   ],
-  result: "pointer"
+  result: "pointer" // VipsImage *
 } as const
 
 export const vips_image_new_from_image1 = {
@@ -288,7 +288,7 @@ export const vips_image_new_from_image1 = {
     "pointer", // image as VipsImage *
     "f64", // c as double
   ],
-  result: "pointer"
+  result: "pointer" // VipsImage *
 } as const
 
 export const vips_image_new_from_memory = {
@@ -300,7 +300,7 @@ export const vips_image_new_from_memory = {
     "i32", // bands as int
     "u32", // format as VipsBandFormat
   ],
-  result: "pointer"
+  result: "pointer" // VipsImage *
 } as const
 
 export const vips_image_new_from_memory_copy = {
@@ -312,7 +312,7 @@ export const vips_image_new_from_memory_copy = {
     "i32", // bands as int
     "u32", // format as VipsBandFormat
   ],
-  result: "pointer"
+  result: "pointer" // VipsImage *
 } as const
 
 export const vips_image_new_from_source = {
@@ -321,7 +321,7 @@ export const vips_image_new_from_source = {
     "buffer", // option_string as const char *
     "pointer", // args as void *
   ],
-  result: "pointer"
+  result: "pointer" // VipsImage *
 } as const
 
 export const vips_image_new_matrix = {
@@ -329,7 +329,7 @@ export const vips_image_new_matrix = {
     "i32", // width as int
     "i32", // height as int
   ],
-  result: "pointer"
+  result: "pointer" // VipsImage *
 } as const
 
 export const vips_image_new_matrix_from_array = {
@@ -339,7 +339,7 @@ export const vips_image_new_matrix_from_array = {
     "buffer", // array as const double *
     "i32", // size as int
   ],
-  result: "pointer"
+  result: "pointer" // VipsImage *
 } as const
 
 export const vips_image_new_matrixv = {
@@ -348,35 +348,35 @@ export const vips_image_new_matrixv = {
     "i32", // height as int
     "pointer", // args as void *
   ],
-  result: "pointer"
+  result: "pointer" // VipsImage *
 } as const
 
 export const vips_image_new_memory = {
   parameters: [
   
   ],
-  result: "pointer"
+  result: "pointer" // VipsImage *
 } as const
 
 export const vips_image_new_temp_file = {
   parameters: [
     "buffer", // format as const char *
   ],
-  result: "pointer"
+  result: "pointer" // VipsImage *
 } as const
 
 export const vips_image_pio_input = {
   parameters: [
     "pointer", // image as VipsImage *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_image_pio_output = {
   parameters: [
     "pointer", // image as VipsImage *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_image_set_delete_on_close = {
@@ -384,7 +384,7 @@ export const vips_image_set_delete_on_close = {
     "pointer", // image as VipsImage *
     "bool", // delete_on_close as gboolean
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_image_set_kill = {
@@ -392,7 +392,7 @@ export const vips_image_set_kill = {
     "pointer", // image as VipsImage *
     "bool", // kill as gboolean
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_image_set_progress = {
@@ -400,14 +400,14 @@ export const vips_image_set_progress = {
     "pointer", // image as VipsImage *
     "bool", // progress as gboolean
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_image_wio_input = {
   parameters: [
     "pointer", // image as VipsImage *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_image_write = {
@@ -415,7 +415,7 @@ export const vips_image_write = {
     "pointer", // image as VipsImage *
     "pointer", // out as VipsImage *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_image_write_line = {
@@ -424,14 +424,14 @@ export const vips_image_write_line = {
     "i32", // ypos as int
     "pointer", // linebuffer as VipsPel *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_image_write_prepare = {
   parameters: [
     "pointer", // image as VipsImage *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_image_write_to_buffer = {
@@ -442,7 +442,7 @@ export const vips_image_write_to_buffer = {
     "buffer", // size as size_t *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_image_write_to_file = {
@@ -451,7 +451,7 @@ export const vips_image_write_to_file = {
     "buffer", // name as const char *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_image_write_to_memory = {
@@ -459,7 +459,7 @@ export const vips_image_write_to_memory = {
     "pointer", // in as VipsImage *
     "buffer", // size as size_t *
   ],
-  result: "pointer"
+  result: "pointer" // void *
 } as const
 
 export const vips_image_write_to_target = {
@@ -469,14 +469,14 @@ export const vips_image_write_to_target = {
     "buffer", // target as VipsTarget *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_progress_set = {
   parameters: [
     "bool", // progress as gboolean
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_reorder_margin_hint = {
@@ -484,7 +484,7 @@ export const vips_reorder_margin_hint = {
     "pointer", // image as VipsImage *
     "i32", // margin as int
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_reorder_prepare_many = {
@@ -493,7 +493,7 @@ export const vips_reorder_prepare_many = {
     "pointer", // regions as VipsRegion **
     "pointer", // r as VipsRect *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_system = {
@@ -501,7 +501,7 @@ export const vips_system = {
     "buffer", // cmd_format as const char *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_value_get_array_image = {
@@ -509,7 +509,7 @@ export const vips_value_get_array_image = {
     "pointer", // value as const GValue *
     "buffer", // n as int *
   ],
-  result: "pointer"
+  result: "pointer" // VipsImage **
 } as const
 
 export const vips_value_set_array_image = {
@@ -517,5 +517,5 @@ export const vips_value_set_array_image = {
     "buffer", // value as GValue *
     "i32", // n as int
   ],
-  result: "void"
+  result: "void" // void
 } as const

@@ -10,7 +10,7 @@ export const vips_affine = {
     "f64", // d as double
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_mapim = {
@@ -20,7 +20,7 @@ export const vips_mapim = {
     "pointer", // index as VipsImage *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_quadratic = {
@@ -30,7 +30,7 @@ export const vips_quadratic = {
     "pointer", // coeff as VipsImage *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_reduce = {
@@ -41,7 +41,7 @@ export const vips_reduce = {
     "f64", // vshrink as double
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_reduceh = {
@@ -51,7 +51,7 @@ export const vips_reduceh = {
     "f64", // hshrink as double
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_reducev = {
@@ -61,7 +61,7 @@ export const vips_reducev = {
     "f64", // vshrink as double
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_resize = {
@@ -71,7 +71,7 @@ export const vips_resize = {
     "f64", // scale as double
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_rotate = {
@@ -81,7 +81,7 @@ export const vips_rotate = {
     "f64", // angle as double
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_shrink = {
@@ -92,7 +92,7 @@ export const vips_shrink = {
     "f64", // vshrink as double
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_shrinkh = {
@@ -102,7 +102,7 @@ export const vips_shrinkh = {
     "i32", // hshrink as int
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_shrinkv = {
@@ -112,7 +112,7 @@ export const vips_shrinkv = {
     "i32", // vshrink as int
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_similarity = {
@@ -121,7 +121,7 @@ export const vips_similarity = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_thumbnail = {
@@ -131,7 +131,7 @@ export const vips_thumbnail = {
     "i32", // width as int
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_thumbnail_buffer = {
@@ -142,7 +142,7 @@ export const vips_thumbnail_buffer = {
     "i32", // width as int
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_thumbnail_image = {
@@ -152,7 +152,7 @@ export const vips_thumbnail_image = {
     "i32", // width as int
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_thumbnail_source = {
@@ -162,5 +162,5 @@ export const vips_thumbnail_source = {
     "i32", // width as int
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const

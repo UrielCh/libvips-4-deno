@@ -4,42 +4,42 @@ export const vips_sbuf_get_line = {
   parameters: [
     "pointer", // sbuf as VipsSbuf *
   ],
-  result: "buffer"
+  result: "buffer" // const char *
 } as const
 
 export const vips_sbuf_get_line_copy = {
   parameters: [
     "pointer", // sbuf as VipsSbuf *
   ],
-  result: "buffer"
+  result: "buffer" // char *
 } as const
 
 export const vips_sbuf_get_non_whitespace = {
   parameters: [
     "pointer", // sbuf as VipsSbuf *
   ],
-  result: "buffer"
+  result: "buffer" // const char *
 } as const
 
 export const vips_sbuf_get_type = {
   parameters: [
   
   ],
-  result: "i64"
+  result: "i64" // GType
 } as const
 
 export const vips_sbuf_getc = {
   parameters: [
     "pointer", // sbuf as VipsSbuf *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_sbuf_new_from_source = {
   parameters: [
     "buffer", // source as VipsSource *
   ],
-  result: "pointer"
+  result: "pointer" // VipsSbuf *
 } as const
 
 export const vips_sbuf_require = {
@@ -47,26 +47,26 @@ export const vips_sbuf_require = {
     "pointer", // sbuf as VipsSbuf *
     "i32", // require as int
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_sbuf_skip_whitespace = {
   parameters: [
     "pointer", // sbuf as VipsSbuf *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_sbuf_unbuffer = {
   parameters: [
     "pointer", // sbuf as VipsSbuf *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_sbuf_ungetc = {
   parameters: [
     "pointer", // sbuf as VipsSbuf *
   ],
-  result: "void"
+  result: "void" // void
 } as const

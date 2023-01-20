@@ -5,7 +5,7 @@ export const vips_allocate_input_array = {
     "pointer", // out as VipsImage *
     "pointer", // args as void *
   ],
-  result: "pointer"
+  result: "pointer" // VipsImage **
 } as const
 
 export const vips_image_generate = {
@@ -17,7 +17,7 @@ export const vips_image_generate = {
     "pointer", // a as void *
     "pointer", // b as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_image_pipeline_array = {
@@ -26,7 +26,7 @@ export const vips_image_pipeline_array = {
     "u32", // hint as VipsDemandStyle
     "pointer", // in as VipsImage **
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_image_pipelinev = {
@@ -35,7 +35,7 @@ export const vips_image_pipelinev = {
     "u32", // hint as VipsDemandStyle
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_sink = {
@@ -47,7 +47,7 @@ export const vips_sink = {
     "pointer", // a as void *
     "pointer", // b as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_sink_disc = {
@@ -56,14 +56,14 @@ export const vips_sink_disc = {
     "function", // write_fn as VipsRegionWrite
     "pointer", // a as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_sink_memory = {
   parameters: [
     "pointer", // im as VipsImage *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_sink_screen = {
@@ -78,7 +78,7 @@ export const vips_sink_screen = {
     "function", // notify_fn as VipsSinkNotify
     "pointer", // a as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_sink_tile = {
@@ -92,7 +92,7 @@ export const vips_sink_tile = {
     "pointer", // a as void *
     "pointer", // b as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_start_many = {
@@ -101,7 +101,7 @@ export const vips_start_many = {
     "pointer", // a as void *
     "pointer", // b as void *
   ],
-  result: "pointer"
+  result: "pointer" // void *
 } as const
 
 export const vips_start_one = {
@@ -110,7 +110,7 @@ export const vips_start_one = {
     "pointer", // a as void *
     "pointer", // b as void *
   ],
-  result: "pointer"
+  result: "pointer" // void *
 } as const
 
 export const vips_stop_many = {
@@ -119,7 +119,7 @@ export const vips_stop_many = {
     "pointer", // a as void *
     "pointer", // b as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_stop_one = {
@@ -128,5 +128,5 @@ export const vips_stop_one = {
     "pointer", // a as void *
     "pointer", // b as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const

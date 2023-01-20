@@ -7,21 +7,21 @@ export const vips_argument_class_map = {
     "pointer", // a as void *
     "pointer", // b as void *
   ],
-  result: "pointer"
+  result: "pointer" // void *
 } as const
 
 export const vips_argument_class_needsstring = {
   parameters: [
     "pointer", // argument_class as VipsArgumentClass *
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_argument_get_id = {
   parameters: [
   
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_argument_map = {
@@ -31,7 +31,7 @@ export const vips_argument_map = {
     "pointer", // a as void *
     "pointer", // b as void *
   ],
-  result: "pointer"
+  result: "pointer" // void *
 } as const
 
 export const vips_class_find = {
@@ -39,7 +39,7 @@ export const vips_class_find = {
     "buffer", // basename as const char *
     "buffer", // nickname as const char *
   ],
-  result: "pointer"
+  result: "pointer" // const VipsObjectClass *
 } as const
 
 export const vips_class_map_all = {
@@ -48,14 +48,14 @@ export const vips_class_map_all = {
     "function", // fn as VipsClassMapFn
     "pointer", // a as void *
   ],
-  result: "pointer"
+  result: "pointer" // void *
 } as const
 
 export const vips_nickname_find = {
   parameters: [
     "i64", // type as GType
   ],
-  result: "buffer"
+  result: "buffer" // const char *
 } as const
 
 export const vips_object_argument_isset = {
@@ -63,7 +63,7 @@ export const vips_object_argument_isset = {
     "buffer", // object as VipsObject *
     "buffer", // name as const char *
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_object_argument_needsstring = {
@@ -71,14 +71,14 @@ export const vips_object_argument_needsstring = {
     "buffer", // object as VipsObject *
     "buffer", // name as const char *
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_object_build = {
   parameters: [
     "buffer", // object as VipsObject *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_object_class_install_argument = {
@@ -89,7 +89,7 @@ export const vips_object_class_install_argument = {
     "i32", // priority as int
     "u32", // offset as guint
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_object_dump = {
@@ -97,7 +97,7 @@ export const vips_object_dump = {
     "buffer", // object as VipsObject *
     "pointer", // buf as VipsBuf *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_object_get_args = {
@@ -107,7 +107,7 @@ export const vips_object_get_args = {
     "pointer", // flags as int **
     "buffer", // n_args as int *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_object_get_argument = {
@@ -118,7 +118,7 @@ export const vips_object_get_argument = {
     "pointer", // argument_class as VipsArgumentClass **
     "pointer", // argument_instance as VipsArgumentInstance **
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_object_get_argument_flags = {
@@ -126,7 +126,7 @@ export const vips_object_get_argument_flags = {
     "buffer", // object as VipsObject *
     "buffer", // name as const char *
   ],
-  result: "u32"
+  result: "u32" // VipsArgumentFlags
 } as const
 
 export const vips_object_get_argument_priority = {
@@ -134,7 +134,7 @@ export const vips_object_get_argument_priority = {
     "buffer", // object as VipsObject *
     "buffer", // name as const char *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_object_get_argument_to_string = {
@@ -143,14 +143,14 @@ export const vips_object_get_argument_to_string = {
     "buffer", // name as const char *
     "buffer", // arg as const char *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_object_get_description = {
   parameters: [
     "buffer", // object as VipsObject *
   ],
-  result: "buffer"
+  result: "buffer" // const char *
 } as const
 
 export const vips_object_get_property = {
@@ -160,14 +160,14 @@ export const vips_object_get_property = {
     "buffer", // value as GValue *
     "pointer", // pspec as GParamSpec *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_object_get_type = {
   parameters: [
   
   ],
-  result: "i64"
+  result: "i64" // GType
 } as const
 
 export const vips_object_local_array = {
@@ -175,7 +175,7 @@ export const vips_object_local_array = {
     "buffer", // parent as VipsObject *
     "i32", // n as int
   ],
-  result: "pointer"
+  result: "pointer" // VipsObject **
 } as const
 
 export const vips_object_local_cb = {
@@ -183,7 +183,7 @@ export const vips_object_local_cb = {
     "buffer", // vobject as VipsObject *
     "pointer", // gobject as GObject *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_object_map = {
@@ -192,7 +192,7 @@ export const vips_object_map = {
     "pointer", // a as void *
     "pointer", // b as void *
   ],
-  result: "pointer"
+  result: "pointer" // void *
 } as const
 
 export const vips_object_new = {
@@ -202,7 +202,7 @@ export const vips_object_new = {
     "pointer", // a as void *
     "pointer", // b as void *
   ],
-  result: "buffer"
+  result: "buffer" // VipsObject *
 } as const
 
 export const vips_object_new_from_string = {
@@ -210,70 +210,70 @@ export const vips_object_new_from_string = {
     "pointer", // object_class as VipsObjectClass *
     "buffer", // p as const char *
   ],
-  result: "buffer"
+  result: "buffer" // VipsObject *
 } as const
 
 export const vips_object_preclose = {
   parameters: [
     "buffer", // object as VipsObject *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_object_print_all = {
   parameters: [
   
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_object_print_dump = {
   parameters: [
     "buffer", // object as VipsObject *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_object_print_name = {
   parameters: [
     "buffer", // object as VipsObject *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_object_print_summary = {
   parameters: [
     "buffer", // object as VipsObject *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_object_print_summary_class = {
   parameters: [
     "pointer", // klass as VipsObjectClass *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_object_rewind = {
   parameters: [
     "buffer", // object as VipsObject *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_object_sanity = {
   parameters: [
     "buffer", // object as VipsObject *
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_object_sanity_all = {
   parameters: [
   
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_object_set = {
@@ -281,7 +281,7 @@ export const vips_object_set = {
     "buffer", // object as VipsObject *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_object_set_argument_from_string = {
@@ -290,7 +290,7 @@ export const vips_object_set_argument_from_string = {
     "buffer", // name as const char *
     "buffer", // value as const char *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_object_set_from_string = {
@@ -298,7 +298,7 @@ export const vips_object_set_from_string = {
     "buffer", // object as VipsObject *
     "buffer", // string as const char *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_object_set_property = {
@@ -308,7 +308,7 @@ export const vips_object_set_property = {
     "pointer", // value as const GValue *
     "pointer", // pspec as GParamSpec *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_object_set_static = {
@@ -316,7 +316,7 @@ export const vips_object_set_static = {
     "buffer", // object as VipsObject *
     "bool", // static_object as gboolean
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_object_set_valist = {
@@ -324,7 +324,7 @@ export const vips_object_set_valist = {
     "buffer", // object as VipsObject *
     "pointer", // ap as va_list
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_object_summary = {
@@ -332,7 +332,7 @@ export const vips_object_summary = {
     "buffer", // object as VipsObject *
     "pointer", // buf as VipsBuf *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_object_summary_class = {
@@ -340,7 +340,7 @@ export const vips_object_summary_class = {
     "pointer", // klass as VipsObjectClass *
     "pointer", // buf as VipsBuf *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_object_to_string = {
@@ -348,21 +348,21 @@ export const vips_object_to_string = {
     "buffer", // object as VipsObject *
     "pointer", // buf as VipsBuf *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_object_unref_outputs = {
   parameters: [
     "buffer", // object as VipsObject *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_type_depth = {
   parameters: [
     "i64", // type as GType
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_type_find = {
@@ -370,7 +370,7 @@ export const vips_type_find = {
     "buffer", // basename as const char *
     "buffer", // nickname as const char *
   ],
-  result: "i64"
+  result: "i64" // GType
 } as const
 
 export const vips_type_map = {
@@ -380,7 +380,7 @@ export const vips_type_map = {
     "pointer", // a as void *
     "pointer", // b as void *
   ],
-  result: "pointer"
+  result: "pointer" // void *
 } as const
 
 export const vips_type_map_all = {
@@ -389,7 +389,7 @@ export const vips_type_map_all = {
     "function", // fn as VipsTypeMapFn
     "pointer", // a as void *
   ],
-  result: "pointer"
+  result: "pointer" // void *
 } as const
 
 export const vips_value_is_null = {
@@ -397,5 +397,5 @@ export const vips_value_is_null = {
     "pointer", // psoec as GParamSpec *
     "pointer", // value as const GValue *
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const

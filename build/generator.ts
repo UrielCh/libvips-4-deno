@@ -251,6 +251,15 @@ const typeMapping: { [key: string]: Deno.NativeResultType } = {
 const retType = allRetTypes.map(a => a.replace('*', '\\*')).join('|')
 // let err = 0;
 
+function mapType(type: string): string {
+    if (type in typeMapping)
+        return typeMapping[type] as string
+     if (type.endsWith('Fn'))
+        return 'function';
+    return `___${type}___`;
+}
+
+
 for (const method of methods) {
     // if (!method.startsWith('vips_image_get'))
     //     continue;
@@ -270,7 +279,9 @@ for (const method of methods) {
         if (!m.length)
             continue;
         const [_, type, params] = m[0];
-        const type2 = typeMapping[type.trim()];
+
+        const type2 = mapType(type.trim());
+
         const params2 = params.split(/,/g)
             .map(a => a.trim())
             .map(a => {
@@ -297,18 +308,12 @@ for (const method of methods) {
             }
         }
         // Fn
-        const paramsList = params3.map((a) => {
-            const mapped = typeMapping[a];
-            if (mapped) return mapped;
-            if (a.endsWith('Fn'))
-                return 'function';
-            return `___${a}___`;
-        }).map((a, i) => `  "${a}", // ${name3[i]} as ${params3[i]}`).join('\r\n  ');
+        const paramsList = params3.map(mapType).map((a, i) => `  "${a}", // ${name3[i]} as ${params3[i]}`).join('\r\n  ');
         const line2 = `export const ${method} = {
   parameters: [
   ${paramsList}
   ],
-  result: "${type2}"
+  result: "${type2}" // ${type.trim()}
 } as const
 `;
         h.code += '\r\n' + line2;

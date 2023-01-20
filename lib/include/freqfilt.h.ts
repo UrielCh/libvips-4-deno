@@ -7,7 +7,7 @@ export const vips_freqmult = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_fwfft = {
@@ -16,7 +16,7 @@ export const vips_fwfft = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_invfft = {
@@ -25,7 +25,7 @@ export const vips_invfft = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_phasecor = {
@@ -35,7 +35,7 @@ export const vips_phasecor = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_spectrum = {
@@ -44,5 +44,5 @@ export const vips_spectrum = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const

@@ -4,40 +4,40 @@ export const vips_g_cond_free = {
   parameters: [
     "pointer", //  as GCond *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_g_cond_new = {
   parameters: [
   
   ],
-  result: "pointer"
+  result: "pointer" // GCond *
 } as const
 
 export const vips_g_mutex_free = {
   parameters: [
     "pointer", //  as GMutex *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_g_mutex_new = {
   parameters: [
   
   ],
-  result: "pointer"
+  result: "pointer" // GMutex *
 } as const
 
 export const vips_g_thread_new = {
   parameters: [
     "buffer", //  as const char *
   ],
-  result: "pointer"
+  result: "pointer" // GThread *
 } as const
 
 export const vips_thread_isvips = {
   parameters: [
   
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const

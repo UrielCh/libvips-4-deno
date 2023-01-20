@@ -4,7 +4,7 @@ export const vips_rect_dup = {
   parameters: [
     "pointer", // r as const VipsRect *
   ],
-  result: "pointer"
+  result: "pointer" // VipsRect *
 } as const
 
 export const vips_rect_equalsrect = {
@@ -12,7 +12,7 @@ export const vips_rect_equalsrect = {
     "pointer", // r1 as const VipsRect *
     "pointer", // r2 as const VipsRect *
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_rect_includespoint = {
@@ -21,7 +21,7 @@ export const vips_rect_includespoint = {
     "i32", // x as int
     "i32", // y as int
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_rect_includesrect = {
@@ -29,7 +29,7 @@ export const vips_rect_includesrect = {
     "pointer", // r1 as const VipsRect *
     "pointer", // r2 as const VipsRect *
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_rect_intersectrect = {
@@ -38,14 +38,14 @@ export const vips_rect_intersectrect = {
     "pointer", // r2 as const VipsRect *
     "pointer", // out as VipsRect *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_rect_isempty = {
   parameters: [
     "pointer", // r as const VipsRect *
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_rect_marginadjust = {
@@ -53,14 +53,14 @@ export const vips_rect_marginadjust = {
     "pointer", // r as VipsRect *
     "i32", // n as int
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_rect_normalise = {
   parameters: [
     "pointer", // r as VipsRect *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_rect_overlapsrect = {
@@ -68,7 +68,7 @@ export const vips_rect_overlapsrect = {
     "pointer", // r1 as const VipsRect *
     "pointer", // r2 as const VipsRect *
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_rect_unionrect = {
@@ -77,5 +77,5 @@ export const vips_rect_unionrect = {
     "pointer", // r2 as const VipsRect *
     "pointer", // out as VipsRect *
   ],
-  result: "void"
+  result: "void" // void
 } as const

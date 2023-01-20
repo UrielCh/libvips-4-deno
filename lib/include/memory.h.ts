@@ -5,7 +5,7 @@ export const vips_malloc = {
     "buffer", // object as VipsObject *
     "usize", // size as size_t
   ],
-  result: "pointer"
+  result: "pointer" // void *
 } as const
 
 export const vips_strdup = {
@@ -13,56 +13,56 @@ export const vips_strdup = {
     "buffer", // object as VipsObject *
     "buffer", // str as const char *
   ],
-  result: "buffer"
+  result: "buffer" // char *
 } as const
 
 export const vips_tracked_close = {
   parameters: [
     "i32", // fd as int
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_tracked_free = {
   parameters: [
     "pointer", // s as void *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_tracked_get_allocs = {
   parameters: [
   
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_tracked_get_files = {
   parameters: [
   
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_tracked_get_mem = {
   parameters: [
   
   ],
-  result: "usize"
+  result: "usize" // size_t
 } as const
 
 export const vips_tracked_get_mem_highwater = {
   parameters: [
   
   ],
-  result: "usize"
+  result: "usize" // size_t
 } as const
 
 export const vips_tracked_malloc = {
   parameters: [
     "usize", // size as size_t
   ],
-  result: "pointer"
+  result: "pointer" // void *
 } as const
 
 export const vips_tracked_open = {
@@ -71,5 +71,5 @@ export const vips_tracked_open = {
     "i32", // flags as int
     "i32", // mode as int
   ],
-  result: "i32"
+  result: "i32" // int
 } as const

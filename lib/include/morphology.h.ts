@@ -7,7 +7,7 @@ export const vips_countlines = {
     "u32", // direction as VipsDirection
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_fill_nearest = {
@@ -16,7 +16,7 @@ export const vips_fill_nearest = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_labelregions = {
@@ -25,7 +25,7 @@ export const vips_labelregions = {
     "pointer", // mask as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_median = {
@@ -35,7 +35,7 @@ export const vips_median = {
     "i32", // size as int
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_morph = {
@@ -46,7 +46,7 @@ export const vips_morph = {
     "u32", // morph as VipsOperationMorphology
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_rank = {
@@ -58,5 +58,5 @@ export const vips_rank = {
     "i32", // index as int
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const

@@ -6,7 +6,7 @@ export const vips_analyzeload = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_csvload = {
@@ -15,7 +15,7 @@ export const vips_csvload = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_csvload_source = {
@@ -24,7 +24,7 @@ export const vips_csvload_source = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_csvsave = {
@@ -33,7 +33,7 @@ export const vips_csvsave = {
     "buffer", // filename as const char *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_csvsave_target = {
@@ -42,7 +42,7 @@ export const vips_csvsave_target = {
     "buffer", // target as VipsTarget *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_dzsave = {
@@ -51,7 +51,7 @@ export const vips_dzsave = {
     "buffer", // name as const char *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_dzsave_buffer = {
@@ -61,7 +61,7 @@ export const vips_dzsave_buffer = {
     "buffer", // len as size_t *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_dzsave_target = {
@@ -70,7 +70,7 @@ export const vips_dzsave_target = {
     "buffer", // target as VipsTarget *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_fitsload = {
@@ -79,7 +79,7 @@ export const vips_fitsload = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_fitssave = {
@@ -88,14 +88,14 @@ export const vips_fitssave = {
     "buffer", // filename as const char *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_foreign_find_load = {
   parameters: [
     "buffer", // filename as const char *
   ],
-  result: "buffer"
+  result: "buffer" // const char *
 } as const
 
 export const vips_foreign_find_load_buffer = {
@@ -103,35 +103,35 @@ export const vips_foreign_find_load_buffer = {
     "buffer", // data as const void *
     "usize", // size as size_t
   ],
-  result: "buffer"
+  result: "buffer" // const char *
 } as const
 
 export const vips_foreign_find_load_source = {
   parameters: [
     "buffer", // source as VipsSource *
   ],
-  result: "buffer"
+  result: "buffer" // const char *
 } as const
 
 export const vips_foreign_find_save = {
   parameters: [
     "buffer", // filename as const char *
   ],
-  result: "buffer"
+  result: "buffer" // const char *
 } as const
 
 export const vips_foreign_find_save_buffer = {
   parameters: [
     "buffer", // suffix as const char *
   ],
-  result: "buffer"
+  result: "buffer" // const char *
 } as const
 
 export const vips_foreign_find_save_target = {
   parameters: [
     "buffer", // suffix as const char *
   ],
-  result: "buffer"
+  result: "buffer" // const char *
 } as const
 
 export const vips_foreign_flags = {
@@ -139,21 +139,21 @@ export const vips_foreign_flags = {
     "buffer", // loader as const char *
     "buffer", // filename as const char *
   ],
-  result: "u32"
+  result: "u32" // VipsForeignFlags
 } as const
 
 export const vips_foreign_get_suffixes = {
   parameters: [
   
   ],
-  result: "pointer"
+  result: "pointer" // gchar **
 } as const
 
 export const vips_foreign_get_type = {
   parameters: [
   
   ],
-  result: "i64"
+  result: "i64" // GType
 } as const
 
 export const vips_foreign_is_a = {
@@ -161,7 +161,7 @@ export const vips_foreign_is_a = {
     "buffer", // loader as const char *
     "buffer", // filename as const char *
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_foreign_is_a_buffer = {
@@ -170,7 +170,7 @@ export const vips_foreign_is_a_buffer = {
     "buffer", // data as const void *
     "usize", // size as size_t
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_foreign_is_a_source = {
@@ -178,21 +178,21 @@ export const vips_foreign_is_a_source = {
     "buffer", // loader as const char *
     "buffer", // source as VipsSource *
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_foreign_load_get_type = {
   parameters: [
   
   ],
-  result: "i64"
+  result: "i64" // GType
 } as const
 
 export const vips_foreign_load_invalidate = {
   parameters: [
     "pointer", // image as VipsImage *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_foreign_map = {
@@ -202,14 +202,14 @@ export const vips_foreign_map = {
     "pointer", // a as void *
     "pointer", // b as void *
   ],
-  result: "pointer"
+  result: "pointer" // void *
 } as const
 
 export const vips_foreign_save_get_type = {
   parameters: [
   
   ],
-  result: "i64"
+  result: "i64" // GType
 } as const
 
 export const vips_gifload = {
@@ -218,7 +218,7 @@ export const vips_gifload = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_gifload_buffer = {
@@ -228,7 +228,7 @@ export const vips_gifload_buffer = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_gifload_source = {
@@ -237,7 +237,7 @@ export const vips_gifload_source = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_gifsave = {
@@ -246,7 +246,7 @@ export const vips_gifsave = {
     "buffer", // filename as const char *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_gifsave_buffer = {
@@ -256,7 +256,7 @@ export const vips_gifsave_buffer = {
     "buffer", // len as size_t *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_gifsave_target = {
@@ -265,7 +265,7 @@ export const vips_gifsave_target = {
     "buffer", // target as VipsTarget *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_heifload = {
@@ -274,7 +274,7 @@ export const vips_heifload = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_heifload_buffer = {
@@ -284,7 +284,7 @@ export const vips_heifload_buffer = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_heifload_source = {
@@ -293,7 +293,7 @@ export const vips_heifload_source = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_heifsave = {
@@ -302,7 +302,7 @@ export const vips_heifsave = {
     "buffer", // filename as const char *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_heifsave_buffer = {
@@ -312,7 +312,7 @@ export const vips_heifsave_buffer = {
     "buffer", // len as size_t *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_heifsave_target = {
@@ -321,7 +321,7 @@ export const vips_heifsave_target = {
     "buffer", // target as VipsTarget *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_jp2kload = {
@@ -330,7 +330,7 @@ export const vips_jp2kload = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_jp2kload_buffer = {
@@ -340,7 +340,7 @@ export const vips_jp2kload_buffer = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_jp2kload_source = {
@@ -349,7 +349,7 @@ export const vips_jp2kload_source = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_jp2ksave = {
@@ -358,7 +358,7 @@ export const vips_jp2ksave = {
     "buffer", // filename as const char *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_jp2ksave_buffer = {
@@ -368,7 +368,7 @@ export const vips_jp2ksave_buffer = {
     "buffer", // len as size_t *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_jp2ksave_target = {
@@ -377,7 +377,7 @@ export const vips_jp2ksave_target = {
     "buffer", // target as VipsTarget *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_jpegload = {
@@ -386,7 +386,7 @@ export const vips_jpegload = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_jpegload_buffer = {
@@ -396,7 +396,7 @@ export const vips_jpegload_buffer = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_jpegload_source = {
@@ -405,7 +405,7 @@ export const vips_jpegload_source = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_jpegsave = {
@@ -414,7 +414,7 @@ export const vips_jpegsave = {
     "buffer", // filename as const char *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_jpegsave_buffer = {
@@ -424,7 +424,7 @@ export const vips_jpegsave_buffer = {
     "buffer", // len as size_t *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_jpegsave_mime = {
@@ -432,7 +432,7 @@ export const vips_jpegsave_mime = {
     "pointer", // in as VipsImage *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_jpegsave_target = {
@@ -441,7 +441,7 @@ export const vips_jpegsave_target = {
     "buffer", // target as VipsTarget *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_jxlload = {
@@ -450,7 +450,7 @@ export const vips_jxlload = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_jxlload_buffer = {
@@ -460,7 +460,7 @@ export const vips_jxlload_buffer = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_jxlload_source = {
@@ -469,7 +469,7 @@ export const vips_jxlload_source = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_jxlsave = {
@@ -478,7 +478,7 @@ export const vips_jxlsave = {
     "buffer", // filename as const char *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_jxlsave_buffer = {
@@ -488,7 +488,7 @@ export const vips_jxlsave_buffer = {
     "buffer", // len as size_t *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_jxlsave_target = {
@@ -497,7 +497,7 @@ export const vips_jxlsave_target = {
     "buffer", // target as VipsTarget *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_magickload = {
@@ -506,7 +506,7 @@ export const vips_magickload = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_magickload_buffer = {
@@ -516,7 +516,7 @@ export const vips_magickload_buffer = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_magicksave = {
@@ -525,7 +525,7 @@ export const vips_magicksave = {
     "buffer", // filename as const char *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_magicksave_buffer = {
@@ -535,7 +535,7 @@ export const vips_magicksave_buffer = {
     "buffer", // len as size_t *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_matload = {
@@ -544,7 +544,7 @@ export const vips_matload = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_matrixload = {
@@ -553,7 +553,7 @@ export const vips_matrixload = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_matrixload_source = {
@@ -562,7 +562,7 @@ export const vips_matrixload_source = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_matrixprint = {
@@ -570,7 +570,7 @@ export const vips_matrixprint = {
     "pointer", // in as VipsImage *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_matrixsave = {
@@ -579,7 +579,7 @@ export const vips_matrixsave = {
     "buffer", // filename as const char *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_matrixsave_target = {
@@ -588,7 +588,7 @@ export const vips_matrixsave_target = {
     "buffer", // target as VipsTarget *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_niftiload = {
@@ -597,7 +597,7 @@ export const vips_niftiload = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_niftiload_source = {
@@ -606,7 +606,7 @@ export const vips_niftiload_source = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_niftisave = {
@@ -615,7 +615,7 @@ export const vips_niftisave = {
     "buffer", // filename as const char *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_openexrload = {
@@ -624,7 +624,7 @@ export const vips_openexrload = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_openslideload = {
@@ -633,7 +633,7 @@ export const vips_openslideload = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_openslideload_source = {
@@ -642,7 +642,7 @@ export const vips_openslideload_source = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_pdfload = {
@@ -651,7 +651,7 @@ export const vips_pdfload = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_pdfload_buffer = {
@@ -661,7 +661,7 @@ export const vips_pdfload_buffer = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_pdfload_source = {
@@ -670,7 +670,7 @@ export const vips_pdfload_source = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_pngload = {
@@ -679,7 +679,7 @@ export const vips_pngload = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_pngload_buffer = {
@@ -689,7 +689,7 @@ export const vips_pngload_buffer = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_pngload_source = {
@@ -698,7 +698,7 @@ export const vips_pngload_source = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_pngsave = {
@@ -707,7 +707,7 @@ export const vips_pngsave = {
     "buffer", // filename as const char *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_pngsave_buffer = {
@@ -717,7 +717,7 @@ export const vips_pngsave_buffer = {
     "buffer", // len as size_t *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_pngsave_target = {
@@ -726,7 +726,7 @@ export const vips_pngsave_target = {
     "buffer", // target as VipsTarget *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_ppmload = {
@@ -735,7 +735,7 @@ export const vips_ppmload = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_ppmload_source = {
@@ -744,7 +744,7 @@ export const vips_ppmload_source = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_ppmsave = {
@@ -753,7 +753,7 @@ export const vips_ppmsave = {
     "buffer", // filename as const char *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_ppmsave_target = {
@@ -762,7 +762,7 @@ export const vips_ppmsave_target = {
     "buffer", // target as VipsTarget *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_radload = {
@@ -771,7 +771,7 @@ export const vips_radload = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_radload_buffer = {
@@ -781,7 +781,7 @@ export const vips_radload_buffer = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_radload_source = {
@@ -790,7 +790,7 @@ export const vips_radload_source = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_radsave = {
@@ -799,7 +799,7 @@ export const vips_radsave = {
     "buffer", // filename as const char *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_radsave_buffer = {
@@ -809,7 +809,7 @@ export const vips_radsave_buffer = {
     "buffer", // len as size_t *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_radsave_target = {
@@ -818,7 +818,7 @@ export const vips_radsave_target = {
     "buffer", // target as VipsTarget *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_rawload = {
@@ -830,7 +830,7 @@ export const vips_rawload = {
     "i32", // bands as int
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_rawsave = {
@@ -839,7 +839,7 @@ export const vips_rawsave = {
     "buffer", // filename as const char *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_rawsave_fd = {
@@ -848,7 +848,7 @@ export const vips_rawsave_fd = {
     "i32", // fd as int
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_svgload = {
@@ -857,7 +857,7 @@ export const vips_svgload = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_svgload_buffer = {
@@ -867,7 +867,7 @@ export const vips_svgload_buffer = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_svgload_source = {
@@ -876,7 +876,7 @@ export const vips_svgload_source = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_svgload_string = {
@@ -885,7 +885,7 @@ export const vips_svgload_string = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_tiffload = {
@@ -894,7 +894,7 @@ export const vips_tiffload = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_tiffload_buffer = {
@@ -904,7 +904,7 @@ export const vips_tiffload_buffer = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_tiffload_source = {
@@ -913,7 +913,7 @@ export const vips_tiffload_source = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_tiffsave = {
@@ -922,7 +922,7 @@ export const vips_tiffsave = {
     "buffer", // filename as const char *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_tiffsave_buffer = {
@@ -932,7 +932,7 @@ export const vips_tiffsave_buffer = {
     "buffer", // len as size_t *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_tiffsave_target = {
@@ -941,7 +941,7 @@ export const vips_tiffsave_target = {
     "buffer", // target as VipsTarget *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_vipsload = {
@@ -950,7 +950,7 @@ export const vips_vipsload = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_vipsload_source = {
@@ -959,7 +959,7 @@ export const vips_vipsload_source = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_vipssave = {
@@ -968,7 +968,7 @@ export const vips_vipssave = {
     "buffer", // filename as const char *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_vipssave_target = {
@@ -977,7 +977,7 @@ export const vips_vipssave_target = {
     "buffer", // target as VipsTarget *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_webpload = {
@@ -986,7 +986,7 @@ export const vips_webpload = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_webpload_buffer = {
@@ -996,7 +996,7 @@ export const vips_webpload_buffer = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_webpload_source = {
@@ -1005,7 +1005,7 @@ export const vips_webpload_source = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_webpsave = {
@@ -1014,7 +1014,7 @@ export const vips_webpsave = {
     "buffer", // filename as const char *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_webpsave_buffer = {
@@ -1024,7 +1024,7 @@ export const vips_webpsave_buffer = {
     "buffer", // len as size_t *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_webpsave_mime = {
@@ -1032,7 +1032,7 @@ export const vips_webpsave_mime = {
     "pointer", // in as VipsImage *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_webpsave_target = {
@@ -1041,5 +1041,5 @@ export const vips_webpsave_target = {
     "buffer", // target as VipsTarget *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const

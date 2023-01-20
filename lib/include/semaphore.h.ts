@@ -4,14 +4,14 @@ export const vips_semaphore_destroy = {
   parameters: [
     "pointer", // s as VipsSemaphore *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_semaphore_down = {
   parameters: [
     "pointer", // s as VipsSemaphore *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_semaphore_down_timeout = {
@@ -19,7 +19,7 @@ export const vips_semaphore_down_timeout = {
     "pointer", // s as VipsSemaphore *
     "i64", // timeout as gint64
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_semaphore_downn = {
@@ -27,7 +27,7 @@ export const vips_semaphore_downn = {
     "pointer", // s as VipsSemaphore *
     "i32", // n as int
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_semaphore_init = {
@@ -36,14 +36,14 @@ export const vips_semaphore_init = {
     "i32", // v as int
     "buffer", // name as char *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_semaphore_up = {
   parameters: [
     "pointer", // s as VipsSemaphore *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_semaphore_upn = {
@@ -51,5 +51,5 @@ export const vips_semaphore_upn = {
     "pointer", // s as VipsSemaphore *
     "i32", // n as int
   ],
-  result: "i32"
+  result: "i32" // int
 } as const

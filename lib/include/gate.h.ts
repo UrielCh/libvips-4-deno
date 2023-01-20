@@ -4,5 +4,5 @@ export const vips_profile_set = {
   parameters: [
     "bool", // profile as gboolean
   ],
-  result: "void"
+  result: "void" // void
 } as const

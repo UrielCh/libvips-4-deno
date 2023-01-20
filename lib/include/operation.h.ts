@@ -4,105 +4,105 @@ export const vips_cache_drop_all = {
   parameters: [
   
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_cache_get_max = {
   parameters: [
   
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_cache_get_max_files = {
   parameters: [
   
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_cache_get_max_mem = {
   parameters: [
   
   ],
-  result: "usize"
+  result: "usize" // size_t
 } as const
 
 export const vips_cache_get_size = {
   parameters: [
   
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_cache_operation_add = {
   parameters: [
     "pointer", // operation as VipsOperation *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_cache_operation_build = {
   parameters: [
     "pointer", // operation as VipsOperation *
   ],
-  result: "pointer"
+  result: "pointer" // VipsOperation *
 } as const
 
 export const vips_cache_operation_buildp = {
   parameters: [
     "pointer", // operation as VipsOperation **
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_cache_operation_lookup = {
   parameters: [
     "pointer", // operation as VipsOperation *
   ],
-  result: "pointer"
+  result: "pointer" // VipsOperation *
 } as const
 
 export const vips_cache_print = {
   parameters: [
   
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_cache_set_dump = {
   parameters: [
     "bool", // dump as gboolean
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_cache_set_max = {
   parameters: [
     "i32", // max as int
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_cache_set_max_files = {
   parameters: [
     "i32", // max_files as int
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_cache_set_max_mem = {
   parameters: [
     "usize", // max_mem as size_t
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_cache_set_trace = {
   parameters: [
     "bool", // trace as gboolean
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_call = {
@@ -110,7 +110,7 @@ export const vips_call = {
     "buffer", // operation_name as const char *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_call_argv = {
@@ -119,7 +119,7 @@ export const vips_call_argv = {
     "i32", // argc as int
     "pointer", // argv as char **
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_call_options = {
@@ -127,7 +127,7 @@ export const vips_call_options = {
     "pointer", // group as GOptionGroup *
     "pointer", // operation as VipsOperation *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_call_required_optional = {
@@ -136,7 +136,7 @@ export const vips_call_required_optional = {
     "pointer", // required as va_list
     "pointer", // optional as va_list
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_call_split = {
@@ -145,7 +145,7 @@ export const vips_call_split = {
     "pointer", // optional as va_list
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_call_split_option_string = {
@@ -155,21 +155,21 @@ export const vips_call_split_option_string = {
     "pointer", // optional as va_list
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_concurrency_get = {
   parameters: [
   
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_concurrency_set = {
   parameters: [
     "i32", // concurrency as int
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_operation_block_set = {
@@ -177,40 +177,40 @@ export const vips_operation_block_set = {
     "buffer", // name as const char *
     "bool", // state as gboolean
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_operation_class_print_usage = {
   parameters: [
     "pointer", // operation_class as VipsOperationClass *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_operation_get_flags = {
   parameters: [
     "pointer", // operation as VipsOperation *
   ],
-  result: "pointer"
+  result: "pointer" // VipsOperationFlags
 } as const
 
 export const vips_operation_get_type = {
   parameters: [
   
   ],
-  result: "i64"
+  result: "i64" // GType
 } as const
 
 export const vips_operation_invalidate = {
   parameters: [
     "pointer", // operation as VipsOperation *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_operation_new = {
   parameters: [
     "buffer", // name as const char *
   ],
-  result: "pointer"
+  result: "pointer" // VipsOperation *
 } as const

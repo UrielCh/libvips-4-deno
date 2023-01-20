@@ -4,14 +4,14 @@ export const vips_format_sizeof = {
   parameters: [
     "u32", // format as VipsBandFormat
   ],
-  result: "u64"
+  result: "u64" // guint64
 } as const
 
 export const vips_format_sizeof_unsafe = {
   parameters: [
     "u32", // format as VipsBandFormat
   ],
-  result: "u64"
+  result: "u64" // guint64
 } as const
 
 export const vips_image_get = {
@@ -20,7 +20,7 @@ export const vips_image_get = {
     "buffer", // name as const char *
     "buffer", // value_copy as GValue *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_image_get_area = {
@@ -29,7 +29,7 @@ export const vips_image_get_area = {
     "buffer", // name as const char *
     "pointer", // data as const void **
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_image_get_array_double = {
@@ -39,7 +39,7 @@ export const vips_image_get_array_double = {
     "pointer", // out as double **
     "buffer", // n as int *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_image_get_array_int = {
@@ -49,7 +49,7 @@ export const vips_image_get_array_int = {
     "pointer", // out as int **
     "buffer", // n as int *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_image_get_as_string = {
@@ -58,14 +58,14 @@ export const vips_image_get_as_string = {
     "buffer", // name as const char *
     "pointer", // out as char **
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_image_get_bands = {
   parameters: [
     "pointer", // image as const VipsImage *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_image_get_blob = {
@@ -75,14 +75,14 @@ export const vips_image_get_blob = {
     "pointer", // data as const void **
     "buffer", // length as size_t *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_image_get_coding = {
   parameters: [
     "pointer", // image as const VipsImage *
   ],
-  result: "u32"
+  result: "u32" // VipsCoding
 } as const
 
 export const vips_image_get_concurrency = {
@@ -90,14 +90,14 @@ export const vips_image_get_concurrency = {
     "pointer", // image as VipsImage *
     "i32", // default_concurrency as int
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_image_get_data = {
   parameters: [
     "pointer", // image as VipsImage *
   ],
-  result: "buffer"
+  result: "buffer" // const void *
 } as const
 
 export const vips_image_get_double = {
@@ -106,49 +106,49 @@ export const vips_image_get_double = {
     "buffer", // name as const char *
     "buffer", // out as double *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_image_get_fields = {
   parameters: [
     "pointer", // image as VipsImage *
   ],
-  result: "pointer"
+  result: "pointer" // gchar **
 } as const
 
 export const vips_image_get_filename = {
   parameters: [
     "pointer", // image as const VipsImage *
   ],
-  result: "buffer"
+  result: "buffer" // const char *
 } as const
 
 export const vips_image_get_format = {
   parameters: [
     "pointer", // image as const VipsImage *
   ],
-  result: "u32"
+  result: "u32" // VipsBandFormat
 } as const
 
 export const vips_image_get_format_max = {
   parameters: [
     "u32", // format as VipsBandFormat
   ],
-  result: "f64"
+  result: "f64" // double
 } as const
 
 export const vips_image_get_height = {
   parameters: [
     "pointer", // image as const VipsImage *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_image_get_history = {
   parameters: [
     "pointer", // image as VipsImage *
   ],
-  result: "buffer"
+  result: "buffer" // const char *
 } as const
 
 export const vips_image_get_image = {
@@ -157,7 +157,7 @@ export const vips_image_get_image = {
     "buffer", // name as const char *
     "pointer", // out as VipsImage **
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_image_get_int = {
@@ -166,70 +166,70 @@ export const vips_image_get_int = {
     "buffer", // name as const char *
     "buffer", // out as int *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_image_get_interpretation = {
   parameters: [
     "pointer", // image as const VipsImage *
   ],
-  result: "u32"
+  result: "u32" // VipsInterpretation
 } as const
 
 export const vips_image_get_mode = {
   parameters: [
     "pointer", // image as const VipsImage *
   ],
-  result: "buffer"
+  result: "buffer" // const char *
 } as const
 
 export const vips_image_get_n_pages = {
   parameters: [
     "pointer", // image as VipsImage *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_image_get_n_subifds = {
   parameters: [
     "pointer", // image as VipsImage *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_image_get_offset = {
   parameters: [
     "pointer", // image as const VipsImage *
   ],
-  result: "f64"
+  result: "f64" // double
 } as const
 
 export const vips_image_get_orientation = {
   parameters: [
     "pointer", // image as VipsImage *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_image_get_orientation_swap = {
   parameters: [
     "pointer", // image as VipsImage *
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_image_get_page_height = {
   parameters: [
     "pointer", // image as VipsImage *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_image_get_scale = {
   parameters: [
     "pointer", // image as const VipsImage *
   ],
-  result: "f64"
+  result: "f64" // double
 } as const
 
 export const vips_image_get_string = {
@@ -238,7 +238,7 @@ export const vips_image_get_string = {
     "buffer", // name as const char *
     "pointer", // out as const char **
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_image_get_typeof = {
@@ -246,56 +246,56 @@ export const vips_image_get_typeof = {
     "pointer", // image as const VipsImage *
     "buffer", // name as const char *
   ],
-  result: "i64"
+  result: "i64" // GType
 } as const
 
 export const vips_image_get_width = {
   parameters: [
     "pointer", // image as const VipsImage *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_image_get_xoffset = {
   parameters: [
     "pointer", // image as const VipsImage *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_image_get_xres = {
   parameters: [
     "pointer", // image as const VipsImage *
   ],
-  result: "f64"
+  result: "f64" // double
 } as const
 
 export const vips_image_get_yoffset = {
   parameters: [
     "pointer", // image as const VipsImage *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_image_get_yres = {
   parameters: [
     "pointer", // image as const VipsImage *
   ],
-  result: "f64"
+  result: "f64" // double
 } as const
 
 export const vips_image_guess_format = {
   parameters: [
     "pointer", // image as const VipsImage *
   ],
-  result: "u32"
+  result: "u32" // VipsBandFormat
 } as const
 
 export const vips_image_guess_interpretation = {
   parameters: [
     "pointer", // image as const VipsImage *
   ],
-  result: "u32"
+  result: "u32" // VipsInterpretation
 } as const
 
 export const vips_image_history_args = {
@@ -305,7 +305,7 @@ export const vips_image_history_args = {
     "i32", // argc as int
     "buffer", // argv[] as char *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_image_history_printf = {
@@ -314,7 +314,7 @@ export const vips_image_history_printf = {
     "buffer", // format as const char *
     "pointer", // args as void *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_image_init_fields = {
@@ -329,7 +329,7 @@ export const vips_image_init_fields = {
     "f64", // xres as double
     "f64", // yres as double
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_image_map = {
@@ -338,7 +338,7 @@ export const vips_image_map = {
     "function", // fn as VipsImageMapFn
     "pointer", // a as void *
   ],
-  result: "pointer"
+  result: "pointer" // void *
 } as const
 
 export const vips_image_print_field = {
@@ -346,7 +346,7 @@ export const vips_image_print_field = {
     "pointer", // image as const VipsImage *
     "buffer", // name as const char *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_image_remove = {
@@ -354,7 +354,7 @@ export const vips_image_remove = {
     "pointer", // image as VipsImage *
     "buffer", // name as const char *
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_image_set = {
@@ -363,7 +363,7 @@ export const vips_image_set = {
     "buffer", // name as const char *
     "buffer", // value as GValue *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_image_set_area = {
@@ -373,7 +373,7 @@ export const vips_image_set_area = {
     "function", // free_fn as VipsCallbackFn
     "pointer", // data as void *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_image_set_array_double = {
@@ -383,7 +383,7 @@ export const vips_image_set_array_double = {
     "buffer", // array as const double *
     "i32", // n as int
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_image_set_array_int = {
@@ -393,7 +393,7 @@ export const vips_image_set_array_int = {
     "pointer", // array as const int *
     "i32", // n as int
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_image_set_blob = {
@@ -404,7 +404,7 @@ export const vips_image_set_blob = {
     "buffer", // data as const void *
     "usize", // length as size_t
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_image_set_blob_copy = {
@@ -414,7 +414,7 @@ export const vips_image_set_blob_copy = {
     "buffer", // data as const void *
     "usize", // length as size_t
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_image_set_double = {
@@ -423,7 +423,7 @@ export const vips_image_set_double = {
     "buffer", // name as const char *
     "f64", // d as double
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_image_set_image = {
@@ -432,7 +432,7 @@ export const vips_image_set_image = {
     "buffer", // name as const char *
     "pointer", // im as VipsImage *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_image_set_int = {
@@ -441,7 +441,7 @@ export const vips_image_set_int = {
     "buffer", // name as const char *
     "i32", // i as int
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_image_set_string = {
@@ -450,5 +450,5 @@ export const vips_image_set_string = {
     "buffer", // name as const char *
     "buffer", // str as const char *
   ],
-  result: "void"
+  result: "void" // void
 } as const

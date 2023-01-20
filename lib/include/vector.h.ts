@@ -4,7 +4,7 @@ export const vips_executor_run = {
   parameters: [
     "pointer", // executor as VipsExecutor *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_executor_set_array = {
@@ -13,7 +13,7 @@ export const vips_executor_set_array = {
     "i32", // var as int
     "pointer", // value as void *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_executor_set_destination = {
@@ -21,7 +21,7 @@ export const vips_executor_set_destination = {
     "pointer", // executor as VipsExecutor *
     "pointer", // value as void *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_executor_set_parameter = {
@@ -30,7 +30,7 @@ export const vips_executor_set_parameter = {
     "i32", // var as int
     "i32", // value as int
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_executor_set_program = {
@@ -39,7 +39,7 @@ export const vips_executor_set_program = {
     "buffer", // vector as VipsVector *
     "i32", // n as int
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_executor_set_scanline = {
@@ -49,7 +49,7 @@ export const vips_executor_set_scanline = {
     "i32", // x as int
     "i32", // y as int
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_vector_asm2 = {
@@ -59,7 +59,7 @@ export const vips_vector_asm2 = {
     "buffer", // a as const char *
     "buffer", // b as const char *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_vector_asm3 = {
@@ -70,14 +70,14 @@ export const vips_vector_asm3 = {
     "buffer", // b as const char *
     "buffer", // c as const char *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_vector_compile = {
   parameters: [
     "buffer", // vector as VipsVector *
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_vector_constant = {
@@ -87,7 +87,7 @@ export const vips_vector_constant = {
     "i32", // value as int
     "i32", // size as int
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_vector_destination = {
@@ -96,35 +96,35 @@ export const vips_vector_destination = {
     "buffer", // name as const char *
     "i32", // size as int
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_vector_free = {
   parameters: [
     "buffer", // vector as VipsVector *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_vector_full = {
   parameters: [
     "buffer", // vector as VipsVector *
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_vector_init = {
   parameters: [
   
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_vector_isenabled = {
   parameters: [
   
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_vector_new = {
@@ -132,7 +132,7 @@ export const vips_vector_new = {
     "buffer", // name as const char *
     "i32", // dsize as int
   ],
-  result: "buffer"
+  result: "buffer" // VipsVector *
 } as const
 
 export const vips_vector_parameter = {
@@ -141,21 +141,21 @@ export const vips_vector_parameter = {
     "buffer", // name as const char *
     "i32", // size as int
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_vector_print = {
   parameters: [
     "buffer", // vector as VipsVector *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_vector_set_enabled = {
   parameters: [
     "bool", // enabled as gboolean
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_vector_source_name = {
@@ -164,7 +164,7 @@ export const vips_vector_source_name = {
     "buffer", // name as const char *
     "i32", // size as int
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_vector_source_scanline = {
@@ -174,7 +174,7 @@ export const vips_vector_source_scanline = {
     "i32", // line as int
     "i32", // size as int
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_vector_temporary = {
@@ -183,7 +183,7 @@ export const vips_vector_temporary = {
     "buffer", // name as const char *
     "i32", // size as int
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_vector_to_fixed_point = {
@@ -193,5 +193,5 @@ export const vips_vector_to_fixed_point = {
     "i32", // n as int
     "i32", // scale as int
   ],
-  result: "void"
+  result: "void" // void
 } as const

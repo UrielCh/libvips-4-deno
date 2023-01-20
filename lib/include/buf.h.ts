@@ -4,7 +4,7 @@ export const vips_buf_all = {
   parameters: [
     "pointer", // buf as VipsBuf *
   ],
-  result: "buffer"
+  result: "buffer" // const char *
 } as const
 
 export const vips_buf_append_size = {
@@ -12,7 +12,7 @@ export const vips_buf_append_size = {
     "pointer", // buf as VipsBuf *
     "usize", // n as size_t
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_buf_appendc = {
@@ -20,7 +20,7 @@ export const vips_buf_appendc = {
     "pointer", // buf as VipsBuf *
     "i8", // ch as char
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_buf_appendd = {
@@ -28,7 +28,7 @@ export const vips_buf_appendd = {
     "pointer", // buf as VipsBuf *
     "i32", // d as int
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_buf_appendf = {
@@ -37,7 +37,7 @@ export const vips_buf_appendf = {
     "buffer", // fmt as const char *
     "pointer", // args as void *
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_buf_appendg = {
@@ -45,7 +45,7 @@ export const vips_buf_appendg = {
     "pointer", // buf as VipsBuf *
     "f64", // g as double
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_buf_appendgv = {
@@ -53,7 +53,7 @@ export const vips_buf_appendgv = {
     "pointer", // buf as VipsBuf *
     "buffer", // value as GValue *
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_buf_appendns = {
@@ -62,7 +62,7 @@ export const vips_buf_appendns = {
     "buffer", // str as const char *
     "i32", // sz as int
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_buf_appends = {
@@ -70,7 +70,7 @@ export const vips_buf_appends = {
     "pointer", // buf as VipsBuf *
     "buffer", // str as const char *
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_buf_change = {
@@ -79,28 +79,28 @@ export const vips_buf_change = {
     "buffer", // o as const char *
     "buffer", // n as const char *
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_buf_destroy = {
   parameters: [
     "pointer", // buf as VipsBuf *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_buf_firstline = {
   parameters: [
     "pointer", // buf as VipsBuf *
   ],
-  result: "buffer"
+  result: "buffer" // const char *
 } as const
 
 export const vips_buf_init = {
   parameters: [
     "pointer", // buf as VipsBuf *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_buf_init_dynamic = {
@@ -108,7 +108,7 @@ export const vips_buf_init_dynamic = {
     "pointer", // buf as VipsBuf *
     "i32", // mx as int
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_buf_init_static = {
@@ -117,28 +117,28 @@ export const vips_buf_init_static = {
     "buffer", // base as char *
     "i32", // mx as int
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_buf_is_empty = {
   parameters: [
     "pointer", // buf as VipsBuf *
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_buf_is_full = {
   parameters: [
     "pointer", // buf as VipsBuf *
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_buf_len = {
   parameters: [
     "pointer", // buf as VipsBuf *
   ],
-  result: "i32"
+  result: "i32" // int
 } as const
 
 export const vips_buf_removec = {
@@ -146,14 +146,14 @@ export const vips_buf_removec = {
     "pointer", // buf as VipsBuf *
     "i8", // ch as char
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
 
 export const vips_buf_rewind = {
   parameters: [
     "pointer", // buf as VipsBuf *
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_buf_set_dynamic = {
@@ -161,7 +161,7 @@ export const vips_buf_set_dynamic = {
     "pointer", // buf as VipsBuf *
     "i32", // mx as int
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_buf_set_static = {
@@ -170,7 +170,7 @@ export const vips_buf_set_static = {
     "buffer", // base as char *
     "i32", // mx as int
   ],
-  result: "void"
+  result: "void" // void
 } as const
 
 export const vips_buf_vappendf = {
@@ -179,5 +179,5 @@ export const vips_buf_vappendf = {
     "buffer", // fmt as const char *
     "pointer", // ap as va_list
   ],
-  result: "bool"
+  result: "bool" // gboolean
 } as const
