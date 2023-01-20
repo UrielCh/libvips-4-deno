@@ -1,4 +1,4 @@
-import { libvips } from "./lib/ffi.ts";
+import { libvips, libgobject } from "./lib/ffi.ts";
 import * as pc from "https://deno.land/std@0.171.0/fmt/colors.ts";
 import { VipsRect } from "./lib/VipsRect.ts";
 
@@ -51,8 +51,6 @@ console.log(
   `Try ${pc.yellow('vips_region_new')} return ${pc.green(String(vipRegion))} should be a VipsRegion *`,
 );
 
-
-
 console.log(`Try ${pc.yellow('vips_region_prepare')} call`);
 
 // ask for a 100x100 pixel region at 0x0 (top left)
@@ -64,7 +62,11 @@ r.height = 100;
 const err = libvips.symbols.vips_region_prepare( vipRegion, r.asRef() ) 
 console.log(`Try ${pc.yellow('vips_region_prepare')} return ${err}`);
 
-// libvips.symbols.g_object_unref( vipRegion ) 
+{
+  const err = libgobject.symbols.g_object_unref( vipRegion )
+  console.log(`Try ${pc.yellow('g_object_unref')} return ${err}`);
+}
+
 // g_object_unref( region );
 // const x = 10;
 // const y = 10;

@@ -1,3 +1,4 @@
+import { locateLib } from "./common.ts";
 import * as arithmetic from "./include/arithmetic.h.ts";
 import * as buf from "./include/buf.h.ts";
 import * as colour from "./include/colour.h.ts";
@@ -72,36 +73,21 @@ const IMPORTS = {
   ...vips,
 } as const;
 
-let libSuffix = "";
-switch (Deno.build.os) {
-  case "windows":
-    libSuffix = "dll";
-    break;
-  case "darwin":
-    libSuffix = "dylib";
-    break;
-  default:
-    libSuffix = "so";
-    break;
-}
-
-const libFileName = `libvips-42.${libSuffix}`;
-// // const libPath = join('2', 'vips-dev-8.14','bin', libFileName);
-// const libPath = join(__dirname, "..", "vips-dev-8.14", "bin", libFileName);
-
-
-const libPath = new URL(`../vips-dev-8.14/bin/${libFileName}`, import.meta.url);
-
-// const libPath = '/usr/lib/x86_64-linux-gnu/libvips.so.42'
-const stats = Deno.statSync(libPath);
-console.log(
-  `${libPath} lib exits, size: ${(stats.size / 1042).toFixed(1)} KB`,
-);
-const lib = new URL(libPath, import.meta.url);
-console.log(`loading ${lib}`);
 const libvips = Deno.dlopen(
-  lib,
+  locateLib('libvips-42'),
   IMPORTS,
 );
 
-export { libvips };
+const libgobject = Deno.dlopen(
+  locateLib('libgobject-2.0-0'),
+  {
+    g_object_unref: {
+      parameters: [
+        "pointer", // obj to relesae
+      ],
+      result: "void", // int
+    }
+  },
+);
+
+export { libvips, libgobject };
