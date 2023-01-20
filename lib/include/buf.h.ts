@@ -1,0 +1,181 @@
+// this code is generarated by file:///C:/1/libvips-4-deno/build/generator.ts
+
+export const vips_buf_all = {
+  parameters: [
+    "pointer", // buf as VipsBuf *
+  ],
+  result: "buffer"
+} as const
+
+export const vips_buf_append_size = {
+  parameters: [
+    "pointer", // buf as VipsBuf *
+    "usize", // n as size_t
+  ],
+  result: "bool"
+} as const
+
+export const vips_buf_appendc = {
+  parameters: [
+    "pointer", // buf as VipsBuf *
+    "i8", // ch as char
+  ],
+  result: "bool"
+} as const
+
+export const vips_buf_appendd = {
+  parameters: [
+    "pointer", // buf as VipsBuf *
+    "i32", // d as int
+  ],
+  result: "bool"
+} as const
+
+export const vips_buf_appendf = {
+  parameters: [
+    "pointer", // buf as VipsBuf *
+    "buffer", // fmt as const char *
+  ],
+  result: "bool"
+} as const
+
+export const vips_buf_appendg = {
+  parameters: [
+    "pointer", // buf as VipsBuf *
+    "f64", // g as double
+  ],
+  result: "bool"
+} as const
+
+export const vips_buf_appendgv = {
+  parameters: [
+    "pointer", // buf as VipsBuf *
+    "buffer", // value as GValue *
+  ],
+  result: "bool"
+} as const
+
+export const vips_buf_appendns = {
+  parameters: [
+    "pointer", // buf as VipsBuf *
+    "buffer", // str as const char *
+    "i32", // sz as int
+  ],
+  result: "bool"
+} as const
+
+export const vips_buf_appends = {
+  parameters: [
+    "pointer", // buf as VipsBuf *
+    "buffer", // str as const char *
+  ],
+  result: "bool"
+} as const
+
+export const vips_buf_change = {
+  parameters: [
+    "pointer", // buf as VipsBuf *
+    "buffer", // o as const char *
+    "buffer", // n as const char *
+  ],
+  result: "bool"
+} as const
+
+export const vips_buf_destroy = {
+  parameters: [
+    "pointer", // buf as VipsBuf *
+  ],
+  result: "void"
+} as const
+
+export const vips_buf_firstline = {
+  parameters: [
+    "pointer", // buf as VipsBuf *
+  ],
+  result: "buffer"
+} as const
+
+export const vips_buf_init = {
+  parameters: [
+    "pointer", // buf as VipsBuf *
+  ],
+  result: "void"
+} as const
+
+export const vips_buf_init_dynamic = {
+  parameters: [
+    "pointer", // buf as VipsBuf *
+    "i32", // mx as int
+  ],
+  result: "void"
+} as const
+
+export const vips_buf_init_static = {
+  parameters: [
+    "pointer", // buf as VipsBuf *
+    "buffer", // base as char *
+    "i32", // mx as int
+  ],
+  result: "void"
+} as const
+
+export const vips_buf_is_empty = {
+  parameters: [
+    "pointer", // buf as VipsBuf *
+  ],
+  result: "bool"
+} as const
+
+export const vips_buf_is_full = {
+  parameters: [
+    "pointer", // buf as VipsBuf *
+  ],
+  result: "bool"
+} as const
+
+export const vips_buf_len = {
+  parameters: [
+    "pointer", // buf as VipsBuf *
+  ],
+  result: "i32"
+} as const
+
+export const vips_buf_removec = {
+  parameters: [
+    "pointer", // buf as VipsBuf *
+    "i8", // ch as char
+  ],
+  result: "bool"
+} as const
+
+export const vips_buf_rewind = {
+  parameters: [
+    "pointer", // buf as VipsBuf *
+  ],
+  result: "void"
+} as const
+
+export const vips_buf_set_dynamic = {
+  parameters: [
+    "pointer", // buf as VipsBuf *
+    "i32", // mx as int
+  ],
+  result: "void"
+} as const
+
+export const vips_buf_set_static = {
+  parameters: [
+    "pointer", // buf as VipsBuf *
+    "buffer", // base as char *
+    "i32", // mx as int
+  ],
+  result: "void"
+} as const
+
+export const vips_buf_vappendf = {
+  parameters: [
+    "pointer", // buf as VipsBuf *
+    "buffer", // fmt as const char *
+  ],
+  result: "bool"
+} as const
