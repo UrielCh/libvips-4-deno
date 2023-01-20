@@ -89,56 +89,10 @@ const stats = Deno.statSync(libPath);
 console.log(`Stats of lib Pass, its size is: ${(stats.size / 1042).toFixed(1)} KB`);
 const lib = new URL(libPath, import.meta.url);
 console.log(`loading ${lib}`)
-const dylib = Deno.dlopen(
+const libvips = Deno.dlopen(
    lib,
    IMPORTS
 );
 
-console.log('Try to init libvips');
-const api_name = new TextEncoder().encode("vipsTest");
-const result = dylib.symbols.vips_init(api_name); //0
-console.log(`vips_init return ${result}`);
+export { libvips }
 
-const testFile = 'img/darth_vader_512.png';
-const destFile = 'out.jpg';
-const fn1 = new TextEncoder().encode(`${testFile}\0`);
-const fn2 = new TextEncoder().encode(`${destFile}\0`);
-
-
-if (false) {
-   // vips_image_new_from_file
-   const imgType = dylib.symbols.vips_foreign_find_load(fn1);
-   const img = Deno.UnsafePointerView.getCString(imgType);
-   if ('VipsForeignLoadJpegFile' === img) {
-      // VipsImage
-      const img = dylib.symbols.vips_image_new()
-      const r = dylib.symbols.vips_jpegload(fn1, img);
-      console.log({ r });
-
-
-      dylib.symbols.vips_image_write_to_file(img, fn2);
-
-      //   vips_jpegload: {parameters: ["buffer", "pointer"], result: "i32" },
-   }
-   // const usp = new Deno.UnsafePointerView(VImage);
-   // 
-   // const byteLength = usp.getCString(0);
-   //const buffer = Deno.UnsafePointerView.getArrayBuffer(VImage, byteLength);
-   //const txt = new TextDecoder().decode(new Uint8Array(buffer));
-   //console.log(VImage);
-   console.log(img);
-   // const ret = dylib.symbols.vips_image_write_to_file(VImage, fn2);
-} else {
-   const vipImg = dylib.symbols.vips_image_new_from_file(fn1)
-   const x = 10;
-   const y = 10;
-   const width = 1000;
-   const height = 1000;
-   const out = dylib.symbols.vips_image_new();
-   // vips_embed: { parameters: ["pointer", "pointer", "i32", "i32", "i32", "i32"], result: "i32" },
-   // const r = dylib.symbols.vips_embed(vipImg, out, x, y, width, height)
-   // console.log({ r });
-   // const error = dylib.symbols.vips_error_buffer_copy();
-   // console.log({ error });
-   // console.log({ error: Deno.UnsafePointerView.getCString(error) });
-}
