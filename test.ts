@@ -1,5 +1,6 @@
 import { libvips } from "./lib/ffi.ts";
 import * as pc from "https://deno.land/std@0.171.0/fmt/colors.ts";
+import { VipsRect } from "./lib/VipsRect.ts";
 
 function cstring(txt: string): Uint8Array {
   return new TextEncoder().encode(`${txt}\0`);
@@ -43,12 +44,33 @@ const vipImg = libvips.symbols.vips_image_new_from_file(
 console.log(
   `Try ${pc.yellow('vips_image_new_from_file')} return ${pc.green(String(vipImg))} should be a VipsImage *`,
 );
+
+console.log(`Try ${pc.yellow('vips_region_new')} call`);
+const vipRegion = libvips.symbols.vips_region_new(vipImg);
+console.log(
+  `Try ${pc.yellow('vips_region_new')} return ${pc.green(String(vipRegion))} should be a VipsRegion *`,
+);
+
+
+
+console.log(`Try ${pc.yellow('vips_region_prepare')} call`);
+
+// ask for a 100x100 pixel region at 0x0 (top left)
+const r = new VipsRect()
+r.top = 0;
+r.left = 0;
+r.width = 100;
+r.height = 100;
+const err = libvips.symbols.vips_region_prepare( vipRegion, r.asRef() ) 
+console.log(`Try ${pc.yellow('vips_region_prepare')} return ${err}`);
+
+// libvips.symbols.g_object_unref( vipRegion ) 
+// g_object_unref( region );
 // const x = 10;
 // const y = 10;
 // const width = 1000;
 // const height = 1000;
 // const out = libvips.symbols.vips_image_new();
-
 // vips_embed: { parameters: ["pointer", "pointer", "i32", "i32", "i32", "i32"], result: "i32" },
 // const r = dylib.symbols.vips_embed(vipImg, out, x, y, width, height)
 // console.log({ r });
