@@ -1,5 +1,3 @@
-import { join } from "https://deno.land/std@0.172.0/path/mod.ts";
-
 import * as arithmetic from "./include/arithmetic.h.ts";
 import * as buf from "./include/buf.h.ts";
 import * as colour from "./include/colour.h.ts";
@@ -88,12 +86,16 @@ switch (Deno.build.os) {
 }
 
 const libFileName = `libvips-42.${libSuffix}`;
-// const libPath = join('2', 'vips-dev-8.14','bin', libFileName);
-const libPath = join("vips-dev-8.14", "bin", libFileName);
+// // const libPath = join('2', 'vips-dev-8.14','bin', libFileName);
+// const libPath = join(__dirname, "..", "vips-dev-8.14", "bin", libFileName);
+
+
+const libPath = new URL(`../vips-dev-8.14/bin/${libFileName}`, import.meta.url);
+
 // const libPath = '/usr/lib/x86_64-linux-gnu/libvips.so.42'
 const stats = Deno.statSync(libPath);
 console.log(
-  `Stats of lib Pass, its size is: ${(stats.size / 1042).toFixed(1)} KB`,
+  `${libPath} lib exits, size: ${(stats.size / 1042).toFixed(1)} KB`,
 );
 const lib = new URL(libPath, import.meta.url);
 console.log(`loading ${lib}`);

@@ -1,27 +1,28 @@
 import { libvips } from "./lib/ffi.ts";
+import * as pc from "https://deno.land/std@0.171.0/fmt/colors.ts";
 
 function cstring(txt: string): Uint8Array {
   return new TextEncoder().encode(`${txt}\0`);
 }
 
-console.log("Try to init libvips");
+console.log(`Try to init libvips calling ${pc.yellow('vips_init')}`);
 const api_name = new TextEncoder().encode("vipsTest");
 const result = libvips.symbols.vips_init(api_name); //0
-console.log(`vips_init return ${result}`);
+console.log(`${pc.yellow('vips_init')} return ${pc.green(String(result))}`);
 
 const testFile = "img/darth_vader_512.png";
 
-console.log(`Try vips_foreign_find_load function call`);
+console.log(`Try ${pc.yellow('vips_foreign_find_load')} function call`);
 // vips_image_new_from_file
 const imgType = libvips.symbols.vips_foreign_find_load(cstring(testFile));
 const imgLoader = Deno.UnsafePointerView.getCString(imgType);
-console.log(`${testFile} can be load with ${imgLoader}`);
+console.log(`${pc.green(String(testFile))} can be load with ${pc.green(imgLoader)}`);
 
 if ("VipsForeignLoadJpegFile" === imgLoader) {
   const img = libvips.symbols.vips_image_new();
-  console.log(`Try VipsForeignLoadJpegFile function call`);
+  console.log(`Try ${pc.yellow('VipsForeignLoadJpegFile')} function call`);
   const r = libvips.symbols.vips_jpegload(cstring(testFile), img, null);
-  console.log(`vips_jpegload return ${r}`);
+  console.log(`${pc.yellow('vips_jpegload')} return ${pc.green(String(r))}`);
   // libvips.symbols.vips_image_write_to_file(img, fn2);
   //   vips_jpegload: {parameters: ["buffer", "pointer"], result: "i32" },
 }
@@ -34,13 +35,13 @@ if ("VipsForeignLoadJpegFile" === imgLoader) {
 //console.log(img);
 // const ret = dylib.symbols.vips_image_write_to_file(VImage, fn2);
 
-console.log(`Try vips_image_new_from_file call`);
+console.log(`Try ${pc.yellow('vips_image_new_from_file')} call`);
 const vipImg = libvips.symbols.vips_image_new_from_file(
   cstring(testFile),
   null,
 );
 console.log(
-  `Try vips_image_new_from_file return ${vipImg} should be a VipsImage *`,
+  `Try ${pc.yellow('vips_image_new_from_file')} return ${pc.green(String(vipImg))} should be a VipsImage *`,
 );
 // const x = 10;
 // const y = 10;
