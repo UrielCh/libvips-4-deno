@@ -8,54 +8,48 @@ export const vips_interpolate = {
     "f64", // x as double
     "f64", // y as double
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;
 
 export const vips_interpolate_bilinear_static = {
-  parameters: [
-  
-  ],
-  result: "pointer" // VipsInterpolate *
-} as const
+  parameters: [],
+  result: "pointer", // VipsInterpolate *
+} as const;
 
 export const vips_interpolate_get_method = {
   parameters: [
     "pointer", // interpolate as VipsInterpolate *
   ],
-  result: "pointer" // VipsInterpolateMethod
-} as const
+  result: "pointer", // VipsInterpolateMethod
+} as const;
 
 export const vips_interpolate_get_type = {
-  parameters: [
-  
-  ],
-  result: "i64" // GType
-} as const
+  parameters: [],
+  result: "i64", // GType
+} as const;
 
 export const vips_interpolate_get_window_offset = {
   parameters: [
     "pointer", // interpolate as VipsInterpolate *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_interpolate_get_window_size = {
   parameters: [
     "pointer", // interpolate as VipsInterpolate *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_interpolate_nearest_static = {
-  parameters: [
-  
-  ],
-  result: "pointer" // VipsInterpolate *
-} as const
+  parameters: [],
+  result: "pointer", // VipsInterpolate *
+} as const;
 
 export const vips_interpolate_new = {
   parameters: [
     "buffer", // nickname as const char *
   ],
-  result: "pointer" // VipsInterpolate *
-} as const
+  result: "pointer", // VipsInterpolate *
+} as const;

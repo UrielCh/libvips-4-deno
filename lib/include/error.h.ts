@@ -5,8 +5,8 @@ export const vips_check_8or16 = {
     "buffer", // domain as const char *
     "pointer", // im as VipsImage *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_check_bandno = {
   parameters: [
@@ -14,8 +14,8 @@ export const vips_check_bandno = {
     "pointer", // im as VipsImage *
     "i32", // bandno as int
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_check_bands = {
   parameters: [
@@ -23,16 +23,16 @@ export const vips_check_bands = {
     "pointer", // im as VipsImage *
     "i32", // bands as int
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_check_bands_1or3 = {
   parameters: [
     "buffer", // domain as const char *
     "pointer", // im as VipsImage *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_check_bands_1orn = {
   parameters: [
@@ -40,8 +40,8 @@ export const vips_check_bands_1orn = {
     "pointer", // im1 as VipsImage *
     "pointer", // im2 as VipsImage *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_check_bands_1orn_unary = {
   parameters: [
@@ -49,8 +49,8 @@ export const vips_check_bands_1orn_unary = {
     "pointer", // im as VipsImage *
     "i32", // n as int
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_check_bands_atleast = {
   parameters: [
@@ -58,8 +58,8 @@ export const vips_check_bands_atleast = {
     "pointer", // im as VipsImage *
     "i32", // bands as int
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_check_bands_same = {
   parameters: [
@@ -67,8 +67,8 @@ export const vips_check_bands_same = {
     "pointer", // im1 as VipsImage *
     "pointer", // im2 as VipsImage *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_check_coding = {
   parameters: [
@@ -76,24 +76,24 @@ export const vips_check_coding = {
     "pointer", // im as VipsImage *
     "u32", // coding as VipsCoding
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_check_coding_known = {
   parameters: [
     "buffer", // domain as const char *
     "pointer", // im as VipsImage *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_check_coding_noneorlabq = {
   parameters: [
     "buffer", // domain as const char *
     "pointer", // im as VipsImage *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_check_coding_same = {
   parameters: [
@@ -101,16 +101,16 @@ export const vips_check_coding_same = {
     "pointer", // im1 as VipsImage *
     "pointer", // im2 as VipsImage *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_check_complex = {
   parameters: [
     "buffer", // domain as const char *
     "pointer", // im as VipsImage *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_check_format = {
   parameters: [
@@ -118,8 +118,8 @@ export const vips_check_format = {
     "pointer", // im as VipsImage *
     "u32", // fmt as VipsBandFormat
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_check_format_same = {
   parameters: [
@@ -127,24 +127,24 @@ export const vips_check_format_same = {
     "pointer", // im1 as VipsImage *
     "pointer", // im2 as VipsImage *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_check_hist = {
   parameters: [
     "buffer", // domain as const char *
     "pointer", // im as VipsImage *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_check_int = {
   parameters: [
     "buffer", // domain as const char *
     "pointer", // im as VipsImage *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_check_matrix = {
   parameters: [
@@ -152,48 +152,48 @@ export const vips_check_matrix = {
     "pointer", // im as VipsImage *
     "pointer", // out as VipsImage **
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_check_mono = {
   parameters: [
     "buffer", // domain as const char *
     "pointer", // im as VipsImage *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_check_noncomplex = {
   parameters: [
     "buffer", // domain as const char *
     "pointer", // im as VipsImage *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_check_oddsquare = {
   parameters: [
     "buffer", // domain as const char *
     "pointer", // im as VipsImage *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_check_precision_intfloat = {
   parameters: [
     "buffer", // domain as const char *
     "u32", // precision as VipsPrecision
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_check_separable = {
   parameters: [
     "buffer", // domain as const char *
     "pointer", // im as VipsImage *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_check_size_same = {
   parameters: [
@@ -201,56 +201,56 @@ export const vips_check_size_same = {
     "pointer", // im1 as VipsImage *
     "pointer", // im2 as VipsImage *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_check_twocomponents = {
   parameters: [
     "buffer", // domain as const char *
     "pointer", // im as VipsImage *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_check_u8or16 = {
   parameters: [
     "buffer", // domain as const char *
     "pointer", // im as VipsImage *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_check_u8or16orf = {
   parameters: [
     "buffer", // domain as const char *
     "pointer", // im as VipsImage *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_check_uint = {
   parameters: [
     "buffer", // domain as const char *
     "pointer", // im as VipsImage *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_check_uintorf = {
   parameters: [
     "buffer", // domain as const char *
     "pointer", // im as VipsImage *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_check_uncoded = {
   parameters: [
     "buffer", // domain as const char *
     "pointer", // im as VipsImage *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_check_vector = {
   parameters: [
@@ -258,8 +258,8 @@ export const vips_check_vector = {
     "i32", // n as int
     "pointer", // im as VipsImage *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_check_vector_length = {
   parameters: [
@@ -267,8 +267,8 @@ export const vips_check_vector_length = {
     "i32", // n as int
     "i32", // len as int
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_error = {
   parameters: [
@@ -276,51 +276,43 @@ export const vips_error = {
     "buffer", // fmt as const char *
     "pointer", // args as void *
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;
 
 export const vips_error_buffer = {
-  parameters: [
-  
-  ],
-  result: "buffer" // const char *
-} as const
+  parameters: [],
+  result: "buffer", // const char *
+} as const;
 
 export const vips_error_buffer_copy = {
-  parameters: [
-  
-  ],
-  result: "buffer" // char *
-} as const
+  parameters: [],
+  result: "buffer", // char *
+} as const;
 
 export const vips_error_clear = {
-  parameters: [
-  
-  ],
-  result: "void" // void
-} as const
+  parameters: [],
+  result: "void", // void
+} as const;
 
 export const vips_error_exit = {
   parameters: [
     "buffer", // fmt as const char *
     "pointer", // args as void *
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;
 
 export const vips_error_freeze = {
-  parameters: [
-  
-  ],
-  result: "void" // void
-} as const
+  parameters: [],
+  result: "void", // void
+} as const;
 
 export const vips_error_g = {
   parameters: [
     "pointer", // error as GError **
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;
 
 export const vips_error_system = {
   parameters: [
@@ -329,22 +321,20 @@ export const vips_error_system = {
     "buffer", // fmt as const char *
     "pointer", // args as void *
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;
 
 export const vips_error_thaw = {
-  parameters: [
-  
-  ],
-  result: "void" // void
-} as const
+  parameters: [],
+  result: "void", // void
+} as const;
 
 export const vips_g_error = {
   parameters: [
     "pointer", // error as GError **
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;
 
 export const vips_verror = {
   parameters: [
@@ -352,8 +342,8 @@ export const vips_verror = {
     "buffer", // fmt as const char *
     "pointer", // ap as va_list
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;
 
 export const vips_verror_system = {
   parameters: [
@@ -362,5 +352,5 @@ export const vips_verror_system = {
     "buffer", // fmt as const char *
     "pointer", // ap as va_list
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;

@@ -6,8 +6,8 @@ export const vips_globalbalance = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_match = {
   parameters: [
@@ -24,8 +24,8 @@ export const vips_match = {
     "i32", // ys2 as int
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_matrixinvert = {
   parameters: [
@@ -33,8 +33,8 @@ export const vips_matrixinvert = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_merge = {
   parameters: [
@@ -46,8 +46,8 @@ export const vips_merge = {
     "i32", // dy as int
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_mosaic = {
   parameters: [
@@ -61,8 +61,8 @@ export const vips_mosaic = {
     "i32", // ysec as int
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_mosaic1 = {
   parameters: [
@@ -80,8 +80,8 @@ export const vips_mosaic1 = {
     "i32", // ys2 as int
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_remosaic = {
   parameters: [
@@ -91,5 +91,5 @@ export const vips_remosaic = {
     "buffer", // new_str as const char *
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;

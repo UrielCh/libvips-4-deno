@@ -37,62 +37,69 @@ import * as vector from "./include/vector.h.ts";
 import * as vips from "./include/vips.h.ts";
 
 const IMPORTS = {
-    ...arithmetic,
-    ...buf,
-    ...colour,
-    ...connection,
-    ...convolution,
-    ...create,
-    ...dbuf,
-    ...draw,
-    ...enumtypes,
-    ...error,
-    ...foreign,
-    ...freqfilt,
-    ...gate,
-    ...generate,
-    ...header,
-    ...histogram,
-    ...image,
-    ...interpolate,
-    ...memory,
-    ...morphology,
-    ...mosaicing,
-    ...object,
-    ...operation,
-    ..._private,
-    ...rect,
-    ...region,
-    ...resample,
-    ...sbuf,
-    ...semaphore,
-    ...thread,
-    ...threadpool,
-    ...type,
-    ...unit,
-    ...vector,
-    ...vips,
+  ...arithmetic,
+  ...buf,
+  ...colour,
+  ...connection,
+  ...convolution,
+  ...create,
+  ...dbuf,
+  ...draw,
+  ...enumtypes,
+  ...error,
+  ...foreign,
+  ...freqfilt,
+  ...gate,
+  ...generate,
+  ...header,
+  ...histogram,
+  ...image,
+  ...interpolate,
+  ...memory,
+  ...morphology,
+  ...mosaicing,
+  ...object,
+  ...operation,
+  ..._private,
+  ...rect,
+  ...region,
+  ...resample,
+  ...sbuf,
+  ...semaphore,
+  ...thread,
+  ...threadpool,
+  ...type,
+  ...unit,
+  ...vector,
+  ...vips,
 } as const;
 
 let libSuffix = "";
 switch (Deno.build.os) {
-   case "windows": libSuffix = "dll"; break;
-   case "darwin": libSuffix = "dylib"; break;
-   default: libSuffix = "so"; break;
+  case "windows":
+    libSuffix = "dll";
+    break;
+  case "darwin":
+    libSuffix = "dylib";
+    break;
+  default:
+    libSuffix = "so";
+    break;
 }
 
 const libFileName = `libvips-42.${libSuffix}`;
 // const libPath = join('2', 'vips-dev-8.14','bin', libFileName);
-const libPath = join('vips-dev-8.14', 'bin', libFileName);
+const libPath = join("vips-dev-8.14", "bin", libFileName);
 // const libPath = '/usr/lib/x86_64-linux-gnu/libvips.so.42'
 const stats = Deno.statSync(libPath);
-console.log(`Stats of lib Pass, its size is: ${(stats.size / 1042).toFixed(1)} KB`);
+console.log(
+  `Stats of lib Pass, its size is: ${(stats.size / 1042).toFixed(1)} KB`,
+);
 const lib = new URL(libPath, import.meta.url);
-console.log(`loading ${lib}`)
+console.log(`loading ${lib}`);
 const libvips = Deno.dlopen(
-   lib,
-   IMPORTS
+  lib,
+  IMPORTS,
 );
 
-export { libvips }
-
+export { libvips };

@@ -6,8 +6,8 @@ export const vips_canny = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_compass = {
   parameters: [
@@ -16,8 +16,8 @@ export const vips_compass = {
     "pointer", // mask as VipsImage *
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_conv = {
   parameters: [
@@ -26,8 +26,8 @@ export const vips_conv = {
     "pointer", // mask as VipsImage *
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_conva = {
   parameters: [
@@ -36,8 +36,8 @@ export const vips_conva = {
     "pointer", // mask as VipsImage *
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_convasep = {
   parameters: [
@@ -46,8 +46,8 @@ export const vips_convasep = {
     "pointer", // mask as VipsImage *
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_convf = {
   parameters: [
@@ -56,8 +56,8 @@ export const vips_convf = {
     "pointer", // mask as VipsImage *
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_convi = {
   parameters: [
@@ -66,8 +66,8 @@ export const vips_convi = {
     "pointer", // mask as VipsImage *
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_convsep = {
   parameters: [
@@ -76,8 +76,8 @@ export const vips_convsep = {
     "pointer", // mask as VipsImage *
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_fastcor = {
   parameters: [
@@ -86,8 +86,8 @@ export const vips_fastcor = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_gaussblur = {
   parameters: [
@@ -96,8 +96,8 @@ export const vips_gaussblur = {
     "f64", // sigma as double
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_sharpen = {
   parameters: [
@@ -105,8 +105,8 @@ export const vips_sharpen = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_sobel = {
   parameters: [
@@ -114,8 +114,8 @@ export const vips_sobel = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_spcor = {
   parameters: [
@@ -124,5 +124,5 @@ export const vips_spcor = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;

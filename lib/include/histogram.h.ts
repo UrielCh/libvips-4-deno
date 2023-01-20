@@ -8,8 +8,8 @@ export const vips_case = {
     "i32", // n as int
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_hist_cum = {
   parameters: [
@@ -17,8 +17,8 @@ export const vips_hist_cum = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_hist_entropy = {
   parameters: [
@@ -26,8 +26,8 @@ export const vips_hist_entropy = {
     "buffer", // out as double *
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_hist_equal = {
   parameters: [
@@ -35,8 +35,8 @@ export const vips_hist_equal = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_hist_ismonotonic = {
   parameters: [
@@ -44,8 +44,8 @@ export const vips_hist_ismonotonic = {
     "pointer", // out as gboolean *
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_hist_local = {
   parameters: [
@@ -55,8 +55,8 @@ export const vips_hist_local = {
     "i32", // height as int
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_hist_match = {
   parameters: [
@@ -65,8 +65,8 @@ export const vips_hist_match = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_hist_norm = {
   parameters: [
@@ -74,8 +74,8 @@ export const vips_hist_norm = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_hist_plot = {
   parameters: [
@@ -83,8 +83,8 @@ export const vips_hist_plot = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_maplut = {
   parameters: [
@@ -93,8 +93,8 @@ export const vips_maplut = {
     "pointer", // lut as VipsImage *
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_percent = {
   parameters: [
@@ -103,8 +103,8 @@ export const vips_percent = {
     "buffer", // threshold as int *
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_stdif = {
   parameters: [
@@ -114,5 +114,5 @@ export const vips_stdif = {
     "i32", // height as int
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;

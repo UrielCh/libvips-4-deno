@@ -5,38 +5,38 @@ export const vips_dbuf_allocate = {
     "pointer", // dbuf as VipsDbuf *
     "usize", // size as size_t
   ],
-  result: "bool" // gboolean
-} as const
+  result: "bool", // gboolean
+} as const;
 
 export const vips_dbuf_destroy = {
   parameters: [
     "pointer", // dbuf as VipsDbuf *
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;
 
 export const vips_dbuf_get_write = {
   parameters: [
     "pointer", // dbuf as VipsDbuf *
     "buffer", // size as size_t *
   ],
-  result: "buffer" // unsigned char *
-} as const
+  result: "buffer", // unsigned char *
+} as const;
 
 export const vips_dbuf_init = {
   parameters: [
     "pointer", // dbuf as VipsDbuf *
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;
 
 export const vips_dbuf_minimum_size = {
   parameters: [
     "pointer", // dbuf as VipsDbuf *
     "usize", // size as size_t
   ],
-  result: "bool" // gboolean
-} as const
+  result: "bool", // gboolean
+} as const;
 
 export const vips_dbuf_read = {
   parameters: [
@@ -44,15 +44,15 @@ export const vips_dbuf_read = {
     "buffer", // data as unsigned char *
     "usize", // size as size_t
   ],
-  result: "usize" // size_t
-} as const
+  result: "usize", // size_t
+} as const;
 
 export const vips_dbuf_reset = {
   parameters: [
     "pointer", // dbuf as VipsDbuf *
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;
 
 export const vips_dbuf_seek = {
   parameters: [
@@ -60,38 +60,38 @@ export const vips_dbuf_seek = {
     "usize", // offset as off_t
     "i32", // whence as int
   ],
-  result: "bool" // gboolean
-} as const
+  result: "bool", // gboolean
+} as const;
 
 export const vips_dbuf_steal = {
   parameters: [
     "pointer", // dbuf as VipsDbuf *
     "buffer", // size as size_t *
   ],
-  result: "buffer" // unsigned char *
-} as const
+  result: "buffer", // unsigned char *
+} as const;
 
 export const vips_dbuf_string = {
   parameters: [
     "pointer", // dbuf as VipsDbuf *
     "buffer", // size as size_t *
   ],
-  result: "buffer" // unsigned char *
-} as const
+  result: "buffer", // unsigned char *
+} as const;
 
 export const vips_dbuf_tell = {
   parameters: [
     "pointer", // dbuf as VipsDbuf *
   ],
-  result: "usize" // off_t
-} as const
+  result: "usize", // off_t
+} as const;
 
 export const vips_dbuf_truncate = {
   parameters: [
     "pointer", // dbuf as VipsDbuf *
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;
 
 export const vips_dbuf_write = {
   parameters: [
@@ -99,16 +99,16 @@ export const vips_dbuf_write = {
     "buffer", // data as const unsigned char *
     "usize", // size as size_t
   ],
-  result: "bool" // gboolean
-} as const
+  result: "bool", // gboolean
+} as const;
 
 export const vips_dbuf_write_amp = {
   parameters: [
     "pointer", // dbuf as VipsDbuf *
     "buffer", // str as const char *
   ],
-  result: "bool" // gboolean
-} as const
+  result: "bool", // gboolean
+} as const;
 
 export const vips_dbuf_writef = {
   parameters: [
@@ -116,5 +116,5 @@ export const vips_dbuf_writef = {
     "buffer", // fmt as const char *
     "pointer", // args as void *
   ],
-  result: "bool" // gboolean
-} as const
+  result: "bool", // gboolean
+} as const;

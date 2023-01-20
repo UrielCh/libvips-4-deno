@@ -6,8 +6,8 @@ export const vips__file_read = {
     "buffer", // name as const char *
     "buffer", // length_out as size_t *
   ],
-  result: "buffer" // char *
-} as const
+  result: "buffer", // char *
+} as const;
 
 export const vips__filename_split8 = {
   parameters: [
@@ -15,8 +15,8 @@ export const vips__filename_split8 = {
     "buffer", // filename as char *
     "buffer", // option_string as char *
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;
 
 export const vips__get_bytes = {
   parameters: [
@@ -24,8 +24,8 @@ export const vips__get_bytes = {
     "u8", // buf[] as unsigned char
     "i64", // len as gint64
   ],
-  result: "i64" // gint64
-} as const
+  result: "i64", // gint64
+} as const;
 
 export const vips__open = {
   parameters: [
@@ -33,8 +33,8 @@ export const vips__open = {
     "i32", // flags as int
     "i32", // mode as int
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips__seek = {
   parameters: [
@@ -42,15 +42,15 @@ export const vips__seek = {
     "i64", // pos as gint64
     "i32", // whence as int
   ],
-  result: "i64" // gint64
-} as const
+  result: "i64", // gint64
+} as const;
 
 export const vips__temp_name = {
   parameters: [
     "buffer", // format as const char *
   ],
-  result: "buffer" // char *
-} as const
+  result: "buffer", // char *
+} as const;
 
 export const vips__write = {
   parameters: [
@@ -58,23 +58,21 @@ export const vips__write = {
     "buffer", // buf as const void *
     "usize", // count as size_t
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_amiMSBfirst = {
-  parameters: [
-  
-  ],
-  result: "i32" // int
-} as const
+  parameters: [],
+  result: "i32", // int
+} as const;
 
 export const vips_break_token = {
   parameters: [
     "buffer", // str as char *
     "buffer", // brk as const char *
   ],
-  result: "buffer" // char *
-} as const
+  result: "buffer", // char *
+} as const;
 
 export const vips_enum_from_nick = {
   parameters: [
@@ -82,47 +80,47 @@ export const vips_enum_from_nick = {
     "i64", // type as GType
     "buffer", // str as const char *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_enum_nick = {
   parameters: [
     "i64", // enm as GType
     "i32", // value as int
   ],
-  result: "buffer" // const char *
-} as const
+  result: "buffer", // const char *
+} as const;
 
 export const vips_enum_string = {
   parameters: [
     "i64", // enm as GType
     "i32", // value as int
   ],
-  result: "buffer" // const char *
-} as const
+  result: "buffer", // const char *
+} as const;
 
 export const vips_existsf = {
   parameters: [
     "buffer", // name as const char *
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_file_length = {
   parameters: [
     "i32", // fd as int
   ],
-  result: "i64" // gint64
-} as const
+  result: "i64", // gint64
+} as const;
 
 export const vips_filename_suffix_match = {
   parameters: [
     "buffer", // path as const char *
     "buffer", // suffixes[] as const char *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_flags_from_nick = {
   parameters: [
@@ -130,8 +128,8 @@ export const vips_flags_from_nick = {
     "i64", // type as GType
     "buffer", // nick as const char *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_hash_table_map = {
   parameters: [
@@ -140,94 +138,94 @@ export const vips_hash_table_map = {
     "pointer", // a as void *
     "pointer", // b as void *
   ],
-  result: "pointer" // void *
-} as const
+  result: "pointer", // void *
+} as const;
 
 export const vips_iscasepostfix = {
   parameters: [
     "buffer", // a as const char *
     "buffer", // b as const char *
   ],
-  result: "bool" // gboolean
-} as const
+  result: "bool", // gboolean
+} as const;
 
 export const vips_isdirf = {
   parameters: [
     "buffer", // name as const char *
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_ispostfix = {
   parameters: [
     "buffer", // a as const char *
     "buffer", // b as const char *
   ],
-  result: "bool" // gboolean
-} as const
+  result: "bool", // gboolean
+} as const;
 
 export const vips_ispoweroftwo = {
   parameters: [
     "i32", // p as int
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_isprefix = {
   parameters: [
     "buffer", // a as const char *
     "buffer", // b as const char *
   ],
-  result: "bool" // gboolean
-} as const
+  result: "bool", // gboolean
+} as const;
 
 export const vips_map_equal = {
   parameters: [
     "pointer", // a as void *
     "pointer", // b as void *
   ],
-  result: "pointer" // void *
-} as const
+  result: "pointer", // void *
+} as const;
 
 export const vips_mkdirf = {
   parameters: [
     "buffer", // name as const char *
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_realpath = {
   parameters: [
     "buffer", // path as const char *
   ],
-  result: "buffer" // char *
-} as const
+  result: "buffer", // char *
+} as const;
 
 export const vips_rename = {
   parameters: [
     "buffer", // old_name as const char *
     "buffer", // new_name as const char *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_rmdirf = {
   parameters: [
     "buffer", // name as const char *
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_slist_equal = {
   parameters: [
     "buffer", // l1 as GSList *
     "buffer", // l2 as GSList *
   ],
-  result: "bool" // gboolean
-} as const
+  result: "bool", // gboolean
+} as const;
 
 export const vips_slist_filter = {
   parameters: [
@@ -236,8 +234,8 @@ export const vips_slist_filter = {
     "pointer", // a as void *
     "pointer", // b as void *
   ],
-  result: "buffer" // GSList *
-} as const
+  result: "buffer", // GSList *
+} as const;
 
 export const vips_slist_fold2 = {
   parameters: [
@@ -247,15 +245,15 @@ export const vips_slist_fold2 = {
     "pointer", // a as void *
     "pointer", // b as void *
   ],
-  result: "pointer" // void *
-} as const
+  result: "pointer", // void *
+} as const;
 
 export const vips_slist_free_all = {
   parameters: [
     "buffer", // list as GSList *
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;
 
 export const vips_slist_map2 = {
   parameters: [
@@ -264,8 +262,8 @@ export const vips_slist_map2 = {
     "pointer", // a as void *
     "pointer", // b as void *
   ],
-  result: "pointer" // void *
-} as const
+  result: "pointer", // void *
+} as const;
 
 export const vips_slist_map2_rev = {
   parameters: [
@@ -274,8 +272,8 @@ export const vips_slist_map2_rev = {
     "pointer", // a as void *
     "pointer", // b as void *
   ],
-  result: "pointer" // void *
-} as const
+  result: "pointer", // void *
+} as const;
 
 export const vips_slist_map4 = {
   parameters: [
@@ -286,8 +284,8 @@ export const vips_slist_map4 = {
     "pointer", // c as void *
     "pointer", // d as void *
   ],
-  result: "pointer" // void *
-} as const
+  result: "pointer", // void *
+} as const;
 
 export const vips_snprintf = {
   parameters: [
@@ -296,8 +294,8 @@ export const vips_snprintf = {
     "buffer", // format as const char *
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_strncpy = {
   parameters: [
@@ -305,24 +303,24 @@ export const vips_strncpy = {
     "buffer", // src as const char *
     "i32", // n as int
   ],
-  result: "buffer" // char *
-} as const
+  result: "buffer", // char *
+} as const;
 
 export const vips_strrstr = {
   parameters: [
     "buffer", // haystack as const char *
     "buffer", // needle as const char *
   ],
-  result: "buffer" // char *
-} as const
+  result: "buffer", // char *
+} as const;
 
 export const vips_strtod = {
   parameters: [
     "buffer", // str as const char *
     "buffer", // out as double *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_vsnprintf = {
   parameters: [
@@ -331,5 +329,5 @@ export const vips_vsnprintf = {
     "buffer", // format as const char *
     "pointer", // ap as va_list
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;

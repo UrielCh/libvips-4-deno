@@ -7,23 +7,21 @@ export const vips_get_tile_size = {
     "buffer", // tile_height as int *
     "buffer", // n_lines as int *
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;
 
 export const vips_thread_state_get_type = {
-  parameters: [
-  
-  ],
-  result: "i64" // GType
-} as const
+  parameters: [],
+  result: "i64", // GType
+} as const;
 
 export const vips_thread_state_new = {
   parameters: [
     "pointer", // im as VipsImage *
     "pointer", // a as void *
   ],
-  result: "buffer" // VipsThreadState *
-} as const
+  result: "buffer", // VipsThreadState *
+} as const;
 
 export const vips_thread_state_set = {
   parameters: [
@@ -31,8 +29,8 @@ export const vips_thread_state_set = {
     "pointer", // a as void *
     "pointer", // b as void *
   ],
-  result: "pointer" // void *
-} as const
+  result: "pointer", // void *
+} as const;
 
 export const vips_threadpool_run = {
   parameters: [
@@ -43,5 +41,5 @@ export const vips_threadpool_run = {
     "function", // progress as VipsThreadpoolProgressFn
     "pointer", // a as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;

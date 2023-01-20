@@ -4,16 +4,16 @@ export const vips_region_black = {
   parameters: [
     "pointer", // reg as VipsRegion *
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;
 
 export const vips_region_buffer = {
   parameters: [
     "pointer", // reg as VipsRegion *
     "pointer", // r as const VipsRect *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_region_copy = {
   parameters: [
@@ -23,16 +23,16 @@ export const vips_region_copy = {
     "i32", // x as int
     "i32", // y as int
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;
 
 export const vips_region_equalsregion = {
   parameters: [
     "pointer", // reg1 as VipsRegion *
     "pointer", // reg2 as VipsRegion *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_region_fetch = {
   parameters: [
@@ -43,44 +43,42 @@ export const vips_region_fetch = {
     "i32", // height as int
     "buffer", // len as size_t *
   ],
-  result: "pointer" // VipsPel *
-} as const
+  result: "pointer", // VipsPel *
+} as const;
 
 export const vips_region_get_type = {
-  parameters: [
-  
-  ],
-  result: "i64" // GType
-} as const
+  parameters: [],
+  result: "i64", // GType
+} as const;
 
 export const vips_region_height = {
   parameters: [
     "pointer", // region as VipsRegion *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_region_image = {
   parameters: [
     "pointer", // reg as VipsRegion *
     "pointer", // r as const VipsRect *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_region_invalidate = {
   parameters: [
     "pointer", // reg as VipsRegion *
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;
 
 export const vips_region_new = {
   parameters: [
     "pointer", // image as VipsImage *
   ],
-  result: "pointer" // VipsRegion *
-} as const
+  result: "pointer", // VipsRegion *
+} as const;
 
 export const vips_region_paint = {
   parameters: [
@@ -88,8 +86,8 @@ export const vips_region_paint = {
     "pointer", // r as const VipsRect *
     "i32", // value as int
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;
 
 export const vips_region_paint_pel = {
   parameters: [
@@ -97,8 +95,8 @@ export const vips_region_paint_pel = {
     "pointer", // r as const VipsRect *
     "buffer", // ink as const VipsPel *
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;
 
 export const vips_region_position = {
   parameters: [
@@ -106,16 +104,16 @@ export const vips_region_position = {
     "i32", // x as int
     "i32", // y as int
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_region_prepare = {
   parameters: [
     "pointer", // reg as VipsRegion *
     "pointer", // r as const VipsRect *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_region_prepare_to = {
   parameters: [
@@ -125,8 +123,8 @@ export const vips_region_prepare_to = {
     "i32", // x as int
     "i32", // y as int
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_region_region = {
   parameters: [
@@ -136,8 +134,8 @@ export const vips_region_region = {
     "i32", // x as int
     "i32", // y as int
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_region_shrink = {
   parameters: [
@@ -145,8 +143,8 @@ export const vips_region_shrink = {
     "pointer", // to as VipsRegion *
     "pointer", // target as const VipsRect *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_region_shrink_method = {
   parameters: [
@@ -155,12 +153,12 @@ export const vips_region_shrink_method = {
     "pointer", // target as const VipsRect *
     "u32", // method as VipsRegionShrink
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_region_width = {
   parameters: [
     "pointer", // region as VipsRegion *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;

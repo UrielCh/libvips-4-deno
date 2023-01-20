@@ -4,157 +4,149 @@ export const vips_connection_filename = {
   parameters: [
     "pointer", // connection as VipsConnection *
   ],
-  result: "buffer" // const char *
-} as const
+  result: "buffer", // const char *
+} as const;
 
 export const vips_connection_get_type = {
-  parameters: [
-  
-  ],
-  result: "i64" // GType
-} as const
+  parameters: [],
+  result: "i64", // GType
+} as const;
 
 export const vips_connection_nick = {
   parameters: [
     "pointer", // connection as VipsConnection *
   ],
-  result: "buffer" // const char *
-} as const
+  result: "buffer", // const char *
+} as const;
 
 export const vips_g_input_stream_new_from_source = {
   parameters: [
     "buffer", // source as VipsSource *
   ],
-  result: "pointer" // GInputStream *
-} as const
+  result: "pointer", // GInputStream *
+} as const;
 
 export const vips_pipe_read_limit_set = {
   parameters: [
     "i64", // limit as gint64
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;
 
 export const vips_source_custom_get_type = {
-  parameters: [
-  
-  ],
-  result: "i64" // GType
-} as const
+  parameters: [],
+  result: "i64", // GType
+} as const;
 
 export const vips_source_custom_new = {
-  parameters: [
-  
-  ],
-  result: "buffer" // VipsSourceCustom *
-} as const
+  parameters: [],
+  result: "buffer", // VipsSourceCustom *
+} as const;
 
 export const vips_source_decode = {
   parameters: [
     "buffer", // source as VipsSource *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_source_g_input_stream_new = {
   parameters: [
     "pointer", // stream as GInputStream *
   ],
-  result: "buffer" // VipsSourceGInputStream *
-} as const
+  result: "buffer", // VipsSourceGInputStream *
+} as const;
 
 export const vips_source_get_type = {
-  parameters: [
-  
-  ],
-  result: "i64" // GType
-} as const
+  parameters: [],
+  result: "i64", // GType
+} as const;
 
 export const vips_source_is_file = {
   parameters: [
     "buffer", // source as VipsSource *
   ],
-  result: "bool" // gboolean
-} as const
+  result: "bool", // gboolean
+} as const;
 
 export const vips_source_is_mappable = {
   parameters: [
     "buffer", // source as VipsSource *
   ],
-  result: "bool" // gboolean
-} as const
+  result: "bool", // gboolean
+} as const;
 
 export const vips_source_length = {
   parameters: [
     "buffer", // source as VipsSource *
   ],
-  result: "i64" // gint64
-} as const
+  result: "i64", // gint64
+} as const;
 
 export const vips_source_map = {
   parameters: [
     "buffer", // source as VipsSource *
     "buffer", // length as size_t *
   ],
-  result: "buffer" // const void *
-} as const
+  result: "buffer", // const void *
+} as const;
 
 export const vips_source_map_blob = {
   parameters: [
     "buffer", // source as VipsSource *
   ],
-  result: "pointer" // VipsBlob *
-} as const
+  result: "pointer", // VipsBlob *
+} as const;
 
 export const vips_source_minimise = {
   parameters: [
     "buffer", // source as VipsSource *
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;
 
 export const vips_source_new_from_blob = {
   parameters: [
     "pointer", // blob as VipsBlob *
   ],
-  result: "buffer" // VipsSource *
-} as const
+  result: "buffer", // VipsSource *
+} as const;
 
 export const vips_source_new_from_descriptor = {
   parameters: [
     "i32", // descriptor as int
   ],
-  result: "buffer" // VipsSource *
-} as const
+  result: "buffer", // VipsSource *
+} as const;
 
 export const vips_source_new_from_file = {
   parameters: [
     "buffer", // filename as const char *
   ],
-  result: "buffer" // VipsSource *
-} as const
+  result: "buffer", // VipsSource *
+} as const;
 
 export const vips_source_new_from_memory = {
   parameters: [
     "buffer", // data as const void *
     "usize", // size as size_t
   ],
-  result: "buffer" // VipsSource *
-} as const
+  result: "buffer", // VipsSource *
+} as const;
 
 export const vips_source_new_from_options = {
   parameters: [
     "buffer", // options as const char *
   ],
-  result: "buffer" // VipsSource *
-} as const
+  result: "buffer", // VipsSource *
+} as const;
 
 export const vips_source_new_from_target = {
   parameters: [
     "buffer", // target as VipsTarget *
   ],
-  result: "buffer" // VipsSource *
-} as const
+  result: "buffer", // VipsSource *
+} as const;
 
 export const vips_source_read = {
   parameters: [
@@ -162,15 +154,15 @@ export const vips_source_read = {
     "pointer", // data as void *
     "usize", // length as size_t
   ],
-  result: "i64" // gint64
-} as const
+  result: "i64", // gint64
+} as const;
 
 export const vips_source_rewind = {
   parameters: [
     "buffer", // source as VipsSource *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_source_seek = {
   parameters: [
@@ -178,16 +170,16 @@ export const vips_source_seek = {
     "i64", // offset as gint64
     "i32", // whence as int
   ],
-  result: "i64" // gint64
-} as const
+  result: "i64", // gint64
+} as const;
 
 export const vips_source_sniff = {
   parameters: [
     "buffer", // source as VipsSource *
     "usize", // length as size_t
   ],
-  result: "buffer" // unsigned char *
-} as const
+  result: "buffer", // unsigned char *
+} as const;
 
 export const vips_source_sniff_at_most = {
   parameters: [
@@ -195,79 +187,71 @@ export const vips_source_sniff_at_most = {
     "pointer", // data as unsigned char **
     "usize", // length as size_t
   ],
-  result: "i64" // gint64
-} as const
+  result: "i64", // gint64
+} as const;
 
 export const vips_source_unminimise = {
   parameters: [
     "buffer", // source as VipsSource *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_target_custom_get_type = {
-  parameters: [
-  
-  ],
-  result: "i64" // GType
-} as const
+  parameters: [],
+  result: "i64", // GType
+} as const;
 
 export const vips_target_custom_new = {
-  parameters: [
-  
-  ],
-  result: "pointer" // VipsTargetCustom *
-} as const
+  parameters: [],
+  result: "pointer", // VipsTargetCustom *
+} as const;
 
 export const vips_target_end = {
   parameters: [
     "buffer", // target as VipsTarget *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_target_get_type = {
-  parameters: [
-  
-  ],
-  result: "i64" // GType
-} as const
+  parameters: [],
+  result: "i64", // GType
+} as const;
 
 export const vips_target_new_temp = {
   parameters: [
     "buffer", // target as VipsTarget *
   ],
-  result: "buffer" // VipsTarget *
-} as const
+  result: "buffer", // VipsTarget *
+} as const;
 
 export const vips_target_new_to_descriptor = {
   parameters: [
     "i32", // descriptor as int
   ],
-  result: "buffer" // VipsTarget *
-} as const
+  result: "buffer", // VipsTarget *
+} as const;
 
 export const vips_target_new_to_file = {
   parameters: [
     "buffer", // filename as const char *
   ],
-  result: "buffer" // VipsTarget *
-} as const
+  result: "buffer", // VipsTarget *
+} as const;
 
 export const vips_target_new_to_memory = {
-  parameters: [
-  
-  ],
-  result: "buffer" // VipsTarget *
-} as const
+  parameters: [],
+  result: "buffer", // VipsTarget *
+} as const;
 
 export const vips_target_putc = {
   parameters: [
     "buffer", // target as VipsTarget *
     "i32", // ch as int
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_target_read = {
   parameters: [
@@ -275,8 +259,8 @@ export const vips_target_read = {
     "pointer", // buffer as void *
     "usize", // length as size_t
   ],
-  result: "i64" // gint64
-} as const
+  result: "i64", // gint64
+} as const;
 
 export const vips_target_seek = {
   parameters: [
@@ -284,23 +268,23 @@ export const vips_target_seek = {
     "usize", // offset as off_t
     "i32", // whence as int
   ],
-  result: "usize" // off_t
-} as const
+  result: "usize", // off_t
+} as const;
 
 export const vips_target_steal = {
   parameters: [
     "buffer", // target as VipsTarget *
     "buffer", // length as size_t *
   ],
-  result: "buffer" // unsigned char *
-} as const
+  result: "buffer", // unsigned char *
+} as const;
 
 export const vips_target_steal_text = {
   parameters: [
     "buffer", // target as VipsTarget *
   ],
-  result: "buffer" // char *
-} as const
+  result: "buffer", // char *
+} as const;
 
 export const vips_target_write = {
   parameters: [
@@ -308,16 +292,16 @@ export const vips_target_write = {
     "buffer", // data as const void *
     "usize", // length as size_t
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_target_write_amp = {
   parameters: [
     "buffer", // target as VipsTarget *
     "buffer", // str as const char *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_target_writef = {
   parameters: [
@@ -325,13 +309,13 @@ export const vips_target_writef = {
     "buffer", // fmt as const char *
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_target_writes = {
   parameters: [
     "buffer", // target as VipsTarget *
     "buffer", // str as const char *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;

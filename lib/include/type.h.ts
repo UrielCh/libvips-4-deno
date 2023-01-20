@@ -4,16 +4,16 @@ export const vips_area_copy = {
   parameters: [
     "pointer", // area as VipsArea *
   ],
-  result: "pointer" // VipsArea *
-} as const
+  result: "pointer", // VipsArea *
+} as const;
 
 export const vips_area_free_cb = {
   parameters: [
     "pointer", // mem as void *
     "pointer", // area as VipsArea *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_area_get_data = {
   parameters: [
@@ -23,23 +23,21 @@ export const vips_area_get_data = {
     "pointer", // type as GType *
     "buffer", // sizeof_type as size_t *
   ],
-  result: "pointer" // void *
-} as const
+  result: "pointer", // void *
+} as const;
 
 export const vips_area_get_type = {
-  parameters: [
-  
-  ],
-  result: "i64" // GType
-} as const
+  parameters: [],
+  result: "i64", // GType
+} as const;
 
 export const vips_area_new = {
   parameters: [
     "function", // free_fn as VipsCallbackFn
     "pointer", // data as void *
   ],
-  result: "pointer" // VipsArea *
-} as const
+  result: "pointer", // VipsArea *
+} as const;
 
 export const vips_area_new_array = {
   parameters: [
@@ -47,114 +45,106 @@ export const vips_area_new_array = {
     "usize", // sizeof_type as size_t
     "i32", // n as int
   ],
-  result: "pointer" // VipsArea *
-} as const
+  result: "pointer", // VipsArea *
+} as const;
 
 export const vips_area_new_array_object = {
   parameters: [
     "i32", // n as int
   ],
-  result: "pointer" // VipsArea *
-} as const
+  result: "pointer", // VipsArea *
+} as const;
 
 export const vips_area_unref = {
   parameters: [
     "pointer", // area as VipsArea *
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;
 
 export const vips_array_double_get = {
   parameters: [
     "pointer", // array as VipsArrayDouble *
     "buffer", // n as int *
   ],
-  result: "buffer" // double *
-} as const
+  result: "buffer", // double *
+} as const;
 
 export const vips_array_double_get_type = {
-  parameters: [
-  
-  ],
-  result: "i64" // GType
-} as const
+  parameters: [],
+  result: "i64", // GType
+} as const;
 
 export const vips_array_double_new = {
   parameters: [
     "buffer", // array as const double *
     "i32", // n as int
   ],
-  result: "pointer" // VipsArrayDouble *
-} as const
+  result: "pointer", // VipsArrayDouble *
+} as const;
 
 export const vips_array_double_newv = {
   parameters: [
     "i32", // n as int
     "pointer", // args as void *
   ],
-  result: "pointer" // VipsArrayDouble *
-} as const
+  result: "pointer", // VipsArrayDouble *
+} as const;
 
 export const vips_array_image_get_type = {
-  parameters: [
-  
-  ],
-  result: "i64" // GType
-} as const
+  parameters: [],
+  result: "i64", // GType
+} as const;
 
 export const vips_array_int_get = {
   parameters: [
     "pointer", // array as VipsArrayInt *
     "buffer", // n as int *
   ],
-  result: "buffer" // int *
-} as const
+  result: "buffer", // int *
+} as const;
 
 export const vips_array_int_get_type = {
-  parameters: [
-  
-  ],
-  result: "i64" // GType
-} as const
+  parameters: [],
+  result: "i64", // GType
+} as const;
 
 export const vips_array_int_new = {
   parameters: [
     "pointer", // array as const int *
     "i32", // n as int
   ],
-  result: "pointer" // VipsArrayInt *
-} as const
+  result: "pointer", // VipsArrayInt *
+} as const;
 
 export const vips_array_int_newv = {
   parameters: [
     "i32", // n as int
     "pointer", // args as void *
   ],
-  result: "pointer" // VipsArrayInt *
-} as const
+  result: "pointer", // VipsArrayInt *
+} as const;
 
 export const vips_blob_copy = {
   parameters: [
     "buffer", // data as const void *
     "usize", // length as size_t
   ],
-  result: "pointer" // VipsBlob *
-} as const
+  result: "pointer", // VipsBlob *
+} as const;
 
 export const vips_blob_get = {
   parameters: [
     "pointer", // blob as VipsBlob *
     "buffer", // length as size_t *
   ],
-  result: "buffer" // const void *
-} as const
+  result: "buffer", // const void *
+} as const;
 
 export const vips_blob_get_type = {
-  parameters: [
-  
-  ],
-  result: "i64" // GType
-} as const
+  parameters: [],
+  result: "i64", // GType
+} as const;
 
 export const vips_blob_new = {
   parameters: [
@@ -162,8 +152,8 @@ export const vips_blob_new = {
     "buffer", // data as const void *
     "usize", // length as size_t
   ],
-  result: "pointer" // VipsBlob *
-} as const
+  result: "pointer", // VipsBlob *
+} as const;
 
 export const vips_blob_set = {
   parameters: [
@@ -172,59 +162,53 @@ export const vips_blob_set = {
     "buffer", // data as const void *
     "usize", // length as size_t
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;
 
 export const vips_ref_string_get = {
   parameters: [
     "pointer", // refstr as VipsRefString *
     "buffer", // length as size_t *
   ],
-  result: "buffer" // const char *
-} as const
+  result: "buffer", // const char *
+} as const;
 
 export const vips_ref_string_get_type = {
-  parameters: [
-  
-  ],
-  result: "i64" // GType
-} as const
+  parameters: [],
+  result: "i64", // GType
+} as const;
 
 export const vips_ref_string_new = {
   parameters: [
     "buffer", // str as const char *
   ],
-  result: "pointer" // VipsRefString *
-} as const
+  result: "pointer", // VipsRefString *
+} as const;
 
 export const vips_save_string_get_type = {
-  parameters: [
-  
-  ],
-  result: "i64" // GType
-} as const
+  parameters: [],
+  result: "i64", // GType
+} as const;
 
 export const vips_thing_get_type = {
-  parameters: [
-  
-  ],
-  result: "i64" // GType
-} as const
+  parameters: [],
+  result: "i64", // GType
+} as const;
 
 export const vips_thing_new = {
   parameters: [
     "i32", // i as int
   ],
-  result: "pointer" // VipsThing *
-} as const
+  result: "pointer", // VipsThing *
+} as const;
 
 export const vips_value_get_area = {
   parameters: [
     "pointer", // value as const GValue *
     "buffer", // length as size_t *
   ],
-  result: "pointer" // void *
-} as const
+  result: "pointer", // void *
+} as const;
 
 export const vips_value_get_array = {
   parameters: [
@@ -233,55 +217,55 @@ export const vips_value_get_array = {
     "pointer", // type as GType *
     "buffer", // sizeof_type as size_t *
   ],
-  result: "pointer" // void *
-} as const
+  result: "pointer", // void *
+} as const;
 
 export const vips_value_get_array_double = {
   parameters: [
     "pointer", // value as const GValue *
     "buffer", // n as int *
   ],
-  result: "buffer" // double *
-} as const
+  result: "buffer", // double *
+} as const;
 
 export const vips_value_get_array_int = {
   parameters: [
     "pointer", // value as const GValue *
     "buffer", // n as int *
   ],
-  result: "buffer" // int *
-} as const
+  result: "buffer", // int *
+} as const;
 
 export const vips_value_get_array_object = {
   parameters: [
     "pointer", // value as const GValue *
     "buffer", // n as int *
   ],
-  result: "pointer" // GObject **
-} as const
+  result: "pointer", // GObject **
+} as const;
 
 export const vips_value_get_blob = {
   parameters: [
     "pointer", // value as const GValue *
     "buffer", // length as size_t *
   ],
-  result: "pointer" // void *
-} as const
+  result: "pointer", // void *
+} as const;
 
 export const vips_value_get_ref_string = {
   parameters: [
     "pointer", // value as const GValue *
     "buffer", // length as size_t *
   ],
-  result: "buffer" // const char *
-} as const
+  result: "buffer", // const char *
+} as const;
 
 export const vips_value_get_save_string = {
   parameters: [
     "pointer", // value as const GValue *
   ],
-  result: "buffer" // const char *
-} as const
+  result: "buffer", // const char *
+} as const;
 
 export const vips_value_set_area = {
   parameters: [
@@ -289,8 +273,8 @@ export const vips_value_set_area = {
     "function", // free_fn as VipsCallbackFn
     "pointer", // data as void *
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;
 
 export const vips_value_set_array = {
   parameters: [
@@ -299,8 +283,8 @@ export const vips_value_set_array = {
     "i64", // type as GType
     "usize", // sizeof_type as size_t
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;
 
 export const vips_value_set_array_double = {
   parameters: [
@@ -308,8 +292,8 @@ export const vips_value_set_array_double = {
     "buffer", // array as const double *
     "i32", // n as int
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;
 
 export const vips_value_set_array_int = {
   parameters: [
@@ -317,16 +301,16 @@ export const vips_value_set_array_int = {
     "pointer", // array as const int *
     "i32", // n as int
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;
 
 export const vips_value_set_array_object = {
   parameters: [
     "buffer", // value as GValue *
     "i32", // n as int
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;
 
 export const vips_value_set_blob = {
   parameters: [
@@ -335,8 +319,8 @@ export const vips_value_set_blob = {
     "buffer", // data as const void *
     "usize", // length as size_t
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;
 
 export const vips_value_set_blob_free = {
   parameters: [
@@ -344,24 +328,24 @@ export const vips_value_set_blob_free = {
     "pointer", // data as void *
     "usize", // length as size_t
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;
 
 export const vips_value_set_ref_string = {
   parameters: [
     "buffer", // value as GValue *
     "buffer", // str as const char *
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;
 
 export const vips_value_set_save_string = {
   parameters: [
     "buffer", // value as GValue *
     "buffer", // str as const char *
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;
 
 export const vips_value_set_save_stringf = {
   parameters: [
@@ -369,5 +353,5 @@ export const vips_value_set_save_stringf = {
     "buffer", // fmt as const char *
     "pointer", // args as void *
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;

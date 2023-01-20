@@ -1,5 +1,5 @@
 {
-    "tasks": {
-        "build": "deno run --allow-write=lib/include --allow-read=vips-dev-8.14,build/functions.txt build/generator.ts"
-    }
+  "tasks": {
+    "build": "deno run --allow-write=lib/include --allow-read=vips-dev-8.14,build/functions.txt build/generator.ts"
+  }
 }

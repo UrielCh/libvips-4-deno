@@ -7,8 +7,8 @@ export const vips_black = {
     "i32", // height as int
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_buildlut = {
   parameters: [
@@ -16,8 +16,8 @@ export const vips_buildlut = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_eye = {
   parameters: [
@@ -26,8 +26,8 @@ export const vips_eye = {
     "i32", // height as int
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_fractsurf = {
   parameters: [
@@ -37,8 +37,8 @@ export const vips_fractsurf = {
     "f64", // fractal_dimension as double
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_gaussmat = {
   parameters: [
@@ -47,8 +47,8 @@ export const vips_gaussmat = {
     "f64", // min_ampl as double
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_gaussnoise = {
   parameters: [
@@ -57,8 +57,8 @@ export const vips_gaussnoise = {
     "i32", // height as int
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_grey = {
   parameters: [
@@ -67,16 +67,16 @@ export const vips_grey = {
     "i32", // height as int
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_identity = {
   parameters: [
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_invertlut = {
   parameters: [
@@ -84,8 +84,8 @@ export const vips_invertlut = {
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_logmat = {
   parameters: [
@@ -94,8 +94,8 @@ export const vips_logmat = {
     "f64", // min_ampl as double
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_mask_butterworth = {
   parameters: [
@@ -107,8 +107,8 @@ export const vips_mask_butterworth = {
     "f64", // amplitude_cutoff as double
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_mask_butterworth_band = {
   parameters: [
@@ -122,8 +122,8 @@ export const vips_mask_butterworth_band = {
     "f64", // amplitude_cutoff as double
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_mask_butterworth_ring = {
   parameters: [
@@ -136,8 +136,8 @@ export const vips_mask_butterworth_ring = {
     "f64", // ringwidth as double
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_mask_fractal = {
   parameters: [
@@ -147,8 +147,8 @@ export const vips_mask_fractal = {
     "f64", // fractal_dimension as double
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_mask_gaussian = {
   parameters: [
@@ -159,8 +159,8 @@ export const vips_mask_gaussian = {
     "f64", // amplitude_cutoff as double
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_mask_gaussian_band = {
   parameters: [
@@ -173,8 +173,8 @@ export const vips_mask_gaussian_band = {
     "f64", // amplitude_cutoff as double
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_mask_gaussian_ring = {
   parameters: [
@@ -186,8 +186,8 @@ export const vips_mask_gaussian_ring = {
     "f64", // ringwidth as double
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_mask_ideal = {
   parameters: [
@@ -197,8 +197,8 @@ export const vips_mask_ideal = {
     "f64", // frequency_cutoff as double
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_mask_ideal_band = {
   parameters: [
@@ -210,8 +210,8 @@ export const vips_mask_ideal_band = {
     "f64", // radius as double
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_mask_ideal_ring = {
   parameters: [
@@ -222,8 +222,8 @@ export const vips_mask_ideal_ring = {
     "f64", // ringwidth as double
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_perlin = {
   parameters: [
@@ -232,8 +232,8 @@ export const vips_perlin = {
     "i32", // height as int
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_sines = {
   parameters: [
@@ -242,8 +242,8 @@ export const vips_sines = {
     "i32", // height as int
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_text = {
   parameters: [
@@ -251,16 +251,16 @@ export const vips_text = {
     "buffer", // text as const char *
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_tonelut = {
   parameters: [
     "pointer", // out as VipsImage **
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_worley = {
   parameters: [
@@ -269,8 +269,8 @@ export const vips_worley = {
     "i32", // height as int
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_xyz = {
   parameters: [
@@ -279,8 +279,8 @@ export const vips_xyz = {
     "i32", // height as int
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_zone = {
   parameters: [
@@ -289,5 +289,5 @@ export const vips_zone = {
     "i32", // height as int
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;

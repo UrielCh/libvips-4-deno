@@ -5,8 +5,8 @@ export const vips_allocate_input_array = {
     "pointer", // out as VipsImage *
     "pointer", // args as void *
   ],
-  result: "pointer" // VipsImage **
-} as const
+  result: "pointer", // VipsImage **
+} as const;
 
 export const vips_image_generate = {
   parameters: [
@@ -17,8 +17,8 @@ export const vips_image_generate = {
     "pointer", // a as void *
     "pointer", // b as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_image_pipeline_array = {
   parameters: [
@@ -26,8 +26,8 @@ export const vips_image_pipeline_array = {
     "u32", // hint as VipsDemandStyle
     "pointer", // in as VipsImage **
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_image_pipelinev = {
   parameters: [
@@ -35,8 +35,8 @@ export const vips_image_pipelinev = {
     "u32", // hint as VipsDemandStyle
     "pointer", // args as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_sink = {
   parameters: [
@@ -47,8 +47,8 @@ export const vips_sink = {
     "pointer", // a as void *
     "pointer", // b as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_sink_disc = {
   parameters: [
@@ -56,15 +56,15 @@ export const vips_sink_disc = {
     "function", // write_fn as VipsRegionWrite
     "pointer", // a as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_sink_memory = {
   parameters: [
     "pointer", // im as VipsImage *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_sink_screen = {
   parameters: [
@@ -78,8 +78,8 @@ export const vips_sink_screen = {
     "function", // notify_fn as VipsSinkNotify
     "pointer", // a as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_sink_tile = {
   parameters: [
@@ -92,8 +92,8 @@ export const vips_sink_tile = {
     "pointer", // a as void *
     "pointer", // b as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_start_many = {
   parameters: [
@@ -101,8 +101,8 @@ export const vips_start_many = {
     "pointer", // a as void *
     "pointer", // b as void *
   ],
-  result: "pointer" // void *
-} as const
+  result: "pointer", // void *
+} as const;
 
 export const vips_start_one = {
   parameters: [
@@ -110,8 +110,8 @@ export const vips_start_one = {
     "pointer", // a as void *
     "pointer", // b as void *
   ],
-  result: "pointer" // void *
-} as const
+  result: "pointer", // void *
+} as const;
 
 export const vips_stop_many = {
   parameters: [
@@ -119,8 +119,8 @@ export const vips_stop_many = {
     "pointer", // a as void *
     "pointer", // b as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;
 
 export const vips_stop_one = {
   parameters: [
@@ -128,5 +128,5 @@ export const vips_stop_one = {
     "pointer", // a as void *
     "pointer", // b as void *
   ],
-  result: "i32" // int
-} as const
+  result: "i32", // int
+} as const;

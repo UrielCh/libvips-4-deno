@@ -4,16 +4,16 @@ export const vips_rect_dup = {
   parameters: [
     "pointer", // r as const VipsRect *
   ],
-  result: "pointer" // VipsRect *
-} as const
+  result: "pointer", // VipsRect *
+} as const;
 
 export const vips_rect_equalsrect = {
   parameters: [
     "pointer", // r1 as const VipsRect *
     "pointer", // r2 as const VipsRect *
   ],
-  result: "bool" // gboolean
-} as const
+  result: "bool", // gboolean
+} as const;
 
 export const vips_rect_includespoint = {
   parameters: [
@@ -21,16 +21,16 @@ export const vips_rect_includespoint = {
     "i32", // x as int
     "i32", // y as int
   ],
-  result: "bool" // gboolean
-} as const
+  result: "bool", // gboolean
+} as const;
 
 export const vips_rect_includesrect = {
   parameters: [
     "pointer", // r1 as const VipsRect *
     "pointer", // r2 as const VipsRect *
   ],
-  result: "bool" // gboolean
-} as const
+  result: "bool", // gboolean
+} as const;
 
 export const vips_rect_intersectrect = {
   parameters: [
@@ -38,38 +38,38 @@ export const vips_rect_intersectrect = {
     "pointer", // r2 as const VipsRect *
     "pointer", // out as VipsRect *
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;
 
 export const vips_rect_isempty = {
   parameters: [
     "pointer", // r as const VipsRect *
   ],
-  result: "bool" // gboolean
-} as const
+  result: "bool", // gboolean
+} as const;
 
 export const vips_rect_marginadjust = {
   parameters: [
     "pointer", // r as VipsRect *
     "i32", // n as int
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;
 
 export const vips_rect_normalise = {
   parameters: [
     "pointer", // r as VipsRect *
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;
 
 export const vips_rect_overlapsrect = {
   parameters: [
     "pointer", // r1 as const VipsRect *
     "pointer", // r2 as const VipsRect *
   ],
-  result: "bool" // gboolean
-} as const
+  result: "bool", // gboolean
+} as const;
 
 export const vips_rect_unionrect = {
   parameters: [
@@ -77,5 +77,5 @@ export const vips_rect_unionrect = {
     "pointer", // r2 as const VipsRect *
     "pointer", // out as VipsRect *
   ],
-  result: "void" // void
-} as const
+  result: "void", // void
+} as const;
