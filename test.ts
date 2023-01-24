@@ -62,20 +62,8 @@ console.log({
   Xsize: vipImg.Xsize,
   Ysize: vipImg.Ysize,
   Bands: vipImg.Bands,
-  // BandFmt: vipImg.BandFmt,
   Coding: vipImg.Coding,
-  // Type: vipImg.Type,
-  Xres: vipImg.Xres,
-  Yres: vipImg.Yres,
-  // Xoffset: vipImg.Xoffset,
-  // Yoffset: vipImg.Yoffset,
-  // Length: vipImg.Length,
-  // Compression: vipImg.Compression,
-  // Level: vipImg.Level,
-  // Bbits: vipImg.Bbits,
-  // time: vipImg.time,
 });
-
 
 
 // Get img info
@@ -91,13 +79,28 @@ console.log({
   width: width,
   height: height,
   band: band,
-  BandFmt: vipImg.BandFmt,
   Coding: coding,
+});
+
+console.log();
+
+console.log({
+  // Type: vipImg.Type,
+  Xres: vipImg.Xres,
+  Yres: vipImg.Yres,
+  // Xoffset: vipImg.Xoffset,
+  // Yoffset: vipImg.Yoffset,
+  // Length: vipImg.Length,
+  // Compression: vipImg.Compression,
+  // Level: vipImg.Level,
+  // Bbits: vipImg.Bbits,
+  // time: vipImg.time,
+});
+
+console.log({
   xres: xres,
   yres: yres,
 });
-
-
 
 console.log(`source image dimentions: ${green(width)}x${green(height)} band: ${band}`);
 
