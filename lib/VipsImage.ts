@@ -4,12 +4,32 @@ import { VipsCoding } from "./enums.ts";
 import { VipsBandFormat } from "./enums.ts";
 import { buildStruct } from "./struct.ts";
 
-const FIELDS: string =
-    '<x{80}' + // parent_instance 1
-    'i' + // Xsize 2
-    'i' + // Ysize 3
-    'i' + // Bands 4
-    'bbb{10}' + // enums: Bands VipsBandFormat VipsCoding VipsInterpretation 5 6 7
+// glib 
+// const tSize = Deno.build.os === "windows" ? 'Q' : 'I';
+const tSize = 'Q';
+
+const model_VipsObject: string =
+ // GObject parent_instance;
+"<P" + // GTypeInstance  g_type_instance; GTypeClass *g_class;// 0
+"I" + //guint          ref_count;  /* (atomic) */   // 1
+"P" + //GData         *qdata;                       // 2
+// end of GObject
+"i" + // gboolean constructed;                      // 3
+"i" + // gboolean static_object;                    // 4
+"P" + // VipsArgumentTable *argument_table;         // 5
+"p" + // char *nickname;                            // 6
+"p" + // char *description;                         // 7
+"i" + // gboolean preclose; == int                  // 8
+"i" + // gboolean close; == int                     // 9
+"i{12}" + // gboolean postclose; == int             // 10
+tSize // size_t local_memory;                       // 11
+
+const { offsets: gOffsets, size: gSize } = buildStruct(model_VipsObject)
+console.log({gSize})
+const model: string =
+    '<x{80}' + // VipsObject parent_instance
+    'iii' + // Xsize Ysize Bands 2 3 4
+    'iii' + // enums: Bands VipsBandFormat VipsCoding VipsInterpretation 5 6 7
     'dd' + // Xres, Yres double 8 9
     'ii' + // Xoffset Yoffset 10 11
     'i' + // Length 12
@@ -49,7 +69,7 @@ const FIELDS: string =
     '?' + // gboolean delete_on_close;
     'p' // char * delete_on_close_filename;
 
-const { offsets, size } = buildStruct(FIELDS)
+const { offsets, size } = buildStruct(model)
 
 export class VipsImage {
     private buffer: ArrayBuffer;
@@ -59,9 +79,32 @@ export class VipsImage {
         if (pointer) {
             this.buffer = Deno.UnsafePointerView.getArrayBuffer(pointer, size);
             this.view = new DataView(this.buffer);
-            // const b2 = new Uint8Array(this.buffer);
+            const b2 = new Uint8Array(this.buffer);
             // console.log(b2.subarray(OFFSET[1].offset, OFFSET[2].offset)); // Xsize OK
-            // console.log(b2.subarray(OFFSET[2].offset, OFFSET[3].offset)); // Ysize OK
+            console.log(b2.subarray(0, 8)); // Ysize OK
+            console.log(b2.subarray(8, 16)); // Ysize OK
+            console.log(b2.subarray(16, 24)); // Ysize OK
+            console.log(b2.subarray(24, 32)); // Ysize OK
+            console.log(b2.subarray(32, 40)); // Ysize OK
+            console.log(b2.subarray(40, 48)); // Ysize OK
+
+            console.log(b2.subarray(48, 56)); // Ysize OK
+            console.log(b2.subarray(56, 64)); // Ysize OK
+            console.log(b2.subarray(64, 72)); // Ysize OK
+            console.log(b2.subarray(72, 80)); // Ysize OK
+
+            console.log(`gType: ${this.gType}`); // Ysize OK
+            console.log(`gRefCount: ${this.gRefCount}`); // Ysize OK
+            console.log(`gData: ${this.gData}`); // Ysize OK
+            console.log(`gType: ${this.gType}`); // Ysize OK
+            console.log(`gConstructed: ${this.gConstructed}`); // Ysize OK
+            console.log(`gStaticObj: ${this.gStaticObj}`); // Ysize OK
+            console.log(`gArgumentTable: ${this.gArgumentTable}`); // Ysize OK
+            console.log(`gNickname: ${this.gNickname}`); // Ysize OK
+            console.log(`gDescription: ${this.gDescription}`); // Ysize OK
+            console.log(`gPreclose: ${this.gPreclose}`); // Ysize OK
+            console.log(`gClose: ${this.gClose}`); // Ysize OK
+            console.log(`gLocal_memory: ${this.gLocal_memory}`); // Ysize OK
         } else {
             this.buffer = new ArrayBuffer(size) // TMP aprox value
             this.view = new DataView(this.buffer)
@@ -72,19 +115,59 @@ export class VipsImage {
         return Deno.UnsafePointer.of(this.buffer)
     }
 
-    /**
-     * get a view to the buffer at offset use for pointer
-     * @param offset 
-     * @returns an offseted DataView
-     */
-    #v(offset: number): DataView {
-        return new DataView(this.buffer, offset);
-    }
+    // "P" + // GTypeInstance  g_type_instance; GTypeClass *g_class;// 0
+    get gType(): Deno.PointerValue { return gOffsets[0].get(this.view, this.buffer) }
+    set gType(v: Deno.PointerValue) { gOffsets[0].set(this.view, v) }
+
+    //guint          ref_count;  /* (atomic) */   // 1
+    get gRefCount(): number { return gOffsets[1].get(this.view, this.buffer) }
+    set gRefCount(v: number) { gOffsets[1].set(this.view, v) }
+
+    // "P" + //GData         *qdata;                       // 2
+    get gData(): Deno.PointerValue { return gOffsets[2].get(this.view, this.buffer) }
+    set gData(v: Deno.PointerValue) { gOffsets[2].set(this.view, v) }
+
+    //guint          ref_count;  /* (atomic) */   // 1
+    get gConstructed(): number { return gOffsets[3].get(this.view, this.buffer) }
+    set gConstructed(v: number) { gOffsets[3].set(this.view, v) }
+
+    //"i" + // gboolean static_object;                    // 4
+    get gStaticObj(): number { return gOffsets[4].get(this.view, this.buffer) }
+    set gStaticObj(v: number) { gOffsets[4].set(this.view, v) }
+    
+    // "P" + // VipsArgumentTable *argument_table;         // 5
+    get gArgumentTable(): Deno.PointerValue { return gOffsets[5].get(this.view, this.buffer) }
+    set gArgumentTable(v: Deno.PointerValue) { gOffsets[5].set(this.view, v) }
+    // "p" + // char *nickname;                            // 6
+    get gNickname(): Deno.PointerValue { return gOffsets[6].get(this.view, this.buffer) }
+    set gNickname(v: Deno.PointerValue) { gOffsets[6].set(this.view, v) }
+    // "p" + // char *description;                         // 7
+    get gDescription(): Deno.PointerValue { return gOffsets[7].get(this.view, this.buffer) }
+    set gDescription(v: Deno.PointerValue) { gOffsets[7].set(this.view, v) }
+
+    //"i" + // gboolean preclose; == int                  // 8
+    get gPreclose(): number { return gOffsets[8].get(this.view, this.buffer) }
+    set gPreclose(v: number) { gOffsets[8].set(this.view, v) }
+
+
+    // "i" + // gboolean close; == int                     // 9
+    get gClose(): number { return gOffsets[9].get(this.view, this.buffer) }
+    set gClose(v: number) { gOffsets[9].set(this.view, v) }
+
+    // "i" + // gboolean postclose; == int                 // 10
+    get gPostclose(): number { return gOffsets[10].get(this.view, this.buffer) }
+    set gPostclose(v: number) { gOffsets[10].set(this.view, v) }
+
+    // tSize // size_t local_memory;                       // 11
+    get gLocal_memory(): bigint { return gOffsets[11].get(this.view, this.buffer) }
+    set gLocal_memory(v: bigint) { gOffsets[11].set(this.view, v) }    
+
+
     // 8 bytes
     // VipsObject parent_instance;
     // is a pointer
-    get parent_instance(): Deno.PointerValue { return offsets[0].get(this.view, this.buffer) }
-    set parent_instance(v: Deno.PointerValue) { offsets[0].set(this.view, v) }
+    // get parent_instance(): Deno.PointerValue { return offsets[0].get(this.view, this.buffer) }
+    // set parent_instance(v: Deno.PointerValue) { offsets[0].set(this.view, v) }
 
     /*< private >*/
 

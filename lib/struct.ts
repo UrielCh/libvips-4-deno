@@ -130,53 +130,53 @@ export function buildStruct(model: string): { offsets: Opperation<any>[], size: 
     for (let i = 0; i < model.length; i++) {
         let s = 0;
         switch (next) {
-            case '<':
+            case '<': // little endian
                 littleEndian = true;
                 break;
-            case '>':
+            case '>': // big endian
                 littleEndian = false;
                 break;
-            case 'x':
+            case 'x': // padding
                 offsets.push(Op_x(size));
                 break;
-            case 'c':
-            case 'b':
+            case 'c': // char
+            case 'b': // signed char
                 offsets.push(Op_b(size));
                 s = 1;
                 break;
-            case 'B':
+            case 'B': // unsigned char
                 offsets.push(Op_B(size));
                 s = 1;
                 break;
-            case '?':
+            case '?': // bool
                 offsets.push(Op_Bool(size));
                 s = 1;
                 break;
-            case 'h':
+            case 'h': // short
                 offsets.push(Op_h(size, littleEndian));
                 s = 2;
                 break;
-            case 'H':
+            case 'H': // unsigned short
                 offsets.push(Op_H(size, littleEndian));
                 s = 2;
                 break;
-            case 'i':
-            case 'l':
+            case 'i': // int
+            case 'l': // long
                 offsets.push(Op_i(size, littleEndian));
                 s = 4;
                 break;
-            case 'I':
-            case 'L':
+            case 'I': // unsigned int
+            case 'L': // unsigned long
                 offsets.push(Op_I(size, littleEndian));
                 s = 4;
                 break;
-            case 'q':
-            case 'n': // 64 bit only
+            case 'q': // long long
+            case 'n': // ssize_t 64 bit only
                 offsets.push(Op_q(size, littleEndian));
                 s = 8;
                 break;
-            case 'Q':
-            case 'N': // 64 bit only
+            case 'Q': // unsigned long long
+            case 'N': // size_t 64 bit only
                 offsets.push(Op_Q(size, littleEndian));
                 s = 8;
                 break;
@@ -186,17 +186,17 @@ export function buildStruct(model: string): { offsets: Opperation<any>[], size: 
             //    s = 4;
             //    break;
 
-            case 'f':
+            case 'f': // float
                 offsets.push(Op_f(size, littleEndian));
                 s = 4;
                 break;
-            case 'd':
+            case 'd': // double
                 offsets.push(Op_d(size, littleEndian));
                 s = 8;
                 break;
-            case 's': // should be a buffer ?
-            case 'p':
-            case 'P':
+            case 's': // char[] should be a buffer ?
+            case 'p': // char[]
+            case 'P': // void*
                 offsets.push(Op_p(size));
                 s = 8;
                 break;
