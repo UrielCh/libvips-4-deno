@@ -23,7 +23,7 @@ export function locateLib(name: string): URL {
     for (const dir of dirs) {
        const path = join(dir, fn);
        try {
-            console.log('testing ', path)
+          // console.log('testing ', path)
           Deno.statSync(path);
        } catch (e) {
           continue

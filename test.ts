@@ -1,29 +1,42 @@
 import { libvips, libgobject } from "./lib/ffi.ts";
 import * as pc from "https://deno.land/std@0.171.0/fmt/colors.ts";
 import { VipsRect } from "./lib/VipsRect.ts";
+import { VipsBandFormat } from "./lib/enums.ts";
+import { VipsImage } from "./lib/VipsImage.ts";
+
+
+function green(txt: string | number | bigint) {
+  return pc.green(txt.toString());
+}
+
+function yellow(txt: string | number | bigint) {
+  return pc.yellow(txt.toString());
+}
 
 function cstring(txt: string): Uint8Array {
   return new TextEncoder().encode(`${txt}\0`);
 }
 
-console.log(`Try to init libvips calling ${pc.yellow('vips_init')}`);
+
+
+console.log(`Try to init libvips calling ${yellow('vips_init')}`);
 const api_name = new TextEncoder().encode("vipsTest");
 const result = libvips.symbols.vips_init(api_name); //0
-console.log(`${pc.yellow('vips_init')} return ${pc.green(String(result))}`);
+console.log(`init lib with ${yellow('vips_init')} return ${pc.green(String(result))}`);
 
-const testFile = "img/darth_vader_512.png";
-
-console.log(`Try ${pc.yellow('vips_foreign_find_load')} function call`);
-// vips_image_new_from_file
+console.log();
+// const testFile = "img/darth_vader_512.png";
+const testFile = "img/darth_vader_p.png";
+console.log(`Try loading img file with ${yellow('vips_foreign_find_load')} function call`);
 const imgType = libvips.symbols.vips_foreign_find_load(cstring(testFile));
 const imgLoader = Deno.UnsafePointerView.getCString(imgType);
-console.log(`${pc.green(String(testFile))} can be load with ${pc.green(imgLoader)}`);
+console.log(`${green(testFile)} can be load with ${pc.green(imgLoader)}`);
 
 if ("VipsForeignLoadJpegFile" === imgLoader) {
   const img = libvips.symbols.vips_image_new();
-  console.log(`Try ${pc.yellow('VipsForeignLoadJpegFile')} function call`);
+  console.log(`Try ${yellow('VipsForeignLoadJpegFile')} function call`);
   const r = libvips.symbols.vips_jpegload(cstring(testFile), img, null);
-  console.log(`${pc.yellow('vips_jpegload')} return ${pc.green(String(r))}`);
+  console.log(`${yellow('vips_jpegload')} return ${green(r)}`);
   // libvips.symbols.vips_image_write_to_file(img, fn2);
   //   vips_jpegload: {parameters: ["buffer", "pointer"], result: "i32" },
 }
@@ -36,36 +49,74 @@ if ("VipsForeignLoadJpegFile" === imgLoader) {
 //console.log(img);
 // const ret = dylib.symbols.vips_image_write_to_file(VImage, fn2);
 
-console.log(`Try ${pc.yellow('vips_image_new_from_file')} call`);
-const vipImg = libvips.symbols.vips_image_new_from_file(
+console.log(`Try ${yellow('vips_image_new_from_file')} call`);
+const vipImgPtr = libvips.symbols.vips_image_new_from_file(
   cstring(testFile),
   null,
 );
 console.log(
-  `Try ${pc.yellow('vips_image_new_from_file')} return ${pc.green(String(vipImg))} should be a VipsImage *`,
+  `Try ${yellow('vips_image_new_from_file')} return ${green(vipImgPtr)} should be a VipsImage *`,
 );
+const vipImg = new VipsImage(vipImgPtr);
+console.log({
+  Xsize: vipImg.Xsize,
+  Ysize: vipImg.Ysize,
+  Bands: vipImg.Bands,
+  BandFmt: vipImg.BandFmt,
+  // Coding: vipImg.Coding,
+  // Type: vipImg.Type,
+  // Xres: vipImg.Xres,
+  // Yres: vipImg.Yres,
+  // Xoffset: vipImg.Xoffset,
+  // Yoffset: vipImg.Yoffset,
+  // Length: vipImg.Length,
+  // Compression: vipImg.Compression,
+  // Level: vipImg.Level,
+  // Bbits: vipImg.Bbits,
+  // time: vipImg.time,
+});
 
-console.log(`Try ${pc.yellow('vips_region_new')} call`);
-const vipRegion = libvips.symbols.vips_region_new(vipImg);
-console.log(
-  `Try ${pc.yellow('vips_region_new')} return ${pc.green(String(vipRegion))} should be a VipsRegion *`,
-);
 
-console.log(`Try ${pc.yellow('vips_region_prepare')} call`);
+
+// Get img info
+const width = libvips.symbols.vips_image_get_width(vipImgPtr);
+const height = libvips.symbols.vips_image_get_height(vipImgPtr);
+const band = libvips.symbols.vips_image_get_bands(vipImgPtr);
+
+console.log(`source image dimentions: ${green(width)}x${green(height)} band: ${band}`);
+
+const fmt: VipsBandFormat = libvips.symbols.vips_image_get_format(vipImgPtr);
+console.log(`source image vips_image_get_format: ${green(fmt)}`);
+
 
 // ask for a 100x100 pixel region at 0x0 (top left)
-const r = new VipsRect()
-r.top = 0;
-r.left = 0;
-r.width = 100;
-r.height = 100;
-const err = libvips.symbols.vips_region_prepare( vipRegion, r.asRef() ) 
-console.log(`Try ${pc.yellow('vips_region_prepare')} return ${err}`);
-
 {
-  const err = libgobject.symbols.g_object_unref( vipRegion )
-  console.log(`Try ${pc.yellow('g_object_unref')} return ${err}`);
+  console.log(`Try ${yellow('vips_region_new')} call`);
+  const vipRegion = libvips.symbols.vips_region_new(vipImgPtr);
+  console.log(
+    `Try ${yellow('vips_region_new')} return ${green(vipRegion)} should be a VipsRegion *`,
+  );
+
+  console.log(`Try ${yellow('vips_region_prepare')} call`);
+  const r = new VipsRect()
+  r.top = 0;
+  r.left = 0;
+  r.width = 100;
+  r.height = 100;
+  const err = libvips.symbols.vips_region_prepare(vipRegion, r.asRef())
+  console.log(`Try ${yellow('vips_region_prepare')} return ${err}`);
+  if (err != 0) throw Error('vips_region_prepare should return 0')
+  // free allocated data in gObject
+  {
+    const err = libgobject.symbols.g_object_unref(vipRegion)
+    console.log(`Try ${yellow('g_object_unref')} return ${err}`);
+  }
 }
+
+
+const out = new VipsImage();
+
+
 
 // g_object_unref( region );
 // const x = 10;

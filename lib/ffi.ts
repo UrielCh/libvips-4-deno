@@ -73,21 +73,10 @@ const IMPORTS = {
   ...vips,
 } as const;
 
-const libvips = Deno.dlopen(
-  locateLib('libvips-42'),
-  IMPORTS,
-);
-
-const libgobject = Deno.dlopen(
-  locateLib('libgobject-2.0-0'),
+const libvips = Deno.dlopen(locateLib('libvips-42'), IMPORTS);
+const libgobject = Deno.dlopen(locateLib('libgobject-2.0-0'),
   {
-    g_object_unref: {
-      parameters: [
-        "pointer", // obj to relesae
-      ],
-      result: "void", // int
-    }
+    g_object_unref: { parameters: [ "pointer" ], result: "void" }
   },
 );
-
 export { libvips, libgobject };
