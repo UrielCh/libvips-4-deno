@@ -1,5 +1,6 @@
 {
   "tasks": {
+    "test":  "deno test --unstable --allow-read --allow-ffi",
     "build": "deno run --allow-write=lib/include --allow-read=vips-dev-8.14,build/functions.txt build/generator.ts"
   }
 }
