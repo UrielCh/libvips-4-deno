@@ -17,16 +17,16 @@ function cstring(txt: string): Uint8Array {
   return new TextEncoder().encode(`${txt}\0`);
 }
 
-
-
 console.log(`Try to init libvips calling ${yellow('vips_init')}`);
 const api_name = new TextEncoder().encode("vipsTest");
 const result = libvips.symbols.vips_init(api_name); //0
 console.log(`init lib with ${yellow('vips_init')} return ${pc.green(String(result))}`);
 
 console.log();
-// const testFile = "img/darth_vader_512.png";
-const testFile = "img/darth_vader_p.png";
+const testFile = "img/darth_vader_512.png"; // [ 0, 0, 2, 0 ] 512
+// const testFile = "img/darth_vader_p.png";
+// const testFile = "img/darth_vader_254.png"; // [ 0, 254, 0, 0 ] 16646144
+
 console.log(`Try loading img file with ${yellow('vips_foreign_find_load')} function call`);
 const imgType = libvips.symbols.vips_foreign_find_load(cstring(testFile));
 const imgLoader = Deno.UnsafePointerView.getCString(imgType);
@@ -62,11 +62,11 @@ console.log({
   Xsize: vipImg.Xsize,
   Ysize: vipImg.Ysize,
   Bands: vipImg.Bands,
-  BandFmt: vipImg.BandFmt,
-  // Coding: vipImg.Coding,
+  // BandFmt: vipImg.BandFmt,
+  Coding: vipImg.Coding,
   // Type: vipImg.Type,
-  // Xres: vipImg.Xres,
-  // Yres: vipImg.Yres,
+  Xres: vipImg.Xres,
+  Yres: vipImg.Yres,
   // Xoffset: vipImg.Xoffset,
   // Yoffset: vipImg.Yoffset,
   // Length: vipImg.Length,
@@ -82,6 +82,22 @@ console.log({
 const width = libvips.symbols.vips_image_get_width(vipImgPtr);
 const height = libvips.symbols.vips_image_get_height(vipImgPtr);
 const band = libvips.symbols.vips_image_get_bands(vipImgPtr);
+const coding = libvips.symbols.vips_image_get_coding(vipImgPtr);
+// const type = libvips.symbols.vips_image_get_type(vipImgPtr);
+const xres = libvips.symbols.vips_image_get_xres(vipImgPtr);
+const yres = libvips.symbols.vips_image_get_yres(vipImgPtr);
+
+console.log({
+  width: width,
+  height: height,
+  band: band,
+  BandFmt: vipImg.BandFmt,
+  Coding: coding,
+  xres: xres,
+  yres: yres,
+});
+
+
 
 console.log(`source image dimentions: ${green(width)}x${green(height)} band: ${band}`);
 
@@ -130,3 +146,5 @@ const out = new VipsImage();
 // const error = dylib.symbols.vips_error_buffer_copy();
 // console.log({ error });
 // console.log({ error: Deno.UnsafePointerView.getCString(error) });
+
+// const a = new Deno.UnsafeFnPointer();

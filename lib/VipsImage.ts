@@ -1,10 +1,94 @@
+import { osType } from "https://deno.land/std@0.173.0/_util/os";
 import { VipsImageType } from "./enums.ts";
 import { VipsInterpretation } from "./enums.ts";
 import { VipsCoding } from "./enums.ts";
 import { VipsBandFormat } from "./enums.ts";
 
+type Opperation<T> = {
+    get: (view: DataView, buffer: ArrayBuffer) => T;
+    set: (view: DataView, value: T) => void;
+}
+
+const Op_b = (offset: number) => {
+    return {
+        get: (view: DataView) => view.getInt8(offset),
+        set: (view: DataView, value: number) => view.setInt8(offset, value),
+    } as Opperation<number>
+}
+const Op_B = (offset: number) => {
+    return {
+        get: (view: DataView) => view.getUint8(offset),
+        set: (view: DataView, value: number) => view.setUint8(offset, value),
+    } as Opperation<number>
+}
+const Op_Bool = (offset: number) => {
+    return {
+        get: (view: DataView) => !!view.getUint8(offset),
+        set: (view: DataView, value: boolean) => view.setUint8(offset, value ? 1 : 0),
+    } as Opperation<boolean>
+}
+
+const Op_h = (offset: number) => {
+    return {
+        get: (view: DataView) => view.getInt16(offset),
+        set: (view: DataView, value: number) => view.setInt16(offset, value),
+    } as Opperation<number>
+}
+const Op_H = (offset: number) => {
+    return {
+        get: (view: DataView) => view.getUint16(offset),
+        set: (view: DataView, value: number) => view.setUint16(offset, value),
+    } as Opperation<number>
+}
+
+const Op_l = (offset: number) => {
+    return {
+        get: (view: DataView) => view.getInt32(offset),
+        set: (view: DataView, value: number) => view.setInt32(offset, value),
+    } as Opperation<number>
+}
+const Op_L = (offset: number) => {
+    return {
+        get: (view: DataView) => view.getUint32(offset),
+        set: (view: DataView, value: number) => view.setUint32(offset, value),
+    } as Opperation<number>
+}
+
+const Op_q = (offset: number) => {
+    return {
+        get: (view: DataView) => view.getBigInt64(offset),
+        set: (view: DataView, value: bigint) => view.setBigInt64(offset, value),
+    } as Opperation<bigint>
+}
+const Op_Q = (offset: number) => {
+    return {
+        get: (view: DataView) => view.getBigUint64(offset),
+        set: (view: DataView, value: bigint) => view.setBigUint64(offset, value),
+    } as Opperation<bigint>
+}
+
+const Op_f = (offset: number) => {
+    return {
+        get: (view: DataView) => view.getFloat32(offset),
+        set: (view: DataView, value: number) => view.setFloat32(offset, value),
+    } as Opperation<number>
+}
+const Op_d = (offset: number) => {
+    return {
+        get: (view: DataView) => view.getFloat64(offset),
+        set: (view: DataView, value: number) => view.setFloat64(offset, value),
+    } as Opperation<number>
+}
+
+const Op_p = (offset: number) => {
+    return {
+        get: (view: DataView, buffer: ArrayBuffer) => Deno.UnsafePointer.of(new DataView(buffer, offset)),
+        set: (view: DataView, value: Deno.PointerValue) => view.setBigUint64(offset, value as bigint),
+    } as Opperation<Deno.PointerValue>
+}
+
 const FIELDS = [
-    6, // parent_instance
+    80, // parent_instance
     4, // Xsize
     4, // Ysize
     4, // Bands
@@ -71,10 +155,18 @@ export class VipsImage {
             // console.log(this.buffer.byteLength);
             // console.log(this.buffer.slice(0, 100));
             // console.log(Object.keys(this.buffer));
-            this.view = new DataView(this.buffer);   
+            this.view = new DataView(this.buffer);
             const b2 = new Uint8Array(this.buffer);
             console.log(b2.subarray(OFFSET[1], OFFSET[2])); // Xsize
             console.log(b2.subarray(OFFSET[2], OFFSET[3])); // Ysize
+            console.log(b2.subarray(OFFSET[3], OFFSET[4])); // Ysize
+            console.log(b2.subarray(OFFSET[4], OFFSET[5])); // Ysize
+            // console.log(b2.subarray(16, 32)); // Ysize
+            // console.log(b2.subarray(32, 64)); // Ysize
+            // console.log(b2.subarray(64, 128)); // Ysize
+            // console.log(b2.subarray(128, 192)); // Ysize
+            // console.log(b2.subarray(192, 256)); // Ysize
+            // console.log(b2.subarray(256, 256 + 64)); // Ysize
             // console.log(b2.subarray(OFFSET[3], OFFSET[4])); // Ysize
             // console.log(b2.subarray(8,12));
             // console.log(this.view.getInt32(6)); // ok
@@ -107,12 +199,12 @@ export class VipsImage {
      * Don't use them though, use vips_image_get_width() and friends.
      */
     /* image width, in pixels 4 Byte */
-    get Xsize(): number { return this.view.getInt32(OFFSET[1]) }
-    set Xsize(v: number) { this.view.setInt32(OFFSET[1], v) }
+    get Xsize(): number { return this.view.getInt32(OFFSET[1], true) }
+    set Xsize(v: number) { this.view.setInt32(OFFSET[1], v, true) }
 
     /* image height, in pixels 4 Byte */
-    get Ysize(): number { return this.view.getInt32(OFFSET[2]); }
-    set Ysize(v: number) { this.view.setInt32(OFFSET[2], v) }
+    get Ysize(): number { return this.view.getInt32(OFFSET[2], true); }
+    set Ysize(v: number) { this.view.setInt32(OFFSET[2], v, true) }
 
     /* number of image bands 4 Byte */
     get Bands(): number { return this.view.getInt32(OFFSET[3]) }
@@ -181,7 +273,7 @@ export class VipsImage {
      * 8 bytes is a pointer
      */
     get time(): Deno.PointerValue { return Deno.UnsafePointer.of(this.#v(OFFSET[15])) }
-    set time(v: Deno.PointerValue) {this.view.setBigUint64(OFFSET[15], v as bigint) }
+    set time(v: Deno.PointerValue) { this.view.setBigUint64(OFFSET[15], v as bigint) }
 
 
     /* Derived fields that some code can fiddle with. New code should use
@@ -211,7 +303,7 @@ export class VipsImage {
      * 8 bytes is a pointer
      */
     get data(): Deno.PointerValue { return Deno.UnsafePointer.of(this.#v(OFFSET[18])) }
-    set data(v: Deno.PointerValue) {this.view.setBigUint64(OFFSET[18], v as bigint) }
+    set data(v: Deno.PointerValue) { this.view.setBigUint64(OFFSET[18], v as bigint) }
 
     /* set to non-zero to block eval 4 Byte */
     get kill(): number { return this.view.getInt16(OFFSET[19]) }
@@ -256,7 +348,7 @@ export class VipsImage {
      * 8 bytes is a pointer
      */
     get baseaddr(): Deno.PointerValue { return Deno.UnsafePointer.of(this.#v(OFFSET[24])); }
-    set baseaddr(v: Deno.PointerValue) {this.view.setBigUint64(OFFSET[24], v as bigint) }
+    set baseaddr(v: Deno.PointerValue) { this.view.setBigUint64(OFFSET[24], v as bigint) }
 
 
     /* file descriptor 4 Byte */
@@ -269,88 +361,88 @@ export class VipsImage {
     set magic(v: number) { this.view.setUint32(OFFSET[26], v) }
 
 
-	/* Partial image stuff. All these fields are initialised 
-	 * to NULL and ignored unless set by vips_image_generate() etc.
+    /* Partial image stuff. All these fields are initialised 
+     * to NULL and ignored unless set by vips_image_generate() etc.
      * VipsStartFn start_fn;
      * 8 bytes is a pointer
-	 */
+     */
 
-//     #viewstart_fn = new DataView(this.buffer, 138);
-//     get start_fn(): Deno.PointerValue { return Deno.UnsafeFnPointer.of(this.#viewstart_fn); }
-//     set start_fn(v: Deno.PointerValue) { this.#viewstart_fn.setBigUint64(8, v as bigint); }
-    
-// 	VipsGenerateFn generate_fn;
-// 	VipsStopFn stop_fn;
-//     void * client1;		/* user arguments */
-// void * client2;
-// GMutex * sslock;		/* start-stop lock */
-// GSList * regions; 	/* list of regions current for this image */
-// 	VipsDemandStyle dhint;	/* demand style hint */
-// 
-// /* Extra user-defined fields ... see vips_image_get() etc. */
-// GHashTable * meta;	/* GhashTable of GValue */
-// GSList * meta_traverse;	/* traverse order for Meta */
-// 
-// 	/* Part of mmap() read ... the sizeof() the header we skip from the
-// 	 * file start. Usually VIPS_SIZEOF_HEADER, but can be something else
-// 	 * for binary file read.
-// 	 *
-// 	 * guint64 so that we can guarantee to work even on systems with
-// 	 * strange ideas about large files.
-// 	 */
-// 	gint64 sizeof_header;
-// 
-// /* If this is a large disc image, don't map the whole thing, instead
-//  * have a set of windows shared between the regions active on the
-//  * image. List of VipsWindow.
-//  */
-// GSList * windows;
-// 
-// /* Upstream/downstream relationships, built from args to 
-//  * vips_demand_hint().
-//  *
-//  * We use these to invalidate downstream pixel buffers.
-//  * Use 'serial' to spot circular dependencies.
-//  *
-//  * See also hint_set below.
-//  */
-// GSList * upstream;
-// GSList * downstream;
-// 	int serial;
-// 
-// /* Keep a list of recounted GValue strings so we can share hist
-//  * efficiently.
-//  */
-// GSList * history_list;
-// 
-// /* The VipsImage (if any) we should signal eval progress on.
-//  */
-// VipsImage * progress_signal;
-// 
-// 	/* Record the file length here. We use this to stop ourselves mapping
-// 	 * things beyond the end of the file in the case that the file has
-// 	 * been truncated.
-// 	 *
-// 	 * gint64 so that we can guarantee to work even on systems with
-// 	 * strange ideas about large files.
-// 	 */
-// 	gint64 file_length;
-// 
-// 	/* Set this when vips_demand_hint_array() is called, and check in any
-// 	 * operation that will demand pixels from the image.
-// 	 *
-// 	 * We use vips_demand_hint_array() to build the tree of
-// 	 * upstream/downstream relationships, so it's a mandatory thing.
-// 	 */
-// 	gboolean hint_set;
-// 
-// 	/* Delete-on-close is hard to do with signals and callbacks since we
-// 	 * really need to do this in finalize after the fd has been closed,
-// 	 * but you can't emit signals then.
-// 	 *
-// 	 * Also keep a private copy of the filename string to be deleted,
-// 	 * since image->filename will be freed in _dispose().
-// 	 */
-// 	gboolean delete_on_close;
-//    char * delete_on_close_filename;
+    //     #viewstart_fn = new DataView(this.buffer, 138);
+    //     get start_fn(): Deno.PointerValue { return Deno.UnsafeFnPointer.of(this.#viewstart_fn); }
+    //     set start_fn(v: Deno.PointerValue) { this.#viewstart_fn.setBigUint64(8, v as bigint); }
+
+    // 	VipsGenerateFn generate_fn;
+    // 	VipsStopFn stop_fn;
+    //     void * client1;		/* user arguments */
+    // void * client2;
+    // GMutex * sslock;		/* start-stop lock */
+    // GSList * regions; 	/* list of regions current for this image */
+    // 	VipsDemandStyle dhint;	/* demand style hint */
+    // 
+    // /* Extra user-defined fields ... see vips_image_get() etc. */
+    // GHashTable * meta;	/* GhashTable of GValue */
+    // GSList * meta_traverse;	/* traverse order for Meta */
+    // 
+    // 	/* Part of mmap() read ... the sizeof() the header we skip from the
+    // 	 * file start. Usually VIPS_SIZEOF_HEADER, but can be something else
+    // 	 * for binary file read.
+    // 	 *
+    // 	 * guint64 so that we can guarantee to work even on systems with
+    // 	 * strange ideas about large files.
+    // 	 */
+    // 	gint64 sizeof_header;
+    // 
+    // /* If this is a large disc image, don't map the whole thing, instead
+    //  * have a set of windows shared between the regions active on the
+    //  * image. List of VipsWindow.
+    //  */
+    // GSList * windows;
+    // 
+    // /* Upstream/downstream relationships, built from args to 
+    //  * vips_demand_hint().
+    //  *
+    //  * We use these to invalidate downstream pixel buffers.
+    //  * Use 'serial' to spot circular dependencies.
+    //  *
+    //  * See also hint_set below.
+    //  */
+    // GSList * upstream;
+    // GSList * downstream;
+    // 	int serial;
+    // 
+    // /* Keep a list of recounted GValue strings so we can share hist
+    //  * efficiently.
+    //  */
+    // GSList * history_list;
+    // 
+    // /* The VipsImage (if any) we should signal eval progress on.
+    //  */
+    // VipsImage * progress_signal;
+    // 
+    // 	/* Record the file length here. We use this to stop ourselves mapping
+    // 	 * things beyond the end of the file in the case that the file has
+    // 	 * been truncated.
+    // 	 *
+    // 	 * gint64 so that we can guarantee to work even on systems with
+    // 	 * strange ideas about large files.
+    // 	 */
+    // 	gint64 file_length;
+    // 
+    // 	/* Set this when vips_demand_hint_array() is called, and check in any
+    // 	 * operation that will demand pixels from the image.
+    // 	 *
+    // 	 * We use vips_demand_hint_array() to build the tree of
+    // 	 * upstream/downstream relationships, so it's a mandatory thing.
+    // 	 */
+    // 	gboolean hint_set;
+    // 
+    // 	/* Delete-on-close is hard to do with signals and callbacks since we
+    // 	 * really need to do this in finalize after the fd has been closed,
+    // 	 * but you can't emit signals then.
+    // 	 *
+    // 	 * Also keep a private copy of the filename string to be deleted,
+    // 	 * since image->filename will be freed in _dispose().
+    // 	 */
+    // 	gboolean delete_on_close;
+    //    char * delete_on_close_filename;
 }
