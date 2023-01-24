@@ -8,19 +8,20 @@ const FIELDS: string =
     'x{80}' + // parent_instance 1
     'i' + // Xsize 2
     'i' + // Ysize 3
-    'bbb{6}' + // enums: Bands VipsBandFormat VipsCoding VipsInterpretation 4 5 6
-    'd{4}d' + // Xres, Yres double 7 8
-    'ii' + // Xoffset Yoffset 9 10
-    'i' + // Length 11
-    'h' + // short Compression; 12
-    'h' + // short Level; 13
-    'i' + // int Bbits; 14
-    'p' + // VipsProgress *time; 15
-    'p' + // char *Hist 16
-    'p' + // char *filename 17
-    'p' + // VipsPel *data 18
-    'i' + // kill 19
-    'ff' + // Xres_float, Yres_float 20 21
+    'i' + // Bands 4
+    'bbb{10}' + // enums: Bands VipsBandFormat VipsCoding VipsInterpretation 5 6 7
+    'dd' + // Xres, Yres double 8 9
+    'ii' + // Xoffset Yoffset 10 11
+    'i' + // Length 12
+    'h' + // short Compression; 13
+    'h' + // short Level; 14
+    'i' + // int Bbits; 15
+    'p' + // VipsProgress *time; 16
+    'p' + // char *Hist 17
+    'p' + // char *filename 18
+    'p' + // VipsPel *data 19
+    'i' + // kill 20
+    'ff' + // Xres_float, Yres_float 21 22
     'p' + // mode
     'b' + // dtype enum
     'i' + // fd int
@@ -50,8 +51,6 @@ const FIELDS: string =
 
 const { offsets: OFFSET, size: VipsImage_SIZE } = buildPaser(FIELDS, true)
 
-console.log({VipsImage_SIZE});
-
 export class VipsImage {
     private buffer: ArrayBuffer;
     private view: DataView;
@@ -59,28 +58,10 @@ export class VipsImage {
     constructor(pointer?: Deno.PointerValue) {
         if (pointer) {
             this.buffer = Deno.UnsafePointerView.getArrayBuffer(pointer, VipsImage_SIZE);
-            // console.log(this.buffer.byteLength);
-            // console.log(this.buffer.slice(0, 100));
-            // console.log(Object.keys(this.buffer));
             this.view = new DataView(this.buffer);
-            const b2 = new Uint8Array(this.buffer);
+            // const b2 = new Uint8Array(this.buffer);
             // console.log(b2.subarray(OFFSET[1].offset, OFFSET[2].offset)); // Xsize OK
             // console.log(b2.subarray(OFFSET[2].offset, OFFSET[3].offset)); // Ysize OK
-            console.log(b2.subarray(OFFSET[3].offset, OFFSET[4].offset)); //  Bands 
-            console.log(b2.subarray(OFFSET[4].offset, OFFSET[5].offset)); //  VipsBandFormat VipsCoding VipsInterpretation
-            // console.log(b2.subarray(16, 32)); // Ysize
-            // console.log(b2.subarray(32, 64)); // Ysize
-            // console.log(b2.subarray(64, 128)); // Ysize
-            // console.log(b2.subarray(128, 192)); // Ysize
-            // console.log(b2.subarray(192, 256)); // Ysize
-            // console.log(b2.subarray(256, 256 + 64)); // Ysize
-            // console.log(b2.subarray(OFFSET[3], OFFSET[4])); // Ysize
-            // console.log(b2.subarray(8,12));
-            // console.log(this.view.getInt32(6)); // ok
-            // console.log(this.view.getInt32(10)); // ok
-            // console.log(b2.subarray(8,12));
-            // console.log(b2.subarray(12,16));
-
         } else {
             this.buffer = new ArrayBuffer(VipsImage_SIZE) // TMP aprox value
             this.view = new DataView(this.buffer)
@@ -266,7 +247,6 @@ export class VipsImage {
     get magic(): number { return OFFSET[27].get(this.view, this.buffer) }
     /* magic from header, endian-ness of image 4 Byte */
     set magic(v: number) { OFFSET[27].set(this.view, v) }
-
 
     /* Partial image stuff. All these fields are initialised 
      * to NULL and ignored unless set by vips_image_generate() etc.

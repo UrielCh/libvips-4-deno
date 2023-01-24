@@ -3,6 +3,7 @@
  * https://docs.python.org/3/library/struct.html
  */
 export type Opperation<T> = {
+    type: string;
     get: (view: DataView, buffer: ArrayBuffer) => T;
     set: (view: DataView, value: T) => void;
     offset: number;
@@ -11,6 +12,7 @@ export type Opperation<T> = {
 export function buildPaser(model: string, littleEndian?: boolean): { offsets: Opperation<any>[], size: number } {
     const Op_b = (offset: number) => {
         return {
+            type: 'int8',
             get: (view: DataView) => view.getInt8(offset),
             set: (view: DataView, value: number) => view.setInt8(offset, value),
             offset,
@@ -18,6 +20,7 @@ export function buildPaser(model: string, littleEndian?: boolean): { offsets: Op
     }
     const Op_B = (offset: number) => {
         return {
+            type: 'uint8',
             get: (view: DataView) => view.getUint8(offset),
             set: (view: DataView, value: number) => view.setUint8(offset, value),
             offset,
@@ -25,6 +28,7 @@ export function buildPaser(model: string, littleEndian?: boolean): { offsets: Op
     }
     const Op_Bool = (offset: number) => {
         return {
+            type: 'bool8',
             get: (view: DataView) => !!view.getUint8(offset),
             set: (view: DataView, value: boolean) => view.setUint8(offset, value ? 1 : 0),
             offset,
@@ -33,6 +37,7 @@ export function buildPaser(model: string, littleEndian?: boolean): { offsets: Op
 
     const Op_h = (offset: number) => {
         return {
+            type: 'short16',
             get: (view: DataView) => view.getInt16(offset, littleEndian),
             set: (view: DataView, value: number) => view.setInt16(offset, value, littleEndian),
             offset,
@@ -40,6 +45,7 @@ export function buildPaser(model: string, littleEndian?: boolean): { offsets: Op
     }
     const Op_H = (offset: number) => {
         return {
+            type: 'ushort16',
             get: (view: DataView) => view.getUint16(offset, littleEndian),
             set: (view: DataView, value: number) => view.setUint16(offset, value, littleEndian),
             offset,
@@ -48,6 +54,7 @@ export function buildPaser(model: string, littleEndian?: boolean): { offsets: Op
 
     const Op_i = (offset: number) => {
         return {
+            type: 'int32',
             get: (view: DataView) => view.getInt32(offset, littleEndian),
             set: (view: DataView, value: number) => view.setInt32(offset, value, littleEndian),
             offset,
@@ -55,6 +62,7 @@ export function buildPaser(model: string, littleEndian?: boolean): { offsets: Op
     }
     const Op_I = (offset: number) => {
         return {
+            type: 'uint32',
             get: (view: DataView) => view.getUint32(offset, littleEndian),
             set: (view: DataView, value: number) => view.setUint32(offset, value, littleEndian),
             offset,
@@ -63,6 +71,7 @@ export function buildPaser(model: string, littleEndian?: boolean): { offsets: Op
 
     const Op_q = (offset: number) => {
         return {
+            type: 'int64',
             get: (view: DataView) => view.getBigInt64(offset, littleEndian),
             set: (view: DataView, value: bigint) => view.setBigInt64(offset, value, littleEndian),
             offset: offset,
@@ -70,6 +79,7 @@ export function buildPaser(model: string, littleEndian?: boolean): { offsets: Op
     }
     const Op_Q = (offset: number) => {
         return {
+            type: 'uint64',
             get: (view: DataView) => view.getBigUint64(offset, littleEndian),
             set: (view: DataView, value: bigint) => view.setBigUint64(offset, value, littleEndian),
             offset,
@@ -78,6 +88,7 @@ export function buildPaser(model: string, littleEndian?: boolean): { offsets: Op
 
     const Op_f = (offset: number) => {
         return {
+            type: 'float32',
             get: (view: DataView) => view.getFloat32(offset, littleEndian),
             set: (view: DataView, value: number) => view.setFloat32(offset, value, littleEndian),
             offset,
@@ -85,6 +96,7 @@ export function buildPaser(model: string, littleEndian?: boolean): { offsets: Op
     }
     const Op_d = (offset: number) => {
         return {
+            type: 'float64',
             get: (view: DataView) => view.getFloat64(offset, littleEndian),
             set: (view: DataView, value: number) => view.setFloat64(offset, value, littleEndian),
             offset,
@@ -93,6 +105,7 @@ export function buildPaser(model: string, littleEndian?: boolean): { offsets: Op
 
     const Op_p = (offset: number) => {
         return {
+            type: 'pointer',
             get: (view: DataView, buffer: ArrayBuffer) => Deno.UnsafePointer.of(new DataView(buffer, offset)),
             set: (view: DataView, value: Deno.PointerValue) => view.setBigUint64(offset, value as bigint),
             offset,
@@ -102,6 +115,7 @@ export function buildPaser(model: string, littleEndian?: boolean): { offsets: Op
     /** padding */
     const Op_x = (offset: number) => {
         return {
+            type: 'padding',
             get: () => null,
             set: () => { },
             offset,
@@ -114,6 +128,7 @@ export function buildPaser(model: string, littleEndian?: boolean): { offsets: Op
     // struct like https://docs.python.org/3/library/struct.html
     for (let i = 0; i < model.length; i++) {
         let s = 0;
+        const prev = next;
         switch (next) {
             case 'x':
                 offsets.push(Op_x(size));
@@ -176,6 +191,8 @@ export function buildPaser(model: string, littleEndian?: boolean): { offsets: Op
         next = model[i + 1]
         if (next === '{') {
             const end = model.indexOf('}', i + 2);
+            // if (s)
+            // console.log(`change offset from type ${prev} from ${s} to ${model.slice(i + 2, end)}`)
             s = parseInt(model.slice(i + 2, end));
             i = end;
             next = model[i + 1];

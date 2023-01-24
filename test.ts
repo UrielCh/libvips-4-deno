@@ -57,19 +57,20 @@ const vipImgPtr = libvips.symbols.vips_image_new_from_file(
 console.log(
   `Try ${yellow('vips_image_new_from_file')} return ${green(vipImgPtr)} should be a VipsImage *`,
 );
+console.log();
+
 const vipImg = new VipsImage(vipImgPtr);
 console.log({
-  Xsize: vipImg.Xsize,
-  Ysize: vipImg.Ysize,
+  width: vipImg.Xsize,
+  height: vipImg.Ysize,
   Bands: vipImg.Bands,
   Coding: vipImg.Coding,
 });
 
-
 // Get img info
 const width = libvips.symbols.vips_image_get_width(vipImgPtr);
 const height = libvips.symbols.vips_image_get_height(vipImgPtr);
-const band = libvips.symbols.vips_image_get_bands(vipImgPtr);
+const Bands = libvips.symbols.vips_image_get_bands(vipImgPtr);
 const coding = libvips.symbols.vips_image_get_coding(vipImgPtr);
 // const type = libvips.symbols.vips_image_get_type(vipImgPtr);
 const xres = libvips.symbols.vips_image_get_xres(vipImgPtr);
@@ -78,7 +79,7 @@ const yres = libvips.symbols.vips_image_get_yres(vipImgPtr);
 console.log({
   width: width,
   height: height,
-  band: band,
+  Bands: Bands,
   Coding: coding,
 });
 
@@ -102,7 +103,9 @@ console.log({
   yres: yres,
 });
 
-console.log(`source image dimentions: ${green(width)}x${green(height)} band: ${band}`);
+console.log();
+
+console.log(`source image dimentions: ${green(width)}x${green(height)} bands: ${Bands}`);
 
 const fmt: VipsBandFormat = libvips.symbols.vips_image_get_format(vipImgPtr);
 console.log(`source image vips_image_get_format: ${green(fmt)}`);
@@ -133,21 +136,19 @@ console.log(`source image vips_image_get_format: ${green(fmt)}`);
 }
 
 
-const out = new VipsImage();
+  // const out = new VipsImage();
 
+  // g_object_unref( region );
+  // const x = 10;
+  // const y = 10;
+  // const width = 1000;
+  // const height = 1000;
+  // const out = libvips.symbols.vips_image_new();
+  // vips_embed: { parameters: ["pointer", "pointer", "i32", "i32", "i32", "i32"], result: "i32" },
+  // const r = dylib.symbols.vips_embed(vipImg, out, x, y, width, height)
+  // console.log({ r });
+  // const error = dylib.symbols.vips_error_buffer_copy();
+  // console.log({ error });
+  // console.log({ error: Deno.UnsafePointerView.getCString(error) });
 
-
-// g_object_unref( region );
-// const x = 10;
-// const y = 10;
-// const width = 1000;
-// const height = 1000;
-// const out = libvips.symbols.vips_image_new();
-// vips_embed: { parameters: ["pointer", "pointer", "i32", "i32", "i32", "i32"], result: "i32" },
-// const r = dylib.symbols.vips_embed(vipImg, out, x, y, width, height)
-// console.log({ r });
-// const error = dylib.symbols.vips_error_buffer_copy();
-// console.log({ error });
-// console.log({ error: Deno.UnsafePointerView.getCString(error) });
-
-// const a = new Deno.UnsafeFnPointer();
+  // const a = new Deno.UnsafeFnPointer()
