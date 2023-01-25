@@ -117,57 +117,57 @@ export class VipsImage {
     }
 
     // "P" + // GTypeInstance  g_type_instance; GTypeClass *g_class;// 0
-    get gType(): Deno.PointerValue { return gOffsets[0].get(this.view, this.buffer) }
+    get gType(): Deno.PointerValue { return gOffsets[0].get(this.view) }
     set gType(v: Deno.PointerValue) { gOffsets[0].set(this.view, v) }
 
     //guint          ref_count;  /* (atomic) */   // 1
-    get gRefCount(): number { return gOffsets[1].get(this.view, this.buffer) }
+    get gRefCount(): number { return gOffsets[1].get(this.view) }
     set gRefCount(v: number) { gOffsets[1].set(this.view, v) }
 
     // "P" + //GData         *qdata;                       // 2
-    get gData(): Deno.PointerValue { return gOffsets[2].get(this.view, this.buffer) }
+    get gData(): Deno.PointerValue { return gOffsets[2].get(this.view) }
     set gData(v: Deno.PointerValue) { gOffsets[2].set(this.view, v) }
 
     //guint          ref_count;  /* (atomic) */   // 1
-    get gConstructed(): number { return gOffsets[3].get(this.view, this.buffer) }
+    get gConstructed(): number { return gOffsets[3].get(this.view) }
     set gConstructed(v: number) { gOffsets[3].set(this.view, v) }
 
     //"i" + // gboolean static_object;                    // 4
-    get gStaticObj(): number { return gOffsets[4].get(this.view, this.buffer) }
+    get gStaticObj(): number { return gOffsets[4].get(this.view) }
     set gStaticObj(v: number) { gOffsets[4].set(this.view, v) }
     
     // "P" + // VipsArgumentTable *argument_table;         // 5
-    get gArgumentTable(): Deno.PointerValue { return gOffsets[5].get(this.view, this.buffer) }
+    get gArgumentTable(): Deno.PointerValue { return gOffsets[5].get(this.view) }
     set gArgumentTable(v: Deno.PointerValue) { gOffsets[5].set(this.view, v) }
     // "p" + // char *nickname;                            // 6
-    get gNickname(): Deno.PointerValue { return gOffsets[6].get(this.view, this.buffer) }
+    get gNickname(): Deno.PointerValue { return gOffsets[6].get(this.view) }
     set gNickname(v: Deno.PointerValue) { gOffsets[6].set(this.view, v) }
     // "p" + // char *description;                         // 7
-    get gDescription(): Deno.PointerValue { return gOffsets[7].get(this.view, this.buffer) }
+    get gDescription(): Deno.PointerValue { return gOffsets[7].get(this.view) }
     set gDescription(v: Deno.PointerValue) { gOffsets[7].set(this.view, v) }
 
     //"i" + // gboolean preclose; == int                  // 8
-    get gPreclose(): number { return gOffsets[8].get(this.view, this.buffer) }
+    get gPreclose(): number { return gOffsets[8].get(this.view) }
     set gPreclose(v: number) { gOffsets[8].set(this.view, v) }
 
 
     // "i" + // gboolean close; == int                     // 9
-    get gClose(): number { return gOffsets[9].get(this.view, this.buffer) }
+    get gClose(): number { return gOffsets[9].get(this.view) }
     set gClose(v: number) { gOffsets[9].set(this.view, v) }
 
     // "i" + // gboolean postclose; == int                 // 10
-    get gPostclose(): number { return gOffsets[10].get(this.view, this.buffer) }
+    get gPostclose(): number { return gOffsets[10].get(this.view) }
     set gPostclose(v: number) { gOffsets[10].set(this.view, v) }
 
     // tSize // size_t local_memory;                       // 11
-    get gLocal_memory(): bigint { return gOffsets[11].get(this.view, this.buffer) }
+    get gLocal_memory(): bigint { return gOffsets[11].get(this.view) }
     set gLocal_memory(v: bigint) { gOffsets[11].set(this.view, v) }    
 
 
     // 8 bytes
     // VipsObject parent_instance;
     // is a pointer
-    // get parent_instance(): Deno.PointerValue { return offsets[0].get(this.view, this.buffer) }
+    // get parent_instance(): Deno.PointerValue { return offsets[0].get(this.view) }
     // set parent_instance(v: Deno.PointerValue) { offsets[0].set(this.view, v) }
 
     /*< private >*/
@@ -176,62 +176,62 @@ export class VipsImage {
      * Don't use them though, use vips_image_get_width() and friends.
      */
     /* image width, in pixels 4 Byte */
-    get Xsize(): number { return offsets[1].get(this.view, this.buffer) }
+    get Xsize(): number { return offsets[1].get(this.view) }
     set Xsize(v: number) { offsets[1].set(this.view, v) }
 
     /* image height, in pixels 4 Byte */
-    get Ysize(): number { return offsets[2].get(this.view, this.buffer) }
+    get Ysize(): number { return offsets[2].get(this.view) }
     set Ysize(v: number) { offsets[2].set(this.view, v) }
 
     /* number of image bands 4 Byte */
-    get Bands(): number { return offsets[3].get(this.view, this.buffer) }
+    get Bands(): number { return offsets[3].get(this.view) }
     set Bands(v: number) { offsets[3].set(this.view, v) }
 
     /* pixel format 4 Byte */
-    get BandFmt(): VipsBandFormat { return offsets[4].get(this.view, this.buffer) }
+    get BandFmt(): VipsBandFormat { return offsets[4].get(this.view) }
     set BandFmt(v: VipsBandFormat) { offsets[4].set(this.view, v) }
 
     /* pixel coding 4 Byte */
-    get Coding(): VipsCoding { return offsets[5].get(this.view, this.buffer) }
+    get Coding(): VipsCoding { return offsets[5].get(this.view) }
     set Coding(v: VipsCoding) {offsets[5].set(this.view, v) }
 
     /* pixel interpretation 4 Byte */
-    get Type(): VipsInterpretation { return offsets[6].get(this.view, this.buffer) }
+    get Type(): VipsInterpretation { return offsets[6].get(this.view) }
     set Type(v: VipsInterpretation) { offsets[6].set(this.view, v)}
 
     /* horizontal pixels per millimetre 8 Byte */
-    get Xres(): number { return offsets[7].get(this.view, this.buffer) }
+    get Xres(): number { return offsets[7].get(this.view) }
     set Xres(v: number) { offsets[7].set(this.view, v) }
 
     /* vertical pixels per millimetre 8 Byte */
-    get Yres(): number { return offsets[8].get(this.view, this.buffer) }
+    get Yres(): number { return offsets[8].get(this.view) }
     set Yres(v: number) { offsets[8].set(this.view, v) }
 
     /* image origin hint 4 Byte */
-    get Xoffset(): number { return offsets[9].get(this.view, this.buffer) }
+    get Xoffset(): number { return offsets[9].get(this.view) }
     set Xoffset(v: number) { offsets[9].set(this.view, v) }
 
     /* image origin hint 4 Byte */
-    get Yoffset(): number { return offsets[10].get(this.view, this.buffer) }
+    get Yoffset(): number { return offsets[10].get(this.view) }
     set Yoffset(v: number) {offsets[10].set(this.view, v) }
 
     /* No longer used, the names are here for compat with very, very old 
      * code. 4 Byte
      */
-    get Length(): number {return offsets[11].get(this.view, this.buffer) }
+    get Length(): number {return offsets[11].get(this.view) }
     set Length(v: number) { offsets[11].set(this.view, v) }
     /**
      * short Compression;
      * 2 Byte
      */
-    get Compression(): number { return offsets[12].get(this.view, this.buffer) }
+    get Compression(): number { return offsets[12].get(this.view) }
     set Compression(v: number) {offsets[12].set(this.view, v) }
 
     /**
      * short Level;
      * 2 Byte
      */
-    get Level(): number {return offsets[13].get(this.view, this.buffer) }
+    get Level(): number {return offsets[13].get(this.view) }
     set Level(v: number) { offsets[13].set(this.view, v) }
 
 
@@ -240,7 +240,7 @@ export class VipsImage {
      * was number of bits in this format
      * 4 Byte
      */
-    get Bbits(): number { return offsets[14].get(this.view, this.buffer) }
+    get Bbits(): number { return offsets[14].get(this.view) }
     set Bbits(v: number) { offsets[14].set(this.view, v) }
 
 
@@ -249,7 +249,7 @@ export class VipsImage {
      * VipsProgress *time;
      * 8 bytes is a pointer
      */
-    get time(): Deno.PointerValue { return offsets[15].get(this.view, this.buffer) }
+    get time(): Deno.PointerValue { return offsets[15].get(this.view) }
     set time(v: Deno.PointerValue) { offsets[15].set(this.view, v) }
 
 
@@ -262,7 +262,7 @@ export class VipsImage {
      * char *Hist
      * 8 bytes is a pointer
      */
-    get Hist(): Deno.PointerValue { return offsets[16].get(this.view, this.buffer) }
+    get Hist(): Deno.PointerValue { return offsets[16].get(this.view) }
     set Hist(v: Deno.PointerValue) { offsets[16].set(this.view, v) }
 
     /*
@@ -270,7 +270,7 @@ export class VipsImage {
      * char *filename
      * 8 bytes is a pointer
      */
-    get filename(): Deno.PointerValue { return offsets[17].get(this.view, this.buffer) }
+    get filename(): Deno.PointerValue { return offsets[17].get(this.view) }
     set filename(v: Deno.PointerValue) { offsets[17].set(this.view, v) }
 
 
@@ -279,11 +279,11 @@ export class VipsImage {
      * VipsPel *data
      * 8 bytes is a pointer
      */
-    get data(): Deno.PointerValue { return offsets[18].get(this.view, this.buffer) }
+    get data(): Deno.PointerValue { return offsets[18].get(this.view) }
     set data(v: Deno.PointerValue) { offsets[18].set(this.view, v) }
 
     /* set to non-zero to block eval 4 Byte */
-    get kill(): number { return offsets[19].get(this.view, this.buffer) }
+    get kill(): number { return offsets[19].get(this.view) }
     set kill(v: number) { offsets[19].set(this.view, v) }
 
 
@@ -296,11 +296,11 @@ export class VipsImage {
      * other time.
      */
 
-    get Xres_float(): number { return offsets[20].get(this.view, this.buffer) }
+    get Xres_float(): number { return offsets[20].get(this.view) }
     set Xres_float(v: number) {offsets[20].set(this.view, v) }
 
     /** Float 4 Byte */
-    get Yres_float(): number { return offsets[21].get(this.view, this.buffer) }
+    get Yres_float(): number { return offsets[21].get(this.view) }
     set Yres_float(v: number) { offsets[21].set(this.view, v) }
 
     /*
@@ -308,15 +308,15 @@ export class VipsImage {
      * char *mode
      * 8 bytes is a pointer
      */
-    get mode(): Deno.PointerValue { return offsets[22].get(this.view, this.buffer) }
+    get mode(): Deno.PointerValue { return offsets[22].get(this.view) }
     set mode(v: Deno.PointerValue) {offsets[22].set(this.view, v) }
 
     /* descriptor type 4 Byte */
-    get dtype(): VipsImageType { return offsets[23].get(this.view, this.buffer) }
+    get dtype(): VipsImageType { return offsets[23].get(this.view) }
     set dtype(v: VipsImageType) { offsets[23].set(this.view, v) }
 
     /* file descriptor 4 Byte */
-    get fd(): VipsImageType { return offsets[24].get(this.view, this.buffer) }
+    get fd(): VipsImageType { return offsets[24].get(this.view) }
     set fd(v: VipsImageType) { offsets[24].set(this.view, v) }
 
     /*
@@ -324,16 +324,16 @@ export class VipsImage {
      * void * baseaddr
      * 8 bytes is a pointer
      */
-    get baseaddr(): Deno.PointerValue { return offsets[25].get(this.view, this.buffer) }
+    get baseaddr(): Deno.PointerValue { return offsets[25].get(this.view) }
     set baseaddr(v: Deno.PointerValue) { offsets[25].set(this.view, v) }
 
 
     /* file descriptor 4 Byte */
-    get length(): number { return offsets[26].get(this.view, this.buffer) }
+    get length(): number { return offsets[26].get(this.view) }
     set length(v: number) { offsets[26].set(this.view, v) }
 
     /* size of mmap area 4 Byte */
-    get magic(): number { return offsets[27].get(this.view, this.buffer) }
+    get magic(): number { return offsets[27].get(this.view) }
     /* magic from header, endian-ness of image 4 Byte */
     set magic(v: number) { offsets[27].set(this.view, v) }
 

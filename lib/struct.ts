@@ -6,7 +6,7 @@ const isNativelittleEndian = endianness() === 'LE';
  */
 export type Opperation<T> = {
     type: string;
-    get: (view: DataView, buffer: ArrayBuffer) => T;
+    get: (view: DataView) => T;
     set: (view: DataView, value: T) => void;
     size: number,
     offset: number;
@@ -121,7 +121,8 @@ const Op_d = (offset: number, littleEndian?: boolean) => {
 const Op_p = (offset: number) => {
     return {
         type: 'pointer',
-        get: (view: DataView, buffer: ArrayBuffer) => Deno.UnsafePointer.of(new DataView(buffer, offset)),
+        //get: (view: DataView, buffer: ArrayBuffer) => Deno.UnsafePointer.of(new DataView(buffer, offset)),
+        get: (view: DataView) => Deno.UnsafePointer.of(new DataView(view.buffer, offset + view.byteOffset)),
         set: (view: DataView, value: Deno.PointerValue) => view.setBigUint64(offset, value as bigint),
         size: 8,
         offset,
@@ -141,8 +142,8 @@ const Op_x = (offset: number) => {
 }
 
 export class Struct {
-    offsets: Opperation<any>[];
-    size: number;
+    readonly offsets: Opperation<any>[];
+    readonly size: number;
     constructor(model: string) {
         let littleEndian = isNativelittleEndian;
         const offsets: Opperation<any>[] = [];
@@ -250,7 +251,11 @@ export class Struct {
         this.offsets = offsets;
         this.size = size;
     }
-
+    /**
+     * Return a bytes object containing the values v1, v2, … packed according to the format string format. The arguments must match the values required by the format exactly.
+     * @param values values to pack
+     * @returns a bytes object containing the values v1, v2, … packed according to the format string format.
+     */
     pack(...values: any[]): ArrayBuffer {
         const buffer = new ArrayBuffer(this.size);
         const view = new DataView(buffer);
@@ -261,17 +266,56 @@ export class Struct {
         }
         return buffer;
     }
+    /**
+     * Unpack from the buffer buffer (presumably packed by pack(format, ...)) according to the format string format.
+     * The result is a tuple even if it contains exactly one item. The buffer’s size in bytes must match the size required by the format, as reflected by calcsize().
+     * 
+     * @param buffer destination buffer
+     * @param offset in destination offset
+     * @param values values to pack
+     * @returns the inputed buffer
+     */
     pack_into(buffer: ArrayBuffer, offset: number, ...values: any[]) {
-        const view = new DataView(buffer);
+        const view = new DataView(buffer, offset);
         const max = Math.min(this.offsets.length, values.length);
         for (let i = 0; i < max; i++) {
-            let op = this.offsets[i];
-            op = { ...op }
-            op.offset += offset;
-            op.set(view, values[i]);
+            this.offsets[i].set(view, values[i]);
         }
         return buffer;
     }
+    /**
+     * Unpack from buffer starting at position offset, according to the format string format.
+     * The result is a tuple even if it contains exactly one item. The buffer’s size in bytes,
+     * starting at position offset, must be at least the size required by the format,
+     * as reflected by calcsize().
+     */
+    unpack_from(buffer: ArrayBuffer, offset = 0) {
+        const view = new DataView(buffer, offset);
+        const values = [];
+        for (const op of this.offsets) {
+            values.push(op.get(view));
+        }
+        return values;
+    }
+
+    /**
+     * Iteratively unpack from the buffer buffer according to the format string format.
+     * This function returns an iterator which will read equally sized chunks from the buffer until all its contents have been consumed.
+     * The buffer’s size in bytes must be a multiple of the size required by the format, as reflected by calcsize().
+     * Each iteration yields a tuple as specified by the format string.
+     */
+    *iter_unpack(buffer: ArrayBuffer) {
+        const view = new DataView(buffer);
+        const max = this.offsets.length;
+        for (let i = 0; i < max; i++) {
+            yield this.offsets[i].get(view);
+        }
+    }
+
+    /**
+     * Return the size of the struct (and hence of the bytes object produced by pack(format, ...)) corresponding to the format string format.
+     * @returns packing size
+     */
     calcsize(): number {
         return this.size;
     }

@@ -27,3 +27,14 @@ Deno.test("Simple bigEndian struct multiplier", () => {
     assertEquals(view.getInt32(4), 2, "view.getInt32(4) should be 2")
     assertEquals(view.getInt32(8), 3, "view.getInt32(8) should be 3")
 });
+
+Deno.test("Pack pack_into with offset and multiplier", () => {
+    const struct1 = new Struct('>3i')
+    const buffer = new ArrayBuffer(16)
+    struct1.pack_into(buffer, 4, 1, 2, 3)
+    const view = new DataView(buffer);
+    // assertEquals(view.getInt32(0), 0, "view.getInt32(0) should be 0")
+    assertEquals(view.getInt32(4), 1, "view.getInt32(4) should be 1")
+    assertEquals(view.getInt32(8), 2, "view.getInt32(8) should be 2")
+    assertEquals(view.getInt32(12), 3, "view.getInt32(12) should be 3")
+});

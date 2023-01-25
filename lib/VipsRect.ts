@@ -19,15 +19,15 @@ export class VipsRect {
         return Deno.UnsafePointer.of(this.buffer)
     }
 
-    get left(): number { return offsets[0].get(this.view, this.buffer) }
+    get left(): number { return offsets[0].get(this.view) }
     set left(v: number) { offsets[0].set(this.view, v) }
 
-    get top(): number { return offsets[1].get(this.view, this.buffer) }
+    get top(): number { return offsets[1].get(this.view) }
     set top(v: number) { offsets[1].set(this.view, v) }
 
-    get width(): number { return offsets[2].get(this.view, this.buffer) }
+    get width(): number { return offsets[2].get(this.view) }
     set width(v: number) { offsets[2].set(this.view, v) }
 
-    get height(): number { return offsets[3].get(this.view, this.buffer) }
+    get height(): number { return offsets[3].get(this.view) }
     set height(v: number) { offsets[3].set(this.view, v) }
 }
