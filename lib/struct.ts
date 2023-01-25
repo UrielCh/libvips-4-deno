@@ -22,7 +22,12 @@ const Op_b = (offset: number) => {
     return {
         type: 'int8',
         get: (view: DataView) => view.getInt8(offset),
-        set: (view: DataView, value: number) => view.setInt8(offset, value),
+        set: (view: DataView, value: number) => {
+            if (value < -128 || value > 127) {
+                throw new Error(`B format requires -128 <= number <= 127, got ${value}`)
+            }
+            view.setInt8(offset, value)
+        },
         offset,
         size: 1,
     } as Opperation<number>
@@ -31,7 +36,12 @@ const Op_B = (offset: number) => {
     return {
         type: 'uint8',
         get: (view: DataView) => view.getUint8(offset),
-        set: (view: DataView, value: number) => view.setUint8(offset, value),
+        set: (view: DataView, value: number) => {
+            if (value < 0 || value > 255) {
+                throw new Error(`B format requires 0 <= number <= 255, got ${value}`)
+            }
+            view.setUint8(offset, value)
+        },
         offset,
         size: 1,
     } as Opperation<number>
@@ -40,7 +50,9 @@ const Op_Bool = (offset: number) => {
     return {
         type: 'bool8',
         get: (view: DataView) => !!view.getUint8(offset),
-        set: (view: DataView, value: boolean) => view.setUint8(offset, value ? 1 : 0),
+        set: (view: DataView, value: number | boolean) => {
+            return view.setUint8(offset, value ? 1 : 0)
+        },
         size: 1,
         offset,
     } as Opperation<boolean>
@@ -50,7 +62,12 @@ const Op_h = (offset: number, littleEndian?: boolean) => {
     return {
         type: 'short16',
         get: (view: DataView) => view.getInt16(offset, littleEndian),
-        set: (view: DataView, value: number) => view.setInt16(offset, value, littleEndian),
+        set: (view: DataView, value: number) => {
+            if (value < -32768 || value > 32767) {
+                throw new Error(`h format requires -32768 <= number <= 32767, got ${value}`)
+            }
+            return view.setInt16(offset, value, littleEndian)
+        },
         size: 2,
         offset,
     } as Opperation<number>
@@ -59,7 +76,12 @@ const Op_H = (offset: number, littleEndian?: boolean) => {
     return {
         type: 'ushort16',
         get: (view: DataView) => view.getUint16(offset, littleEndian),
-        set: (view: DataView, value: number) => view.setUint16(offset, value, littleEndian),
+        set: (view: DataView, value: number) => {
+            if (value < 0 || value > 65535) {
+                throw new Error(`H format requires 0 <= number <= 65535, got ${value}`)
+            }
+            return view.setUint16(offset, value, littleEndian)
+        },
         size: 2,
         offset,
     } as Opperation<number>
@@ -69,7 +91,12 @@ const Op_i = (offset: number, littleEndian?: boolean) => {
     return {
         type: 'int32',
         get: (view: DataView) => view.getInt32(offset, littleEndian),
-        set: (view: DataView, value: number) => view.setInt32(offset, value, littleEndian),
+        set: (view: DataView, value: number) => {
+            if (value < -2147483648 || value > 2147483647) {
+                throw new Error(`i/l format requires -2147483648 <= number <= 2147483647, got ${value}`)
+            }
+            return view.setInt32(offset, value, littleEndian)
+        },
         size: 4,
         offset,
     } as Opperation<number>
@@ -78,7 +105,12 @@ const Op_I = (offset: number, littleEndian?: boolean) => {
     return {
         type: 'uint32',
         get: (view: DataView) => view.getUint32(offset, littleEndian),
-        set: (view: DataView, value: number) => view.setUint32(offset, value, littleEndian),
+        set: (view: DataView, value: number) => {
+            if (value < 0 || value > 4294967295) {
+                throw new Error(`I/L format requires 0 <= number <= 4294967295, got ${value}`)
+            }
+            view.setUint32(offset, value, littleEndian)
+        },
         size: 4,
         offset,
     } as Opperation<number>
@@ -153,8 +185,10 @@ const Op_x = (offset: number) => {
 export class Struct {
     readonly offsets: Opperation<any>[];
     public readonly size: number;
-    constructor( public readonly format: string) {
+    // public readonly padded: boolean;
+    constructor(public readonly format: string) {
         let littleEndian = isNativelittleEndian;
+        let alignment = 0;
         const offsets: Opperation<any>[] = [];
         let size = 0;
         let next = format[0];
@@ -176,7 +210,11 @@ export class Struct {
                     multiplier += next
                     break
                 case '@': // native
+                    alignment = 7;
+                    littleEndian = isNativelittleEndian
+                    break
                 case '=': // native
+                    alignment = 0;
                     littleEndian = isNativelittleEndian
                     break
                 case '<': // little endian
@@ -249,6 +287,13 @@ export class Struct {
                         offsets.push(getter)
                     }
                     size += getter.size
+                    // aligne ??
+                    if (alignment) {
+                        while ((size & alignment) != 0) {
+                            // console.log('add aliognement from', size, 'check', size & alignment, 'alignment', alignment)
+                            size += 1
+                        }
+                    }
                 }
                 multiplier = ''
             }
@@ -259,6 +304,7 @@ export class Struct {
         // console.log('size:', size)
         this.offsets = offsets;
         this.size = size;
+        // this.padded = alignment > 0;
     }
     /**
      * Return a bytes object containing the values v1, v2, … packed according to the format string format. The arguments must match the values required by the format exactly.
@@ -320,14 +366,6 @@ export class Struct {
             yield this.offsets[i].get(view);
         }
     }
-
-    /**
-     * Return the size of the struct (and hence of the bytes object produced by pack(format, ...)) corresponding to the format string format.
-     * @returns packing size
-     */
-    calcsize(): number {
-        return this.size;
-    }
 }
 
 /**
@@ -347,14 +385,14 @@ export function pack_into(format: string, buffer: ArrayBuffer, offset: number, .
 /**
  * Unpack from the buffer buffer (presumably packed by pack(format, ...)) according to the format string format. The result is a tuple even if it contains exactly one item. The buffer’s size in bytes must match the size required by the format, as reflected by calcsize().
  */
-export function unpack(format: string, buffer: ArrayBuffer):  Array<PackSupportedType> {
+export function unpack(format: string, buffer: ArrayBuffer): Array<PackSupportedType> {
     return new Struct(format).unpack_from(buffer);
 }
 
 /**
  * Unpack from buffer starting at position offset, according to the format string format. The result is a tuple even if it contains exactly one item. The buffer’s size in bytes, starting at position offset, must be at least the size required by the format, as reflected by calcsize().
  */
-export function unpack_from(format: string, buffer: ArrayBuffer, offset=0): Array<PackSupportedType> {
+export function unpack_from(format: string, buffer: ArrayBuffer, offset = 0): Array<PackSupportedType> {
     return new Struct(format).unpack_from(buffer, offset);
 }
 
@@ -370,5 +408,5 @@ export function iter_unpack(format: string, buffer: ArrayBuffer): Generator<Pack
  * Return the size of the struct (and hence of the bytes object produced by pack(format, ...)) corresponding to the format string format.
  */
 export function calcsize(format: string): number {
-    return new Struct(format).calcsize();
+    return new Struct(format).size;
 }
