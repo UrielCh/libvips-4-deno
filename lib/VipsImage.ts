@@ -27,9 +27,10 @@ tSize + // size_t local_memory;                       // 11
 
 
 const { offsets: gOffsets, size: gSize } = new Struct(model_VipsObject)
-console.log({gSize})
+// const { offsets: gOffsets2, size: gSize2 } = new Struct2(model_VipsObject)
+// console.log({gOffsets, gOffsets2})
 const model: string =
-    'x{80}' + // VipsObject parent_instance
+    'b79x' + // VipsObject parent_instance
     'iii' + // Xsize Ysize Bands 2 3 4
     'iii' + // enums: Bands VipsBandFormat VipsCoding VipsInterpretation 5 6 7
     'dd' + // Xres, Yres double 8 9

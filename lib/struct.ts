@@ -149,99 +149,104 @@ export class Struct {
         let size = 0;
         let next = model[0];
         // struct like https://docs.python.org/3/library/struct.html
+        let multiplier = ''
         for (let i = 0; i < model.length; i++) {
-            let s = 0;
+            let nextOp: OpGenerator | null = null
             switch (next) {
+                case '0':
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                    multiplier += next
+                    break
                 case '@': // native
                 case '=': // native
-                    littleEndian = isNativelittleEndian;
-                    break;
+                    littleEndian = isNativelittleEndian
+                    break
                 case '<': // little endian
-                    littleEndian = true;
-                    break;
+                    littleEndian = true
+                    break
                 case '!': // network (= big-endian)
                 case '>': // big endian
-                    littleEndian = false;
+                    littleEndian = false
                     break;
                 case 'x': // padding
-                    offsets.push(Op_x(size));
-                    s = 1;
+                    nextOp = Op_x
                     break;
                 case 'c': // char
                 case 'b': // signed char
-                    offsets.push(Op_b(size));
-                    s = 1;
+                    nextOp = Op_b
                     break;
                 case 'B': // unsigned char
-                    offsets.push(Op_B(size));
-                    s = 1;
+                    nextOp = Op_B
                     break;
                 case '?': // bool
-                    offsets.push(Op_Bool(size));
-                    s = 1;
+                    nextOp = Op_Bool
                     break;
                 case 'h': // short
-                    offsets.push(Op_h(size, littleEndian));
-                    s = 2;
+                    nextOp = Op_h
                     break;
                 case 'H': // unsigned short
-                    offsets.push(Op_H(size, littleEndian));
-                    s = 2;
+                    nextOp = Op_H
                     break;
                 case 'i': // int
                 case 'l': // long
-                    offsets.push(Op_i(size, littleEndian));
-                    s = 4;
+                    nextOp = Op_i
                     break;
                 case 'I': // unsigned int
                 case 'L': // unsigned long
-                    offsets.push(Op_I(size, littleEndian));
-                    s = 4;
+                    nextOp = Op_I
                     break;
                 case 'q': // long long
                 case 'n': // ssize_t 64 bit only
-                    offsets.push(Op_q(size, littleEndian));
-                    s = 8;
-                    break;
+                    nextOp = Op_q
+                    break
                 case 'Q': // unsigned long long
                 case 'N': // size_t 64 bit only
-                    offsets.push(Op_Q(size, littleEndian));
-                    s = 8;
-                    break;
+                    nextOp = Op_Q
+                    break
 
                 //case 'e': // float 16bit not available in deno
-                //    offsets.push(Op_f(size, littleEndian));
-                //    s = 4;
+                //    nextOp = Op_e(size, littleEndian));
                 //    break;
 
                 case 'f': // float
-                    offsets.push(Op_f(size, littleEndian));
-                    s = 4;
-                    break;
+                    nextOp = Op_f
+                    break
                 case 'd': // double
-                    offsets.push(Op_d(size, littleEndian));
-                    s = 8;
-                    break;
+                    nextOp = Op_d
+                    break
                 case 's': // char[] should be a buffer ?
                 case 'p': // char[]
                 case 'P': // void*
-                    offsets.push(Op_p(size));
-                    s = 8;
-                    break;
+                    nextOp = Op_p
+                    break
                 default:
-                    throw new Error(`Unknown type ${next}`);
+                    throw new Error(`Unknown Packing type ${next}`)
+            }
+            if (nextOp) {
+                const times = Number(multiplier || '1')
+                for (let j = 0; j < times; j++) {
+                    const getter = nextOp(size, littleEndian)
+                    // (size, littleEndian)
+                    if (!getter.isPadding) {
+                        offsets.push(getter)
+                    }
+                    size += getter.size
+                }
+                multiplier = ''
             }
             next = model[i + 1]
-            if (next === '{') {
-                const end = model.indexOf('}', i + 2);
-                // if (s)
-                // console.log(`change offset from type ${prev} from ${s} to ${model.slice(i + 2, end)}`)
-                s = parseInt(model.slice(i + 2, end));
-                i = end;
-                next = model[i + 1];
-            }
-            size += s;
         }
+        // console.log('model:', model)
+        // console.log('offsets:', offsets)
+        // console.log('size:', size)
         this.offsets = offsets;
         this.size = size;
     }
@@ -261,7 +266,7 @@ export class Struct {
         const max = Math.min(this.offsets.length, values.length);
         for (let i = 0; i < max; i++) {
             let op = this.offsets[i];
-            op = {...op}
+            op = { ...op }
             op.offset += offset;
             op.set(view, values[i]);
         }
@@ -269,5 +274,5 @@ export class Struct {
     }
     calcsize(): number {
         return this.size;
-    } 
+    }
 }
