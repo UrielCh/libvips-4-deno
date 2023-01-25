@@ -16,9 +16,9 @@ export type Opperation<T> = {
 export type PackSupportedType = bigint | number | boolean | Deno.PointerValue;
 //type OpGenerator = (offset: number, littleEndian?: boolean) => Opperation<bigint> | Opperation<number> | Opperation<boolean> | Opperation<Deno.PointerValue>;
 
-type OpGenerator<T = any> = (offset: number, littleEndian?: boolean) => Opperation<T>;
+type OpGenerator<T = any> = ((offset: number, littleEndian?: boolean) => Opperation<T>) & { isPadding?: boolean, size: number };
 
-const Op_b = (offset: number) => {
+const Op_b: OpGenerator<number> = (offset: number) => {
     return {
         type: 'int8',
         get: (view: DataView) => view.getInt8(offset),
@@ -32,7 +32,9 @@ const Op_b = (offset: number) => {
         size: 1,
     } as Opperation<number>
 }
-const Op_B = (offset: number) => {
+Op_b.size = 1
+
+const Op_B: OpGenerator<number> = (offset: number) => {
     return {
         type: 'uint8',
         get: (view: DataView) => view.getUint8(offset),
@@ -46,7 +48,9 @@ const Op_B = (offset: number) => {
         size: 1,
     } as Opperation<number>
 }
-const Op_Bool = (offset: number) => {
+Op_B.size = 1
+
+const Op_Bool: OpGenerator<boolean> = (offset: number) => {
     return {
         type: 'bool8',
         get: (view: DataView) => !!view.getUint8(offset),
@@ -57,8 +61,9 @@ const Op_Bool = (offset: number) => {
         offset,
     } as Opperation<boolean>
 }
+Op_Bool.size = 1
 
-const Op_h = (offset: number, littleEndian?: boolean) => {
+const Op_h: OpGenerator<number> = (offset: number, littleEndian?: boolean) => {
     return {
         type: 'short16',
         get: (view: DataView) => view.getInt16(offset, littleEndian),
@@ -72,7 +77,9 @@ const Op_h = (offset: number, littleEndian?: boolean) => {
         offset,
     } as Opperation<number>
 }
-const Op_H = (offset: number, littleEndian?: boolean) => {
+Op_h.size = 2
+
+const Op_H: OpGenerator<number> = (offset: number, littleEndian?: boolean) => {
     return {
         type: 'ushort16',
         get: (view: DataView) => view.getUint16(offset, littleEndian),
@@ -86,8 +93,9 @@ const Op_H = (offset: number, littleEndian?: boolean) => {
         offset,
     } as Opperation<number>
 }
+Op_H.size = 2
 
-const Op_i = (offset: number, littleEndian?: boolean) => {
+const Op_i: OpGenerator<number> = (offset: number, littleEndian?: boolean) => {
     return {
         type: 'int32',
         get: (view: DataView) => view.getInt32(offset, littleEndian),
@@ -101,7 +109,9 @@ const Op_i = (offset: number, littleEndian?: boolean) => {
         offset,
     } as Opperation<number>
 }
-const Op_I = (offset: number, littleEndian?: boolean) => {
+Op_i.size = 4
+
+const Op_I: OpGenerator<number> = (offset: number, littleEndian?: boolean) => {
     return {
         type: 'uint32',
         get: (view: DataView) => view.getUint32(offset, littleEndian),
@@ -115,8 +125,9 @@ const Op_I = (offset: number, littleEndian?: boolean) => {
         offset,
     } as Opperation<number>
 }
+Op_I.size = 4
 
-const Op_q = (offset: number, littleEndian?: boolean) => {
+const Op_q: OpGenerator<bigint> = (offset: number, littleEndian?: boolean) => {
     return {
         type: 'int64',
         get: (view: DataView) => view.getBigInt64(offset, littleEndian),
@@ -125,7 +136,9 @@ const Op_q = (offset: number, littleEndian?: boolean) => {
         offset: offset,
     } as Opperation<bigint>
 }
-const Op_Q = (offset: number, littleEndian?: boolean) => {
+Op_q.size = 8
+
+const Op_Q: OpGenerator<bigint> = (offset: number, littleEndian?: boolean) => {
     return {
         type: 'uint64',
         get: (view: DataView) => view.getBigUint64(offset, littleEndian),
@@ -134,8 +147,9 @@ const Op_Q = (offset: number, littleEndian?: boolean) => {
         offset,
     } as Opperation<bigint>
 }
+Op_Q.size = 8
 
-const Op_f = (offset: number, littleEndian?: boolean) => {
+const Op_f: OpGenerator<number> = (offset: number, littleEndian?: boolean) => {
     return {
         type: 'float32',
         get: (view: DataView) => view.getFloat32(offset, littleEndian),
@@ -144,7 +158,9 @@ const Op_f = (offset: number, littleEndian?: boolean) => {
         offset,
     } as Opperation<number>
 }
-const Op_d = (offset: number, littleEndian?: boolean) => {
+Op_f.size = 4
+
+const Op_d: OpGenerator<number> = (offset: number, littleEndian?: boolean) => {
     return {
         type: 'float64',
         get: (view: DataView) => view.getFloat64(offset, littleEndian),
@@ -153,8 +169,9 @@ const Op_d = (offset: number, littleEndian?: boolean) => {
         offset,
     } as Opperation<number>
 }
+Op_d.size = 8
 
-const Op_p = (offset: number) => {
+const Op_p: OpGenerator<Deno.PointerValue> = (offset: number) => {
     return {
         type: 'pointer',
         //get: (view: DataView, buffer: ArrayBuffer) => Deno.UnsafePointer.of(new DataView(buffer, offset)),
@@ -164,9 +181,10 @@ const Op_p = (offset: number) => {
         offset,
     } as Opperation<Deno.PointerValue>
 }
+Op_p.size = 8
 
 /** padding */
-const Op_x = (offset: number) => {
+const Op_x: OpGenerator<number> = (offset: number) => {
     return {
         type: 'padding',
         get: () => 0,
@@ -176,6 +194,8 @@ const Op_x = (offset: number) => {
         isPadding: true,
     } as Opperation<number>
 }
+Op_x.isPadding = true;
+Op_x.size = 1
 
 /**
  * This module converts between Deno values and C structs represented as ArrayBuffer objects.
@@ -281,12 +301,12 @@ export class Struct {
             if (nextOp) {
                 const times = Number(multiplier || '1')
                 for (let j = 0; j < times; j++) {
-                    const getter = nextOp(size, littleEndian)
                     // (size, littleEndian)
-                    if (!getter.isPadding) {
+                    if (!nextOp.isPadding) {
+                        const getter = nextOp(size, littleEndian)
                         offsets.push(getter)
                     }
-                    size += getter.size
+                    size += nextOp.size
                     // aligne ??
                     if (alignment) {
                         while ((size & alignment) != 0) {
