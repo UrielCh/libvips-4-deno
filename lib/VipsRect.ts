@@ -1,6 +1,6 @@
-import { buildStruct } from "./struct.ts";
+import { Struct } from "./struct.ts";
 
-const { offsets, size } = buildStruct('<iiii')
+const { offsets, size } = new Struct('<iiii')
 
 export class VipsRect {
     private buffer: ArrayBuffer;

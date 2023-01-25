@@ -2,7 +2,7 @@ import { VipsImageType } from "./enums.ts";
 import { VipsInterpretation } from "./enums.ts";
 import { VipsCoding } from "./enums.ts";
 import { VipsBandFormat } from "./enums.ts";
-import { buildStruct } from "./struct.ts";
+import { Struct } from "./struct.ts";
 
 // glib 
 // const tSize = Deno.build.os === "windows" ? 'Q' : 'I';
@@ -26,7 +26,7 @@ tSize + // size_t local_memory;                       // 11
 "xxxxxxx"
 
 
-const { offsets: gOffsets, size: gSize } = buildStruct(model_VipsObject)
+const { offsets: gOffsets, size: gSize } = new Struct(model_VipsObject)
 console.log({gSize})
 const model: string =
     'x{80}' + // VipsObject parent_instance
@@ -71,7 +71,7 @@ const model: string =
     '?' + // gboolean delete_on_close;
     'p' // char * delete_on_close_filename;
 
-const { offsets, size } = buildStruct(model)
+const { offsets, size } = new Struct(model)
 
 export class VipsImage {
     private buffer: ArrayBuffer;
