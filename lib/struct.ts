@@ -13,10 +13,10 @@ export type Opperation<T> = {
     isPadding?: boolean;
 }
 
-// export type PackSupportedType = bigint | number | boolean | Deno.PointerValue;
+export type PackSupportedType = bigint | number | boolean | Deno.PointerValue;
 //type OpGenerator = (offset: number, littleEndian?: boolean) => Opperation<bigint> | Opperation<number> | Opperation<boolean> | Opperation<Deno.PointerValue>;
 
-type OpGenerator = (offset: number, littleEndian?: boolean) => Opperation<any>;
+type OpGenerator<T = any> = (offset: number, littleEndian?: boolean) => Opperation<T>;
 
 const Op_b = (offset: number) => {
     return {
@@ -145,10 +145,15 @@ const Op_x = (offset: number) => {
     } as Opperation<number>
 }
 
+/**
+ * This module converts between Deno values and C structs represented as ArrayBuffer objects.
+ * 
+ * see python doc for usage https://docs.python.org/3/library/struct.html
+ */
 export class Struct {
     readonly offsets: Opperation<any>[];
-    readonly size: number;
-    constructor(format: string) {
+    public readonly size: number;
+    constructor( public readonly format: string) {
         let littleEndian = isNativelittleEndian;
         const offsets: Opperation<any>[] = [];
         let size = 0;
@@ -260,7 +265,7 @@ export class Struct {
      * @param values values to pack
      * @returns a bytes object containing the values v1, v2, … packed according to the format string format.
      */
-    pack(...values: any[]): ArrayBuffer {
+    pack(...values: Array<PackSupportedType>): ArrayBuffer {
         const buffer = new ArrayBuffer(this.size);
         const view = new DataView(buffer);
         const max = Math.min(this.offsets.length, values.length);
@@ -279,7 +284,7 @@ export class Struct {
      * @param values values to pack
      * @returns the inputed buffer
      */
-    pack_into(buffer: ArrayBuffer, offset: number, ...values: any[]) {
+    pack_into(buffer: ArrayBuffer, offset: number, ...values: Array<PackSupportedType>): ArrayBuffer {
         const view = new DataView(buffer, offset);
         const max = Math.min(this.offsets.length, values.length);
         for (let i = 0; i < max; i++) {
@@ -293,7 +298,7 @@ export class Struct {
      * starting at position offset, must be at least the size required by the format,
      * as reflected by calcsize().
      */
-    unpack_from(buffer: ArrayBuffer, offset = 0) {
+    unpack_from(buffer: ArrayBuffer, offset = 0): Array<PackSupportedType> {
         const view = new DataView(buffer, offset);
         const values = [];
         for (const op of this.offsets) {
@@ -308,7 +313,7 @@ export class Struct {
      * The buffer’s size in bytes must be a multiple of the size required by the format, as reflected by calcsize().
      * Each iteration yields a tuple as specified by the format string.
      */
-    *iter_unpack(buffer: ArrayBuffer): Generator<any, void, unknown> {
+    *iter_unpack(buffer: ArrayBuffer): Generator<PackSupportedType, void, void> {
         const view = new DataView(buffer);
         const max = this.offsets.length;
         for (let i = 0; i < max; i++) {
@@ -323,4 +328,47 @@ export class Struct {
     calcsize(): number {
         return this.size;
     }
+}
+
+/**
+ * Return a bytes object containing the values v1, v2, … packed according to the format string format. The arguments must match the values required by the format exactly.
+ */
+export function pack(format: string, ...values: Array<PackSupportedType>): ArrayBuffer {
+    return new Struct(format).pack(...values)
+}
+
+/**
+ * Pack the values v1, v2, … according to the format string format and write the packed bytes into the writable buffer buffer starting at position offset. Note that offset is a required argument.
+ */
+export function pack_into(format: string, buffer: ArrayBuffer, offset: number, ...values: Array<PackSupportedType>): ArrayBuffer {
+    return new Struct(format).pack_into(buffer, offset, ...values)
+}
+
+/**
+ * Unpack from the buffer buffer (presumably packed by pack(format, ...)) according to the format string format. The result is a tuple even if it contains exactly one item. The buffer’s size in bytes must match the size required by the format, as reflected by calcsize().
+ */
+export function unpack(format: string, buffer: ArrayBuffer):  Array<PackSupportedType> {
+    return new Struct(format).unpack_from(buffer);
+}
+
+/**
+ * Unpack from buffer starting at position offset, according to the format string format. The result is a tuple even if it contains exactly one item. The buffer’s size in bytes, starting at position offset, must be at least the size required by the format, as reflected by calcsize().
+ */
+export function unpack_from(format: string, buffer: ArrayBuffer, offset=0): Array<PackSupportedType> {
+    return new Struct(format).unpack_from(buffer, offset);
+}
+
+/**
+ * Iteratively unpack from the buffer buffer according to the format string format. This function returns an iterator which will read equally sized chunks from the buffer until all its contents have been consumed. The buffer’s size in bytes must be a multiple of the size required by the format, as reflected by calcsize().
+ * Each iteration yields a tuple as specified by the format string.
+ */
+export function iter_unpack(format: string, buffer: ArrayBuffer): Generator<PackSupportedType, void, void> {
+    return new Struct(format).iter_unpack(buffer);
+}
+
+/**
+ * Return the size of the struct (and hence of the bytes object produced by pack(format, ...)) corresponding to the format string format.
+ */
+export function calcsize(format: string): number {
+    return new Struct(format).calcsize();
 }
