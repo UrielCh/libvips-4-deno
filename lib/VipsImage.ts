@@ -10,7 +10,7 @@ const tSize = 'Q';
 
 const model_VipsObject: string =
  // GObject parent_instance;
-"<P" + // GTypeInstance  g_type_instance; GTypeClass *g_class;// 0
+"P" + // GTypeInstance  g_type_instance; GTypeClass *g_class;// 0
 "I" + //guint          ref_count;  /* (atomic) */   // 1
 "P" + //GData         *qdata;                       // 2
 // end of GObject
@@ -21,13 +21,15 @@ const model_VipsObject: string =
 "p" + // char *description;                         // 7
 "i" + // gboolean preclose; == int                  // 8
 "i" + // gboolean close; == int                     // 9
-"i{12}" + // gboolean postclose; == int             // 10
-tSize // size_t local_memory;                       // 11
+"ix" + // gboolean postclose; == int                 // 10
+tSize + // size_t local_memory;                       // 11
+"xxxxxxx"
+
 
 const { offsets: gOffsets, size: gSize } = buildStruct(model_VipsObject)
 console.log({gSize})
 const model: string =
-    '<x{80}' + // VipsObject parent_instance
+    'x{80}' + // VipsObject parent_instance
     'iii' + // Xsize Ysize Bands 2 3 4
     'iii' + // enums: Bands VipsBandFormat VipsCoding VipsInterpretation 5 6 7
     'dd' + // Xres, Yres double 8 9
@@ -81,30 +83,28 @@ export class VipsImage {
             this.view = new DataView(this.buffer);
             const b2 = new Uint8Array(this.buffer);
             // console.log(b2.subarray(OFFSET[1].offset, OFFSET[2].offset)); // Xsize OK
-            console.log(b2.subarray(0, 8)); // Ysize OK
-            console.log(b2.subarray(8, 16)); // Ysize OK
-            console.log(b2.subarray(16, 24)); // Ysize OK
-            console.log(b2.subarray(24, 32)); // Ysize OK
-            console.log(b2.subarray(32, 40)); // Ysize OK
-            console.log(b2.subarray(40, 48)); // Ysize OK
-
-            console.log(b2.subarray(48, 56)); // Ysize OK
-            console.log(b2.subarray(56, 64)); // Ysize OK
-            console.log(b2.subarray(64, 72)); // Ysize OK
-            console.log(b2.subarray(72, 80)); // Ysize OK
-
-            console.log(`gType: ${this.gType}`); // Ysize OK
-            console.log(`gRefCount: ${this.gRefCount}`); // Ysize OK
-            console.log(`gData: ${this.gData}`); // Ysize OK
-            console.log(`gType: ${this.gType}`); // Ysize OK
-            console.log(`gConstructed: ${this.gConstructed}`); // Ysize OK
-            console.log(`gStaticObj: ${this.gStaticObj}`); // Ysize OK
-            console.log(`gArgumentTable: ${this.gArgumentTable}`); // Ysize OK
-            console.log(`gNickname: ${this.gNickname}`); // Ysize OK
-            console.log(`gDescription: ${this.gDescription}`); // Ysize OK
-            console.log(`gPreclose: ${this.gPreclose}`); // Ysize OK
-            console.log(`gClose: ${this.gClose}`); // Ysize OK
-            console.log(`gLocal_memory: ${this.gLocal_memory}`); // Ysize OK
+            // console.log(b2.subarray(0, 8).join(', ')); // Ysize OK
+            // console.log(b2.subarray(8, 16).join(', ')); // Ysize OK
+            // console.log(b2.subarray(16, 24).join(', ')); // Ysize OK
+            // console.log(b2.subarray(24, 32).join(', ')); // Ysize OK
+            // console.log(b2.subarray(32, 40).join(', ')); // Ysize OK
+            // console.log(b2.subarray(40, 48).join(', ')); // Ysize OK
+            // console.log(b2.subarray(48, 56).join(', ')); // Ysize OK
+            // console.log(b2.subarray(56, 64).join(', ')); // Ysize OK
+            // console.log(b2.subarray(64, 72).join(', ')); // Ysize OK
+            // console.log(b2.subarray(72, 80).join(', ')); // Ysize OK
+            // console.log(`gType: ${this.gType}`); // Ysize OK
+            // console.log(`gRefCount: ${this.gRefCount}`); // Ysize OK
+            // console.log(`gData: ${this.gData}`); // Ysize OK
+            // console.log(`gType: ${this.gType}`); // Ysize OK
+            // console.log(`gConstructed: ${this.gConstructed}`); // Ysize OK
+            // console.log(`gStaticObj: ${this.gStaticObj}`); // Ysize OK
+            // console.log(`gArgumentTable: ${this.gArgumentTable}`); // Ysize OK
+            // console.log(`gNickname: ${this.gNickname}`); // Ysize OK
+            // console.log(`gDescription: ${this.gDescription}`); // Ysize OK
+            // console.log(`gPreclose: ${this.gPreclose}`); // Ysize OK
+            // console.log(`gClose: ${this.gClose}`); // Ysize OK
+            // console.log(`gLocal_memory: ${this.gLocal_memory}`); // Ysize OK
         } else {
             this.buffer = new ArrayBuffer(size) // TMP aprox value
             this.view = new DataView(this.buffer)

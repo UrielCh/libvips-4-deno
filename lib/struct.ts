@@ -1,3 +1,5 @@
+import { endianness } from "https://deno.land/std@0.165.0/node/os.ts";
+const isNativelittleEndian = endianness() === 'LE';
 /**
  * stuct builder like python stuct
  * https://docs.python.org/3/library/struct.html
@@ -122,7 +124,7 @@ const Op_x = (offset: number) => {
 }
 
 export function buildStruct(model: string): { offsets: Opperation<any>[], size: number } {
-    let littleEndian = false;
+    let littleEndian = isNativelittleEndian;
     const offsets: Opperation<any>[] = [];
     let size = 0;
     let next = model[0];
@@ -130,14 +132,20 @@ export function buildStruct(model: string): { offsets: Opperation<any>[], size: 
     for (let i = 0; i < model.length; i++) {
         let s = 0;
         switch (next) {
+            case '@': // native
+            case '=': // native
+                littleEndian = isNativelittleEndian;
+                break;
             case '<': // little endian
                 littleEndian = true;
                 break;
+            case '!': // network (= big-endian)
             case '>': // big endian
                 littleEndian = false;
                 break;
             case 'x': // padding
                 offsets.push(Op_x(size));
+                s = 1;
                 break;
             case 'c': // char
             case 'b': // signed char

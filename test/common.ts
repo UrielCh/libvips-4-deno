@@ -9,6 +9,8 @@ export const getImg512 = () => resolve(join(__dirname, '..', 'img', 'darth_vader
 export const getImg254 = () => resolve(join(__dirname, '..', 'img', 'darth_vader_254.png'));
 export const getImgp = () => resolve(join(__dirname, '..', 'img', 'darth_vader_p.png'));
 export const getImgpJPG = () => resolve(join(__dirname, '..', 'img', 'darth_vader_p.jpg'));
+export const getPixelGif = () => resolve(join(__dirname, '..', 'img', 'p.gif'));
+
 const result = libvips.symbols.vips_init(cstring("vips4deno"));
 if (result) {
     throw new Error(`vips_init Failed and return ${result}`);
