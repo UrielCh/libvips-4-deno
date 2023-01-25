@@ -12,6 +12,10 @@ export type Opperation<T> = {
     offset: number;
     isPadding?: boolean;
 }
+
+// export type PackSupportedType = bigint | number | boolean | Deno.PointerValue;
+//type OpGenerator = (offset: number, littleEndian?: boolean) => Opperation<bigint> | Opperation<number> | Opperation<boolean> | Opperation<Deno.PointerValue>;
+
 type OpGenerator = (offset: number, littleEndian?: boolean) => Opperation<any>;
 
 const Op_b = (offset: number) => {
@@ -133,25 +137,25 @@ const Op_p = (offset: number) => {
 const Op_x = (offset: number) => {
     return {
         type: 'padding',
-        get: () => null,
+        get: () => 0,
         set: () => { },
         size: 1,
         offset,
         isPadding: true,
-    } as Opperation<null>
+    } as Opperation<number>
 }
 
 export class Struct {
     readonly offsets: Opperation<any>[];
     readonly size: number;
-    constructor(model: string) {
+    constructor(format: string) {
         let littleEndian = isNativelittleEndian;
         const offsets: Opperation<any>[] = [];
         let size = 0;
-        let next = model[0];
+        let next = format[0];
         // struct like https://docs.python.org/3/library/struct.html
         let multiplier = ''
-        for (let i = 0; i < model.length; i++) {
+        for (let i = 0; i < format.length; i++) {
             let nextOp: OpGenerator | null = null
             switch (next) {
                 case '0':
@@ -243,7 +247,7 @@ export class Struct {
                 }
                 multiplier = ''
             }
-            next = model[i + 1]
+            next = format[i + 1]
         }
         // console.log('model:', model)
         // console.log('offsets:', offsets)
@@ -304,7 +308,7 @@ export class Struct {
      * The buffer’s size in bytes must be a multiple of the size required by the format, as reflected by calcsize().
      * Each iteration yields a tuple as specified by the format string.
      */
-    *iter_unpack(buffer: ArrayBuffer) {
+    *iter_unpack(buffer: ArrayBuffer): Generator<any, void, unknown> {
         const view = new DataView(buffer);
         const max = this.offsets.length;
         for (let i = 0; i < max; i++) {
