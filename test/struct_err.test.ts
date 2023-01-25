@@ -9,13 +9,28 @@ Deno.test("Python Examples pack(\">h\", 99999)", () => {
 
 
 Deno.test("Python Examples Demonstrate the difference between 's' and 'c' format characters:", () => {
+    const buf = pack("@ccc", '1'.charCodeAt(0), '2'.charCodeAt(0), '3'.charCodeAt(0))
+    const exp = new Uint8Array(3)
+    exp[0] = 1;
+    exp[1] = 2;
+    exp[2] = 3;
+    assertEquals(buf, exp.buffer)
+    const packed = pack("@3s", '123')
+    const back = String.fromCharCode(...new Uint8Array(packed))
+    assertEquals(back, '123     ')
+});
+
+
+Deno.test("non aligned test:", () => {
     const buf = pack("=ccc", '1'.charCodeAt(0), '2'.charCodeAt(0), '3'.charCodeAt(0))
     const exp = new Uint8Array(3)
     exp[0] = 1;
     exp[1] = 2;
     exp[2] = 3;
     assertEquals(buf, exp.buffer)
-    // pack("@3s", b'123') // todo
+    const packed = pack("=3s", '123')
+    const back = String.fromCharCode(...new Uint8Array(packed))
+    assertEquals(back, '123')
 });
 
 // TODO

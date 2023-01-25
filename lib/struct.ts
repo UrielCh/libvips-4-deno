@@ -13,10 +13,57 @@ export type Opperation<T> = {
     isPadding?: boolean;
 }
 
-export type PackSupportedType = bigint | number | boolean | Deno.PointerValue;
+export type PackSupportedType = bigint | number | string | boolean | Deno.PointerValue;
 //type OpGenerator = (offset: number, littleEndian?: boolean) => Opperation<bigint> | Opperation<number> | Opperation<boolean> | Opperation<Deno.PointerValue>;
 
-type OpGenerator<T = any> = ((offset: number, littleEndian?: boolean) => Opperation<T>) & { isPadding?: boolean, size: number };
+type OpGenerator<T = any> = ((offset: number, littleEndian?: boolean, multiplicator?: number, alignmentMask?: number) => Opperation<T>) & { isPadding?: boolean, size: number };
+
+// Need to find python spec about s type
+// : OpGenerator<string> = (offset: number, multiplicator: number)
+const Op_s16: OpGenerator<string> = (offset: number, littleEndian?: boolean, multiplicator = 1) => {
+    return {
+        type: 'string',
+        get: (view: DataView): string => {
+            const of = offset + view.byteOffset;
+            const data = view.buffer.slice(of, of + multiplicator + multiplicator);
+            return String.fromCharCode(...new Uint16Array(data))
+        },
+        set: (view: DataView, value: string) => {
+            for (let i = 0, strLen = value.length; i < strLen; i++) {
+                view.setInt16(offset + i + i, value.charCodeAt(i), littleEndian)
+            }
+        },
+        offset,
+        size: multiplicator * 2,
+    } as Opperation<string>
+}
+Op_s16.size = 2
+
+
+const Op_s8: OpGenerator<string> = (offset: number, _littleEndian?: boolean, multiplicator = 1, alignmentMask = 0) => {
+    return {
+        type: 'string',
+        get: (view: DataView): string => {
+            const of = offset + view.byteOffset;
+            const data = view.buffer.slice(of, of + multiplicator);
+            return String.fromCharCode(...new Uint8Array(data))
+        },
+        set: (view: DataView, value: string) => {
+            let strLen = value.length
+            for (let i = 0; i < strLen; i++) {
+                view.setInt8(offset + i, value.charCodeAt(i))
+            }
+            while ( strLen & alignmentMask !- 0) {
+               view.setInt8(offset + strLen, ' '.charCodeAt(0))
+               strLen++;
+            }
+        },
+        offset,
+        size: multiplicator,
+    } as Opperation<string>
+}
+Op_s8.size = 1
+
 
 const Op_b: OpGenerator<number> = (offset: number) => {
     return {
@@ -205,16 +252,15 @@ Op_x.size = 1
 export class Struct {
     readonly offsets: Opperation<any>[];
     public readonly size: number;
-    // public readonly padded: boolean;
+
     constructor(public readonly format: string) {
         let littleEndian = isNativelittleEndian;
-        let alignment = 0;
+        let alignmentMask = 0;
         const offsets: Opperation<any>[] = [];
         let size = 0;
-        let next = format[0];
-        // struct like https://docs.python.org/3/library/struct.html
         let multiplier = ''
         for (let i = 0; i < format.length; i++) {
+            const next = format[i];
             let nextOp: OpGenerator | null = null
             switch (next) {
                 case '0':
@@ -230,11 +276,11 @@ export class Struct {
                     multiplier += next
                     break
                 case '@': // native
-                    alignment = 7;
+                    alignmentMask = 7;
                     littleEndian = isNativelittleEndian
                     break
                 case '=': // native
-                    alignment = 0;
+                    alignmentMask = 0;
                     littleEndian = isNativelittleEndian
                     break
                 case '<': // little endian
@@ -291,6 +337,8 @@ export class Struct {
                     nextOp = Op_d
                     break
                 case 's': // char[] should be a buffer ?
+                    nextOp = Op_s8 // or 16 ?
+                    break
                 case 'p': // char[]
                 case 'P': // void*
                     nextOp = Op_p
@@ -300,7 +348,18 @@ export class Struct {
             }
             if (nextOp) {
                 const times = Number(multiplier || '1')
-                for (let j = 0; j < times; j++) {
+                if (next === 's') {
+                    const getter = nextOp(size, littleEndian, times, alignmentMask)
+                    offsets.push(getter)
+                    size += getter.size
+                    if (alignmentMask) {
+                        while ((size & alignmentMask) != 0) {
+                            // console.log('add aliognement from', size, 'check', size & alignment, 'alignment', alignment)
+                            size += 1
+                        }
+                    }
+                }
+                else for (let j = 0; j < times; j++) {
                     // (size, littleEndian)
                     if (!nextOp.isPadding) {
                         const getter = nextOp(size, littleEndian)
@@ -308,8 +367,8 @@ export class Struct {
                     }
                     size += nextOp.size
                     // aligne ??
-                    if (alignment) {
-                        while ((size & alignment) != 0) {
+                    if (alignmentMask) {
+                        while ((size & alignmentMask) != 0) {
                             // console.log('add aliognement from', size, 'check', size & alignment, 'alignment', alignment)
                             size += 1
                         }
@@ -317,14 +376,9 @@ export class Struct {
                 }
                 multiplier = ''
             }
-            next = format[i + 1]
         }
-        // console.log('model:', model)
-        // console.log('offsets:', offsets)
-        // console.log('size:', size)
         this.offsets = offsets;
         this.size = size;
-        // this.padded = alignment > 0;
     }
     /**
      * Return a bytes object containing the values v1, v2, … packed according to the format string format. The arguments must match the values required by the format exactly.
