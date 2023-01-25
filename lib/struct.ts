@@ -18,9 +18,36 @@ export type PackSupportedType = bigint | number | string | boolean | Deno.Pointe
 
 type OpGenerator<T = any> = ((offset: number, littleEndian?: boolean, multiplicator?: number, alignmentMask?: number) => Opperation<T>) & { isPadding?: boolean, size: number };
 
+const Op_s32: OpGenerator<string> = (offset: number, littleEndian?: boolean, multiplicator = 1, alignmentMask = 0) => {
+    return {
+        type: 'string',
+        get: (view: DataView): string => {
+            const of = offset + view.byteOffset;
+            const data = view.buffer.slice(of, of + 4 * multiplicator);
+            return String.fromCharCode(...new Uint32Array(data))
+        },
+        set: (view: DataView, value: string) => {
+            let strLen = value.length
+            for (let i = 0; i < strLen; i++) {
+                view.setInt32(offset + 4 * i, value.charCodeAt(i), littleEndian)
+            }
+            for (let i = strLen; i < multiplicator; i++) {
+                view.setInt32(offset + i * 4, ' '.charCodeAt(0), littleEndian)
+            }
+            while ( strLen & alignmentMask !- 0) {
+                view.setInt32(offset + strLen * 4, ' '.charCodeAt(0))
+                strLen++;
+             }
+         },
+        offset,
+        size: multiplicator * 4,
+    } as Opperation<string>
+}
+Op_s32.size = 4
+
 // Need to find python spec about s type
 // : OpGenerator<string> = (offset: number, multiplicator: number)
-const Op_s16: OpGenerator<string> = (offset: number, littleEndian?: boolean, multiplicator = 1) => {
+const Op_s16: OpGenerator<string> = (offset: number, littleEndian?: boolean, multiplicator = 1, alignmentMask = 0) => {
     return {
         type: 'string',
         get: (view: DataView): string => {
@@ -29,10 +56,19 @@ const Op_s16: OpGenerator<string> = (offset: number, littleEndian?: boolean, mul
             return String.fromCharCode(...new Uint16Array(data))
         },
         set: (view: DataView, value: string) => {
-            for (let i = 0, strLen = value.length; i < strLen; i++) {
-                view.setInt16(offset + i + i, value.charCodeAt(i), littleEndian)
+            let strLen = value.length
+            for (let i = 0; i < strLen; i++) {
+                view.setInt16(offset + i * 2, value.charCodeAt(i), littleEndian)
             }
-        },
+            for (let i = strLen; i < multiplicator; i++) {
+                view.setInt16(offset + i * 2, ' '.charCodeAt(0), littleEndian)
+            }
+            // padding ?
+            while ( strLen & alignmentMask !- 0) {
+                view.setInt16(offset + strLen * 2, ' '.charCodeAt(0))
+                strLen++;
+             }
+         },
         offset,
         size: multiplicator * 2,
     } as Opperation<string>
@@ -52,6 +88,9 @@ const Op_s8: OpGenerator<string> = (offset: number, _littleEndian?: boolean, mul
             let strLen = value.length
             for (let i = 0; i < strLen; i++) {
                 view.setInt8(offset + i, value.charCodeAt(i))
+            }
+            for (let i = strLen; i < multiplicator; i++) {
+                view.setInt8(offset + i, ' '.charCodeAt(0))
             }
             while ( strLen & alignmentMask !- 0) {
                view.setInt8(offset + strLen, ' '.charCodeAt(0))
@@ -259,10 +298,14 @@ export class Struct {
         const offsets: Opperation<any>[] = [];
         let size = 0;
         let multiplier = ''
+        let extra: null | string = null
         for (let i = 0; i < format.length; i++) {
             const next = format[i];
             let nextOp: OpGenerator | null = null
             switch (next) {
+                case '.':
+                    extra = '';
+                    break;
                 case '0':
                 case '1':
                 case '2':
@@ -273,7 +316,11 @@ export class Struct {
                 case '7':
                 case '8':
                 case '9':
-                    multiplier += next
+                    if (extra !== null) {
+                        extra += next
+                    } else {
+                        multiplier += next
+                    }
                     break
                 case '@': // native
                     alignmentMask = 7;
@@ -349,6 +396,15 @@ export class Struct {
             if (nextOp) {
                 const times = Number(multiplier || '1')
                 if (next === 's') {
+                    if (extra === '32') {
+                        nextOp = Op_s32
+                    } else if (extra === '16') {
+                        nextOp = Op_s16
+                    } else if (extra === '8') {
+                        nextOp = Op_s8
+                    } else if (extra != null) {
+                        throw new Error(`Unknown Packing type .${extra}s, only .8s, .16s and .32s are supported`)
+                    }
                     const getter = nextOp(size, littleEndian, times, alignmentMask)
                     offsets.push(getter)
                     size += getter.size
@@ -375,6 +431,7 @@ export class Struct {
                     }
                 }
                 multiplier = ''
+                extra = null
             }
         }
         this.offsets = offsets;
