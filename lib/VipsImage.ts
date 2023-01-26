@@ -2,7 +2,7 @@ import { VipsImageType } from "./enums.ts";
 import { VipsInterpretation } from "./enums.ts";
 import { VipsCoding } from "./enums.ts";
 import { VipsBandFormat } from "./enums.ts";
-import { packModel, setupStruct, VFFIBase } from "./VFFIBase.ts";
+import { packModel, VFFIBase } from "./VFFIBase.ts";
 
 // glib 
 // const tSize = Deno.build.os === "windows" ? 'Q' : 'I';
@@ -26,9 +26,6 @@ import { packModel, setupStruct, VFFIBase } from "./VFFIBase.ts";
 // "xxxxxxx"
 
 export class VipsImage extends VFFIBase {
-    constructor() {
-        super();
-    }
     @packModel("b79x")
     public gObjectdummy!: number;
     // "P" + // GTypeInstance  g_type_instance; GTypeClass *g_class;// 0

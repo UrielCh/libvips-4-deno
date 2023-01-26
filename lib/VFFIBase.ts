@@ -6,72 +6,87 @@ const sym_buffer = Symbol("buffer");// : ArrayBuffer;
 const sym_view = Symbol("view");//: DataView;
 const sym_struct = Symbol("struct");//: DataView;
 
-export interface FFIMapped {
-    [sym_Model]: string
-    [sym_NField]: Array<{ key: string, fid: number }>
-    [sym_buffer]: ArrayBuffer
-    [sym_view]: DataView
-    [sym_struct]: Struct
+
+const sym_offsetIndex = Symbol("offsetIndex");//: DataView;
+
+export interface VFFData {
+    [sym_Model]: string;
+    [sym_NField]: Array<{ key: string, fid: number }>;
 }
 
+/**
+ * field decorator
+ * @param format python struct single element pack format
+ */
 export function packModel(format: string) {
-    return function (t: Object, key: string) {
-        const target = t as FFIMapped;
+    return function (t: unknown, key: string) {
+        const target = t as VFFData;
         target[sym_Model] = (target[sym_Model] || '') + format;
         if (!target[sym_NField]) {
             target[sym_NField] = [];
         }
         const fid = target[sym_NField].length;
         target[sym_NField].push({ key, fid });
-
     }
 }
-
-export function setupStruct(self: unknown): FFIMapped {
-    const target = self as unknown as FFIMapped;
-    const model = target[sym_Model] || '';
-    target[sym_struct] = new Struct(model)
-
-    for (const { key, fid } of target[sym_NField]) {
-        const offset = target[sym_struct].offsets[fid];
-        Object.defineProperty(target, key, {
-            get: () => {
-                console.log('call getter ', key)
-                return offset.get(target[sym_view])
-            },
-            set: (value: unknown) => {
-                console.log('call setter ', key)
-                offset.set(target[sym_view], value)
-            },
-            // value: 1,
-            enumerable: true,
-            configurable: true,
-            // writable: true,
-        })
-    }
-    return target;
-}
-
 
 export class VFFIBase {
+    [sym_buffer]!: ArrayBuffer;
+    [sym_view]!: DataView;
+    [sym_struct]!: Struct;
+    [sym_offsetIndex] = new Map<string, number>();
+
     postInit(pointer?: Deno.PointerValue) {
-        const ffiobj = setupStruct(this as unknown as FFIMapped);
-        const size = ffiobj[sym_struct].size;
-        console.log('aloloc buff of size', size, 'bytes')
+        const target: VFFData = Object.getPrototypeOf(this);
+        const model = target[sym_Model] || '';
+        this[sym_struct] = new Struct(model)
+        for (const { key, fid } of target[sym_NField]) {
+            const offset = this[sym_struct].offsets[fid];
+            this[sym_offsetIndex].set(key, offset.offset)
+            Object.defineProperty(this, key, {
+                get: () => {
+                    return offset.get(this[sym_view])
+                },
+                set: (value: unknown) => {
+                    offset.set(this[sym_view], value)
+                },
+                enumerable: true,
+                configurable: true,
+            })
+        }
+        const size = this[sym_struct].size;
         if (pointer) {
-            ffiobj[sym_buffer] = Deno.UnsafePointerView.getArrayBuffer(pointer, size);
-            ffiobj[sym_view] = new DataView(ffiobj[sym_buffer]);
+            this[sym_buffer] = Deno.UnsafePointerView.getArrayBuffer(pointer, size);
+            this[sym_view] = new DataView(this[sym_buffer]);
         } else {
-            ffiobj[sym_buffer] = new ArrayBuffer(size) // TMP aprox value
-            ffiobj[sym_view] = new DataView(ffiobj[sym_buffer])
+            this[sym_buffer] = new ArrayBuffer(size) // TMP aprox value
+            this[sym_view] = new DataView(this[sym_buffer])
         }
     }
+
     public asRef(): Deno.PointerValue {
-        return Deno.UnsafePointer.of((this as unknown as FFIMapped)[sym_buffer])
+        return Deno.UnsafePointer.of(this[sym_buffer])
     }
 
+    /**
+     * 
+     * @returns the buffer mapped to the C struct
+     */
     public getBuffer(): ArrayBuffer {
-        return (this as unknown as FFIMapped)[sym_buffer]
+        return this[sym_buffer]
+    }
+
+    /**
+     * get in bytes the offset of the field in the C struct
+     * @param key field name
+     * @returns offset in bytes
+     */
+    public getOffset(key: string): number {
+        const offset = this[sym_offsetIndex].get(key);
+        if (offset === undefined) {
+            throw new Error(`offset for key ${key} not found`)
+        }
+        return offset
     }
 }
 
