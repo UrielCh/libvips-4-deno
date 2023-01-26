@@ -6,13 +6,13 @@ const sym_buffer = Symbol("buffer");// : ArrayBuffer;
 const sym_view = Symbol("view");//: DataView;
 const sym_struct = Symbol("struct");//: DataView;
 
-
 const sym_offsetIndex = Symbol("offsetIndex");//: DataView;
 
 export interface VFFData {
     [sym_Model]: string;
     [sym_NField]: Array<{ key: string, fid: number }>;
     [sym_struct]: Struct;
+    [sym_offsetIndex]: Map<string, number>;
 }
 
 /**
@@ -31,19 +31,36 @@ export function packModel(format: string) {
     }
 }
 
+/**
+ * base class for FFI struct mapped.
+ * 
+ * all the struct field must be declare in the same order as the C struct.
+ * all field must be declare with the @packModel() decorator.
+ * postInit must be call after the constructor.
+ */
 export class VFFIBase {
     [sym_buffer]!: ArrayBuffer;
     [sym_view]!: DataView;
-    [sym_offsetIndex] = new Map<string, number>();
 
+    /**
+     * if no PointerValue is given, will alocate the space needed to store the C struct.
+     * if a PointerValue is given, the class will use this memory to retrieve and update the C struct data.
+     * @param pointer an FFI buffer pointer
+     */
     postInit(pointer?: Deno.PointerValue) {
         const target: VFFData = Object.getPrototypeOf(this);
         const model = target[sym_Model] || '';
-        if (!target[sym_struct])
+        if (!target[sym_struct]) {
             target[sym_struct] = new Struct(model)
+            target[sym_offsetIndex] = new Map<string, number>();
+            for (const { key, fid } of target[sym_NField]) {
+                const offset = target[sym_struct].offsets[fid];
+                target[sym_offsetIndex].set(key, offset.offset)
+            }
+        }
+
         for (const { key, fid } of target[sym_NField]) {
             const offset = target[sym_struct].offsets[fid];
-            this[sym_offsetIndex].set(key, offset.offset)
             Object.defineProperty(this, key, {
                 get: () => {
                     return offset.get(this[sym_view])
@@ -83,7 +100,8 @@ export class VFFIBase {
      * @returns offset in bytes
      */
     public getOffset(key: string): number {
-        const offset = this[sym_offsetIndex].get(key);
+        const target: VFFData = Object.getPrototypeOf(this);
+        const offset = target[sym_offsetIndex].get(key);
         if (offset === undefined) {
             throw new Error(`offset for key ${key} not found`)
         }
