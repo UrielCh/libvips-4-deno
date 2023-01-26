@@ -12,6 +12,7 @@ const sym_offsetIndex = Symbol("offsetIndex");//: DataView;
 export interface VFFData {
     [sym_Model]: string;
     [sym_NField]: Array<{ key: string, fid: number }>;
+    [sym_struct]: Struct;
 }
 
 /**
@@ -33,15 +34,15 @@ export function packModel(format: string) {
 export class VFFIBase {
     [sym_buffer]!: ArrayBuffer;
     [sym_view]!: DataView;
-    [sym_struct]!: Struct;
     [sym_offsetIndex] = new Map<string, number>();
 
     postInit(pointer?: Deno.PointerValue) {
         const target: VFFData = Object.getPrototypeOf(this);
         const model = target[sym_Model] || '';
-        this[sym_struct] = new Struct(model)
+        if (!target[sym_struct])
+            target[sym_struct] = new Struct(model)
         for (const { key, fid } of target[sym_NField]) {
-            const offset = this[sym_struct].offsets[fid];
+            const offset = target[sym_struct].offsets[fid];
             this[sym_offsetIndex].set(key, offset.offset)
             Object.defineProperty(this, key, {
                 get: () => {
@@ -54,7 +55,7 @@ export class VFFIBase {
                 configurable: true,
             })
         }
-        const size = this[sym_struct].size;
+        const size = target[sym_struct].size;
         if (pointer) {
             this[sym_buffer] = Deno.UnsafePointerView.getArrayBuffer(pointer, size);
             this[sym_view] = new DataView(this[sym_buffer]);
