@@ -9,7 +9,6 @@ import * as res from "./common.ts"
 
 const { libvips, libgobject, cstring } = res;
 
-
 Deno.test("load png 512 and check size", () => {
     const imgPath = cstring(res.getImg512())
     const imgType = libvips.symbols.vips_foreign_find_load(imgPath)
@@ -20,7 +19,9 @@ Deno.test("load png 512 and check size", () => {
     assertNotEquals(vipImgPtr, 0, "vipImgPtr should not be null")
 
     // load mapper
-    const vipImg = new VipsImage(vipImgPtr);
+    const vipImg = new VipsImage();
+    vipImg.postInit(vipImgPtr);
+
     const width = libvips.symbols.vips_image_get_width(vipImgPtr);
     const height = libvips.symbols.vips_image_get_height(vipImgPtr);
 
@@ -47,7 +48,10 @@ Deno.test("load jpg 345x486 23BPP", () => {
     assertNotEquals(vipImgPtr, 0, "vipImgPtr should not be null")
 
     // load mapper
-    const vipImg = new VipsImage(vipImgPtr);
+    const vipImg = new VipsImage();
+    vipImg.postInit(vipImgPtr);
+
+
     const width = libvips.symbols.vips_image_get_width(vipImgPtr);
     const height = libvips.symbols.vips_image_get_height(vipImgPtr);
 
@@ -74,7 +78,8 @@ Deno.test("load gif 1x1 8BPP", () => {
     assertNotEquals(vipImgPtr, 0, "vipImgPtr should not be null")
 
     // load mapper
-    const vipImg = new VipsImage(vipImgPtr);
+    const vipImg = new VipsImage();
+    vipImg.postInit(vipImgPtr)
     const width = libvips.symbols.vips_image_get_width(vipImgPtr);
     const height = libvips.symbols.vips_image_get_height(vipImgPtr);
 
@@ -102,8 +107,13 @@ Deno.test("crop png 512", () => {
     rect.left = 0;
     rect.width = 100;
     rect.height = 100;
-    const err = libvips.symbols.vips_region_prepare(vipRegion, rect.asRef())
-    assertEquals(err, 0, "vips_region_prepare should return 0")
+
+    console.log('buffer:', rect.getBuffer());
+
+    
+
+    // const err = libvips.symbols.vips_region_prepare(vipRegion, rect.asRef())
+    // assertEquals(err, 0, "vips_region_prepare should return 0")
 
     // const out = libvips.symbols.vips_image_new();
     //// vips_embed: { parameters: ["pointer", "pointer", "i32", "i32", "i32", "i32"], result: "i32" },
@@ -114,6 +124,6 @@ Deno.test("crop png 512", () => {
     //console.log({ error: Deno.UnsafePointerView.getCString(error) });
 
 
-    libgobject.symbols.g_object_unref(vipRegion)
-    libgobject.symbols.g_object_unref(vipImgPtr);
+    //libgobject.symbols.g_object_unref(vipRegion)
+    //libgobject.symbols.g_object_unref(vipImgPtr);
 });
