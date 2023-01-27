@@ -1,14 +1,14 @@
 import { Struct } from "https://deno.land/x/pystruct@0.0.2/mod.ts";
 import { VFFData } from "./packModel.descriptor.ts";
 
-import { sym_buffer, sym_Model, sym_NField, sym_offsetIndex, sym_struct, sym_view } from "./symboles.ts";
+import { symBuffer, symFormat, symFields, symOffsetIndex, symStruct, symView } from "./symboles.ts";
 
 /**
  * public interface added to all FFI mapped struct
  */
 export interface FFIObject {
-    [sym_buffer]: ArrayBuffer;
-    [sym_view]: DataView;
+    [symBuffer]: ArrayBuffer;
+    [symView]: DataView;
     getBuffer: () => ArrayBuffer;
     asRef(): Deno.PointerValue;
 }
@@ -31,24 +31,24 @@ function getProto(clazz: new () => unknown): object {
     const newProto = Object.create(null)
     Object.setPrototypeOf(newProto, oldProto);
 
-    const model = oldProto[sym_Model];
+    const model = oldProto[symFormat];
     if (!model)
         throw new Error('No model defined for ' + clazz.name)
-    newProto[sym_struct] = new Struct(model)
-    newProto[sym_offsetIndex] = new Map<string, number>();
-    for (const { key, fid } of oldProto[sym_NField]) {
-        const offset = newProto[sym_struct].offsets[fid];
-        newProto[sym_offsetIndex].set(key, offset.offset)
+    newProto[symStruct] = new Struct(model)
+    newProto[symOffsetIndex] = new Map<string, number>();
+    for (const { key, fid } of oldProto[symFields]) {
+        const offset = newProto[symStruct].offsets[fid];
+        newProto[symOffsetIndex].set(key, offset.offset)
     }
 
-    for (const { key, fid } of oldProto[sym_NField]) {
-        const offset = newProto[sym_struct].offsets[fid];
+    for (const { key, fid } of oldProto[symFields]) {
+        const offset = newProto[symStruct].offsets[fid];
         Object.defineProperty(newProto, key, {
             get: function () {
-                return offset.get(this[sym_view])
+                return offset.get(this[symView])
             },
             set: function (value: unknown) {
-                offset.set(this[sym_view], value)
+                offset.set(this[symView], value)
             },
             enumerable: true,
             configurable: true,
@@ -56,11 +56,11 @@ function getProto(clazz: new () => unknown): object {
     }
 
     newProto.getBuffer = function (): ArrayBuffer {
-        return this[sym_buffer]
+        return this[symBuffer]
     };
 
     newProto.asRef = function () {
-        return Deno.UnsafePointer.of(this[sym_buffer])
+        return Deno.UnsafePointer.of(this[symBuffer])
     };
 
     ProtoCache.set(clazz, newProto);
@@ -76,7 +76,8 @@ function getProto(clazz: new () => unknown): object {
  */
 export const FFIMapper = {
     /**
-     * allocate a new instance of the given class from the heap
+     * Allocate a new instance of the given class from the heap
+     * 
      * @param clazz a class containing the @packModel() decorator
      * @returns a new instance of the class with the FFIObject interface
      */
@@ -84,24 +85,25 @@ export const FFIMapper = {
         const proto = getProto(clazz);
         const obj = Object.create(proto) as T & FFIObject;
         const ret = obj as T & FFIObject & VFFData;
-        const size = ret[sym_struct].size;
-        ret[sym_buffer] = new ArrayBuffer(size) // TMP aprox value
-        ret[sym_view] = new DataView(ret[sym_buffer])
+        const size = ret[symStruct].size;
+        ret[symBuffer] = new ArrayBuffer(size) // TMP aprox value
+        ret[symView] = new DataView(ret[symBuffer])
         return obj as T & FFIObject;
     },
     /**
+     * Attach an existing FFI struct to a new instance of the given class
      * 
      * @param clazz a class containing the @packModel() decorator
      * @param pointer an FFI pointer to a struct of the given class
      * @returns a mapped instance of the class with the FFIObject interface
      */
-    map<T>(clazz: new () => T, pointer: Deno.PointerValue): T & FFIObject {
+    attach<T>(clazz: new () => T, pointer: Deno.PointerValue): T & FFIObject {
         const proto = getProto(clazz);
         const obj = Object.create(proto) as T & FFIObject;
         const ret = obj as T & FFIObject & VFFData;
-        const size = ret[sym_struct].size;
-        ret[sym_buffer] = Deno.UnsafePointerView.getArrayBuffer(pointer, size);
-        ret[sym_view] = new DataView(ret[sym_buffer]);
+        const size = ret[symStruct].size;
+        ret[symBuffer] = Deno.UnsafePointerView.getArrayBuffer(pointer, size);
+        ret[symView] = new DataView(ret[symBuffer]);
         return obj as T & FFIObject;
     },
     /**
@@ -113,7 +115,7 @@ export const FFIMapper = {
      */
     getFieldOffset(clazz: new () => unknown, fieldname: string): number {
         const proto = getProto(clazz) as VFFData;
-        const op = proto[sym_offsetIndex].get(fieldname);
+        const op = proto[symOffsetIndex].get(fieldname);
         if (op === undefined) {
             throw new Error(`offset for key ${fieldname} not found`)
         }
@@ -128,7 +130,7 @@ export const FFIMapper = {
      */
     getFieldType(clazz: new () => unknown, fieldname: string): string {
         const proto = getProto(clazz) as VFFData;
-        const op = proto[sym_offsetIndex].get(fieldname);
+        const op = proto[symOffsetIndex].get(fieldname);
         if (op === undefined) {
             throw new Error(`offset for key ${fieldname} not found`)
         }
@@ -145,8 +147,8 @@ export const FFIMapper = {
     getSize(clazz: new () => unknown, fieldname?: string): number {
         const proto = getProto(clazz) as VFFData;
         if (!fieldname)
-            return proto[sym_struct].size;
-        const op = proto[sym_offsetIndex].get(fieldname);
+            return proto[symStruct].size;
+        const op = proto[symOffsetIndex].get(fieldname);
         if (op === undefined) {
             throw new Error(`offset for key ${fieldname} not found`)
         }

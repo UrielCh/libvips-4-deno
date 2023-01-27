@@ -1,6 +1,6 @@
-export const sym_Model = Symbol("model");
-export const sym_NField = Symbol("nbFields");
-export const sym_buffer = Symbol("buffer");// : ArrayBuffer;
-export const sym_view = Symbol("view");//: DataView;
-export const sym_struct = Symbol("struct");//: DataView;
-export const sym_offsetIndex = Symbol("offsetIndex");//: DataView;
+export const symFormat = Symbol("format");
+export const symFields = Symbol("fields");
+export const symBuffer = Symbol("buffer"); // : ArrayBuffer;
+export const symView = Symbol("view"); //: DataView;
+export const symStruct = Symbol("struct"); //: DataView;
+export const symOffsetIndex = Symbol("offsetIndex"); //: DataView;
