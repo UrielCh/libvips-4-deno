@@ -2,6 +2,7 @@ import { Struct, Operation } from "https://deno.land/x/pystruct@0.0.3/mod.ts";
 import { VFFData } from "./packModel.descriptor.ts";
 
 import { symBuffer, symFormat, symFields, symOffsetIndex, symStruct, symView } from "./symboles.ts";
+import * as pc from "https://deno.land/std@0.173.0/fmt/colors.ts";
 
 /**
  * public interface added to all FFI mapped struct
@@ -153,5 +154,51 @@ export const FFIMapper = {
             throw new Error(`offset for key ${fieldname} not found`)
         }
         return op.size;
+    },
+
+    /**
+     * Dump the content of the struct as a hex string
+     * 
+     * @param obj a FFIObject instance
+     * @param opts.offset the offset to start dumping from, can be a number or a string (field name)
+     * @param opts.color enable ANSI color codes
+     * @param opts.collumn the collumn per 16Byte length can be 1 2 or 8
+     * @returns 
+     */
+    hexDump(obj: FFIObject, opts: { offset?: number | string, color?: boolean, collumn?: 1 | 2 | 4 | 8 } = {}): string {
+        let offset = opts.offset ?? 0;
+        if (typeof offset === 'string') {
+            const of = (obj as unknown as VFFData)[symOffsetIndex].get(offset);
+            if (!of)
+                throw new Error(`offset for key ${offset} not found`)
+            offset = of.offset;
+        }
+        const u8_ = new Uint8Array(obj.getBuffer(), offset);
+        let pp = Array.from(u8_)
+            .map((i) => i.toString(16).padStart(2, '0'))
+            .join(' ')
+            .replace(/([a-f0-9 ]{45} )/g, '$1\n');
+        const collumn = opts.collumn ?? 4;
+        if (collumn === 8)  // 4 collumn
+            pp = pp.replace(/([a-f0-9 ]{4} )/g, '$1  ')
+        else if (collumn === 4)  // 4 collumn
+            pp = pp.replace(/([a-f0-9 ]{10} )/g, '$1  ')
+        else if (collumn === 2)  // 4 collumn
+            pp = pp.replace(/([a-f0-9 ]{23} )/g, '$1  ')
+
+        if (opts.color) {
+            pp = pp.replace(/00/g, pc.dim('00'));
+        }
+
+        const lines = pp.split(/\n/);
+        const indexLen = lines.length.toString(16).length
+        pp = lines.map((l, i) => {
+            let prefix = `${i.toString(16).padStart(indexLen, '0')}0:`;
+            if (opts.color)
+                prefix = pc.green(prefix);
+            return `${prefix} ${l}`
+        }).join('\n')
+        return pp;
     }
+
 }

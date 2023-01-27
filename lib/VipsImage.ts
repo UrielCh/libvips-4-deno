@@ -30,6 +30,8 @@ export class GObject {
     @packModel("I")
     public gRefCount!: number;
 
+    @packModel("I") // unknown data
+    public _gProtected1!: number;
     @packModel("P")
     //GData         *qdata;
     public gData!: Deno.PointerValue;
@@ -43,38 +45,32 @@ export type charStar = Deno.PointerValue;
 /**
  * @source https://github.com/libvips/libvips/blob/master/libvips/include/vips/object.h#L426
  */
-export class VipsObject extends GObject{
-	/* Set after ->build() has run succesfully: construct is fully done
-	 * and checked.
-	 */
+export class VipsObject extends GObject {
+    /* Set after ->build() has run succesfully: construct is fully done
+     * and checked.
+     */
     @packModel("i")
-	public constructed!: gboolean;
+    public constructed!: gboolean;
 
-	/* Set for static objects which are allocated at startup and never
-	 * freed. These objects are ommitted from leak reports.
-	 */
+    /* Set for static objects which are allocated at startup and never
+     * freed. These objects are ommitted from leak reports.
+     */
     @packModel("i")
-	public static_object!: gboolean;
-
-    @packModel("i")
-	public _aaaaaa!: gboolean;
-
-    @packModel("i")
-	public _bbbbbb!: gboolean;
+    public static_object!: gboolean;
 
     /* Table of argument instances for this class and any derived classes.
      * is a GHashTable in C
-	 */
+     */
     @packModel("P")
-	argument_table!:  Deno.PointerValue;
+    argument_table!: Deno.PointerValue;
 
     /* Class properties (see below), duplicated in the instance so we can
-	 * get at them easily via the property system.
-	 */
+     * get at them easily via the property system.
+     */
     @packModel("p")
-	nickname!: charStar;
+    nickname!: charStar;
     @packModel("p")
-	description!: charStar;
+    description!: charStar;
 
     /* The pre/post/close callbacks are all fire-once. 
      */
@@ -82,9 +78,11 @@ export class VipsObject extends GObject{
     public preclose!: gboolean;
     @packModel("i")
     public close!: gboolean;
-    @packModel("i")
+    @packModel("i4x") // pad to 8 byte
     public postclose!: gboolean;
 
+    // @packModel("i") // unknown type
+    // public _internal1!: gboolean;
     /* Total memory allocated relative to this object, handy for
      * profiling.
      */
@@ -250,7 +248,7 @@ export class VipsImage extends VipsObject {
     public baseaddr!: Deno.PointerValue;
 
     /* file descriptor 4 Byte */
-    @packModel("i")
+    @packModel("I")
     public length!: number;
 
     /* size of mmap area 4 Byte */
