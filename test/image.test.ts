@@ -101,17 +101,13 @@ Deno.test("crop png 512", () => {
     const vipImgPtr = libvips.symbols.vips_image_new_from_file(imgPath, null);
     assertNotEquals(vipImgPtr, 0, "vipImgPtr should not be null")
     // ask for a 100x100 pixel region at 0x0 (top left)
-    const vipRegion = libvips.symbols.vips_region_new(vipImgPtr);
+    //const vipRegion = libvips.symbols.vips_region_new(vipImgPtr);
     const rect = new VipsRect()
     rect.top = 0;
     rect.left = 0;
     rect.width = 100;
     rect.height = 100;
-
     console.log('buffer:', rect.getBuffer());
-
-    
-
     // const err = libvips.symbols.vips_region_prepare(vipRegion, rect.asRef())
     // assertEquals(err, 0, "vips_region_prepare should return 0")
 
