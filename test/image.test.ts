@@ -107,7 +107,7 @@ Deno.test("crop png 512", () => {
     rect.left = 0;
     rect.width = 100;
     rect.height = 100;
-    console.log('buffer:', rect.getBuffer());
+    // console.log('buffer:', rect.getBuffer());
     // const err = libvips.symbols.vips_region_prepare(vipRegion, rect.asRef())
     // assertEquals(err, 0, "vips_region_prepare should return 0")
 
