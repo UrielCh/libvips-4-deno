@@ -23,5 +23,9 @@ export function assertEqualsBuf(actual: ArrayBufferLike, expected: ArrayBufferLi
     assertEqualsOrg(a, e, `${msg} value: "${a}" should be eq to "${e}"`);
 }
 
+export function assertEquals<T>(actual: T, expected: T, msg = "") {
+    assertEqualsOrg(actual, expected, `${msg} value: "${actual}" should be eq to "${expected}"`)
+}
+
 export { libvips, libgobject }
 

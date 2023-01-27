@@ -4,72 +4,110 @@ import { VipsCoding } from "./enums.ts";
 import { VipsBandFormat } from "./enums.ts";
 import { packModel } from "./FFIMapper/mod.ts";
 
-// glib 
-// const tSize = Deno.build.os === "windows" ? 'Q' : 'I';
-// const tSize = 'Q';
+/**
+ * GObject:
+ *
+ * The base object type.
+ * 
+ * All the fields in the `GObject` structure are private to the implementation
+ * and should never be accessed directly.
+ *
+ * Since GLib 2.72, all #GObjects are guaranteed to be aligned to at least the
+ * alignment of the largest basic GLib type (typically this is #guint64 or
+ * #gdouble). If you need larger alignment for an element in a #GObject, you
+ * should allocate it on the heap (aligned), or arrange for your #GObject to be
+ * appropriately padded. This guarantee applies to the #GObject (or derived)
+ * struct, the #GObjectClass (or derived) struct, and any private data allocated
+ * by G_ADD_PRIVATE().
+ * 
+ * @souce https://gitlab.gnome.org/GNOME/glib/-/blob/main/gobject/gobject.h#L267
+ */
+export class GObject {
+    @packModel("P")
+    // GTypeInstance  g_type_instance; GTypeClass *g_class
+    public gType!: Deno.PointerValue;
+    // ref_count;  /* (atomic) */
+    @packModel("I")
+    public gRefCount!: number;
 
-// const model_VipsObject: string =
-//  // GObject parent_instance;
-// "P" + // GTypeInstance  g_type_instance; GTypeClass *g_class;// 0
-// "I" + //guint          ref_count;  /* (atomic) */   // 1
-// "P" + //GData         *qdata;                       // 2
-// // end of GObject
-// "i" + // gboolean constructed;                      // 3
-// "i" + // gboolean static_object;                    // 4
-// "P" + // VipsArgumentTable *argument_table;         // 5
-// "p" + // char *nickname;                            // 6
-// "p" + // char *description;                         // 7
-// "i" + // gboolean preclose; == int                  // 8
-// "i" + // gboolean close; == int                     // 9
-// "ix" + // gboolean postclose; == int                 // 10
-// tSize + // size_t local_memory;                       // 11
-// "xxxxxxx"
+    @packModel("P")
+    //GData         *qdata;
+    public gData!: Deno.PointerValue;
+}
 
-export class VipsImage {
-    @packModel("b79x")
-    public gObjectdummy!: number;
-    // "P" + // GTypeInstance  g_type_instance; GTypeClass *g_class;// 0
-    //public gType!: Deno.PointerValue
-    //guint          ref_count;  /* (atomic) */   // 1
-    //public gRefCount!: number;
-    // "P" + //GData         *qdata;                       // 2
-    //public gData!: Deno.PointerValue;
-    //guint          ref_count;  /* (atomic) */   // 1
-    //public gConstructed!: number;
-    //"i" + // gboolean static_object;                    // 4
-    //public gStaticObj!: number;
-    // "P" + // VipsArgumentTable *argument_table;         // 5
-    //public gArgumentTable!: Deno.PointerValue;
-    // "p" + // char *nickname;                            // 6
-    //public gNickname!: Deno.PointerValue;
-    // "p" + // char *description;                         // 7
-    //public gDescription!: Deno.PointerValue;
-    //"i" + // gboolean preclose; == int                  // 8
-    //public gPreclose!: number;
-    // "i" + // gboolean close; == int                     // 9
-    //public gClose!: number;
-    // "i" + // gboolean postclose; == int                 // 10
-    //public gPostclose!: number;
-    // tSize // size_t local_memory;                       // 11
-    //public gLocal_memory!: bigint;
-    // 8 bytes
-    // VipsObject parent_instance;
-    // is a pointer
-    // get parent_instance!: Deno.PointerValue { return offsets[0].get(this.view) }
-    // set parent_instance(v: Deno.PointerValue) { offsets[0].set(this.view, v) }
-    /*< private >*/
+/**
+ * gboolean are gint in C so 4 byte
+ */
+export type gboolean = number;
+export type charStar = Deno.PointerValue;
+/**
+ * @source https://github.com/libvips/libvips/blob/master/libvips/include/vips/object.h#L426
+ */
+export class VipsObject extends GObject{
+	/* Set after ->build() has run succesfully: construct is fully done
+	 * and checked.
+	 */
+    @packModel("i")
+	public constructed!: gboolean;
+
+	/* Set for static objects which are allocated at startup and never
+	 * freed. These objects are ommitted from leak reports.
+	 */
+    @packModel("i")
+	public static_object!: gboolean;
+
+    @packModel("i")
+	public _aaaaaa!: gboolean;
+
+    @packModel("i")
+	public _bbbbbb!: gboolean;
+
+    /* Table of argument instances for this class and any derived classes.
+     * is a GHashTable in C
+	 */
+    @packModel("P")
+	argument_table!:  Deno.PointerValue;
+
+    /* Class properties (see below), duplicated in the instance so we can
+	 * get at them easily via the property system.
+	 */
+    @packModel("p")
+	nickname!: charStar;
+    @packModel("p")
+	description!: charStar;
+
+    /* The pre/post/close callbacks are all fire-once. 
+     */
+    @packModel("i")
+    public preclose!: gboolean;
+    @packModel("i")
+    public close!: gboolean;
+    @packModel("i")
+    public postclose!: gboolean;
+
+    /* Total memory allocated relative to this object, handy for
+     * profiling.
+     */
+    @packModel("n")
+    local_memory!: number;
+}
+
+/**
+ * @source https://github.com/libvips/libvips/blob/master/libvips/include/vips/image.h#L181
+ */
+export class VipsImage extends VipsObject {
     /* We have to keep these names for compatibility with the old API.
      * Don't use them though, use vips_image_get_width() and friends.
      */
-    /* image widith, in pixels 4 Byte */
+    /* image widith, in pixels */
     @packModel("i")
     public Xsize!: number;
 
-    /* image height, in pixels 4 Byte */
+    /* image height, in pixels */
     @packModel("i")
     public Ysize!: number;
 
-    /* number of image bands 4 Byte */
+    /* number of image bands */
     @packModel("i")
     public Bands!: number;
 
