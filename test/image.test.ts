@@ -1,5 +1,5 @@
 import { assertEquals, assertNotEquals } from "https://deno.land/std@0.173.0/testing/asserts.ts"
-import { FFIMapper } from "../lib/FFIMapper.ts";
+import { FFIMapper } from "../lib/FFIMapper/mod.ts";
 import { VipsImage } from "../lib/VipsImage.ts";
 import { VipsRect } from "../lib/VipsRect.ts";
 import * as res from "./common.ts"

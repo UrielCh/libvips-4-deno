@@ -2,7 +2,7 @@ import { VipsImageType } from "./enums.ts";
 import { VipsInterpretation } from "./enums.ts";
 import { VipsCoding } from "./enums.ts";
 import { VipsBandFormat } from "./enums.ts";
-import { packModel } from "./packModel.descriptor.ts";
+import { packModel } from "./FFIMapper/mod.ts";
 
 // glib 
 // const tSize = Deno.build.os === "windows" ? 'Q' : 'I';

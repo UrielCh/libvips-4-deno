@@ -1,4 +1,4 @@
-import { packModel } from "./packModel.descriptor.ts";
+import { packModel } from "./FFIMapper/mod.ts";
 
 export class VipsRect {
     @packModel("<i")
