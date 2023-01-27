@@ -96,9 +96,8 @@ export const FFIMapper = {
      * @returns a mapped instance of the class with the FFIObject interface
      */
     map<T>(clazz: new () => T, pointer: Deno.PointerValue): T & FFIObject {
-        const obj = new clazz();
         const proto = getProto(clazz);
-        Object.setPrototypeOf(obj, proto);
+        const obj = Object.create(proto) as T & FFIObject;
         const ret = obj as T & FFIObject & VFFData;
         const size = ret[sym_struct].size;
         ret[sym_buffer] = Deno.UnsafePointerView.getArrayBuffer(pointer, size);

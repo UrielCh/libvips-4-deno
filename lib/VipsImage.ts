@@ -3,7 +3,6 @@ import { VipsInterpretation } from "./enums.ts";
 import { VipsCoding } from "./enums.ts";
 import { VipsBandFormat } from "./enums.ts";
 import { packModel } from "./packModel.descriptor.ts";
-import { VFFIBase } from "./VFFIBase.ts";
 
 // glib 
 // const tSize = Deno.build.os === "windows" ? 'Q' : 'I';
@@ -26,7 +25,7 @@ import { VFFIBase } from "./VFFIBase.ts";
 // tSize + // size_t local_memory;                       // 11
 // "xxxxxxx"
 
-export class VipsImage extends VFFIBase {
+export class VipsImage {
     @packModel("b79x")
     public gObjectdummy!: number;
     // "P" + // GTypeInstance  g_type_instance; GTypeClass *g_class;// 0

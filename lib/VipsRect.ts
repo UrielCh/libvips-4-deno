@@ -1,7 +1,6 @@
 import { packModel } from "./packModel.descriptor.ts";
-import { VFFIBase } from "./VFFIBase.ts";
 
-export class VipsRect extends VFFIBase {
+export class VipsRect {
     @packModel("<i")
     left!: number;
     @packModel("i")
