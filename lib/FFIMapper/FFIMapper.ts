@@ -173,32 +173,40 @@ export const FFIMapper = {
                 throw new Error(`offset for key ${offset} not found`)
             offset = of.offset;
         }
-        const u8_ = new Uint8Array(obj.getBuffer(), offset);
-        let pp = Array.from(u8_)
-            .map((i) => i.toString(16).padStart(2, '0'))
-            .join(' ')
-            .replace(/([a-f0-9 ]{45} )/g, '$1\n');
+        const u8array = new Uint8Array(obj.getBuffer(), offset);
+        const lineCount = Math.ceil(u8array.length / 16);
+        const indexLen = 1 + lineCount.toString(16).length
+        let out = '';
         const collumn = opts.collumn ?? 4;
-        if (collumn === 8)  // 4 collumn
-            pp = pp.replace(/([a-f0-9 ]{4} )/g, '$1  ')
-        else if (collumn === 4)  // 4 collumn
-            pp = pp.replace(/([a-f0-9 ]{10} )/g, '$1  ')
-        else if (collumn === 2)  // 4 collumn
-            pp = pp.replace(/([a-f0-9 ]{23} )/g, '$1  ')
-
-        if (opts.color) {
-            pp = pp.replace(/00/g, pc.dim('00'));
-        }
-
-        const lines = pp.split(/\n/);
-        const indexLen = lines.length.toString(16).length
-        pp = lines.map((l, i) => {
-            let prefix = `${i.toString(16).padStart(indexLen, '0')}0:`;
+        let BytePerBlock = 16;
+        if (collumn === 2)
+            BytePerBlock = 8;
+        else if (collumn === 4)
+            BytePerBlock = 4;
+        else if (collumn === 8)
+            BytePerBlock = 2;
+        const charPerLine = 16 * 3 + collumn + 1;
+        for (let line = 0; line < lineCount; line++) {
+            const start = line * 16;
+            const lineBytes = u8array.slice(start, start + 16);
+            const asArray = Array.from(lineBytes);
+            let prefix = `${start.toString(16).padStart(indexLen, '0')}: `;
             if (opts.color)
                 prefix = pc.green(prefix);
-            return `${prefix} ${l}`
-        }).join('\n')
-        return pp;
+            out += prefix;
+            let pp = asArray
+                .map((v, i) => v.toString(16).padStart(2, '0') + ((i+1) % BytePerBlock === 0 ? ' ' : ''))
+                .join(' ')
+            pp = pp.padEnd(charPerLine , ' ');
+            // console.log({pp})
+            if (opts.color) {
+                pp = pp.replace(/00/g, pc.dim('00'));
+            }
+            out += pp;
+            out += asArray.map(byte => byte > 31 && byte < 127 ? String.fromCharCode(byte) : '.').join('');
+            out += "\n";
+        }
+        return out;
     }
 
 }
