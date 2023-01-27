@@ -1,14 +1,11 @@
-import { Struct } from "https://deno.land/x/pystruct@0.0.2/mod.ts";
+import { Struct, type Operation } from "https://deno.land/x/pystruct@0.0.3/mod.ts";
 import { symFormat, symFields, symOffsetIndex, symStruct } from "./symboles.ts";
-// todo Export type from pystruct
-// replace Opperation<T>  by Operation<T = unknown> 
-import { type Opperation } from "https://deno.land/x/pystruct@0.0.2/struct.ts";
 
 export interface VFFData {
     [symFormat]: string;
     [symFields]: Array<{ key: string, fid: number }>;
     [symStruct]: Struct;
-    [symOffsetIndex]: Map<string, Opperation<unknown>>;
+    [symOffsetIndex]: Map<string, Operation>;
 }
 
 /**

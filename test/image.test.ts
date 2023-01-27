@@ -20,7 +20,7 @@ Deno.test("load png 512 and check size", () => {
     assertNotEquals(vipImgPtr, 0, "vipImgPtr should not be null")
 
     // load mapper
-    const vipImg = FFIMapper.map(VipsImage, vipImgPtr);
+    const vipImg = FFIMapper.attach(VipsImage, vipImgPtr);
 
     const width = libvips.symbols.vips_image_get_width(vipImgPtr);
     const height = libvips.symbols.vips_image_get_height(vipImgPtr);
@@ -48,7 +48,7 @@ Deno.test("load jpg 345x486 23BPP", () => {
     assertNotEquals(vipImgPtr, 0, "vipImgPtr should not be null")
 
     // load mapper
-    const vipImg = FFIMapper.map(VipsImage, vipImgPtr);
+    const vipImg = FFIMapper.attach(VipsImage, vipImgPtr);
 
     const width = libvips.symbols.vips_image_get_width(vipImgPtr);
     const height = libvips.symbols.vips_image_get_height(vipImgPtr);
@@ -76,7 +76,7 @@ Deno.test("load gif 1x1 8BPP", () => {
     assertNotEquals(vipImgPtr, 0, "vipImgPtr should not be null")
 
     // load mapper
-    const vipImg = FFIMapper.map(VipsImage, vipImgPtr);
+    const vipImg = FFIMapper.attach(VipsImage, vipImgPtr);
     const width = libvips.symbols.vips_image_get_width(vipImgPtr);
     const height = libvips.symbols.vips_image_get_height(vipImgPtr);
 
