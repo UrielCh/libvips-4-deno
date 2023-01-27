@@ -1,4 +1,4 @@
-import { Struct } from "https://deno.land/x/pystruct@0.0.3/mod.ts";
+import { Struct, Operation } from "https://deno.land/x/pystruct@0.0.3/mod.ts";
 import { VFFData } from "./packModel.descriptor.ts";
 
 import { symBuffer, symFormat, symFields, symOffsetIndex, symStruct, symView } from "./symboles.ts";
@@ -28,17 +28,17 @@ function getProto(clazz: new () => unknown): object {
     const cached = ProtoCache.get(clazz)
     if (cached) return cached;
     const oldProto = Object.getPrototypeOf(new clazz());
-    const newProto = Object.create(null)
+    const newProto: (VFFData & FFIObject) = Object.create(null)
     Object.setPrototypeOf(newProto, oldProto);
 
     const format = oldProto[symFormat];
     if (!format)
         throw new Error('No model defined for ' + clazz.name)
     newProto[symStruct] = new Struct(format)
-    newProto[symOffsetIndex] = new Map<string, number>();
+    newProto[symOffsetIndex] = new Map<string, Operation>();
     for (const { key, fid } of oldProto[symFields]) {
         const offset = newProto[symStruct].offsets[fid];
-        newProto[symOffsetIndex].set(key, offset.offset)
+        newProto[symOffsetIndex].set(key, offset)
     }
 
     for (const { key, fid } of oldProto[symFields]) {
