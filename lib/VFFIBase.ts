@@ -1,35 +1,9 @@
 import { Struct } from "https://deno.land/x/pystruct@0.0.2/mod.ts";
-
-const sym_Model = Symbol("model");
-const sym_NField = Symbol("nbFields");
-const sym_buffer = Symbol("buffer");// : ArrayBuffer;
-const sym_view = Symbol("view");//: DataView;
-const sym_struct = Symbol("struct");//: DataView;
-
-const sym_offsetIndex = Symbol("offsetIndex");//: DataView;
-
-export interface VFFData {
-    [sym_Model]: string;
-    [sym_NField]: Array<{ key: string, fid: number }>;
-    [sym_struct]: Struct;
-    [sym_offsetIndex]: Map<string, number>;
-}
-
-/**
- * field decorator
- * @param format python struct single element pack format
- */
-export function packModel(format: string) {
-    return function (t: unknown, key: string) {
-        const target = t as VFFData;
-        target[sym_Model] = (target[sym_Model] || '') + format;
-        if (!target[sym_NField]) {
-            target[sym_NField] = [];
-        }
-        const fid = target[sym_NField].length;
-        target[sym_NField].push({ key, fid });
-    }
-}
+// todo Export type from pystruct
+// replace Opperation<T>  by Operation<T = unknown> 
+import { type Opperation } from "https://deno.land/x/pystruct@0.0.2/struct.ts";
+import { packModel, VFFData } from "./packModel.descriptor.ts";
+import { sym_buffer, sym_Model, sym_NField, sym_offsetIndex, sym_struct, sym_view } from "./symboles.ts";
 
 /**
  * base class for FFI struct mapped.
@@ -49,16 +23,19 @@ export class VFFIBase {
      */
     postInit(pointer?: Deno.PointerValue) {
         const target: VFFData = Object.getPrototypeOf(this);
-        const model = target[sym_Model] || '';
-        if (!target[sym_struct]) {
-            target[sym_struct] = new Struct(model)
-            target[sym_offsetIndex] = new Map<string, number>();
-            for (const { key, fid } of target[sym_NField]) {
-                const offset = target[sym_struct].offsets[fid];
-                target[sym_offsetIndex].set(key, offset.offset)
-            }
-        }
 
+        // called once
+        if (!target[sym_struct]) {
+            const model = target[sym_Model] || '';
+            target[sym_struct] = new Struct(model)
+            target[sym_offsetIndex] = new Map<string, Opperation<unknown>>();
+            if (target[sym_NField])
+                for (const { key, fid } of target[sym_NField]) {
+                    const offset = target[sym_struct].offsets[fid];
+                    target[sym_offsetIndex].set(key, offset)
+                }
+        }
+        // called for each instance can be mode to factory and called once
         for (const { key, fid } of target[sym_NField]) {
             const offset = target[sym_struct].offsets[fid];
             Object.defineProperty(this, key, {
@@ -72,6 +49,7 @@ export class VFFIBase {
                 configurable: true,
             })
         }
+        // called for each instance
         const size = target[sym_struct].size;
         if (pointer) {
             this[sym_buffer] = Deno.UnsafePointerView.getArrayBuffer(pointer, size);
@@ -101,11 +79,27 @@ export class VFFIBase {
      */
     public getOffset(key: string): number {
         const target: VFFData = Object.getPrototypeOf(this);
-        const offset = target[sym_offsetIndex].get(key);
-        if (offset === undefined) {
+        const op = target[sym_offsetIndex].get(key);
+        if (op === undefined) {
             throw new Error(`offset for key ${key} not found`)
         }
-        return offset
+        return op.offset;
     }
+}
+
+// export class toto {
+//     @packModel("<i")
+//     aa!: number;
+// }
+//  extends toto
+export class VipsRect {
+    @packModel("<i")
+    left!: number;
+    @packModel("i")
+    top!: number;
+    @packModel("i")
+    width!: number;
+    @packModel("i")
+    height!: number;
 }
 
