@@ -25,7 +25,7 @@ export function locateLib(name: string): URL {
        try {
           // console.log('testing ', path)
           Deno.statSync(path);
-       } catch (e) {
+       } catch (_e) {
           continue
        }
        return toFileUrl(path)

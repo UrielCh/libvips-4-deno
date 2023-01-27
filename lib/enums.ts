@@ -5,7 +5,7 @@ export enum VipsDemandStyle {
 	VIPS_DEMAND_STYLE_FATSTRIP,
 	VIPS_DEMAND_STYLE_THINSTRIP,
 	VIPS_DEMAND_STYLE_ANY			
-};
+}
 
 /* Types of image descriptor we may have. The type field is advisory only: it
  * does not imply that any fields in IMAGE have valid data.
@@ -20,7 +20,7 @@ export enum VipsImageType {
 	VIPS_IMAGE_MMAPINRW,		/* memory mapped read/write file */
 	VIPS_IMAGE_OPENOUT,		/* output to fd */
 	VIPS_IMAGE_PARTIAL		/* partial image */
-} ;
+}
 
 export enum VipsInterpretation {
 	VIPS_INTERPRETATION_ERROR = -1,
@@ -44,7 +44,7 @@ export enum VipsInterpretation {
 	VIPS_INTERPRETATION_scRGB = 28,
 	VIPS_INTERPRETATION_HSV = 29,
 	VIPS_INTERPRETATION_LAST = 30
-};
+}
 
 export enum VipsBandFormat {
 	VIPS_FORMAT_NOTSET = -1,
@@ -59,7 +59,7 @@ export enum VipsBandFormat {
 	VIPS_FORMAT_DOUBLE = 8,
 	VIPS_FORMAT_DPCOMPLEX = 9,
 	VIPS_FORMAT_LAST = 10
-};
+}
 
 export enum VipsCoding {
 	VIPS_CODING_ERROR = -1,
@@ -67,11 +67,11 @@ export enum VipsCoding {
 	VIPS_CODING_LABQ = 2,
 	VIPS_CODING_RAD = 6,
 	VIPS_CODING_LAST = 7
-};
+}
 
 export enum VipsAccess {
 	VIPS_ACCESS_RANDOM = 0,
 	VIPS_ACCESS_SEQUENTIAL,
 	VIPS_ACCESS_SEQUENTIAL_UNBUFFERED,
 	VIPS_ACCESS_LAST
-};
+}
