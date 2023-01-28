@@ -253,7 +253,7 @@ export class VipsImage extends VipsObject {
 
     /* size of mmap area 4 Byte */
     /* magic from header, endian-ness of image 4 Byte */
-    @packModel("I")
+    @packModel("500xI")
     public magic!: number;
 
     /* Partial image stuff. All these fields are initialised 

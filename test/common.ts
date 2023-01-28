@@ -1,6 +1,6 @@
 import { libvips, libgobject } from "../lib/ffi.ts";
-import { dirname, fromFileUrl, join, resolve } from "https://deno.land/std@0.173.0/path/mod.ts";
-import { assertEquals as assertEqualsOrg } from "https://deno.land/std@0.173.0/testing/asserts.ts"
+import { dirname, fromFileUrl, join, resolve } from "https://deno.land/std@0.175.0/path/mod.ts";
+import { assertEquals as assertEqualsOrg } from "https://deno.land/std@0.175.0/testing/asserts.ts"
 
 export function cstring(txt: string): Uint8Array {
     return new TextEncoder().encode(`${txt}\0`);

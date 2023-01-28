@@ -1,5 +1,5 @@
-import { join } from "https://deno.land/std@0.173.0/path/mod.ts";
-import { dirname, toFileUrl, fromFileUrl } from "https://deno.land/std@0.173.0/path/win32.ts";
+import { join } from "https://deno.land/std@0.175.0/path/mod.ts";
+import { dirname, toFileUrl, fromFileUrl } from "https://deno.land/std@0.175.0/path/win32.ts";
 
 const __filename = dirname(fromFileUrl(import.meta.url));
 // const libPath = new URL(`../vips-dev-8.14/bin/${libFileName}`, import.meta.url);
