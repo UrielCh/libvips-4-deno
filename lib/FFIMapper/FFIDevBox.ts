@@ -3,6 +3,7 @@ import { FFIObject, getProto } from "./FFIMapper.ts";
 import { symOffsetIndex, symStruct } from "./symboles.ts";
 import { VFFData } from "./packModel.descriptor.ts";
 import { FFIView } from "./FFIView.tsx";
+import { Operation } from "https://deno.land/x/pystruct@0.0.3/mod.ts";
 
 export const FFIDevBox = {
     /**
@@ -108,15 +109,19 @@ export const FFIDevBox = {
     },
 
     viewObject(obj: FFIObject, opts: { offset?: number | string, color?: boolean, collumn?: 1 | 2 | 4 | 8 } = {}): Promise<void> {
-        let offset = opts.offset ?? 0;
-        if (typeof offset === 'string') {
-            const of = (obj as unknown as VFFData)[symOffsetIndex].get(offset);
+        const operations: Map<string, Operation> = (obj as unknown as VFFData)[symOffsetIndex];
+
+        let offset = 0;
+        if (typeof opts.offset === 'string') {
+            const of = operations.get(opts.offset);
             if (!of)
                 throw new Error(`offset for key ${offset} not found`)
             offset = of.offset;
+        } else if (typeof opts.offset === 'number') {
+            offset = opts.offset;
         }
         const buffer = new Uint8Array(obj.getBuffer(), offset);
-        const instance = FFIView(buffer);
+        const instance = FFIView(buffer, {offset, operations});
         return instance.waitUntilExit()
     }
 }

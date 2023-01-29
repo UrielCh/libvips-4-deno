@@ -3,16 +3,26 @@
 
 import React, {useState, useRef} from 'npm:react@17';
 import {render, Text, Box, useInput, Instance } from 'npm:ink';
+import { Operation } from 'https://deno.land/x/pystruct@0.0.3/mod.ts';
 
 interface PropsBuffer {
 	buffer: Uint8Array;
+    operations?: Map<string, Operation>;
+    offset: number;
 }
 
-export function FFIView(buffer: Uint8Array): Instance {
-    const App = ({buffer}: PropsBuffer) => {
+type Colors = 'black' | 'red' | 'green' | 'yellow' |  'blue' | 'magenta' | 'cyan' | 'white' | 
+'gray' | 'redBright' | 'greenBright' | 'yellowBright' | 'blueBright' | 'magentaBright' | 'cyanBright' | 'whiteBright' | 
+'bold' | 'dim';
+
+export function FFIView(buffer: Uint8Array, opts:{operations?: Map<string, Operation>, offset?: number} = {}): Instance {
+    const App = (params: PropsBuffer) => {
+        const {buffer} = params;
         const { rows } = Deno.consoleSize();
         const scroll = useRef(0);
-        const [ cursor, setCursor ] = useState(0);
+        const longestSymbol = useRef(opts.operations ? Math.max(0, ...[...opts.operations.keys()].map(a=>a.length)) : 0);
+        const bv = useRef(new DataView(buffer.buffer, buffer.byteOffset, buffer.byteLength));
+        const [ cursor, setCursor ] = useState(Math.min(params.offset || 0, buffer.length - 1));
         const lines: React.Component[] = [];
         const len = buffer.length;
         const lineCount = Math.ceil(len / 16);
@@ -40,15 +50,12 @@ export function FFIView(buffer: Uint8Array): Instance {
         });
 
         const header: React.Component[] = []
-        header.push(<Text key="offset">offset: </Text>)
+        header.push(<Text key="offset">Offset: </Text>)
         header.push(<Text key="offsetV" color="green">{cursor.toString(16).padStart(indexLen, '0')}</Text>)
         header.push(<Text key="valuelbl"> Value:</Text>)
-
-        // const u8 = 	`u8: ${buffer[cursor].toString().padStart(3, ' ')}`
         const u8: React.Component[] = []
         u8.push(<Text key="u8">u8: </Text>)
         u8.push(<Text key="vu8" color="green">{buffer[cursor].toString().padStart(3, ' ')}</Text>)
-        
         const u16: React.Component[] = [];
         if (cursor + 1 < len) {
             const n = buffer[cursor] + buffer[cursor + 1] * 256;
@@ -65,7 +72,10 @@ export function FFIView(buffer: Uint8Array): Instance {
         }
     
         let pos = 0
-        const visibleLines = Math.min(rows - 3, lineCount);
+        let reserverLines = 3;
+        if (opts.operations)
+            reserverLines++;
+        const visibleLines = Math.min(rows - reserverLines, lineCount);
         const cursorLine = cursor / 16 | 0;
         const firstLine = scroll.current;
         const lastLine = scroll.current + visibleLines;
@@ -79,10 +89,42 @@ export function FFIView(buffer: Uint8Array): Instance {
         }
     
         pos = scroll.current * 16;
-    
+        let isHighlight = (_offset: number) => false;
+
         //  Scroll: {scroll.current}/{lineCount}
         const title = <Text key='title'>{header} {u8} {u16} {u32}</Text>
         lines.push(title);
+        if (opts.operations) {
+            const opLst = [...opts.operations.entries()];
+            const op = opLst.find(op => {
+                return (cursor >= op[1].offset && (op[1].offset + op[1].size) > cursor)
+            })
+            if (op) {
+                const start = op[1].offset;
+                const end = start + op[1].size;
+                // lines.push(<Text key="struct"><Text key="fieldName">{op[0]}</Text><Text key='lbl1'> of Type: </Text><Text key="fieldName">{op[1].type}</Text></Text>);
+                const valueLine: React.Component[] = [];
+                valueLine.push(<Text>Type: </Text>)
+                valueLine.push(<Text color="magenta">{op[1].type.padEnd(9, ' ')}</Text>)
+                valueLine.push(<Text> Name: </Text>)
+                valueLine.push(<Text color="cyan">{op[0].padEnd(longestSymbol.current, ' ')}</Text>)
+                valueLine.push(<Text> Value: </Text>)
+                if (op[1].type === 'pointer')
+                    valueLine.push(<Text color="green">0x{(op[1].get(bv.current) as Deno.PointerValue).toString(16)}</Text>)
+                else
+                    valueLine.push(<Text color="green">{op[1].get(bv.current)}</Text>)
+
+                // lines.push(<Text key="struct">Type: {op[1].type.padEnd(9, ' ')} name: {op[0]} value: {op[1].get(bv.current)}</Text>);
+                lines.push(<Text key="struct">{valueLine}</Text>);
+                isHighlight = (offset: number) => offset >= start && offset < end;
+            } else {
+                const op = opLst[0];
+                lines.push(<Text key="err">No maching Field</Text>);
+                // lines.push(<Text key="err">No maching Field cursor: {cursor} inf {(op[1].offset >= cursor && (op[1].offset + op[1].size) < cursor) ? 'True': 'False'}</Text>);
+                // lines.push(<Text key="err">No maching Field cursor: {cursor} inf {(op[1].offset >= cursor && (op[1].offset + op[1].size) > cursor) ? 'True': 'False'}</Text>);
+            }
+        }
+
     
         for (let line = 0; pos < len && line < visibleLines; line++) {
             const lineContent: React.Component[] = [];
@@ -96,7 +138,10 @@ export function FFIView(buffer: Uint8Array): Instance {
                     spacer = '   ';
                 const value = buffer[pos];
                 
-                const ext: {inverse?: 1, dimColor?: 1} = pos === cursor ? {inverse: 1} : {};
+                const ext: {inverse?: 1, dimColor?: 1, color?: Colors} = pos === cursor ? {inverse: 1} : {};
+                if (isHighlight(pos)) {
+                    ext.color = 'magenta'
+                }
                 if (value === 0)
                     ext.dimColor = 1;
                 lineContent.push(<Text key={pos} {...ext}>{value.toString(16).padStart(2, '0')}</Text>);
@@ -121,7 +166,7 @@ export function FFIView(buffer: Uint8Array): Instance {
         return <Box flexDirection="column">{lines}</Box>;
     };
     
-    const instance: Instance = render(<App buffer={buffer}/>);
+    const instance: Instance = render(<App buffer={buffer} offset={opts.offset || 0} operations={opts.operations}/>);
     return instance;
 }
 

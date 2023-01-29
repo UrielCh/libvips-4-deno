@@ -1,6 +1,9 @@
 import { Struct, type Operation } from "https://deno.land/x/pystruct@0.0.3/mod.ts";
 import { symFormat, symFields, symOffsetIndex, symStruct } from "./symboles.ts";
 
+/**
+ * hidden part of the interface added to all FFI mapped struct
+ */
 export interface VFFData {
     [symFormat]: string;
     [symFields]: Array<{ key: string, fid: number }>;
