@@ -3,7 +3,7 @@
 
 import React, {useState, useRef} from 'npm:react@17';
 import {render, Text, Box, useInput, Instance } from 'npm:ink';
-import { Operation } from 'https://deno.land/x/pystruct@0.0.3/mod.ts';
+import { Operation } from './deps.ts';
 
 interface PropsBuffer {
 	buffer: Uint8Array;

@@ -1,4 +1,4 @@
-import { Struct, type Operation } from "https://deno.land/x/pystruct@0.0.3/mod.ts";
+import { Struct, type Operation } from "./deps.ts";
 import { symFormat, symFields, symOffsetIndex, symStruct } from "./symboles.ts";
 
 /**

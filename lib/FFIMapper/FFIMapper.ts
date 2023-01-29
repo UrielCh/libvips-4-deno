@@ -1,4 +1,4 @@
-import { Struct, Operation } from "https://deno.land/x/pystruct@0.0.3/mod.ts";
+import { Struct, type Operation } from "./deps.ts";
 import { VFFData } from "./packModel.descriptor.ts";
 
 import { symBuffer, symFormat, symFields, symOffsetIndex, symStruct, symView } from "./symboles.ts";
