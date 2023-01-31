@@ -3137,6 +3137,7 @@ export const CXDiagnosticT = ptr("void");
  */
 export const CXDiagnosticSetT = ptr("void");
 /******** End pointer ********/
+/******** Start Struct ********/
 /**
  * A parsed comment.
  */
@@ -3396,6 +3397,12 @@ export const CXCodeCompleteResultsT = {
   ],
 } as const;
 
+/**
+ * Identifies a half-open character range in the source code.
+ *
+ * Use clang_getRangeStart() and clang_getRangeEnd() to retrieve the
+ * starting and end locations from a source range, respectively.
+ */
 export const CXSourceRangeT = {
   /** Struct size: 24 */
   struct: [
@@ -3791,12 +3798,6 @@ export const CXSourceLocationT = {
 } as const;
 
 /**
- * Identifies a half-open character range in the source code.
- *
- * Use clang_getRangeStart() and clang_getRangeEnd() to retrieve the
- * starting and end locations from a source range, respectively.
- */
-/**
  * Identifies an array of ranges.
  */
 export const CXSourceRangeListT = {
@@ -3812,8 +3813,6 @@ export const CXSourceRangeListT = {
     ptr(CXSourceRangeT), // ranges, offset 8, size 8
   ],
 } as const;
-
-export const time_t = __time_t;
 
 /**
  * Uniquely identifies a CXFile, that refers to the same underlying file,
@@ -3835,6 +3834,9 @@ export const CXStringSetT = {
     unsignedInt, // Count, offset 8, size 4
   ],
 } as const;
+
+/******** End Struct ********/
+export const time_t = __time_t;
 
 /******** Start Functions ********/
 /**

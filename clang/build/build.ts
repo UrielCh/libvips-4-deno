@@ -1,6 +1,5 @@
 import {
   dirname,
-  fromFileUrl,
   join,
 
 } from "https://deno.land/std@0.170.0/path/mod.ts";
@@ -19,6 +18,7 @@ import {
   FunctionType,
   PointerType,
   structFieldToDeinlineString,
+  StructType,
 } from "./build_utils.ts";
 import { ContextFile, ContextGlobal } from "./Context.ts";
 import { onEnumDecl } from "./onEnumDecl.ts";
@@ -195,7 +195,6 @@ export const func = (_func: unknown) => "function" as const;
   /**
    * ptr
    */
-
   const ptrType = [...ctxtGl.TYPE_MEMORY.values()].filter(a => a.kind === "pointer") as PointerType[];
   if (ptrType.length) {
     results.push(`/******** Start pointer ********/`)
@@ -211,13 +210,12 @@ export const func = (_func: unknown) => "function" as const;
   }
 
   /**
-   * rest
+   * struct
    */
-  for (const [name, anyType] of ctxtGl.TYPE_MEMORY) {
-    if (anyType.kind === "enum" || anyType.kind === "plain" || anyType.kind === "pointer" || anyType.kind === "function") {
-      // Handled above
-      continue;
-    } else if (anyType.kind === "struct") {
+  const stuctType = [...ctxtGl.TYPE_MEMORY.values()].filter(a => a.kind === "struct") as StructType[];
+  if (ptrType.length) {
+    results.push(`/******** Start Struct ********/`)
+    for (const anyType of stuctType) {
       results.push(
         `${anyType.comment ? `${anyType.comment}\n` : ""
         }export const ${anyType.reprName} = {
@@ -232,7 +230,15 @@ ${anyType.fields.map((field) => {
 } as const;
   `,
       );
-    } else if (anyType.kind === "ref") {
+    }
+    results.push(`/******** End Struct ********/`)
+  }
+
+  /**
+   * ref
+   */
+  for (const [name, anyType] of ctxtGl.TYPE_MEMORY) {
+    if (anyType.kind === "ref") {
       results.push(
         `${anyType.comment ? `${anyType.comment}\n` : ""}export const ${name.endsWith("_t") ? name : `${name}T`
         } = ${anyType.name.endsWith("_t") ? anyType.name : anyType.reprName};
