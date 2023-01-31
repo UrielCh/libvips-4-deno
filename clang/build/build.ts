@@ -38,7 +38,13 @@ function cmt(elm: CommonType, offset = '  '): string {
   return `${comment}\n`;
 }
 
-
+/**
+ * Generator entry point
+ * @param configurations.headerRoot The root directory of the header files
+ * @param configurations.libFile The library file to check for exported symbols
+ * @param configurations.destination The destination directory for the generated files
+ * @param configurations.includePaths Additional include paths will be passed as -I to the C compiler
+ */
 export async function generateLibMapping(configurations: { headerRoot: string, libFile: string, destination: string, includePaths?: string[] }) {
   const index = new libclang.CXIndex(false, true);
   const { destination } = configurations;
@@ -84,7 +90,6 @@ export async function generateLibMapping(configurations: { headerRoot: string, l
 
     tu.getCursor().visitChildren(cursorChildVisitor);
   }
-
 
   const ctxtGl = new ContextGlobal();
   HEADER_FILES.forEach((fileName) => visiteHeaderFile(ctxtGl, fileName));
@@ -153,10 +158,9 @@ export async function generateLibMapping(configurations: { headerRoot: string, l
   }
 
   const results: string[] = [
-    `export const ptr = (_type: unknown) => "pointer" as const;
-export const buf = (_type: unknown) => "buffer" as const;
-export const func = (_func: unknown) => "function" as const;
-`,
+    'export const ptr = (_type: unknown) => "pointer" as const;',
+    'export const buf = (_type: unknown) => "buffer" as const;',
+    'export const func = (_func: unknown) => "function" as const;',
   ];
 
   for (const [name, anyType] of ctxtGl.TYPE_MEMORY) {
@@ -165,10 +169,8 @@ export const func = (_func: unknown) => "function" as const;
         // Cannot declare "void" type
         continue;
       }
-      results.push(
-        `${cmt(anyType, '')}export const ${name} = "${anyType.type}" as const;
-`,
-      );
+      results.push(`${cmt(anyType, '')}export const ${name} = "${anyType.type}" as const;`)
+      results.push('');
     }
   }
 
