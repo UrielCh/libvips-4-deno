@@ -100,63 +100,63 @@ Deno.test("class CXTranslationUnit", async (t) => {
     index.dispose();
   });
 
-  // await t.step("Valid parseTranslationUnit", () => {
-  //   const index = new CXIndex();
-  //   index.parseTranslationUnit("./test/assets/test.h");
-  //   index.dispose();
-  // });
+  await t.step("Valid parseTranslationUnit", () => {
+    const index = new CXIndex();
+    index.parseTranslationUnit("./test/clang/assets/test.h");
+    index.dispose();
+  });
 
-  // await t.step("getTargetInfo", () => {
-  //   const index = new CXIndex();
-  //   const tu = index.parseTranslationUnit("./test/assets/test.h");
-  //   const targetInfo1 = tu.getTargetInfo();
-  //   const targetInfo2 = tu.getTargetInfo();
-  //   assertEquals(targetInfo1.pointerWidth, targetInfo2.pointerWidth);
-  //   assertEquals(targetInfo1.triple, targetInfo2.triple);
-  //   tu.dispose();
-  //   assertThrows(() => tu.getTargetInfo());
-  // });
+  await t.step("getTargetInfo", () => {
+    const index = new CXIndex();
+    const tu = index.parseTranslationUnit("./test/clang/assets/test.h");
+    const targetInfo1 = tu.getTargetInfo();
+    const targetInfo2 = tu.getTargetInfo();
+    assertEquals(targetInfo1.pointerWidth, targetInfo2.pointerWidth);
+    assertEquals(targetInfo1.triple, targetInfo2.triple);
+    tu.dispose();
+    assertThrows(() => tu.getTargetInfo());
+  });
 
-//  await t.step("file stuff", () => {
-//    const index = new CXIndex();
-//    const tu = index.parseTranslationUnit("./test/assets/test.h");
-//    const tu2 = index.parseTranslationUnit("./test/assets/test.hpp");
-//    //console.log("Diag count:", tu2.getNumberOfDiagnostics());
-//    const file = tu.getFile("./test/assets/test.h");
-//    assertNotEquals(file, null);
-//    // Remove \r for windows hosts
-//    const contents = file!.getContents().replaceAll("\r\n", "\n");
-//    assertEquals(contents.startsWith("// my_class.h"), true);
-//    assertEquals(contents.length, 171);
-//    const cursor = tu.getCursor();
-//    assertEquals(cursor.getBriefCommentText(), "");
-//    //console.log(cursor.kind);
-//    cursor.visitChildren((_cursor) => {
-//      //console.log(cursor.kind);
-//      return CXChildVisitResult.CXChildVisit_Recurse;
-//    });
-//    tu2.getCursor().visitChildren((cursor) => {
-//      switch (cursor.kind) {
-//        case CXCursorKind.CXCursor_Namespace:
-//        case CXCursorKind.CXCursor_ClassDecl:
-//          return CXChildVisitResult.CXChildVisit_Recurse;
-//        case CXCursorKind.CXCursor_CXXMethod:
-//          console.log(cursor.getPlatformAvailability());
-//          console.log(cursor.getCXXManglings());
-//      }
-//      console.log(cursor.getKindSpelling());
-//      return CXChildVisitResult.CXChildVisit_Continue;
-//    });
-//    assertThrows(() => CXDiagnosticSet.loadDiagnostics("test-diag.foo"));
-//    //console.log(tu.getAllSkippedRanges());
-//    const resourceUsage = tu.getResourceUsage();
-//    const length = resourceUsage.length;
-//    //console.log("ResourceUsage length:", length);
-//    for (let i = 0; i < length; i++) {
-//      //console.log(resourceUsage.at(i));
-//    }
-//    resourceUsage.dispose();
-//    tu.dispose();
-//    tu2.dispose();
-//  });
+  await t.step("file stuff", () => {
+    const index = new CXIndex();
+    const tu = index.parseTranslationUnit("./test/clang/assets/test.h");
+    const tu2 = index.parseTranslationUnit("./test/clang/assets/test.hpp");
+    //console.log("Diag count:", tu2.getNumberOfDiagnostics());
+    const file = tu.getFile("./test/clang/assets/test.h");
+    assertNotEquals(file, null);
+    // Remove \r for windows hosts
+    const contents = file!.getContents().replaceAll("\r\n", "\n");
+    assertEquals(contents.startsWith("// my_class.h"), true);
+    assertEquals(contents.length, 171);
+    const cursor = tu.getCursor();
+    assertEquals(cursor.getBriefCommentText(), "");
+    //console.log(cursor.kind);
+    cursor.visitChildren((_cursor) => {
+      //console.log(cursor.kind);
+      return CXChildVisitResult.CXChildVisit_Recurse;
+    });
+    tu2.getCursor().visitChildren((cursor) => {
+      switch (cursor.kind) {
+        case CXCursorKind.CXCursor_Namespace:
+        case CXCursorKind.CXCursor_ClassDecl:
+          return CXChildVisitResult.CXChildVisit_Recurse;
+        case CXCursorKind.CXCursor_CXXMethod:
+          console.log(cursor.getPlatformAvailability());
+          console.log(cursor.getCXXManglings());
+      }
+      console.log(cursor.getKindSpelling());
+      return CXChildVisitResult.CXChildVisit_Continue;
+    });
+    assertThrows(() => CXDiagnosticSet.loadDiagnostics("test-diag.foo"));
+    //console.log(tu.getAllSkippedRanges());
+    const resourceUsage = tu.getResourceUsage();
+    const length = resourceUsage.length;
+    //console.log("ResourceUsage length:", length);
+    for (let i = 0; i < length; i++) {
+      //console.log(resourceUsage.at(i));
+    }
+    resourceUsage.dispose();
+    tu.dispose();
+    tu2.dispose();
+  });
 });
