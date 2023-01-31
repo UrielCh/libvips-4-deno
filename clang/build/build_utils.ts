@@ -114,9 +114,7 @@ export const structFieldToDeinlineString = (
   // De-inline functions in structs
   const functionName = `${struct.name}${fieldNamePart}CallbackDefinition`;
   results.push(
-    `export const ${functionName} = ${
-      anyTypeToString(field.type.pointee)
-    } as const;`,
+    `export const ${functionName} = ${anyTypeToString(field.type.pointee)} as const;`,
   );
 
   return `func(${
@@ -138,15 +136,17 @@ export const anyTypeToString = (type: AnyType): string => {
     return type.name;
   } else if (type.kind === "function") {
     return `{
-      /** ${type.name} */
-      parameters: [${
+  /** ${type.name} */
+  parameters: [
+${
       type.parameters.map((param) =>
-        `${anyTypeToString(param.type)}, // ${param.name}${
+        `    ${anyTypeToString(param.type)}, // ${param.name}${
           param.comment ? `, ${param.comment}` : ""
         }`
       ).join("\n")
     }
-  ], result: ${anyTypeToString(type.result)}
+  ],
+  result: ${anyTypeToString(type.result)},
 }`;
   } else if (
     type.kind === "struct" || type.kind === "ref" ||

@@ -3617,7 +3617,8 @@ const clang_executeOnThread = {
   parameters: [
     func({
       /** void (void *) */
-      parameters: [ptr("void") // void *
+      parameters: [
+        ptr("void"), // void *
       ],
       result: "void",
     }), // fn

@@ -39,10 +39,13 @@ import { walk } from "https://deno.land/std@0.171.0/fs/walk.ts";
   generateLibMapping({ headerRoot: includeDirectory, libFile: "/lib64/libclang.so.14.0.6", destination: './gen', includePaths });
 }
 
-
-function cmt(elm: CommonType): string {
-  if (!elm.comment) return '';
-  return `${elm.comment}\n`;
+function cmt(elm: CommonType, offset = '  '): string {
+  let { comment } = elm;
+  if (!comment) return '';
+  // comment = comment.replace('\n*\n*\n*', '*\n*')
+  // comment = comment.replaceAll(/\n \*\n \*\s*\n \*/g, '\n *')
+  comment = comment.split('\n').map(a => `${offset}${a.trimEnd()}`).join('\n')
+  return `${comment}\n`;
 }
 
 
@@ -173,7 +176,7 @@ export const func = (_func: unknown) => "function" as const;
         continue;
       }
       results.push(
-        `${cmt(anyType)}export const ${name} = "${anyType.type}" as const;
+        `${cmt(anyType, '')}export const ${name} = "${anyType.type}" as const;
 `,
       );
     }
@@ -185,13 +188,13 @@ export const func = (_func: unknown) => "function" as const;
   if (enumsType.length) {
     results.push(`/******** Start enums ********/`)
     for (const anyType of enumsType) {
-      results.push(`${cmt(anyType)}export const enum ${anyType.name} {\n`);
+      results.push(`${cmt(anyType, '')}export const enum ${anyType.name} {`);
 
       for (const value of anyType.values) {
         results.push(`${cmt(value)}  ${value.name}${value.value === null ? "" : ` = ${value.value}`},`)
       }
       results.push(`}`)
-      results.push(`${cmt(anyType)}export const ${anyType.reprName} = ${anyTypeToString(anyType.type)};\n`); // fin push
+      results.push(`${cmt(anyType, '')}export const ${anyType.reprName} = ${anyTypeToString(anyType.type)};\n`); // fin push
     } // fin loop enum
     results.push(`/******** End enums ********/`)
   }
@@ -208,7 +211,7 @@ export const func = (_func: unknown) => "function" as const;
         throw new Error("Unexpected unnamed Pointer type:" + JSON.stringify(anyType));
       }
       const type = anyType.useBuffer ? "buf" : "ptr";
-      results.push(`${cmt(anyType)}export const ${anyType.name}T = ${type}(${anyTypeToString(anyType.pointee)});`);
+      results.push(`${cmt(anyType, '')}export const ${anyType.name}T = ${type}(${anyTypeToString(anyType.pointee)});`);
     }
     results.push(`/******** End pointer ********/`)
   }
@@ -220,19 +223,19 @@ export const func = (_func: unknown) => "function" as const;
   if (stuctType.length) {
     results.push(`/******** Start Struct ********/`)
     for (const anyType of stuctType) {
-      results.push(
-        `${cmt(anyType)}export const ${anyType.reprName} = {
-  /** Struct size: ${anyType.size} */
-  struct: [
-${anyType.fields.map((field) => {
-          return `${cmt(field)} ${structFieldToDeinlineString(results, anyType, field)
-            }, // ${field.name}, offset ${field.offset}, size ${field.size}`;
-        }).join("\n")
-        }
-  ],
-} as const;
-  `,
-      );
+      const next: string[] = [];
+      if ('CXCodeCompleteResultsT' === anyType.reprName)
+        debugger;
+      next.push(`${cmt(anyType, '')}export const ${anyType.reprName} = {`);
+      next.push(`  /** Struct size: ${anyType.size} */`);
+      next.push(`  struct: [`);
+      for (const field of anyType.fields) {
+        const structField = structFieldToDeinlineString(results, anyType, field);
+        next.push(`${cmt(field, '    ')}    ${structField}, // ${field.name}, offset ${field.offset}, size ${field.size}`);
+      }
+      next.push(`  ],`);
+      next.push(`} as const;\n`);
+      results.push(next.join('\n'));
     }
     results.push(`/******** End Struct ********/`)
   }
@@ -240,6 +243,7 @@ ${anyType.fields.map((field) => {
   /**
    * ref
    */
+  results.push(`/******** Start ref ********/`)
   for (const [name, anyType] of ctxtGl.TYPE_MEMORY) {
     if (anyType.kind === "ref") {
       results.push(
@@ -249,31 +253,35 @@ ${anyType.fields.map((field) => {
       );
     }
   }
+  results.push(`/******** end ref ********/`)
 
 
+  /**
+   * function
+   */
   const fncType = [...ctxtGl.TYPE_MEMORY.values()].filter(a => a.kind === "function") as FunctionType[];
   if (fncType.length) {
     results.push(`/******** Start Functions ********/`)
     for (const anyType of fncType) {
-      results.push(`${cmt(anyType)}export const ${anyType.name}CallbackDefinition = {\nparameters: [`);
+      results.push(`${cmt(anyType, '')}export const ${anyType.name}CallbackDefinition = {\n  parameters: [`);
       results.push(anyType.parameters.map((param) =>
-        `${cmt(param)} ${anyTypeToString(param.type)}, // ${param.name} `
+        `${cmt(param, '    ')}    ${anyTypeToString(param.type)}, // ${param.name}`
       ).join("\n"));
-      results.push('],\n');
-      results.push(`result: ${anyTypeToString(anyType.result)},\n`);
+      results.push('  ],\n');
+      results.push(`  result: ${anyTypeToString(anyType.result)},`);
       results.push(`} as const;`);
-      results.push(`${cmt(anyType)}export const ${anyType.reprName} = "function" as const;\n`);
+      results.push(`${cmt(anyType, '')}export const ${anyType.reprName} = "function" as const;\n`);
     }
     results.push(`/******** End Functions ********/`)
   }
 
-
+  results.push('');
   /**
    * Write to file with all types
    */
 
   Deno.writeTextFileSync(join(destination, "typeDefinitions.ts"), results.join("\n"));
-  utils.formatSync(join(destination, "typeDefinitions.ts"));
+  // utils.formatSync(join(destination, "typeDefinitions.ts"));
 
   /**
    * functions files

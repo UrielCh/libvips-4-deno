@@ -58,9 +58,11 @@ export const enum CXCommentKind {
    *
    * For example:
    *
+   *
    * ```
    * <br> <br /> <a href="http://example.org/">
    * ```
+   *
    */
   CXComment_HTMLStartTag = 3,
   /**
@@ -68,9 +70,11 @@ export const enum CXCommentKind {
    *
    * For example:
    *
+   *
    * ```
    * </a>
    * ```
+   *
    */
   CXComment_HTMLEndTag = 4,
   /**
@@ -347,9 +351,7 @@ export const enum CXGlobalOptFlags {
    * Used to indicate that all threads that libclang creates should use
    * background priority.
    */
-  CXGlobalOpt_ThreadBackgroundPriorityForAll =
-    CXGlobalOpt_ThreadBackgroundPriorityForIndexing |
-    CXGlobalOpt_ThreadBackgroundPriorityForEditing,
+  CXGlobalOpt_ThreadBackgroundPriorityForAll = CXGlobalOpt_ThreadBackgroundPriorityForIndexing | CXGlobalOpt_ThreadBackgroundPriorityForEditing,
 }
 export const CXGlobalOptFlagsT = unsignedInt;
 
@@ -600,8 +602,7 @@ export const enum CXTUResourceUsageKind {
   CXTUResourceUsage_SourceManager_DataStructures = 13,
   CXTUResourceUsage_Preprocessor_HeaderSearch = 14,
   CXTUResourceUsage_MEMORY_IN_BYTES_BEGIN = CXTUResourceUsage_AST,
-  CXTUResourceUsage_MEMORY_IN_BYTES_END =
-    CXTUResourceUsage_Preprocessor_HeaderSearch,
+  CXTUResourceUsage_MEMORY_IN_BYTES_END = CXTUResourceUsage_Preprocessor_HeaderSearch,
   CXTUResourceUsage_First = CXTUResourceUsage_AST,
   CXTUResourceUsage_Last = CXTUResourceUsage_Preprocessor_HeaderSearch,
 }
@@ -1013,9 +1014,11 @@ export const enum CXCursorKind {
    *
    * Example:
    *
+   *
    * ```cpp
    *   x = int(0.5);
    * ```
+   *
    */
   CXCursor_CXXFunctionalCastExpr = 128,
   /**
@@ -1078,6 +1081,7 @@ export const enum CXCursorKind {
    * ```cpp
    *   NSString *str = (__bridge_transfer NSString *)CFCreateString();
    * ```
+   *
    */
   CXCursor_ObjCBridgedCastExpr = 141,
   /**
@@ -1093,6 +1097,7 @@ export const enum CXCursorKind {
    *  f(static_cast<Types&&>(args)...);
    * }
    * ```
+   *
    */
   CXCursor_PackExpansionExpr = 142,
   /**
@@ -1105,6 +1110,7 @@ export const enum CXCursorKind {
    *   static const unsigned value = sizeof...(Types);
    * };
    * ```
+   *
    */
   CXCursor_SizeOfPackExpr = 143,
   /**
@@ -1119,6 +1125,7 @@ export const enum CXCursorKind {
    *             });
    * }
    * ```
+   *
    */
   CXCursor_LambdaExpr = 144,
   /**
@@ -1185,6 +1192,7 @@ export const enum CXCursorKind {
    *   start_over:
    *     ++counter;
    * ```
+   *
    */
   CXCursor_LabelStmt = 201,
   /**
@@ -2250,10 +2258,12 @@ export const enum CXNameRefFlags {
    * Non-contiguous names occur in Objective-C when a selector with two or more
    * parameters is used, or in C++ when using an operator:
    *
+   *
    * ```cpp
    * [object doSomething:here withValue:there]; // Objective-C
    * return some_vector[1]; // C++
    * ```
+   *
    */
   CXNameRange_WantSinglePiece = 4,
 }
@@ -3836,8 +3846,10 @@ export const CXStringSetT = {
 } as const;
 
 /******** End Struct ********/
+/******** Start ref ********/
 export const time_t = __time_t;
 
+/******** end ref ********/
 /******** Start Functions ********/
 /**
  * Visitor invoked for each cursor found by a traversal.
