@@ -3269,22 +3269,6 @@ export const CXCursorT = {
 } as const;
 
 /**
- * A character string.
- *
- * The `CXString` type is used to return strings from the interface when
- * the ownership of that string might differ from one call to the next.
- * Use `clang_getCString(`) to retrieve the string data and, once finished
- * with the string data, call `clang_disposeString(`) to free the string.
- */
-export const CXStringT = {
-  /** Struct size: 16 */
-  struct: [
-    ptr("void"), // data, offset 0, size 8
-    unsignedInt, // private_flags, offset 8, size 4
-  ],
-} as const;
-
-/**
  * Describes the availability of a given entity on a particular platform, e.g.,
  * a particular class might only be available on Mac OS 10.7 or newer.
  */
@@ -3394,22 +3378,6 @@ export const CXCodeCompleteResultsT = {
      * `Results` array.
      */
     unsignedInt, // NumResults, offset 8, size 4
-  ],
-} as const;
-
-/**
- * Identifies a half-open character range in the source code.
- *
- * Use clang_getRangeStart() and clang_getRangeEnd() to retrieve the
- * starting and end locations from a source range, respectively.
- */
-export const CXSourceRangeT = {
-  /** Struct size: 24 */
-  struct: [
-    ptr("void"), // ptr_data[0], offset 0, size 8
-    ptr("void"), // ptr_data[1], offset 8, size 8
-    unsignedInt, // begin_int_data, offset 16, size 4
-    unsignedInt, // end_int_data, offset 20, size 4
   ],
 } as const;
 
@@ -3798,6 +3766,22 @@ export const CXSourceLocationT = {
 } as const;
 
 /**
+ * Identifies a half-open character range in the source code.
+ *
+ * Use clang_getRangeStart() and clang_getRangeEnd() to retrieve the
+ * starting and end locations from a source range, respectively.
+ */
+export const CXSourceRangeT = {
+  /** Struct size: 24 */
+  struct: [
+    ptr("void"), // ptr_data[0], offset 0, size 8
+    ptr("void"), // ptr_data[1], offset 8, size 8
+    unsignedInt, // begin_int_data, offset 16, size 4
+    unsignedInt, // end_int_data, offset 20, size 4
+  ],
+} as const;
+
+/**
  * Identifies an array of ranges.
  */
 export const CXSourceRangeListT = {
@@ -3824,6 +3808,22 @@ export const CXFileUniqueIDT = {
     unsignedLongLong, // data[0], offset 0, size 8
     unsignedLongLong, // data[1], offset 8, size 8
     unsignedLongLong, // data[2], offset 16, size 8
+  ],
+} as const;
+
+/**
+ * A character string.
+ *
+ * The `CXString` type is used to return strings from the interface when
+ * the ownership of that string might differ from one call to the next.
+ * Use `clang_getCString(`) to retrieve the string data and, once finished
+ * with the string data, call `clang_disposeString(`) to free the string.
+ */
+export const CXStringT = {
+  /** Struct size: 16 */
+  struct: [
+    ptr("void"), // data, offset 0, size 8
+    unsignedInt, // private_flags, offset 8, size 4
   ],
 } as const;
 

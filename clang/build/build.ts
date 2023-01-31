@@ -213,12 +213,12 @@ export const func = (_func: unknown) => "function" as const;
    * struct
    */
   const stuctType = [...ctxtGl.TYPE_MEMORY.values()].filter(a => a.kind === "struct") as StructType[];
-  if (ptrType.length) {
+  if (stuctType.length) {
     results.push(`/******** Start Struct ********/`)
     for (const anyType of stuctType) {
+      const comment = anyType.comment ? `${anyType.comment}\n` : "";
       results.push(
-        `${anyType.comment ? `${anyType.comment}\n` : ""
-        }export const ${anyType.reprName} = {
+        `${comment}export const ${anyType.reprName} = {
   /** Struct size: ${anyType.size} */
   struct: [
 ${anyType.fields.map((field) => {
