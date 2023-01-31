@@ -1,7 +1,6 @@
 export const ptr = (_type: unknown) => "pointer" as const;
 export const buf = (_type: unknown) => "buffer" as const;
 export const func = (_func: unknown) => "function" as const;
-
 export const unsignedInt = "u32" as const;
 
 /**
@@ -3848,7 +3847,6 @@ export const CXCursorAndRangeVisitorT = {
 /******** End Struct ********/
 /******** Start ref ********/
 export const time_t = __time_t;
-
 /******** end ref ********/
 /******** Start Functions ********/
 /**

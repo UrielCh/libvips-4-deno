@@ -55,7 +55,7 @@ export async function generateLibMapping(configurations: { headerRoot: string, l
   const HEADER_FILES: string[] = []
   for await (const header of walk(configurations.headerRoot, { exts: ["h", "hpp"] })) {
     const path = header.path.replace(configurations.headerRoot, "")
-    HEADER_FILES.push(path)
+    HEADER_FILES.push(path.replace(/^\//, ''));
   }
 
   function visiteHeaderFile(ctxtGl: ContextGlobal, fileName: string) {
