@@ -16,6 +16,8 @@ import {
   AnyType,
   anyTypeToString,
   EnumType,
+  FunctionType,
+  PointerType,
   structFieldToDeinlineString,
 } from "./build_utils.ts";
 import { ContextFile, ContextGlobal } from "./Context.ts";
@@ -175,7 +177,6 @@ export const func = (_func: unknown) => "function" as const;
   const enumsType = [...ctxtGl.TYPE_MEMORY.values()].filter(a => a.kind === "enum") as EnumType[];
   if (enumsType.length) {
     results.push(`/******** Start enums ********/`)
-
     for (const anyType of enumsType) {
       const comment = anyType.comment ? `${anyType.comment}\n` : "";
       results.push(`${comment}export const enum ${anyType.name} {\n`);
@@ -191,35 +192,31 @@ export const func = (_func: unknown) => "function" as const;
   }
 
 
+  /**
+   * ptr
+   */
 
-
+  const ptrType = [...ctxtGl.TYPE_MEMORY.values()].filter(a => a.kind === "pointer") as PointerType[];
+  if (ptrType.length) {
+    results.push(`/******** Start pointer ********/`)
+    for (const anyType of ptrType) {
+      if (anyType.name.includes(" ") || anyType.name.includes("*")) {
+        throw new Error("Unexpected unnamed Pointer type:" + JSON.stringify(anyType));
+      }
+      const comment = anyType.comment ? `${anyType.comment}\n` : "";
+      const type = anyType.useBuffer ? "buf" : "ptr";
+      results.push(`${comment}export const ${anyType.name}T = ${type}(${anyTypeToString(anyType.pointee)});`);
+    }
+    results.push(`/******** End pointer ********/`)
+  }
 
   /**
    * rest
    */
   for (const [name, anyType] of ctxtGl.TYPE_MEMORY) {
-    if (anyType.kind === "enum" || anyType.kind === "plain") {
+    if (anyType.kind === "enum" || anyType.kind === "plain" || anyType.kind === "pointer" || anyType.kind === "function") {
       // Handled above
       continue;
-    } else if (anyType.kind === "function") {
-      results.push(
-        `${anyType.comment ? `${anyType.comment}\n` : ""
-        }export const ${anyType.name}CallbackDefinition = {
-  parameters: [
-${anyType.parameters.map((param) =>
-          `${param.comment ? `    ${param.comment}\n    ` : "    "} ${anyTypeToString(param.type)
-          }, // ${param.name} `
-        ).join("\n")
-        }
-  ],
-  result: ${anyTypeToString(anyType.result)},
-} as const;
-${anyType.comment
-          ? `${anyType.comment}\n`
-          : ""
-        }export const ${anyType.reprName} = "function" as const;
-`,
-      );
     } else if (anyType.kind === "struct") {
       results.push(
         `${anyType.comment ? `${anyType.comment}\n` : ""
@@ -235,18 +232,6 @@ ${anyType.fields.map((field) => {
 } as const;
   `,
       );
-    } else if (anyType.kind === "pointer") {
-      if (anyType.name.includes(" ") || anyType.name.includes("*")) {
-        throw new Error(
-          "Unexpected unnamed Pointer type:" + JSON.stringify(anyType),
-        );
-      }
-      results.push(
-        `${anyType.comment ? `${anyType.comment}\n` : ""
-        }export const ${anyType.name}T = ${anyType.useBuffer ? "buf" : "ptr"}(${anyTypeToString(anyType.pointee)
-        });
-`,
-      );
     } else if (anyType.kind === "ref") {
       results.push(
         `${anyType.comment ? `${anyType.comment}\n` : ""}export const ${name.endsWith("_t") ? name : `${name}T`
@@ -255,6 +240,26 @@ ${anyType.fields.map((field) => {
       );
     }
   }
+
+
+  const fncType = [...ctxtGl.TYPE_MEMORY.values()].filter(a => a.kind === "function") as FunctionType[];
+  if (fncType.length) {
+    results.push(`/******** Start Functions ********/`)
+    for (const anyType of fncType) {
+      const comment = anyType.comment ? `${anyType.comment}\n` : "";
+      results.push(`${comment}export const ${anyType.name}CallbackDefinition = {\nparameters: [`);
+      results.push(anyType.parameters.map((param) =>
+        `${param.comment ? `    ${param.comment}\n    ` : "    "} ${anyTypeToString(param.type)
+        }, // ${param.name} `
+      ).join("\n"));
+      results.push('],\n');
+      results.push(`result: ${anyTypeToString(anyType.result)},\n`);
+      results.push(`} as const;`);
+      results.push(`${comment}export const ${anyType.reprName} = "function" as const;\n`);
+    }
+    results.push(`/******** End Functions ********/`)
+  }
+
 
   /**
    * Write to file with all types
