@@ -19,23 +19,23 @@ export interface CommonType {
 export interface PlainType extends CommonType {
   kind: "plain";
   type:
-    | "void"
-    | "bool"
-    | "u8"
-    | "i8"
-    | "u16"
-    | "i16"
-    | "u32"
-    | "i32"
-    | "u64"
-    | "i64"
-    | "f32"
-    | "f64"
-    | "usize"
-    | "isize"
-    // Only null pointer appears here
-    | "pointer"
-    | "buffer";
+  | "void"
+  | "bool"
+  | "u8"
+  | "i8"
+  | "u16"
+  | "i16"
+  | "u32"
+  | "i32"
+  | "u64"
+  | "i64"
+  | "f32"
+  | "f64"
+  | "usize"
+  | "isize"
+  // Only null pointer appears here
+  | "pointer"
+  | "buffer";
 }
 
 export interface EnumValue extends CommonType {
@@ -79,7 +79,7 @@ export interface PointerType extends CommonType {
   useBuffer: boolean;
 }
 
-export interface TypeReference extends CommonType {
+export interface ReferenceType extends CommonType {
   kind: "ref";
   reprName: `${string}T`;
 }
@@ -90,7 +90,7 @@ export type AnyType =
   | FunctionType
   | StructType
   | PointerType
-  | TypeReference;
+  | ReferenceType;
 
 export const structFieldToDeinlineString = (
   results: string[],
@@ -117,15 +117,14 @@ export const structFieldToDeinlineString = (
     `export const ${functionName} = ${anyTypeToString(field.type.pointee)} as const;`,
   );
 
-  return `func(${
-    anyTypeToString({
-      kind: "ref",
-      comment: null,
-      name: functionName,
-      // @ts-expect-error Callback definition names do not end with T.
-      reprName: functionName,
-    })
-  })`;
+  return `func(${anyTypeToString({
+    kind: "ref",
+    comment: null,
+    name: functionName,
+    // @ts-expect-error Callback definition names do not end with T.
+    reprName: functionName,
+  })
+    })`;
 };
 
 export const anyTypeToString = (type: AnyType): string => {
@@ -135,19 +134,18 @@ export const anyTypeToString = (type: AnyType): string => {
     }
     return type.name;
   } else if (type.kind === "function") {
-    return `{
-  /** ${type.name} */
-  parameters: [
-${
-      type.parameters.map((param) =>
-        `    ${anyTypeToString(param.type)}, // ${param.name}${
-          param.comment ? `, ${param.comment}` : ""
-        }`
-      ).join("\n")
+    const block: string[] = [];
+    block.push('{');
+    block.push(`  /** ${type.name} */`);
+    block.push('  parameters: [');
+    for (const param of type.parameters) {
+      const comment = param.comment ? `, ${param.comment}` : "";
+      block.push(`    ${anyTypeToString(param.type)}, // ${param.name}${comment}`);
     }
-  ],
-  result: ${anyTypeToString(type.result)},
-}`;
+    block.push('  ],');
+    block.push(`  result: ${anyTypeToString(type.result)},`);
+    block.push('}');
+    return block.join("\n");
   } else if (
     type.kind === "struct" || type.kind === "ref" ||
     type.kind === "enum"
@@ -260,9 +258,8 @@ const toEnumType = (
   ) {
     // Enum of powers of two, use hexadecimal formatting
     for (const value of values) {
-      value.value = `0x${
-        value.value!.toString(16).padStart(maxHexadecimalLength, "0")
-      }`;
+      value.value = `0x${value.value!.toString(16).padStart(maxHexadecimalLength, "0")
+        }`;
     }
   }
   return result;
@@ -400,7 +397,7 @@ export const toAnyType = (
       pointee.kind === CXTypeKind.CXType_Char_S
     ) {
       // `const char *` or `char *`
-      const cstringResult: TypeReference = {
+      const cstringResult: ReferenceType = {
         comment: null,
         kind: "ref",
         name: "cstringT",
@@ -422,7 +419,7 @@ export const toAnyType = (
       pointee.getPointeeType()!.kind === CXTypeKind.CXType_Char_S
     ) {
       // `const char **` or `char **`
-      const cstringArrayResult: TypeReference = {
+      const cstringArrayResult: ReferenceType = {
         comment: null,
         kind: "ref",
         name: "cstringArrayT",
@@ -456,7 +453,7 @@ export const toAnyType = (
     return result;
   } else if (typekind === CXTypeKind.CXType_Typedef) {
     const name = type.getTypedefName();
-    const result: TypeReference = {
+    const result: ReferenceType = {
       kind: "ref",
       name,
       reprName: `${name}T`,
@@ -773,7 +770,7 @@ const paramCommandToJSDoc = (
       params.push("[out]");
     } else if (
       direction ===
-        CXCommentParamPassDirection.CXCommentParamPassDirection_InOut
+      CXCommentParamPassDirection.CXCommentParamPassDirection_InOut
     ) {
       params.push("[in,out]");
     } else {

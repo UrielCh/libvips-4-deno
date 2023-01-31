@@ -20,6 +20,7 @@ import {
   PointerType,
   structFieldToDeinlineString,
   StructType,
+  ReferenceType,
 } from "./build_utils.ts";
 import { ContextFile, ContextGlobal } from "./Context.ts";
 import { onEnumDecl } from "./onEnumDecl.ts";
@@ -221,22 +222,33 @@ export const func = (_func: unknown) => "function" as const;
    */
   const stuctType = [...ctxtGl.TYPE_MEMORY.values()].filter(a => a.kind === "struct") as StructType[];
   if (stuctType.length) {
+    const missingStruct = new Set<string>(stuctType.map(s => s.reprName));
     results.push(`/******** Start Struct ********/`)
-    for (const anyType of stuctType) {
-      const next: string[] = [];
-      if ('CXCodeCompleteResultsT' === anyType.reprName)
-        debugger;
-      next.push(`${cmt(anyType, '')}export const ${anyType.reprName} = {`);
-      next.push(`  /** Struct size: ${anyType.size} */`);
-      next.push(`  struct: [`);
-      for (const field of anyType.fields) {
-        const structField = structFieldToDeinlineString(results, anyType, field);
-        next.push(`${cmt(field, '    ')}    ${structField}, // ${field.name}, offset ${field.offset}, size ${field.size}`);
+    while (missingStruct.size)
+      // loop: 
+      for (const anyType of stuctType) {
+        // if (!missingStruct.has(anyType.reprName))
+        //   continue;
+        // check missing type usage;
+        // for (const field of anyType.fields) {
+        //   const structField = structFieldToDeinlineString(results, anyType, field);
+        //   if (missingStruct.has(structField))
+        //     continue loop;
+        // }
+
+        const next: string[] = [];
+        next.push(`${cmt(anyType, '')}export const ${anyType.reprName} = {`);
+        next.push(`  /** Struct size: ${anyType.size} */`);
+        next.push(`  struct: [`);
+        for (const field of anyType.fields) {
+          const structField = structFieldToDeinlineString(results, anyType, field);
+          next.push(`${cmt(field, '    ')}    ${structField}, // ${field.name}, offset ${field.offset}, size ${field.size}`);
+        }
+        next.push(`  ],`);
+        next.push(`} as const;\n`);
+        results.push(next.join('\n'));
+        missingStruct.delete(anyType.reprName);
       }
-      next.push(`  ],`);
-      next.push(`} as const;\n`);
-      results.push(next.join('\n'));
-    }
     results.push(`/******** End Struct ********/`)
   }
 
@@ -254,7 +266,6 @@ export const func = (_func: unknown) => "function" as const;
     }
   }
   results.push(`/******** end ref ********/`)
-
 
   /**
    * function
