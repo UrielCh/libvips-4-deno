@@ -4,7 +4,7 @@ import {
   join,
 
 } from "https://deno.land/std@0.170.0/path/mod.ts";
-import {ensureDir} from "https://deno.land/std@0.175.0/fs/mod.ts";
+import { ensureDir } from "https://deno.land/std@0.175.0/fs/mod.ts";
 
 import {
   CXChildVisitResult,
@@ -15,6 +15,7 @@ import { CXCursor } from "../mod.ts";
 import {
   AnyType,
   anyTypeToString,
+  EnumType,
   structFieldToDeinlineString,
 } from "./build_utils.ts";
 import { ContextFile, ContextGlobal } from "./Context.ts";
@@ -170,11 +171,14 @@ export const func = (_func: unknown) => "function" as const;
   }
 
   /** enums */
-  for (const anyType of ctxtGl.TYPE_MEMORY.values()) {
-    if (anyType.kind === "enum") {
+
+  const enumsType = [...ctxtGl.TYPE_MEMORY.values()].filter(a => a.kind === "enum") as EnumType[];
+  if (enumsType.length) {
+    results.push(`/******** Start enums ********/`)
+    for (const anyType of enumsType) {
+      const comment = anyType.comment ? `${anyType.comment}\n` : "";
       results.push(
-        `${anyType.comment ? `${anyType.comment}\n` : ""
-        }export const enum ${anyType.name} {
+        `${comment}export const enum ${anyType.name} {
 ${anyType.values.map((value) =>
           `${value.comment ? `  ${value.comment}\n  ` : "  "}${value.name}${value.value === null ? "" : ` = ${value.value}`
           },`
@@ -188,7 +192,12 @@ ${anyType.comment
 `,
       );
     }
+    results.push(`/******** End enums ********/`)
   }
+
+
+
+
 
   /**
    * rest

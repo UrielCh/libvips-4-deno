@@ -30,6 +30,7 @@ export const long = "i64" as const;
 
 export const __time_t = "i64" as const;
 
+/******** Start enums ********/
 /**
  * Describes the type of the comment AST node (`CXComment).` A comment
  * node can be considered block content (e. g., paragraph), inline content
@@ -3003,6 +3004,7 @@ export const enum CXDiagnosticDisplayOptions {
  */
 export const CXDiagnosticDisplayOptionsT = unsignedInt;
 
+/******** End enums ********/
 /**
  * A parsed comment.
  */
