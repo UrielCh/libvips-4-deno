@@ -1,7 +1,6 @@
 import {
   dirname,
   join,
-
 } from "https://deno.land/std@0.170.0/path/mod.ts";
 import { ensureDir } from "https://deno.land/std@0.175.0/fs/mod.ts";
 
@@ -20,7 +19,6 @@ import {
   PointerType,
   structFieldToDeinlineString,
   StructType,
-  ReferenceType,
 } from "./build_utils.ts";
 import { ContextFile, ContextGlobal } from "./Context.ts";
 import { onEnumDecl } from "./onEnumDecl.ts";
@@ -29,16 +27,6 @@ import { onTypedefDecl } from "./onTypedefDecl.ts";
 import * as utils from "./utils.ts";
 
 import { walk } from "https://deno.land/std@0.171.0/fs/walk.ts";
-
-{
-  const includeDirectory = '/home/uriel/libclang_deno/build/include/'
-  // join(dirname(fromFileUrl(import.meta.url)), "include");
-  const includePaths = [
-    "/usr/lib/clang/14.0.0/include/",
-    `${includeDirectory}`,
-  ];
-  generateLibMapping({ headerRoot: includeDirectory, libFile: "/lib64/libclang.so.14.0.6", destination: './gen', includePaths });
-}
 
 function cmt(elm: CommonType, offset = '  '): string {
   let { comment } = elm;
@@ -50,7 +38,7 @@ function cmt(elm: CommonType, offset = '  '): string {
 }
 
 
-async function generateLibMapping(configurations: { headerRoot: string, libFile: string, destination: string, includePaths?: string[] }) {
+export async function generateLibMapping(configurations: { headerRoot: string, libFile: string, destination: string, includePaths?: string[] }) {
   const index = new libclang.CXIndex(false, true);
   const { destination } = configurations;
   await ensureDir(destination);

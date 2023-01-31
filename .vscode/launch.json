@@ -8,9 +8,9 @@
             "request": "launch",
             "name": "Launch build",
             "type": "node",
-            "program": "${workspaceFolder}/clang/build/build.ts",
+            "program": "${workspaceFolder}/clang/build/mapLibClang.ts",
             "cwd": "${workspaceFolder}",
-            "runtimeExecutable": "/home/uriel/.deno/bin/deno",
+            "runtimeExecutable": "deno",
             "runtimeArgs": [
                 "run",
                 "--unstable",
