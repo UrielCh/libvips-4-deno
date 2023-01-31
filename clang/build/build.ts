@@ -175,23 +175,18 @@ export const func = (_func: unknown) => "function" as const;
   const enumsType = [...ctxtGl.TYPE_MEMORY.values()].filter(a => a.kind === "enum") as EnumType[];
   if (enumsType.length) {
     results.push(`/******** Start enums ********/`)
+
     for (const anyType of enumsType) {
       const comment = anyType.comment ? `${anyType.comment}\n` : "";
-      results.push(
-        `${comment}export const enum ${anyType.name} {
-${anyType.values.map((value) =>
-          `${value.comment ? `  ${value.comment}\n  ` : "  "}${value.name}${value.value === null ? "" : ` = ${value.value}`
-          },`
-        ).join("\n")
-        }
-}
-${anyType.comment
-          ? `${anyType.comment}\n`
-          : ""
-        }export const ${anyType.reprName} = ${anyTypeToString(anyType.type)};
-`,
-      );
-    }
+      results.push(`${comment}export const enum ${anyType.name} {\n`);
+
+      for (const value of anyType.values) {
+        const comment = value.comment ? `${value.comment}\n` : "";
+        results.push(`${comment}${value.name}${value.value === null ? "" : ` = ${value.value}`},`)
+      }
+      results.push(`}`)
+      results.push(`${comment}export const ${anyType.reprName} = ${anyTypeToString(anyType.type)};\n`); // fin push
+    } // fin loop enum
     results.push(`/******** End enums ********/`)
   }
 
