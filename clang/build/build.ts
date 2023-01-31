@@ -14,6 +14,7 @@ import { CXCursor } from "../mod.ts";
 import {
   AnyType,
   anyTypeToString,
+  CommonType,
   EnumType,
   FunctionType,
   PointerType,
@@ -37,6 +38,13 @@ import { walk } from "https://deno.land/std@0.171.0/fs/walk.ts";
   ];
   generateLibMapping({ headerRoot: includeDirectory, libFile: "/lib64/libclang.so.14.0.6", destination: './gen', includePaths });
 }
+
+
+function cmt(elm: CommonType): string {
+  if (!elm.comment) return '';
+  return `${elm.comment}\n`;
+}
+
 
 async function generateLibMapping(configurations: { headerRoot: string, libFile: string, destination: string, includePaths?: string[] }) {
   const index = new libclang.CXIndex(false, true);
@@ -165,8 +173,7 @@ export const func = (_func: unknown) => "function" as const;
         continue;
       }
       results.push(
-        `${anyType.comment ? `${anyType.comment}\n` : ""
-        }export const ${name} = "${anyType.type}" as const;
+        `${cmt(anyType)}export const ${name} = "${anyType.type}" as const;
 `,
       );
     }
@@ -178,15 +185,13 @@ export const func = (_func: unknown) => "function" as const;
   if (enumsType.length) {
     results.push(`/******** Start enums ********/`)
     for (const anyType of enumsType) {
-      const comment = anyType.comment ? `${anyType.comment}\n` : "";
-      results.push(`${comment}export const enum ${anyType.name} {\n`);
+      results.push(`${cmt(anyType)}export const enum ${anyType.name} {\n`);
 
       for (const value of anyType.values) {
-        const comment = value.comment ? `${value.comment}\n` : "";
-        results.push(`${comment}${value.name}${value.value === null ? "" : ` = ${value.value}`},`)
+        results.push(`${cmt(value)}  ${value.name}${value.value === null ? "" : ` = ${value.value}`},`)
       }
       results.push(`}`)
-      results.push(`${comment}export const ${anyType.reprName} = ${anyTypeToString(anyType.type)};\n`); // fin push
+      results.push(`${cmt(anyType)}export const ${anyType.reprName} = ${anyTypeToString(anyType.type)};\n`); // fin push
     } // fin loop enum
     results.push(`/******** End enums ********/`)
   }
@@ -202,9 +207,8 @@ export const func = (_func: unknown) => "function" as const;
       if (anyType.name.includes(" ") || anyType.name.includes("*")) {
         throw new Error("Unexpected unnamed Pointer type:" + JSON.stringify(anyType));
       }
-      const comment = anyType.comment ? `${anyType.comment}\n` : "";
       const type = anyType.useBuffer ? "buf" : "ptr";
-      results.push(`${comment}export const ${anyType.name}T = ${type}(${anyTypeToString(anyType.pointee)});`);
+      results.push(`${cmt(anyType)}export const ${anyType.name}T = ${type}(${anyTypeToString(anyType.pointee)});`);
     }
     results.push(`/******** End pointer ********/`)
   }
@@ -216,13 +220,12 @@ export const func = (_func: unknown) => "function" as const;
   if (stuctType.length) {
     results.push(`/******** Start Struct ********/`)
     for (const anyType of stuctType) {
-      const comment = anyType.comment ? `${anyType.comment}\n` : "";
       results.push(
-        `${comment}export const ${anyType.reprName} = {
+        `${cmt(anyType)}export const ${anyType.reprName} = {
   /** Struct size: ${anyType.size} */
   struct: [
 ${anyType.fields.map((field) => {
-          return `${field.comment ? `    ${field.comment}\n    ` : "    "} ${structFieldToDeinlineString(results, anyType, field)
+          return `${cmt(field)} ${structFieldToDeinlineString(results, anyType, field)
             }, // ${field.name}, offset ${field.offset}, size ${field.size}`;
         }).join("\n")
         }
@@ -240,7 +243,7 @@ ${anyType.fields.map((field) => {
   for (const [name, anyType] of ctxtGl.TYPE_MEMORY) {
     if (anyType.kind === "ref") {
       results.push(
-        `${anyType.comment ? `${anyType.comment}\n` : ""}export const ${name.endsWith("_t") ? name : `${name}T`
+        `${cmt(anyType)}export const ${name.endsWith("_t") ? name : `${name}T`
         } = ${anyType.name.endsWith("_t") ? anyType.name : anyType.reprName};
 `,
       );
@@ -252,16 +255,14 @@ ${anyType.fields.map((field) => {
   if (fncType.length) {
     results.push(`/******** Start Functions ********/`)
     for (const anyType of fncType) {
-      const comment = anyType.comment ? `${anyType.comment}\n` : "";
-      results.push(`${comment}export const ${anyType.name}CallbackDefinition = {\nparameters: [`);
+      results.push(`${cmt(anyType)}export const ${anyType.name}CallbackDefinition = {\nparameters: [`);
       results.push(anyType.parameters.map((param) =>
-        `${param.comment ? `    ${param.comment}\n    ` : "    "} ${anyTypeToString(param.type)
-        }, // ${param.name} `
+        `${cmt(param)} ${anyTypeToString(param.type)}, // ${param.name} `
       ).join("\n"));
       results.push('],\n');
       results.push(`result: ${anyTypeToString(anyType.result)},\n`);
       results.push(`} as const;`);
-      results.push(`${comment}export const ${anyType.reprName} = "function" as const;\n`);
+      results.push(`${cmt(anyType)}export const ${anyType.reprName} = "function" as const;\n`);
     }
     results.push(`/******** End Functions ********/`)
   }
@@ -308,7 +309,8 @@ ${anyType.fields.map((field) => {
     const imports = new Set<string>();
 
     const functionResults: string[] = [];
-    for (const { comment, name, parameters, result } of apiFunctions) {
+    for (const apiFunction of apiFunctions) {
+      const { name, parameters, result } = apiFunction;
       let isAvailable = true;
       try {
         Deno.dlopen(
@@ -321,7 +323,7 @@ ${anyType.fields.map((field) => {
       emplaceRefs(imports, result);
       parameters.forEach((param) => emplaceRefs(imports, param.type));
       functionResults.push(
-        `${comment ? `${comment}\n` : ""}${isAvailable ? "export " : "// deno-lint-ignore no-unused-vars\n"
+        `${cmt(apiFunction)}${isAvailable ? "export " : "// deno-lint-ignore no-unused-vars\n"
         }const ${name} = {
   parameters: [
     ${parameters.map((param) =>

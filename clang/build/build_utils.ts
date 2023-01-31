@@ -10,9 +10,14 @@ import {
 } from "../include/typeDefinitions.ts";
 import { CXComment, CXCursor, type CXType } from "../mod.ts";
 
-export interface PlainType {
-  kind: "plain";
+
+export interface CommonType {
   name: string;
+  comment: null | string;
+}
+
+export interface PlainType extends CommonType {
+  kind: "plain";
   type:
     | "void"
     | "bool"
@@ -31,69 +36,52 @@ export interface PlainType {
     // Only null pointer appears here
     | "pointer"
     | "buffer";
-  comment: null | string;
 }
 
-export interface EnumValue {
-  name: string;
+export interface EnumValue extends CommonType {
   value: null | string | number;
-  comment: null | string;
 }
 
-export interface EnumType {
+export interface EnumType extends CommonType {
   kind: "enum";
-  name: string;
   reprName: `${string}T`;
   type: AnyType;
   values: EnumValue[];
-  comment: null | string;
 }
 
-export interface FunctionParameter {
-  name: string;
+export interface FunctionParameter extends CommonType {
   type: AnyType;
-  comment: null | string;
 }
 
-export interface FunctionType {
+export interface FunctionType extends CommonType {
   kind: "function";
-  name: string;
   reprName: `${string}T`;
   parameters: FunctionParameter[];
   result: AnyType;
-  comment: null | string;
 }
 
-export interface StructField {
-  name: string;
+export interface StructField extends CommonType {
   type: AnyType;
   size: number;
   offset: number;
-  comment: null | string;
 }
 
-export interface StructType {
+export interface StructType extends CommonType {
   kind: "struct";
-  name: string;
   reprName: `${string}T`;
   fields: StructField[];
   size: number;
-  comment: null | string;
 }
 
-export interface PointerType {
+export interface PointerType extends CommonType {
   kind: "pointer";
-  name: string;
   pointee: AnyType;
-  comment: null | string;
   useBuffer: boolean;
 }
 
-export interface TypeReference {
+export interface TypeReference extends CommonType {
   kind: "ref";
-  name: string;
   reprName: `${string}T`;
-  comment: null | string;
 }
 
 export type AnyType =
