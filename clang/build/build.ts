@@ -17,6 +17,7 @@ import {
   EnumType,
   FunctionType,
   PointerType,
+  ReferenceType,
   structFieldToDeinlineString,
   StructType,
 } from "./build_utils.ts";
@@ -172,7 +173,6 @@ export const func = (_func: unknown) => "function" as const;
   }
 
   /** enums */
-
   const enumsType = [...ctxtGl.TYPE_MEMORY.values()].filter(a => a.kind === "enum") as EnumType[];
   if (enumsType.length) {
     results.push(`/******** Start enums ********/`)
@@ -250,17 +250,22 @@ export const func = (_func: unknown) => "function" as const;
   /**
    * ref
    */
-  results.push(`/******** Start ref ********/`)
+  const RefType = new Map<string, ReferenceType>();
   for (const [name, anyType] of ctxtGl.TYPE_MEMORY) {
     if (anyType.kind === "ref") {
-      results.push(
-        `${cmt(anyType)}export const ${name.endsWith("_t") ? name : `${name}T`
-        } = ${anyType.name.endsWith("_t") ? anyType.name : anyType.reprName};
-`,
-      );
+      RefType.set(name, anyType)
     }
   }
-  results.push(`/******** end ref ********/`)
+
+  if (RefType.size) {
+    results.push(`/******** Start ref ********/`)
+    for (const [name, anyType] of RefType) {
+      const expName = name.endsWith("_t") ? name : `${name}T`;
+      const curName = anyType.name.endsWith("_t") ? anyType.name : anyType.reprName;
+      results.push(`${cmt(anyType)}export const ${expName} = ${curName};`);
+    }
+    results.push(`/******** end ref ********/`)
+  }
 
   /**
    * function
