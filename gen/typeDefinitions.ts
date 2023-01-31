@@ -3351,23 +3351,6 @@ export const CXCodeCompleteResultsT = {
   ],
 } as const;
 
-export const CXCursorAndRangeVisitorCallbackDefinition = {
-  /** enum CXVisitorResult (void *, CXCursor, CXSourceRange) */
-  parameters: [
-    ptr("void"), // void *
-    CXCursorT, // CXCursor
-    CXSourceRangeT, // CXSourceRange
-  ],
-  result: CXVisitorResultT,
-} as const;
-export const CXCursorAndRangeVisitorT = {
-  /** Struct size: 16 */
-  struct: [
-    ptr("void"), // context, offset 0, size 8
-    func(CXCursorAndRangeVisitorCallbackDefinition), // visit, offset 8, size 8
-  ],
-} as const;
-
 /**
  * Source location passed to index callbacks.
  */
@@ -3618,7 +3601,7 @@ export const IndexerCallbacksAbortQueryCallbackDefinition = {
     ptr("void"), // void *
   ],
   result: int,
-} as const;
+} as const; /* extra */
 export const IndexerCallbacksDiagnosticCallbackDefinition = {
   /** void (CXClientData, CXDiagnosticSet, void *) */
   parameters: [
@@ -3627,7 +3610,7 @@ export const IndexerCallbacksDiagnosticCallbackDefinition = {
     ptr("void"), // void *
   ],
   result: "void",
-} as const;
+} as const; /* extra */
 export const IndexerCallbacksEnteredMainFileCallbackDefinition = {
   /** CXIdxClientFile (CXClientData, CXFile, void *) */
   parameters: [
@@ -3636,7 +3619,7 @@ export const IndexerCallbacksEnteredMainFileCallbackDefinition = {
     ptr("void"), // void *
   ],
   result: CXIdxClientFileT,
-} as const;
+} as const; /* extra */
 export const IndexerCallbacksPpIncludedFileCallbackDefinition = {
   /** CXIdxClientFile (CXClientData, const CXIdxIncludedFileInfo *) */
   parameters: [
@@ -3644,7 +3627,7 @@ export const IndexerCallbacksPpIncludedFileCallbackDefinition = {
     buf(CXIdxIncludedFileInfoT), // const CXIdxIncludedFileInfo *
   ],
   result: CXIdxClientFileT,
-} as const;
+} as const; /* extra */
 export const IndexerCallbacksImportedASTFileCallbackDefinition = {
   /** CXIdxClientASTFile (CXClientData, const CXIdxImportedASTFileInfo *) */
   parameters: [
@@ -3652,7 +3635,7 @@ export const IndexerCallbacksImportedASTFileCallbackDefinition = {
     buf(CXIdxImportedASTFileInfoT), // const CXIdxImportedASTFileInfo *
   ],
   result: CXIdxClientASTFileT,
-} as const;
+} as const; /* extra */
 export const IndexerCallbacksStartedTranslationUnitCallbackDefinition = {
   /** CXIdxClientContainer (CXClientData, void *) */
   parameters: [
@@ -3660,7 +3643,7 @@ export const IndexerCallbacksStartedTranslationUnitCallbackDefinition = {
     ptr("void"), // void *
   ],
   result: CXIdxClientContainerT,
-} as const;
+} as const; /* extra */
 export const IndexerCallbacksIndexDeclarationCallbackDefinition = {
   /** void (CXClientData, const CXIdxDeclInfo *) */
   parameters: [
@@ -3668,7 +3651,7 @@ export const IndexerCallbacksIndexDeclarationCallbackDefinition = {
     buf(CXIdxDeclInfoT), // const CXIdxDeclInfo *
   ],
   result: "void",
-} as const;
+} as const; /* extra */
 export const IndexerCallbacksIndexEntityReferenceCallbackDefinition = {
   /** void (CXClientData, const CXIdxEntityRefInfo *) */
   parameters: [
@@ -3676,7 +3659,7 @@ export const IndexerCallbacksIndexEntityReferenceCallbackDefinition = {
     buf(CXIdxEntityRefInfoT), // const CXIdxEntityRefInfo *
   ],
   result: "void",
-} as const;
+} as const; /* extra */
 /**
  * A group of callbacks used by #clang_indexSourceFile and
  * #clang_indexTranslationUnit.
@@ -3842,6 +3825,23 @@ export const CXPlatformAvailabilityT = {
      * suggest replacement APIs.
      */
     CXStringT, // Message, offset 56, size 16
+  ],
+} as const;
+
+export const CXCursorAndRangeVisitorCallbackDefinition = {
+  /** enum CXVisitorResult (void *, CXCursor, CXSourceRange) */
+  parameters: [
+    ptr("void"), // void *
+    CXCursorT, // CXCursor
+    CXSourceRangeT, // CXSourceRange
+  ],
+  result: CXVisitorResultT,
+} as const; /* extra */
+export const CXCursorAndRangeVisitorT = {
+  /** Struct size: 16 */
+  struct: [
+    ptr("void"), // context, offset 0, size 8
+    func(CXCursorAndRangeVisitorCallbackDefinition), // visit, offset 8, size 8
   ],
 } as const;
 

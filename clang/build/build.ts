@@ -195,7 +195,8 @@ export const func = (_func: unknown) => "function" as const;
         results.push(`${cmt(value)}  ${value.name}${value.value === null ? "" : ` = ${value.value}`},`)
       }
       results.push(`}`)
-      results.push(`${cmt(anyType, '')}export const ${anyType.reprName} = ${anyTypeToString(anyType.type)};\n`); // fin push
+      const { code } = anyTypeToString(anyType.type);
+      results.push(`${cmt(anyType, '')}export const ${anyType.reprName} = ${code};\n`); // fin push
     } // fin loop enum
     results.push(`/******** End enums ********/`)
   }
@@ -212,7 +213,8 @@ export const func = (_func: unknown) => "function" as const;
         throw new Error("Unexpected unnamed Pointer type:" + JSON.stringify(anyType));
       }
       const type = anyType.useBuffer ? "buf" : "ptr";
-      results.push(`${cmt(anyType, '')}export const ${anyType.name}T = ${type}(${anyTypeToString(anyType.pointee)});`);
+      const { code } = anyTypeToString(anyType.pointee);
+      results.push(`${cmt(anyType, '')}export const ${anyType.name}T = ${type}(${code});`);
     }
     results.push(`/******** End pointer ********/`)
   }
@@ -230,9 +232,13 @@ export const func = (_func: unknown) => "function" as const;
           continue;
         // check missing type usage;
         for (const field of anyType.fields) {
-          const {structField} = structFieldToDeinlineString(anyType, field);
+          const { structField, dependencies } = structFieldToDeinlineString(anyType, field);
           if (missingStruct.has(structField))
             continue loop;
+          for (const dep of dependencies) {
+            if (missingStruct.has(dep))
+              continue loop;
+          }
         }
 
         const next: string[] = [];
@@ -240,7 +246,7 @@ export const func = (_func: unknown) => "function" as const;
         next.push(`  /** Struct size: ${anyType.size} */`);
         next.push(`  struct: [`);
         for (const field of anyType.fields) {
-          const {structField, extraCode} = structFieldToDeinlineString(anyType, field);
+          const { structField, extraCode } = structFieldToDeinlineString(anyType, field);
           if (extraCode)
             results.push(extraCode)
           next.push(`${cmt(field, '    ')}    ${structField}, // ${field.name}, offset ${field.offset}, size ${field.size}`);
@@ -276,11 +282,14 @@ export const func = (_func: unknown) => "function" as const;
     results.push(`/******** Start Functions ********/`)
     for (const anyType of fncType) {
       results.push(`${cmt(anyType, '')}export const ${anyType.name}CallbackDefinition = {\n  parameters: [`);
-      results.push(anyType.parameters.map((param) =>
-        `${cmt(param, '    ')}    ${anyTypeToString(param.type)}, // ${param.name}`
-      ).join("\n"));
+      for (const param of anyType.parameters) {
+        const { code } = anyTypeToString(param.type);
+        results.push(`${cmt(param, '    ')}    ${code}, // ${param.name}`);
+      }
+
       results.push('  ],\n');
-      results.push(`  result: ${anyTypeToString(anyType.result)},`);
+      const { code } = anyTypeToString(anyType.result);
+      results.push(`  result: ${code},`);
       results.push(`} as const;`);
       results.push(`${cmt(anyType, '')}export const ${anyType.reprName} = "function" as const;\n`);
     }
@@ -347,14 +356,14 @@ export const func = (_func: unknown) => "function" as const;
         }const ${name} = {
   parameters: [
     ${parameters.map((param) =>
-          `${anyTypeToString(param.type)}, ${param.name || param.comment
+          `${anyTypeToString(param.type).code}, ${param.name || param.comment
             ? `// ${[param.name, param.comment].filter(Boolean).join(", ")}`
             : ""
           }`
         ).join("\n")
         }
   ],
-  result: ${anyTypeToString(result)},
+  result: ${anyTypeToString(result).code},
 } as const;
 `,
       );

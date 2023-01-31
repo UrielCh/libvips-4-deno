@@ -95,11 +95,12 @@ export type AnyType =
 export const structFieldToDeinlineString = (
   struct: StructType,
   field: StructField,
-): {structField: string, extraCode?: string, dependencies: string[]} => {
+): { structField: string, extraCode?: string, dependencies: string[] } => {
   const dependencies: string[] = [];
   if (field.type.kind !== "pointer" || field.type.pointee.kind !== "function") {
-    const structField = anyTypeToString(field.type);
-    return {structField, dependencies}
+    const { code: structField, dependencies: subDependencies } = anyTypeToString(field.type);
+    dependencies.push(...subDependencies);
+    return { structField, dependencies }
   }
 
   const functionsCount =
@@ -114,25 +115,31 @@ export const structFieldToDeinlineString = (
 
   // De-inline functions in structs
   const functionName = `${struct.name}${fieldNamePart}CallbackDefinition`;
-  const extraCode = `export const ${functionName} = ${anyTypeToString(field.type.pointee)} as const;`;
+  const { code: pointeeCode, dependencies: pointeeDependencies } = anyTypeToString(field.type.pointee);
+  dependencies.push(...pointeeDependencies);
+  const extraCode = `export const ${functionName} = ${pointeeCode} as const; /* extra */`;
 
-  const structField = `func(${anyTypeToString({
+  const { code: funcCode, dependencies: funcDependencies } = anyTypeToString({
     kind: "ref",
     comment: null,
     name: functionName,
     // @ts-expect-error Callback definition names do not end with T.
     reprName: functionName,
-  })
-    })`;
-    return {structField, extraCode, dependencies}
+  });
+
+  dependencies.push(...funcDependencies);
+  const structField = `func(${funcCode})`;
+  return { structField, extraCode, dependencies }
 };
 
-export const anyTypeToString = (type: AnyType): string => {
+export const anyTypeToString = (type: AnyType): { code: string, dependencies: string[] } => {
+  const dependencies: string[] = [];
   if (type.kind === "plain") {
     if (type.type === "void") {
-      return '"void"';
+      return { code: '"void"', dependencies };
     }
-    return type.name;
+    dependencies.push(type.type);
+    return { code: type.name, dependencies };
   } else if (type.kind === "function") {
     const block: string[] = [];
     block.push('{');
@@ -140,20 +147,26 @@ export const anyTypeToString = (type: AnyType): string => {
     block.push('  parameters: [');
     for (const param of type.parameters) {
       const comment = param.comment ? `, ${param.comment}` : "";
-      block.push(`    ${anyTypeToString(param.type)}, // ${param.name}${comment}`);
+      const { code, dependencies: paramDependencies } = anyTypeToString(param.type);
+      dependencies.push(...paramDependencies);
+      block.push(`    ${code}, // ${param.name}${comment}`);
     }
     block.push('  ],');
-    block.push(`  result: ${anyTypeToString(type.result)},`);
+    const { code, dependencies: resultDependencies } = anyTypeToString(type.result);
+    dependencies.push(...resultDependencies);
+    block.push(`  result: ${code},`);
     block.push('}');
-    return block.join("\n");
+    return { code: block.join("\n"), dependencies };
   } else if (
     type.kind === "struct" || type.kind === "ref" ||
     type.kind === "enum"
   ) {
     if (type.kind === "ref" && type.name.endsWith("_t")) {
-      return type.name;
+      dependencies.push(type.name);
+      return { code: type.name, dependencies };
     }
-    return type.reprName;
+    dependencies.push(type.reprName);
+    return { code: type.reprName, dependencies };
   } else if (type.kind === "pointer") {
     let func: "buf" | "func" | "ptr" = "ptr";
     if (type.pointee.kind === "function") {
@@ -161,7 +174,9 @@ export const anyTypeToString = (type: AnyType): string => {
     } else if (type.useBuffer) {
       func = "buf";
     }
-    return `${func}(${anyTypeToString(type.pointee)})`;
+    const { code, dependencies: pointeeDependencies } = anyTypeToString(type.pointee);
+    dependencies.push(...pointeeDependencies);
+    return { code: `${func}(${code})`, dependencies };
   } else {
     throw new Error("Invalid AnyType");
   }
