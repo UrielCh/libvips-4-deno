@@ -225,23 +225,24 @@ export const func = (_func: unknown) => "function" as const;
     const missingStruct = new Set<string>(stuctType.map(s => s.reprName));
     results.push(`/******** Start Struct ********/`)
     while (missingStruct.size)
-      // loop: 
-      for (const anyType of stuctType) {
-        // if (!missingStruct.has(anyType.reprName))
-        //   continue;
+      loop: for (const anyType of stuctType) {
+        if (!missingStruct.has(anyType.reprName))
+          continue;
         // check missing type usage;
-        // for (const field of anyType.fields) {
-        //   const structField = structFieldToDeinlineString(results, anyType, field);
-        //   if (missingStruct.has(structField))
-        //     continue loop;
-        // }
+        for (const field of anyType.fields) {
+          const {structField} = structFieldToDeinlineString(anyType, field);
+          if (missingStruct.has(structField))
+            continue loop;
+        }
 
         const next: string[] = [];
         next.push(`${cmt(anyType, '')}export const ${anyType.reprName} = {`);
         next.push(`  /** Struct size: ${anyType.size} */`);
         next.push(`  struct: [`);
         for (const field of anyType.fields) {
-          const structField = structFieldToDeinlineString(results, anyType, field);
+          const {structField, extraCode} = structFieldToDeinlineString(anyType, field);
+          if (extraCode)
+            results.push(extraCode)
           next.push(`${cmt(field, '    ')}    ${structField}, // ${field.name}, offset ${field.offset}, size ${field.size}`);
         }
         next.push(`  ],`);

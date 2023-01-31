@@ -3279,46 +3279,6 @@ export const CXCursorT = {
 } as const;
 
 /**
- * Describes the availability of a given entity on a particular platform, e.g.,
- * a particular class might only be available on Mac OS 10.7 or newer.
- */
-export const CXPlatformAvailabilityT = {
-  /** Struct size: 72 */
-  struct: [
-    /**
-     * A string that describes the platform for which this structure
-     * provides availability information.
-     *
-     * Possible values are "ios" or "macos".
-     */
-    CXStringT, // Platform, offset 0, size 16
-    /**
-     * The version number in which this entity was introduced.
-     */
-    CXVersionT, // Introduced, offset 16, size 12
-    /**
-     * The version number in which this entity was deprecated (but is
-     * still available).
-     */
-    CXVersionT, // Deprecated, offset 28, size 12
-    /**
-     * The version number in which this entity was obsoleted, and therefore
-     * is no longer available.
-     */
-    CXVersionT, // Obsoleted, offset 40, size 12
-    /**
-     * Whether the entity is unconditionally unavailable on this platform.
-     */
-    int, // Unavailable, offset 52, size 4
-    /**
-     * An optional message to provide to a user of this API, e.g., to
-     * suggest replacement APIs.
-     */
-    CXStringT, // Message, offset 56, size 16
-  ],
-} as const;
-
-/**
  * The type of an element in the abstract syntax tree.
  */
 export const CXTypeT = {
@@ -3842,6 +3802,46 @@ export const CXStringSetT = {
   struct: [
     ptr(CXStringT), // Strings, offset 0, size 8
     unsignedInt, // Count, offset 8, size 4
+  ],
+} as const;
+
+/**
+ * Describes the availability of a given entity on a particular platform, e.g.,
+ * a particular class might only be available on Mac OS 10.7 or newer.
+ */
+export const CXPlatformAvailabilityT = {
+  /** Struct size: 72 */
+  struct: [
+    /**
+     * A string that describes the platform for which this structure
+     * provides availability information.
+     *
+     * Possible values are "ios" or "macos".
+     */
+    CXStringT, // Platform, offset 0, size 16
+    /**
+     * The version number in which this entity was introduced.
+     */
+    CXVersionT, // Introduced, offset 16, size 12
+    /**
+     * The version number in which this entity was deprecated (but is
+     * still available).
+     */
+    CXVersionT, // Deprecated, offset 28, size 12
+    /**
+     * The version number in which this entity was obsoleted, and therefore
+     * is no longer available.
+     */
+    CXVersionT, // Obsoleted, offset 40, size 12
+    /**
+     * Whether the entity is unconditionally unavailable on this platform.
+     */
+    int, // Unavailable, offset 52, size 4
+    /**
+     * An optional message to provide to a user of this API, e.g., to
+     * suggest replacement APIs.
+     */
+    CXStringT, // Message, offset 56, size 16
   ],
 } as const;
 

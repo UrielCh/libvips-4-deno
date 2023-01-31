@@ -93,12 +93,13 @@ export type AnyType =
   | ReferenceType;
 
 export const structFieldToDeinlineString = (
-  results: string[],
   struct: StructType,
   field: StructField,
-) => {
+): {structField: string, extraCode?: string, dependencies: string[]} => {
+  const dependencies: string[] = [];
   if (field.type.kind !== "pointer" || field.type.pointee.kind !== "function") {
-    return anyTypeToString(field.type);
+    const structField = anyTypeToString(field.type);
+    return {structField, dependencies}
   }
 
   const functionsCount =
@@ -113,11 +114,9 @@ export const structFieldToDeinlineString = (
 
   // De-inline functions in structs
   const functionName = `${struct.name}${fieldNamePart}CallbackDefinition`;
-  results.push(
-    `export const ${functionName} = ${anyTypeToString(field.type.pointee)} as const;`,
-  );
+  const extraCode = `export const ${functionName} = ${anyTypeToString(field.type.pointee)} as const;`;
 
-  return `func(${anyTypeToString({
+  const structField = `func(${anyTypeToString({
     kind: "ref",
     comment: null,
     name: functionName,
@@ -125,6 +124,7 @@ export const structFieldToDeinlineString = (
     reprName: functionName,
   })
     })`;
+    return {structField, extraCode, dependencies}
 };
 
 export const anyTypeToString = (type: AnyType): string => {
