@@ -25,7 +25,7 @@ import { ContextFile, ContextGlobal } from "./Context.ts";
 import { onEnumDecl } from "./onEnumDecl.ts";
 import { onFunctionDecl } from "./onFunctionDecl.ts";
 import { onTypedefDecl } from "./onTypedefDecl.ts";
-import * as utils from "./utils.ts";
+// import * as utils from "./utils.ts";
 
 import { walk } from "https://deno.land/std@0.171.0/fs/walk.ts";
 
@@ -38,29 +38,47 @@ function cmt(elm: CommonType, offset = '  '): string {
   return `${comment}\n`;
 }
 
-/**
- * Generator entry point
- * @param configurations.headerRoot The root directory of the header files
- * @param configurations.libFile The library file to check for exported symbols
- * @param configurations.destination The destination directory for the generated files
- * @param configurations.includePaths Additional include paths will be passed as -I to the C compiler
- */
-export async function generateLibMapping(configurations: { headerRoot: string, libFile: string, destination: string, includePaths?: string[] }) {
-  const index = new libclang.CXIndex(false, true);
-  const { destination } = configurations;
-  await ensureDir(destination);
+export class FFIgenerator {
+  private headerRoot: string;
+  private libFile: string;
+  private destination: string;
+  private includePaths: string[];
+//   private index: libclang.CXIndex;
 
-  const includePaths = (configurations.includePaths || []).map(a => `-I${a}`);
+
+  /**
+   * Generator entry point
+   * @param configurations.headerRoot The root directory of the header files
+   * @param configurations.libFile The library file to check for exported symbols
+   * @param configurations.destination The destination directory for the generated files
+   * @param configurations.includePaths Additional include paths will be passed as -I to the C compiler
+   */
+  constructor(configurations: { headerRoot: string, libFile: string, destination: string, includePaths?: string[] }) {
+    this.destination = configurations.destination;
+    this.libFile = configurations.libFile;
+    this.headerRoot = configurations.headerRoot;
+    this.includePaths = configurations.includePaths || [];
+    // this.index = new libclang.CXIndex(false, true);
+  }
+
+
+ async generate() {
+  const index = new libclang.CXIndex(false, true);
+  // this.destination = this.destination;
+  await ensureDir(this.destination);
+
+  const includePaths = (this.includePaths || []).map(a => `-I${a}`);
 
   const HEADER_FILES: string[] = []
-  for await (const header of walk(configurations.headerRoot, { exts: ["h", "hpp"] })) {
-    const path = header.path.replace(configurations.headerRoot, "")
+  for await (const header of walk(this.headerRoot, { exts: ["h", "hpp"] })) {
+    const path = header.path.replace(this.headerRoot, "")
     HEADER_FILES.push(path.replace(/^\//, ''));
   }
 
+  const headerRoot = this.headerRoot;
   function visiteHeaderFile(ctxtGl: ContextGlobal, fileName: string) {
     const ctxt = new ContextFile(ctxtGl, fileName);
-    const fullPathName = join(configurations.headerRoot, fileName);
+    const fullPathName = join(headerRoot, fileName);
     const tu = index.parseTranslationUnit(
       fullPathName,
       includePaths,
@@ -296,7 +314,7 @@ export async function generateLibMapping(configurations: { headerRoot: string, l
    * Write to file with all types
    */
 
-  Deno.writeTextFileSync(join(destination, "typeDefinitions.ts"), results.join("\n"));
+  Deno.writeTextFileSync(join(this.destination, "typeDefinitions.ts"), results.join("\n"));
   // utils.formatSync(join(destination, "typeDefinitions.ts"));
 
   /**
@@ -338,12 +356,12 @@ export async function generateLibMapping(configurations: { headerRoot: string, l
       let isAvailable = true;
       try {
         Deno.dlopen(
-          configurations.libFile,
+          this.libFile,
           { [name]: { type: "pointer" } },
         );
       } catch (err) {
         if (err.message.includes("No such file or directory")) {
-          console.error(`can log load lib ${configurations.libFile} No such file or directory`)
+          console.error(`can log load lib ${this.libFile} No such file or directory`)
           return;
         }
         console.log(err.message)
@@ -384,10 +402,11 @@ ${[...imports].sort((a, b) => a.localeCompare(b)).map((importName) =>
     }
     // if there is any function write a file
     if (functionResults.length) {
-      const dst = join(destination, `${fileName}.ts`);
+      const dst = join(this.destination, `${fileName}.ts`);
       await ensureDir(dirname(dst));
       Deno.writeTextFileSync(dst, functionResults.join("\n"));
       // utils.formatSync(dst);
     }
   }
+}
 }
