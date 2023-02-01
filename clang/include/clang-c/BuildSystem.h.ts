@@ -9,7 +9,7 @@ import {
   ptr,
   unsignedInt,
   unsignedLongLong,
-} from "./typeDefinitions.ts";
+} from "../typeDefinitions.ts";
 
 /**
  * Return the timestamp for use with Clang's
@@ -37,6 +37,7 @@ export const clang_VirtualFileOverlay_create = {
  * Map an absolute virtual file path to an absolute real one.
  * The virtual path must be canonicalized (not contain "."/"..").
  *
+ *
  * @returns 0 for success, non-zero to indicate an error.
  */
 export const clang_VirtualFileOverlay_addFileMapping = {
@@ -52,6 +53,7 @@ export const clang_VirtualFileOverlay_addFileMapping = {
  * Set the case sensitivity for the `CXVirtualFileOverlay` object.
  * The `CXVirtualFileOverlay` object is case-sensitive by default, this
  * option can be used to override the default.
+ *
  *
  * @returns 0 for success, non-zero to indicate an error.
  */
@@ -123,6 +125,7 @@ export const clang_ModuleMapDescriptor_create = {
 /**
  * Sets the framework module name that the module.map describes.
  *
+ *
  * @returns 0 for success, non-zero to indicate an error.
  */
 export const clang_ModuleMapDescriptor_setFrameworkModuleName = {
@@ -135,6 +138,7 @@ export const clang_ModuleMapDescriptor_setFrameworkModuleName = {
 
 /**
  * Sets the umbrella header name that the module.map describes.
+ *
  *
  * @returns 0 for success, non-zero to indicate an error.
  */

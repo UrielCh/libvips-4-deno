@@ -2,16 +2,16 @@ import { join } from "https://deno.land/std@0.170.0/path/mod.ts";
 // can be use to improve error handling but requires extra --allow-read permission
 // import { existsSync } from "https://deno.land/std@0.170.0/fs/mod.ts";
 
-import * as BuildSystem from "./include/BuildSystem.h.ts";
-import * as CXCompilationDatabase from "./include/CXCompilationDatabase.h.ts";
-import * as CXDiagnostic from "./include/CXDiagnostic.h.ts";
-import * as CXFile from "./include/CXFile.h.ts";
-import * as CXSourceLocation from "./include/CXSourceLocation.h.ts";
-import * as CXString from "./include/CXString.h.ts";
-import * as Documentation from "./include/Documentation.h.ts";
-import * as FatalErrorHandler from "./include/FatalErrorHandler.h.ts";
-import * as Index from "./include/Index.h.ts";
-import * as Rewrite from "./include/Rewrite.h.ts";
+import * as BuildSystem from "./include/clang-c/BuildSystem.h.ts";
+import * as CXCompilationDatabase from "./include/clang-c/CXCompilationDatabase.h.ts";
+import * as CXDiagnostic from "./include/clang-c/CXDiagnostic.h.ts";
+import * as CXFile from "./include/clang-c/CXFile.h.ts";
+import * as CXSourceLocation from "./include/clang-c/CXSourceLocation.h.ts";
+import * as CXString from "./include/clang-c/CXString.h.ts";
+import * as Documentation from "./include/clang-c/Documentation.h.ts";
+import * as FatalErrorHandler from "./include/clang-c/FatalErrorHandler.h.ts";
+import * as Index from "./include/clang-c/Index.h.ts";
+import * as Rewrite from "./include/clang-c/Rewrite.h.ts";
 
 /**
  * Windows dll have a few missing symbols

@@ -8,7 +8,7 @@ import {
   int,
   ptr,
   unsignedInt,
-} from "./typeDefinitions.ts";
+} from "../typeDefinitions.ts";
 
 /**
  * Retrieve a NULL (invalid) source location.

@@ -1,17 +1,12 @@
 import {
-  buf,
-  cstringT,
-  CXAPISetT,
   CXCommentInlineCommandRenderKindT,
   CXCommentKindT,
   CXCommentParamPassDirectionT,
   CXCommentT,
   CXCursorT,
-  CXErrorCodeT,
   CXStringT,
-  CXTranslationUnitT,
   unsignedInt,
-} from "./typeDefinitions.ts";
+} from "../typeDefinitions.ts";
 
 /**
  * Given a cursor that represents a documentable entity (e.g.,
@@ -343,6 +338,7 @@ export const clang_TParamCommandComment_isParamPositionValid = {
  *
  * For example,
  *
+ *
  * ```
  *     template<typename C, template<typename T> class TT>
  *     void test(TT<int> aaa);
@@ -363,6 +359,7 @@ export const clang_TParamCommandComment_getDepth = {
  * given nesting depth.
  *
  * For example,
+ *
  *
  * ```
  *     template<typename C, template<typename T> class TT>
@@ -427,18 +424,23 @@ export const clang_HTMLTagComment_getAsString = {
  *
  * Currently the following CSS classes are used:
  *
+ *
  * @li "para-brief" for
- * \\paragraph  and equivalent commands;
+ *\\paragraph  and equivalent commands;
  * @li "para-returns" for \\returns paragraph and equivalent commands;
+ *
  *
  * @li "word-returns" for the "Returns" word in \\returns paragraph.
  *
  * Function argument documentation is rendered as a list with arguments
  * sorted in function prototype order. CSS classes used:
  *
+ *
  * @li "param-name-index-NUMBER" for parameter name ();
  *
+ *
  * @li "param-descr-index-NUMBER" for parameter description ();
+ *
  *
  * @li "param-name-index-invalid" and "param-descr-index-invalid" are used if
  * parameter index is invalid.
@@ -446,12 +448,16 @@ export const clang_HTMLTagComment_getAsString = {
  * Template parameter documentation is rendered as a list with
  * parameters sorted in template parameter list order. CSS classes used:
  *
+ *
  * @li "tparam-name-index-NUMBER" for parameter name ();
+ *
  *
  * @li "tparam-descr-index-NUMBER" for parameter description ();
  *
+ *
  * @li "tparam-name-index-other" and "tparam-descr-index-other" are used for
  * names inside template template parameters;
+ *
  *
  * @li "tparam-name-index-invalid" and "tparam-descr-index-invalid" are used if
  * parameter position is invalid.
@@ -478,81 +484,6 @@ export const clang_FullComment_getAsHTML = {
 export const clang_FullComment_getAsXML = {
   parameters: [
     CXCommentT, // Comment
-  ],
-  result: CXStringT,
-} as const;
-
-/**
- * Traverses the translation unit to create a `CXAPISet.`
- *
- * @param tu is the `CXTranslationUnit` to build the `CXAPISet` for.
- * @param out_api is a pointer to the output of this function. It is needs to be
- * disposed of by calling clang_disposeAPISet.
- * @returns Error code indicating success or failure of the APISet creation.
- */
-// deno-lint-ignore no-unused-vars
-const clang_createAPISet = {
-  parameters: [
-    CXTranslationUnitT, // tu
-    buf(CXAPISetT), // out_api
-  ],
-  result: CXErrorCodeT,
-} as const;
-
-/**
- * Dispose of an APISet.
- *
- * The provided `CXAPISet` can not be used after this function is called.
- */
-// deno-lint-ignore no-unused-vars
-const clang_disposeAPISet = {
-  parameters: [
-    CXAPISetT, // api
-  ],
-  result: "void",
-} as const;
-
-/**
- * Generate a single symbol symbol graph for the given USR. Returns a null
- * string if the associated symbol can not be found in the provided `CXAPISet.`
- *
- * The output contains the symbol graph as well as some additional information
- * about related symbols.
- *
- * @param usr is a string containing the USR of the symbol to generate the
- * symbol graph for.
- * @param api the `CXAPISet` to look for the symbol in.
- * @returns a string containing the serialized symbol graph representation for
- * the symbol being queried or a null string if it can not be found in the
- * APISet.
- */
-// deno-lint-ignore no-unused-vars
-const clang_getSymbolGraphForUSR = {
-  parameters: [
-    cstringT, // usr
-    CXAPISetT, // api
-  ],
-  result: CXStringT,
-} as const;
-
-/**
- * Generate a single symbol symbol graph for the declaration at the given
- * cursor. Returns a null string if the AST node for the cursor isn't a
- * declaration.
- *
- * The output contains the symbol graph as well as some additional information
- * about related symbols.
- *
- * @param cursor the declaration for which to generate the single symbol symbol
- * graph.
- * @returns a string containing the serialized symbol graph representation for
- * the symbol being queried or a null string if it can not be found in the
- * APISet.
- */
-// deno-lint-ignore no-unused-vars
-const clang_getSymbolGraphForCursor = {
-  parameters: [
-    CXCursorT, // cursor
   ],
   result: CXStringT,
 } as const;

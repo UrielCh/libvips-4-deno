@@ -9,7 +9,7 @@ import {
   CXSourceRangeT,
   CXStringT,
   unsignedInt,
-} from "./typeDefinitions.ts";
+} from "../typeDefinitions.ts";
 
 /**
  * Determine the number of diagnostics in a CXDiagnosticSet.

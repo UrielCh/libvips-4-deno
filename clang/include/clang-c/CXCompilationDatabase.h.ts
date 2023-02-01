@@ -7,7 +7,7 @@ import {
   CXCompileCommandT,
   CXStringT,
   unsignedInt,
-} from "./typeDefinitions.ts";
+} from "../typeDefinitions.ts";
 
 /**
  * Creates a compilation database from the database found in directory

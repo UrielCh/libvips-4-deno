@@ -5,7 +5,7 @@ import {
   CXStringT,
   int,
   time_t,
-} from "./typeDefinitions.ts";
+} from "../typeDefinitions.ts";
 
 /**
  * Retrieve the complete file and path name of the given file.

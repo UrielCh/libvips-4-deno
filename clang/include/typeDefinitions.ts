@@ -1,7 +1,6 @@
 export const ptr = (_type: unknown) => "pointer" as const;
 export const buf = (_type: unknown) => "buffer" as const;
 export const func = (_func: unknown) => "function" as const;
-
 export const unsignedInt = "u32" as const;
 
 /**
@@ -9,26 +8,194 @@ export const unsignedInt = "u32" as const;
  */
 export const cstringT = "buffer" as const;
 
-export const unsignedLongLong = "u64" as const;
-
 export const int = "i32" as const;
+
+export const unsignedLong = "u64" as const;
+
+export const size_t = "u64" as const;
 
 /**
  * `char **`, C string array
  */
 export const cstringArrayT = "buffer" as const;
 
+export const longLong = "i64" as const;
+
+export const unsignedLongLong = "u64" as const;
+
+export const double = "f64" as const;
+
 export const long = "i64" as const;
 
 export const __time_t = "i64" as const;
 
-export const unsignedLong = "u64" as const;
+/******** Start enums ********/
+/**
+ * Describes the type of the comment AST node (`CXComment).` A comment
+ * node can be considered block content (e. g., paragraph), inline content
+ * (plain text) or neither (the root AST node).
+ */
+export const enum CXCommentKind {
+  /**
+   * Null comment. No AST node is constructed at the requested location
+   * because there is no text or a syntax error.
+   */
+  CXComment_Null = 0,
+  /**
+   * Plain text. Inline content.
+   */
+  CXComment_Text = 1,
+  /**
+   * A command with word-like arguments that is considered inline content.
+   *
+   * For example: \\c command.
+   */
+  CXComment_InlineCommand = 2,
+  /**
+   * HTML start tag with attributes (name-value pairs). Considered
+   * inline content.
+   *
+   * For example:
+   *
+   *
+   * ```
+   * <br> <br /> <a href="http://example.org/">
+   * ```
+   *
+   */
+  CXComment_HTMLStartTag = 3,
+  /**
+   * HTML end tag. Considered inline content.
+   *
+   * For example:
+   *
+   *
+   * ```
+   * </a>
+   * ```
+   *
+   */
+  CXComment_HTMLEndTag = 4,
+  /**
+   * A paragraph, contains inline comment. The paragraph itself is
+   * block content.
+   */
+  CXComment_Paragraph = 5,
+  /**
+   * A command that has zero or more word-like arguments (number of
+   * word-like arguments depends on command name) and a paragraph as an
+   * argument. Block command is block content.
+   *
+   * Paragraph argument is also a child of the block command.
+   *
+   * For example: \has 0 word-like arguments and a paragraph argument.
+   *
+   * AST nodes of special kinds that parser knows about (e. g., \\param
+   * command) have their own node kinds.
+   */
+  CXComment_BlockCommand = 6,
+  /**
+   * A \\param or \\arg command that describes the function parameter
+   * (name, passing direction, description).
+   *
+   * For example: \\param [in] ParamName description.
+   */
+  CXComment_ParamCommand = 7,
+  /**
+   * A \\tparam command that describes a template parameter (name and
+   * description).
+   *
+   * For example: \\tparam T description.
+   */
+  CXComment_TParamCommand = 8,
+  /**
+   * A verbatim block command (e. g., preformatted code). Verbatim
+   * block has an opening and a closing command and contains multiple lines of
+   * text (`CXComment_VerbatimBlockLine` child nodes).
+   *
+   * For example:
+   * \\verbatim
+   * aaa
+   * \\endverbatim
+   */
+  CXComment_VerbatimBlockCommand = 9,
+  /**
+   * A line of text that is contained within a
+   * CXComment_VerbatimBlockCommand node.
+   */
+  CXComment_VerbatimBlockLine = 10,
+  /**
+   * A verbatim line command. Verbatim line has an opening command,
+   * a single line of text (up to the newline after the opening command) and
+   * has no closing command.
+   */
+  CXComment_VerbatimLine = 11,
+  /**
+   * A full comment attached to a declaration, contains block content.
+   */
+  CXComment_FullComment = 12,
+}
+/**
+ * Describes the type of the comment AST node (`CXComment).` A comment
+ * node can be considered block content (e. g., paragraph), inline content
+ * (plain text) or neither (the root AST node).
+ */
+export const CXCommentKindT = unsignedInt;
 
-export const size_t = "u64" as const;
+/**
+ * The most appropriate rendering mode for an inline command, chosen on
+ * command semantics in Doxygen.
+ */
+export const enum CXCommentInlineCommandRenderKind {
+  /**
+   * Command argument should be rendered in a normal font.
+   */
+  CXCommentInlineCommandRenderKind_Normal,
+  /**
+   * Command argument should be rendered in a bold font.
+   */
+  CXCommentInlineCommandRenderKind_Bold,
+  /**
+   * Command argument should be rendered in a monospaced font.
+   */
+  CXCommentInlineCommandRenderKind_Monospaced,
+  /**
+   * Command argument should be rendered emphasized (typically italic
+   * font).
+   */
+  CXCommentInlineCommandRenderKind_Emphasized,
+  /**
+   * Command argument should not be rendered (since it only defines an anchor).
+   */
+  CXCommentInlineCommandRenderKind_Anchor,
+}
+/**
+ * The most appropriate rendering mode for an inline command, chosen on
+ * command semantics in Doxygen.
+ */
+export const CXCommentInlineCommandRenderKindT = unsignedInt;
 
-export const longLong = "i64" as const;
-
-export const double = "f64" as const;
+/**
+ * Describes parameter passing direction for \\param or \\arg command.
+ */
+export const enum CXCommentParamPassDirection {
+  /**
+   * The parameter is an input parameter.
+   */
+  CXCommentParamPassDirection_In,
+  /**
+   * The parameter is an output parameter.
+   */
+  CXCommentParamPassDirection_Out,
+  /**
+   * The parameter is an input and output parameter.
+   */
+  CXCommentParamPassDirection_InOut,
+}
+/**
+ * Describes parameter passing direction for \\param or \\arg command.
+ */
+export const CXCommentParamPassDirectionT = unsignedInt;
 
 /**
  * Error codes returned by libclang routines.
@@ -71,153 +238,6 @@ export const enum CXErrorCode {
  * errors.
  */
 export const CXErrorCodeT = unsignedInt;
-
-/**
- * Error codes for Compilation Database
- */
-export const enum CXCompilationDatabase_Error {
-  CXCompilationDatabase_NoError = 0,
-  CXCompilationDatabase_CanNotLoadDatabase = 1,
-}
-/**
- * Error codes for Compilation Database
- */
-export const CXCompilationDatabase_ErrorT = unsignedInt;
-
-/**
- * Describes the severity of a particular diagnostic.
- */
-export const enum CXDiagnosticSeverity {
-  /**
-   * A diagnostic that has been suppressed, e.g., by a command-line
-   * option.
-   */
-  CXDiagnostic_Ignored = 0,
-  /**
-   * This diagnostic is a note that should be attached to the
-   * previous (non-note) diagnostic.
-   */
-  CXDiagnostic_Note = 1,
-  /**
-   * This diagnostic indicates suspicious code that may not be
-   * wrong.
-   */
-  CXDiagnostic_Warning = 2,
-  /**
-   * This diagnostic indicates that the code is ill-formed.
-   */
-  CXDiagnostic_Error = 3,
-  /**
-   * This diagnostic indicates that the code is ill-formed such
-   * that future parser recovery is unlikely to produce useful
-   * results.
-   */
-  CXDiagnostic_Fatal = 4,
-}
-/**
- * Describes the severity of a particular diagnostic.
- */
-export const CXDiagnosticSeverityT = unsignedInt;
-
-/**
- * Describes the kind of error that occurred (if any) in a call to
- * `clang_loadDiagnostics.`
- */
-export const enum CXLoadDiag_Error {
-  /**
-   * Indicates that no error occurred.
-   */
-  CXLoadDiag_None = 0,
-  /**
-   * Indicates that an unknown error occurred while attempting to
-   * deserialize diagnostics.
-   */
-  CXLoadDiag_Unknown = 1,
-  /**
-   * Indicates that the file containing the serialized diagnostics
-   * could not be opened.
-   */
-  CXLoadDiag_CannotLoad = 2,
-  /**
-   * Indicates that the serialized diagnostics file is invalid or
-   * corrupt.
-   */
-  CXLoadDiag_InvalidFile = 3,
-}
-/**
- * Describes the kind of error that occurred (if any) in a call to
- * `clang_loadDiagnostics.`
- */
-export const CXLoadDiag_ErrorT = unsignedInt;
-
-/**
- * Options to control the display of diagnostics.
- *
- * The values in this enum are meant to be combined to customize the
- * behavior of `clang_formatDiagnostic().`
- */
-export const enum CXDiagnosticDisplayOptions {
-  /**
-   * Display the source-location information where the
-   * diagnostic was located.
-   *
-   * When set, diagnostics will be prefixed by the file, line, and
-   * (optionally) column to which the diagnostic refers. For example,
-   *
-   * ```cpp
-   * test.c:28: warning: extra tokens at end of #endif directive
-   * ```
-   * This option corresponds to the clang flag `-fshow-source-location.`
-   */
-  CXDiagnostic_DisplaySourceLocation = 0x01,
-  /**
-   * If displaying the source-location information of the
-   * diagnostic, also include the column number.
-   *
-   * This option corresponds to the clang flag `-fshow-column.`
-   */
-  CXDiagnostic_DisplayColumn = 0x02,
-  /**
-   * If displaying the source-location information of the
-   * diagnostic, also include information about source ranges in a
-   * machine-parsable format.
-   *
-   * This option corresponds to the clang flag
-   * `-fdiagnostics-print-source-range-info.`
-   */
-  CXDiagnostic_DisplaySourceRanges = 0x04,
-  /**
-   * Display the option name associated with this diagnostic, if any.
-   *
-   * The option name displayed (e.g., -Wconversion) will be placed in brackets
-   * after the diagnostic text. This option corresponds to the clang flag
-   * `-fdiagnostics-show-option.`
-   */
-  CXDiagnostic_DisplayOption = 0x08,
-  /**
-   * Display the category number associated with this diagnostic, if any.
-   *
-   * The category number is displayed within brackets after the diagnostic text.
-   * This option corresponds to the clang flag
-   * `-fdiagnostics-show-category=id.`
-   */
-  CXDiagnostic_DisplayCategoryId = 0x10,
-  /**
-   * Display the category name associated with this diagnostic, if any.
-   *
-   * The category name is displayed within brackets after the diagnostic text.
-   * This option corresponds to the clang flag
-   * `-fdiagnostics-show-category=name.`
-   */
-  CXDiagnostic_DisplayCategoryName = 0x20,
-}
-/**
- * Options to control the display of diagnostics.
- *
- * The values in this enum are meant to be combined to customize the
- * behavior of `clang_formatDiagnostic().`
- */
-export const CXDiagnosticDisplayOptionsT = unsignedInt;
 
 /**
  * Describes the availability of a particular entity, which indicates
@@ -330,9 +350,7 @@ export const enum CXGlobalOptFlags {
    * Used to indicate that all threads that libclang creates should use
    * background priority.
    */
-  CXGlobalOpt_ThreadBackgroundPriorityForAll =
-    CXGlobalOpt_ThreadBackgroundPriorityForIndexing |
-    CXGlobalOpt_ThreadBackgroundPriorityForEditing,
+  CXGlobalOpt_ThreadBackgroundPriorityForAll = CXGlobalOpt_ThreadBackgroundPriorityForIndexing | CXGlobalOpt_ThreadBackgroundPriorityForEditing,
 }
 export const CXGlobalOptFlagsT = unsignedInt;
 
@@ -583,8 +601,7 @@ export const enum CXTUResourceUsageKind {
   CXTUResourceUsage_SourceManager_DataStructures = 13,
   CXTUResourceUsage_Preprocessor_HeaderSearch = 14,
   CXTUResourceUsage_MEMORY_IN_BYTES_BEGIN = CXTUResourceUsage_AST,
-  CXTUResourceUsage_MEMORY_IN_BYTES_END =
-    CXTUResourceUsage_Preprocessor_HeaderSearch,
+  CXTUResourceUsage_MEMORY_IN_BYTES_END = CXTUResourceUsage_Preprocessor_HeaderSearch,
   CXTUResourceUsage_First = CXTUResourceUsage_AST,
   CXTUResourceUsage_Last = CXTUResourceUsage_Preprocessor_HeaderSearch,
 }
@@ -996,9 +1013,11 @@ export const enum CXCursorKind {
    *
    * Example:
    *
+   *
    * ```cpp
    *   x = int(0.5);
    * ```
+   *
    */
   CXCursor_CXXFunctionalCastExpr = 128,
   /**
@@ -1061,6 +1080,7 @@ export const enum CXCursorKind {
    * ```cpp
    *   NSString *str = (__bridge_transfer NSString *)CFCreateString();
    * ```
+   *
    */
   CXCursor_ObjCBridgedCastExpr = 141,
   /**
@@ -1076,6 +1096,7 @@ export const enum CXCursorKind {
    *  f(static_cast<Types&&>(args)...);
    * }
    * ```
+   *
    */
   CXCursor_PackExpansionExpr = 142,
   /**
@@ -1088,6 +1109,7 @@ export const enum CXCursorKind {
    *   static const unsigned value = sizeof...(Types);
    * };
    * ```
+   *
    */
   CXCursor_SizeOfPackExpr = 143,
   /**
@@ -1102,6 +1124,7 @@ export const enum CXCursorKind {
    *             });
    * }
    * ```
+   *
    */
   CXCursor_LambdaExpr = 144,
   /**
@@ -1168,6 +1191,7 @@ export const enum CXCursorKind {
    *   start_over:
    *     ++counter;
    * ```
+   *
    */
   CXCursor_LabelStmt = 201,
   /**
@@ -2135,7 +2159,7 @@ export const CXChildVisitResultT = unsignedInt;
 /**
  * Properties for the printing policy.
  *
- * See {@link https://clang.llvm.org/doxygen/structclang_1_1PrintingPolicy.html clang::PrintingPolicy} for more information.
+ * See `clang::PrintingPolicy` for more information.
  */
 export const enum CXPrintingPolicyProperty {
   CXPrintingPolicy_Indentation,
@@ -2169,12 +2193,12 @@ export const enum CXPrintingPolicyProperty {
 /**
  * Properties for the printing policy.
  *
- * See {@link https://clang.llvm.org/doxygen/structclang_1_1PrintingPolicy.html clang::PrintingPolicy} for more information.
+ * See `clang::PrintingPolicy` for more information.
  */
 export const CXPrintingPolicyPropertyT = unsignedInt;
 
 /**
- * Property attributes for a {@link CXCursorKind.CXCursor_ObjCPropertyDecl}.
+ * Property attributes for a `CXCursor_ObjCPropertyDecl.`
  */
 export const enum CXObjCPropertyAttrKind {
   CXObjCPropertyAttr_noattr = 0x0000,
@@ -2193,7 +2217,7 @@ export const enum CXObjCPropertyAttrKind {
   CXObjCPropertyAttr_class = 0x1000,
 }
 /**
- * Property attributes for a {@link CXCursorKind.CXCursor_ObjCPropertyDecl}.
+ * Property attributes for a `CXCursor_ObjCPropertyDecl.`
  */
 export const CXObjCPropertyAttrKindT = unsignedInt;
 
@@ -2233,10 +2257,12 @@ export const enum CXNameRefFlags {
    * Non-contiguous names occur in Objective-C when a selector with two or more
    * parameters is used, or in C++ when using an operator:
    *
+   *
    * ```cpp
    * [object doSomething:here withValue:there]; // Objective-C
    * return some_vector[1]; // C++
    * ```
+   *
    */
   CXNameRange_WantSinglePiece = 4,
 }
@@ -2841,203 +2867,253 @@ export const enum CXIndexOptFlags {
 export const CXIndexOptFlagsT = unsignedInt;
 
 /**
- * Describes the type of the comment AST node (`CXComment).` A comment
- * node can be considered block content (e. g., paragraph), inline content
- * (plain text) or neither (the root AST node).
+ * Error codes for Compilation Database
  */
-export const enum CXCommentKind {
-  /**
-   * Null comment. No AST node is constructed at the requested location
-   * because there is no text or a syntax error.
-   */
-  CXComment_Null = 0,
-  /**
-   * Plain text. Inline content.
-   */
-  CXComment_Text = 1,
-  /**
-   * A command with word-like arguments that is considered inline content.
-   *
-   * For example: \\c command.
-   */
-  CXComment_InlineCommand = 2,
-  /**
-   * HTML start tag with attributes (name-value pairs). Considered
-   * inline content.
-   *
-   * For example:
-   *
-   * ```
-   * <br> <br /> <a href="http://example.org/">
-   * ```
-   */
-  CXComment_HTMLStartTag = 3,
-  /**
-   * HTML end tag. Considered inline content.
-   *
-   * For example:
-   *
-   * ```
-   * </a>
-   * ```
-   */
-  CXComment_HTMLEndTag = 4,
-  /**
-   * A paragraph, contains inline comment. The paragraph itself is
-   * block content.
-   */
-  CXComment_Paragraph = 5,
-  /**
-   * A command that has zero or more word-like arguments (number of
-   * word-like arguments depends on command name) and a paragraph as an
-   * argument. Block command is block content.
-   *
-   * Paragraph argument is also a child of the block command.
-   *
-   * For example: \has 0 word-like arguments and a paragraph argument.
-   *
-   * AST nodes of special kinds that parser knows about (e. g., \\param
-   * command) have their own node kinds.
-   */
-  CXComment_BlockCommand = 6,
-  /**
-   * A \\param or \\arg command that describes the function parameter
-   * (name, passing direction, description).
-   *
-   * For example: \\param [in] ParamName description.
-   */
-  CXComment_ParamCommand = 7,
-  /**
-   * A \\tparam command that describes a template parameter (name and
-   * description).
-   *
-   * For example: \\tparam T description.
-   */
-  CXComment_TParamCommand = 8,
-  /**
-   * A verbatim block command (e. g., preformatted code). Verbatim
-   * block has an opening and a closing command and contains multiple lines of
-   * text (`CXComment_VerbatimBlockLine` child nodes).
-   *
-   * For example:
-   * \\verbatim
-   * aaa
-   * \\endverbatim
-   */
-  CXComment_VerbatimBlockCommand = 9,
-  /**
-   * A line of text that is contained within a
-   * CXComment_VerbatimBlockCommand node.
-   */
-  CXComment_VerbatimBlockLine = 10,
-  /**
-   * A verbatim line command. Verbatim line has an opening command,
-   * a single line of text (up to the newline after the opening command) and
-   * has no closing command.
-   */
-  CXComment_VerbatimLine = 11,
-  /**
-   * A full comment attached to a declaration, contains block content.
-   */
-  CXComment_FullComment = 12,
+export const enum CXCompilationDatabase_Error {
+  CXCompilationDatabase_NoError = 0,
+  CXCompilationDatabase_CanNotLoadDatabase = 1,
 }
 /**
- * Describes the type of the comment AST node (`CXComment).` A comment
- * node can be considered block content (e. g., paragraph), inline content
- * (plain text) or neither (the root AST node).
+ * Error codes for Compilation Database
  */
-export const CXCommentKindT = unsignedInt;
+export const CXCompilationDatabase_ErrorT = unsignedInt;
 
 /**
- * The most appropriate rendering mode for an inline command, chosen on
- * command semantics in Doxygen.
+ * Describes the severity of a particular diagnostic.
  */
-export const enum CXCommentInlineCommandRenderKind {
+export const enum CXDiagnosticSeverity {
   /**
-   * Command argument should be rendered in a normal font.
+   * A diagnostic that has been suppressed, e.g., by a command-line
+   * option.
    */
-  CXCommentInlineCommandRenderKind_Normal,
+  CXDiagnostic_Ignored = 0,
   /**
-   * Command argument should be rendered in a bold font.
+   * This diagnostic is a note that should be attached to the
+   * previous (non-note) diagnostic.
    */
-  CXCommentInlineCommandRenderKind_Bold,
+  CXDiagnostic_Note = 1,
   /**
-   * Command argument should be rendered in a monospaced font.
+   * This diagnostic indicates suspicious code that may not be
+   * wrong.
    */
-  CXCommentInlineCommandRenderKind_Monospaced,
+  CXDiagnostic_Warning = 2,
   /**
-   * Command argument should be rendered emphasized (typically italic
-   * font).
+   * This diagnostic indicates that the code is ill-formed.
    */
-  CXCommentInlineCommandRenderKind_Emphasized,
+  CXDiagnostic_Error = 3,
   /**
-   * Command argument should not be rendered (since it only defines an anchor).
+   * This diagnostic indicates that the code is ill-formed such
+   * that future parser recovery is unlikely to produce useful
+   * results.
    */
-  CXCommentInlineCommandRenderKind_Anchor,
+  CXDiagnostic_Fatal = 4,
 }
 /**
- * The most appropriate rendering mode for an inline command, chosen on
- * command semantics in Doxygen.
+ * Describes the severity of a particular diagnostic.
  */
-export const CXCommentInlineCommandRenderKindT = unsignedInt;
+export const CXDiagnosticSeverityT = unsignedInt;
 
 /**
- * Describes parameter passing direction for \\param or \\arg command.
+ * Describes the kind of error that occurred (if any) in a call to
+ * `clang_loadDiagnostics.`
  */
-export const enum CXCommentParamPassDirection {
+export const enum CXLoadDiag_Error {
   /**
-   * The parameter is an input parameter.
+   * Indicates that no error occurred.
    */
-  CXCommentParamPassDirection_In,
+  CXLoadDiag_None = 0,
   /**
-   * The parameter is an output parameter.
+   * Indicates that an unknown error occurred while attempting to
+   * deserialize diagnostics.
    */
-  CXCommentParamPassDirection_Out,
+  CXLoadDiag_Unknown = 1,
   /**
-   * The parameter is an input and output parameter.
+   * Indicates that the file containing the serialized diagnostics
+   * could not be opened.
    */
-  CXCommentParamPassDirection_InOut,
+  CXLoadDiag_CannotLoad = 2,
+  /**
+   * Indicates that the serialized diagnostics file is invalid or
+   * corrupt.
+   */
+  CXLoadDiag_InvalidFile = 3,
 }
 /**
- * Describes parameter passing direction for \\param or \\arg command.
+ * Describes the kind of error that occurred (if any) in a call to
+ * `clang_loadDiagnostics.`
  */
-export const CXCommentParamPassDirectionT = unsignedInt;
+export const CXLoadDiag_ErrorT = unsignedInt;
 
 /**
- * A character string.
+ * Options to control the display of diagnostics.
  *
- * The `CXString` type is used to return strings from the interface when
- * the ownership of that string might differ from one call to the next.
- * Use `clang_getCString(`) to retrieve the string data and, once finished
- * with the string data, call `clang_disposeString(`) to free the string.
+ * The values in this enum are meant to be combined to customize the
+ * behavior of `clang_formatDiagnostic().`
  */
-export const CXStringT = {
-  /** Struct size: 16 */
-  struct: [
-    ptr("void"), // data, offset 0, size 8
-    unsignedInt, // private_flags, offset 8, size 4
-  ],
-} as const;
+export const enum CXDiagnosticDisplayOptions {
+  /**
+   * Display the source-location information where the
+   * diagnostic was located.
+   *
+   * When set, diagnostics will be prefixed by the file, line, and
+   * (optionally) column to which the diagnostic refers. For example,
+   *
+   * ```cpp
+   * test.c:28: warning: extra tokens at end of #endif directive
+   * ```
+   * This option corresponds to the clang flag `-fshow-source-location.`
+   */
+  CXDiagnostic_DisplaySourceLocation = 0x01,
+  /**
+   * If displaying the source-location information of the
+   * diagnostic, also include the column number.
+   *
+   * This option corresponds to the clang flag `-fshow-column.`
+   */
+  CXDiagnostic_DisplayColumn = 0x02,
+  /**
+   * If displaying the source-location information of the
+   * diagnostic, also include information about source ranges in a
+   * machine-parsable format.
+   *
+   * This option corresponds to the clang flag
+   * `-fdiagnostics-print-source-range-info.`
+   */
+  CXDiagnostic_DisplaySourceRanges = 0x04,
+  /**
+   * Display the option name associated with this diagnostic, if any.
+   *
+   * The option name displayed (e.g., -Wconversion) will be placed in brackets
+   * after the diagnostic text. This option corresponds to the clang flag
+   * `-fdiagnostics-show-option.`
+   */
+  CXDiagnostic_DisplayOption = 0x08,
+  /**
+   * Display the category number associated with this diagnostic, if any.
+   *
+   * The category number is displayed within brackets after the diagnostic text.
+   * This option corresponds to the clang flag
+   * `-fdiagnostics-show-category=id.`
+   */
+  CXDiagnostic_DisplayCategoryId = 0x10,
+  /**
+   * Display the category name associated with this diagnostic, if any.
+   *
+   * The category name is displayed within brackets after the diagnostic text.
+   * This option corresponds to the clang flag
+   * `-fdiagnostics-show-category=name.`
+   */
+  CXDiagnostic_DisplayCategoryName = 0x20,
+}
+/**
+ * Options to control the display of diagnostics.
+ *
+ * The values in this enum are meant to be combined to customize the
+ * behavior of `clang_formatDiagnostic().`
+ */
+export const CXDiagnosticDisplayOptionsT = unsignedInt;
 
-export const CXStringSetT = {
-  /** Struct size: 16 */
-  struct: [
-    ptr(CXStringT), // Strings, offset 0, size 8
-    unsignedInt, // Count, offset 8, size 4
-  ],
-} as const;
-
+/******** End enums ********/
+/******** Start pointer ********/
+/**
+ * CXAPISet is an opaque type that represents a data structure containing all
+ * the API information for a given translation unit. This can be used for a
+ * single symbol symbol graph for a given symbol.
+ */
+export const CXAPISetT = ptr("void");
+export const CXRewriterT = ptr("void");
+/**
+ * An "index" that consists of a set of translation units that would
+ * typically be linked together into an executable or library.
+ */
+export const CXIndexT = ptr("void");
+/**
+ * An opaque type representing target information for a given translation
+ * unit.
+ */
+export const CXTargetInfoT = ptr("void");
+/**
+ * A single translation unit, which resides in an index.
+ */
+export const CXTranslationUnitT = ptr("void");
+/**
+ * Opaque pointer representing client data that will be passed through
+ * to various callbacks and visitors.
+ */
+export const CXClientDataT = ptr("void");
+/**
+ * A fast container representing a set of CXCursors.
+ */
+export const CXCursorSetT = ptr("void");
+/**
+ * Opaque pointer representing a policy that controls pretty printing
+ * for `clang_getCursorPrettyPrinted.`
+ */
+export const CXPrintingPolicyT = ptr("void");
+/**
+ * The functions in this group provide access to information about modules.
+ *
+ * \@\{
+ */
+export const CXModuleT = ptr("void");
+/**
+ * A semantic string that describes a code-completion result.
+ *
+ * A semantic string that describes the formatting of a code-completion
+ * result as a single "template" of text that should be inserted into the
+ * source buffer when a particular code-completion result is selected.
+ * Each semantic string is made up of some number of "chunks", each of which
+ * contains some text along with a description of what that text means, e.g.,
+ * the name of the entity being referenced, whether the text chunk is part of
+ * the template, or whether it is a "placeholder" that the user should replace
+ * with actual code,of a specific kind. See `CXCompletionChunkKind` for a
+ * description of the different kinds of chunks.
+ */
+export const CXCompletionStringT = ptr("void");
+/**
+ * Evaluation result of a cursor
+ */
+export const CXEvalResultT = ptr("void");
+/**
+ * A remapping of original source files and their translated files.
+ */
+export const CXRemappingT = ptr("void");
+/**
+ * The client's data object that is associated with a CXFile.
+ */
+export const CXIdxClientFileT = ptr("void");
+/**
+ * The client's data object that is associated with a semantic entity.
+ */
+export const CXIdxClientEntityT = ptr("void");
+/**
+ * The client's data object that is associated with a semantic container
+ * of entities.
+ */
+export const CXIdxClientContainerT = ptr("void");
+/**
+ * The client's data object that is associated with an AST file (PCH
+ * or module).
+ */
+export const CXIdxClientASTFileT = ptr("void");
+/**
+ * An indexing action/session, to be applied to one or multiple
+ * translation units.
+ */
+export const CXIndexActionT = ptr("void");
 /**
  * Object encapsulating information about overlaying virtual
  * file/directories over the real file system.
  */
 export const CXVirtualFileOverlayT = ptr("void");
-
 /**
  * Object encapsulating information about a module.map file.
  */
 export const CXModuleMapDescriptorT = ptr("void");
-
+/**
+ * A particular source file that is part of a translation unit.
+ */
+export const CXFileT = ptr("void");
 /**
  * A compilation database holds all information used to compile files in a
  * project. For each file in the database, it can be queried for the working
@@ -3046,7 +3122,6 @@ export const CXModuleMapDescriptorT = ptr("void");
  * Must be freed by `clang_CompilationDatabase_dispose`
  */
 export const CXCompilationDatabaseT = ptr("void");
-
 /**
  * Contains the results of a search in the compilation database
  *
@@ -3057,138 +3132,29 @@ export const CXCompilationDatabaseT = ptr("void");
  * `clang_CompileCommands_dispose.`
  */
 export const CXCompileCommandsT = ptr("void");
-
 /**
  * Represents the command line invocation to compile a specific file.
  */
 export const CXCompileCommandT = ptr("void");
-
-/**
- * A particular source file that is part of a translation unit.
- */
-export const CXFileT = ptr("void");
-
-export const time_t = __time_t;
-
-/**
- * Uniquely identifies a CXFile, that refers to the same underlying file,
- * across an indexing session.
- */
-export const CXFileUniqueIDT = {
-  /** Struct size: 24 */
-  struct: [
-    unsignedLongLong, // data[0], offset 0, size 8
-    unsignedLongLong, // data[1], offset 8, size 8
-    unsignedLongLong, // data[2], offset 16, size 8
-  ],
-} as const;
-
-/**
- * Identifies a specific source location within a translation
- * unit.
- *
- * Use clang_getExpansionLocation() or clang_getSpellingLocation()
- * to map a source location to a particular file, line, and column.
- */
-export const CXSourceLocationT = {
-  /** Struct size: 24 */
-  struct: [
-    ptr("void"), // ptr_data[0], offset 0, size 8
-    ptr("void"), // ptr_data[1], offset 8, size 8
-    unsignedInt, // int_data, offset 16, size 4
-  ],
-} as const;
-
-/**
- * Identifies a half-open character range in the source code.
- *
- * Use clang_getRangeStart() and clang_getRangeEnd() to retrieve the
- * starting and end locations from a source range, respectively.
- */
-export const CXSourceRangeT = {
-  /** Struct size: 24 */
-  struct: [
-    ptr("void"), // ptr_data[0], offset 0, size 8
-    ptr("void"), // ptr_data[1], offset 8, size 8
-    unsignedInt, // begin_int_data, offset 16, size 4
-    unsignedInt, // end_int_data, offset 20, size 4
-  ],
-} as const;
-
-/**
- * Identifies an array of ranges.
- */
-export const CXSourceRangeListT = {
-  /** Struct size: 16 */
-  struct: [
-    /**
-     * The number of ranges in the `ranges` array.
-     */
-    unsignedInt, // count, offset 0, size 4
-    /**
-     * An array of `CXSourceRanges.`
-     */
-    ptr(CXSourceRangeT), // ranges, offset 8, size 8
-  ],
-} as const;
-
 /**
  * A single diagnostic, containing the diagnostic's severity,
  * location, text, source ranges, and fix-it hints.
  */
 export const CXDiagnosticT = ptr("void");
-
 /**
  * A group of CXDiagnostics.
  */
 export const CXDiagnosticSetT = ptr("void");
-
+/******** End pointer ********/
+/******** Start Struct ********/
 /**
- * An "index" that consists of a set of translation units that would
- * typically be linked together into an executable or library.
+ * A parsed comment.
  */
-export const CXIndexT = ptr("void");
-
-/**
- * An opaque type representing target information for a given translation
- * unit.
- */
-export const CXTargetInfoT = ptr("void");
-
-/**
- * A single translation unit, which resides in an index.
- */
-export const CXTranslationUnitT = ptr("void");
-
-/**
- * Opaque pointer representing client data that will be passed through
- * to various callbacks and visitors.
- */
-export const CXClientDataT = ptr("void");
-
-/**
- * Describes a version number of the form major.minor.subminor.
- */
-export const CXVersionT = {
-  /** Struct size: 12 */
+export const CXCommentT = {
+  /** Struct size: 16 */
   struct: [
-    /**
-     * The major version number, e.g., the '10' in '10.7.3'. A negative
-     * value indicates that there is no version number at all.
-     */
-    int, // Major, offset 0, size 4
-    /**
-     * The minor version number, e.g., the '7' in '10.7.3'. This value
-     * will be negative if no minor version number was provided, e.g., for
-     * version '10'.
-     */
-    int, // Minor, offset 4, size 4
-    /**
-     * The subminor version number, e.g., the '3' in '10.7.3'. This value
-     * will be negative if no minor or subminor version number was provided,
-     * e.g., in version '10' or '10.7'.
-     */
-    int, // Subminor, offset 8, size 4
+    ptr("void"), // ASTNode, offset 0, size 8
+    CXTranslationUnitT, // TranslationUnit, offset 8, size 8
   ],
 } as const;
 
@@ -3216,43 +3182,6 @@ export const CXUnsavedFileT = {
      * The length of the unsaved contents of this buffer.
      */
     unsignedLong, // Length, offset 16, size 8
-  ],
-} as const;
-
-export const CXTUResourceUsageEntryT = {
-  /** Struct size: 16 */
-  struct: [
-    /**
-     * The memory usage category.
-     */
-    CXTUResourceUsageKindT, // kind, offset 0, size 4
-    /**
-     * Amount of resources used.
-     * The units will depend on the resource kind.
-     */
-    unsignedLong, // amount, offset 8, size 8
-  ],
-} as const;
-
-/**
- * The memory usage of a CXTranslationUnit, broken into categories.
- */
-export const CXTUResourceUsageT = {
-  /** Struct size: 24 */
-  struct: [
-    /**
-     * Private data member, used for queries.
-     */
-    ptr("void"), // data, offset 0, size 8
-    /**
-     * The number of entries in the 'entries' array.
-     */
-    unsignedInt, // numEntries, offset 8, size 4
-    /**
-     * An array of key-value pairs, representing the breakdown of memory
-     * usage.
-     */
-    ptr(CXTUResourceUsageEntryT), // entries, offset 16, size 8
   ],
 } as const;
 
@@ -3286,51 +3215,6 @@ export const CXCursorT = {
 } as const;
 
 /**
- * Describes the availability of a given entity on a particular platform, e.g.,
- * a particular class might only be available on Mac OS 10.7 or newer.
- */
-export const CXPlatformAvailabilityT = {
-  /** Struct size: 72 */
-  struct: [
-    /**
-     * A string that describes the platform for which this structure
-     * provides availability information.
-     *
-     * Possible values are "ios" or "macos".
-     */
-    CXStringT, // Platform, offset 0, size 16
-    /**
-     * The version number in which this entity was introduced.
-     */
-    CXVersionT, // Introduced, offset 16, size 12
-    /**
-     * The version number in which this entity was deprecated (but is
-     * still available).
-     */
-    CXVersionT, // Deprecated, offset 28, size 12
-    /**
-     * The version number in which this entity was obsoleted, and therefore
-     * is no longer available.
-     */
-    CXVersionT, // Obsoleted, offset 40, size 12
-    /**
-     * Whether the entity is unconditionally unavailable on this platform.
-     */
-    int, // Unavailable, offset 52, size 4
-    /**
-     * An optional message to provide to a user of this API, e.g., to
-     * suggest replacement APIs.
-     */
-    CXStringT, // Message, offset 56, size 16
-  ],
-} as const;
-
-/**
- * A fast container representing a set of CXCursors.
- */
-export const CXCursorSetT = ptr("void");
-
-/**
  * The type of an element in the abstract syntax tree.
  */
 export const CXTypeT = {
@@ -3341,53 +3225,6 @@ export const CXTypeT = {
     ptr("void"), // data[1], offset 16, size 8
   ],
 } as const;
-
-/**
- * Visitor invoked for each cursor found by a traversal.
- *
- * This visitor function will be invoked for each cursor found by
- * clang_visitCursorChildren(). Its first argument is the cursor being
- * visited, its second argument is the parent visitor for that cursor,
- * and its third argument is the client data provided to
- * clang_visitCursorChildren().
- *
- * The visitor should return one of the `CXChildVisitResult` values
- * to direct clang_visitCursorChildren().
- */
-export const CXCursorVisitorCallbackDefinition = {
-  parameters: [
-    CXCursorT, // cursor
-    CXCursorT, // parent
-    CXClientDataT, // client_data
-  ],
-  result: CXChildVisitResultT,
-} as const;
-/**
- * Visitor invoked for each cursor found by a traversal.
- *
- * This visitor function will be invoked for each cursor found by
- * clang_visitCursorChildren(). Its first argument is the cursor being
- * visited, its second argument is the parent visitor for that cursor,
- * and its third argument is the client data provided to
- * clang_visitCursorChildren().
- *
- * The visitor should return one of the `CXChildVisitResult` values
- * to direct clang_visitCursorChildren().
- */
-export const CXCursorVisitorT = "function" as const;
-
-/**
- * Opaque pointer representing a policy that controls pretty printing
- * for `clang_getCursorPrettyPrinted.`
- */
-export const CXPrintingPolicyT = ptr("void");
-
-/**
- * The functions in this group provide access to information about modules.
- *
- * \@\{
- */
-export const CXModuleT = ptr("void");
 
 /**
  * Describes a single preprocessing token.
@@ -3402,21 +3239,6 @@ export const CXTokenT = {
     ptr("void"), // ptr_data, offset 16, size 8
   ],
 } as const;
-
-/**
- * A semantic string that describes a code-completion result.
- *
- * A semantic string that describes the formatting of a code-completion
- * result as a single "template" of text that should be inserted into the
- * source buffer when a particular code-completion result is selected.
- * Each semantic string is made up of some number of "chunks", each of which
- * contains some text along with a description of what that text means, e.g.,
- * the name of the entity being referenced, whether the text chunk is part of
- * the template, or whether it is a "placeholder" that the user should replace
- * with actual code,of a specific kind. See `CXCompletionChunkKind` for a
- * description of the different kinds of chunks.
- */
-export const CXCompletionStringT = ptr("void");
 
 /**
  * A single result of code completion.
@@ -3466,88 +3288,6 @@ export const CXCodeCompleteResultsT = {
 } as const;
 
 /**
- * Visitor invoked for each file in a translation unit
- * (used with clang_getInclusions()).
- *
- * This visitor function will be invoked by clang_getInclusions() for each
- * file included (either at the top-level or by \#include directives) within
- * a translation unit. The first argument is the file being included, and
- * the second and third arguments provide the inclusion stack. The
- * array is sorted in order of immediate inclusion. For example,
- * the first element refers to the location that included 'included_file'.
- */
-export const CXInclusionVisitorCallbackDefinition = {
-  parameters: [
-    CXFileT, // included_file
-    buf(CXSourceLocationT), // inclusion_stack
-    unsignedInt, // include_len
-    CXClientDataT, // client_data
-  ],
-  result: "void",
-} as const;
-/**
- * Visitor invoked for each file in a translation unit
- * (used with clang_getInclusions()).
- *
- * This visitor function will be invoked by clang_getInclusions() for each
- * file included (either at the top-level or by \#include directives) within
- * a translation unit. The first argument is the file being included, and
- * the second and third arguments provide the inclusion stack. The
- * array is sorted in order of immediate inclusion. For example,
- * the first element refers to the location that included 'included_file'.
- */
-export const CXInclusionVisitorT = "function" as const;
-
-/**
- * Evaluation result of a cursor
- */
-export const CXEvalResultT = ptr("void");
-
-/**
- * A remapping of original source files and their translated files.
- */
-export const CXRemappingT = ptr("void");
-
-export const CXCursorAndRangeVisitorCallbackDefinition = {
-  /** enum CXVisitorResult (void *, CXCursor, CXSourceRange) */
-  parameters: [
-    ptr("void"), // void *
-    CXCursorT, // CXCursor
-    CXSourceRangeT, // CXSourceRange
-  ],
-  result: CXVisitorResultT,
-} as const;
-export const CXCursorAndRangeVisitorT = {
-  /** Struct size: 16 */
-  struct: [
-    ptr("void"), // context, offset 0, size 8
-    func(CXCursorAndRangeVisitorCallbackDefinition), // visit, offset 8, size 8
-  ],
-} as const;
-
-/**
- * The client's data object that is associated with a CXFile.
- */
-export const CXIdxClientFileT = ptr("void");
-
-/**
- * The client's data object that is associated with a semantic entity.
- */
-export const CXIdxClientEntityT = ptr("void");
-
-/**
- * The client's data object that is associated with a semantic container
- * of entities.
- */
-export const CXIdxClientContainerT = ptr("void");
-
-/**
- * The client's data object that is associated with an AST file (PCH
- * or module).
- */
-export const CXIdxClientASTFileT = ptr("void");
-
-/**
  * Source location passed to index callbacks.
  */
 export const CXIdxLocT = {
@@ -3556,60 +3296,6 @@ export const CXIdxLocT = {
     ptr("void"), // ptr_data[0], offset 0, size 8
     ptr("void"), // ptr_data[1], offset 8, size 8
     unsignedInt, // int_data, offset 16, size 4
-  ],
-} as const;
-
-/**
- * Data for ppIncludedFile callback.
- */
-export const CXIdxIncludedFileInfoT = {
-  /** Struct size: 56 */
-  struct: [
-    /**
-     * Location of '#' in the \#include/\#import directive.
-     */
-    CXIdxLocT, // hashLoc, offset 0, size 24
-    /**
-     * Filename as written in the \#include/\#import directive.
-     */
-    cstringT, // filename, offset 24, size 8
-    /**
-     * The actual file that the \#include/\#import directive resolved to.
-     */
-    CXFileT, // file, offset 32, size 8
-    int, // isImport, offset 40, size 4
-    int, // isAngled, offset 44, size 4
-    /**
-     * Non-zero if the directive was automatically turned into a module
-     * import.
-     */
-    int, // isModuleImport, offset 48, size 4
-  ],
-} as const;
-
-/**
- * Data for IndexerCallbacks#importedASTFile.
- */
-export const CXIdxImportedASTFileInfoT = {
-  /** Struct size: 48 */
-  struct: [
-    /**
-     * Top level AST file containing the imported PCH, module or submodule.
-     */
-    CXFileT, // file, offset 0, size 8
-    /**
-     * The imported module or NULL if the AST file is a PCH.
-     */
-    CXModuleT, // module, offset 8, size 8
-    /**
-     * Location where the file is imported. Applicable only for modules.
-     */
-    CXIdxLocT, // loc, offset 16, size 24
-    /**
-     * Non-zero if an inclusion directive was automatically turned into
-     * a module import. Applicable only for modules.
-     */
-    int, // isImplicit, offset 40, size 4
   ],
 } as const;
 
@@ -3688,6 +3374,275 @@ export const CXIdxObjCContainerDeclInfoT = {
   ],
 } as const;
 
+export const CXIdxObjCPropertyDeclInfoT = {
+  /** Struct size: 24 */
+  struct: [
+    ptr(CXIdxDeclInfoT), // declInfo, offset 0, size 8
+    ptr(CXIdxEntityInfoT), // getter, offset 8, size 8
+    ptr(CXIdxEntityInfoT), // setter, offset 16, size 8
+  ],
+} as const;
+
+/**
+ * Identifies a specific source location within a translation
+ * unit.
+ *
+ * Use clang_getExpansionLocation() or clang_getSpellingLocation()
+ * to map a source location to a particular file, line, and column.
+ */
+export const CXSourceLocationT = {
+  /** Struct size: 24 */
+  struct: [
+    ptr("void"), // ptr_data[0], offset 0, size 8
+    ptr("void"), // ptr_data[1], offset 8, size 8
+    unsignedInt, // int_data, offset 16, size 4
+  ],
+} as const;
+
+/**
+ * Identifies a half-open character range in the source code.
+ *
+ * Use clang_getRangeStart() and clang_getRangeEnd() to retrieve the
+ * starting and end locations from a source range, respectively.
+ */
+export const CXSourceRangeT = {
+  /** Struct size: 24 */
+  struct: [
+    ptr("void"), // ptr_data[0], offset 0, size 8
+    ptr("void"), // ptr_data[1], offset 8, size 8
+    unsignedInt, // begin_int_data, offset 16, size 4
+    unsignedInt, // end_int_data, offset 20, size 4
+  ],
+} as const;
+
+/**
+ * Identifies an array of ranges.
+ */
+export const CXSourceRangeListT = {
+  /** Struct size: 16 */
+  struct: [
+    /**
+     * The number of ranges in the `ranges` array.
+     */
+    unsignedInt, // count, offset 0, size 4
+    /**
+     * An array of `CXSourceRanges.`
+     */
+    ptr(CXSourceRangeT), // ranges, offset 8, size 8
+  ],
+} as const;
+
+/**
+ * Uniquely identifies a CXFile, that refers to the same underlying file,
+ * across an indexing session.
+ */
+export const CXFileUniqueIDT = {
+  /** Struct size: 24 */
+  struct: [
+    unsignedLongLong, // data[0], offset 0, size 8
+    unsignedLongLong, // data[1], offset 8, size 8
+    unsignedLongLong, // data[2], offset 16, size 8
+  ],
+} as const;
+
+/**
+ * A character string.
+ *
+ * The `CXString` type is used to return strings from the interface when
+ * the ownership of that string might differ from one call to the next.
+ * Use `clang_getCString(`) to retrieve the string data and, once finished
+ * with the string data, call `clang_disposeString(`) to free the string.
+ */
+export const CXStringT = {
+  /** Struct size: 16 */
+  struct: [
+    ptr("void"), // data, offset 0, size 8
+    unsignedInt, // private_flags, offset 8, size 4
+  ],
+} as const;
+
+export const CXStringSetT = {
+  /** Struct size: 16 */
+  struct: [
+    ptr(CXStringT), // Strings, offset 0, size 8
+    unsignedInt, // Count, offset 8, size 4
+  ],
+} as const;
+
+/**
+ * Describes a version number of the form major.minor.subminor.
+ */
+export const CXVersionT = {
+  /** Struct size: 12 */
+  struct: [
+    /**
+     * The major version number, e.g., the '10' in '10.7.3'. A negative
+     * value indicates that there is no version number at all.
+     */
+    int, // Major, offset 0, size 4
+    /**
+     * The minor version number, e.g., the '7' in '10.7.3'. This value
+     * will be negative if no minor version number was provided, e.g., for
+     * version '10'.
+     */
+    int, // Minor, offset 4, size 4
+    /**
+     * The subminor version number, e.g., the '3' in '10.7.3'. This value
+     * will be negative if no minor or subminor version number was provided,
+     * e.g., in version '10' or '10.7'.
+     */
+    int, // Subminor, offset 8, size 4
+  ],
+} as const;
+
+export const CXTUResourceUsageEntryT = {
+  /** Struct size: 16 */
+  struct: [
+    /**
+     * The memory usage category.
+     */
+    CXTUResourceUsageKindT, // kind, offset 0, size 4
+    /**
+     * Amount of resources used.
+     * The units will depend on the resource kind.
+     */
+    unsignedLong, // amount, offset 8, size 8
+  ],
+} as const;
+
+/**
+ * The memory usage of a CXTranslationUnit, broken into categories.
+ */
+export const CXTUResourceUsageT = {
+  /** Struct size: 24 */
+  struct: [
+    /**
+     * Private data member, used for queries.
+     */
+    ptr("void"), // data, offset 0, size 8
+    /**
+     * The number of entries in the 'entries' array.
+     */
+    unsignedInt, // numEntries, offset 8, size 4
+    /**
+     * An array of key-value pairs, representing the breakdown of memory
+     * usage.
+     */
+    ptr(CXTUResourceUsageEntryT), // entries, offset 16, size 8
+  ],
+} as const;
+
+/**
+ * Describes the availability of a given entity on a particular platform, e.g.,
+ * a particular class might only be available on Mac OS 10.7 or newer.
+ */
+export const CXPlatformAvailabilityT = {
+  /** Struct size: 72 */
+  struct: [
+    /**
+     * A string that describes the platform for which this structure
+     * provides availability information.
+     *
+     * Possible values are "ios" or "macos".
+     */
+    CXStringT, // Platform, offset 0, size 16
+    /**
+     * The version number in which this entity was introduced.
+     */
+    CXVersionT, // Introduced, offset 16, size 12
+    /**
+     * The version number in which this entity was deprecated (but is
+     * still available).
+     */
+    CXVersionT, // Deprecated, offset 28, size 12
+    /**
+     * The version number in which this entity was obsoleted, and therefore
+     * is no longer available.
+     */
+    CXVersionT, // Obsoleted, offset 40, size 12
+    /**
+     * Whether the entity is unconditionally unavailable on this platform.
+     */
+    int, // Unavailable, offset 52, size 4
+    /**
+     * An optional message to provide to a user of this API, e.g., to
+     * suggest replacement APIs.
+     */
+    CXStringT, // Message, offset 56, size 16
+  ],
+} as const;
+
+export const CXCursorAndRangeVisitorCallbackDefinition = {
+  /** enum CXVisitorResult (void *, CXCursor, CXSourceRange) */
+  parameters: [
+    ptr("void"), // void *
+    CXCursorT, // CXCursor
+    CXSourceRangeT, // CXSourceRange
+  ],
+  result: CXVisitorResultT,
+} as const; /* extra */
+export const CXCursorAndRangeVisitorT = {
+  /** Struct size: 16 */
+  struct: [
+    ptr("void"), // context, offset 0, size 8
+    func(CXCursorAndRangeVisitorCallbackDefinition), // visit, offset 8, size 8
+  ],
+} as const;
+
+/**
+ * Data for ppIncludedFile callback.
+ */
+export const CXIdxIncludedFileInfoT = {
+  /** Struct size: 56 */
+  struct: [
+    /**
+     * Location of '#' in the \#include/\#import directive.
+     */
+    CXIdxLocT, // hashLoc, offset 0, size 24
+    /**
+     * Filename as written in the \#include/\#import directive.
+     */
+    cstringT, // filename, offset 24, size 8
+    /**
+     * The actual file that the \#include/\#import directive resolved to.
+     */
+    CXFileT, // file, offset 32, size 8
+    int, // isImport, offset 40, size 4
+    int, // isAngled, offset 44, size 4
+    /**
+     * Non-zero if the directive was automatically turned into a module
+     * import.
+     */
+    int, // isModuleImport, offset 48, size 4
+  ],
+} as const;
+
+/**
+ * Data for IndexerCallbacks#importedASTFile.
+ */
+export const CXIdxImportedASTFileInfoT = {
+  /** Struct size: 48 */
+  struct: [
+    /**
+     * Top level AST file containing the imported PCH, module or submodule.
+     */
+    CXFileT, // file, offset 0, size 8
+    /**
+     * The imported module or NULL if the AST file is a PCH.
+     */
+    CXModuleT, // module, offset 8, size 8
+    /**
+     * Location where the file is imported. Applicable only for modules.
+     */
+    CXIdxLocT, // loc, offset 16, size 24
+    /**
+     * Non-zero if an inclusion directive was automatically turned into
+     * a module import. Applicable only for modules.
+     */
+    int, // isImplicit, offset 40, size 4
+  ],
+} as const;
+
 export const CXIdxBaseClassInfoT = {
   /** Struct size: 64 */
   struct: [
@@ -3731,15 +3686,6 @@ export const CXIdxObjCCategoryDeclInfoT = {
     CXCursorT, // classCursor, offset 16, size 32
     CXIdxLocT, // classLoc, offset 48, size 24
     ptr(CXIdxObjCProtocolRefListInfoT), // protocols, offset 72, size 8
-  ],
-} as const;
-
-export const CXIdxObjCPropertyDeclInfoT = {
-  /** Struct size: 24 */
-  struct: [
-    ptr(CXIdxDeclInfoT), // declInfo, offset 0, size 8
-    ptr(CXIdxEntityInfoT), // getter, offset 8, size 8
-    ptr(CXIdxEntityInfoT), // setter, offset 16, size 8
   ],
 } as const;
 
@@ -3797,7 +3743,7 @@ export const IndexerCallbacksAbortQueryCallbackDefinition = {
     ptr("void"), // void *
   ],
   result: int,
-} as const;
+} as const; /* extra */
 export const IndexerCallbacksDiagnosticCallbackDefinition = {
   /** void (CXClientData, CXDiagnosticSet, void *) */
   parameters: [
@@ -3806,7 +3752,7 @@ export const IndexerCallbacksDiagnosticCallbackDefinition = {
     ptr("void"), // void *
   ],
   result: "void",
-} as const;
+} as const; /* extra */
 export const IndexerCallbacksEnteredMainFileCallbackDefinition = {
   /** CXIdxClientFile (CXClientData, CXFile, void *) */
   parameters: [
@@ -3815,7 +3761,7 @@ export const IndexerCallbacksEnteredMainFileCallbackDefinition = {
     ptr("void"), // void *
   ],
   result: CXIdxClientFileT,
-} as const;
+} as const; /* extra */
 export const IndexerCallbacksPpIncludedFileCallbackDefinition = {
   /** CXIdxClientFile (CXClientData, const CXIdxIncludedFileInfo *) */
   parameters: [
@@ -3823,7 +3769,7 @@ export const IndexerCallbacksPpIncludedFileCallbackDefinition = {
     buf(CXIdxIncludedFileInfoT), // const CXIdxIncludedFileInfo *
   ],
   result: CXIdxClientFileT,
-} as const;
+} as const; /* extra */
 export const IndexerCallbacksImportedASTFileCallbackDefinition = {
   /** CXIdxClientASTFile (CXClientData, const CXIdxImportedASTFileInfo *) */
   parameters: [
@@ -3831,7 +3777,7 @@ export const IndexerCallbacksImportedASTFileCallbackDefinition = {
     buf(CXIdxImportedASTFileInfoT), // const CXIdxImportedASTFileInfo *
   ],
   result: CXIdxClientASTFileT,
-} as const;
+} as const; /* extra */
 export const IndexerCallbacksStartedTranslationUnitCallbackDefinition = {
   /** CXIdxClientContainer (CXClientData, void *) */
   parameters: [
@@ -3839,7 +3785,7 @@ export const IndexerCallbacksStartedTranslationUnitCallbackDefinition = {
     ptr("void"), // void *
   ],
   result: CXIdxClientContainerT,
-} as const;
+} as const; /* extra */
 export const IndexerCallbacksIndexDeclarationCallbackDefinition = {
   /** void (CXClientData, const CXIdxDeclInfo *) */
   parameters: [
@@ -3847,7 +3793,7 @@ export const IndexerCallbacksIndexDeclarationCallbackDefinition = {
     buf(CXIdxDeclInfoT), // const CXIdxDeclInfo *
   ],
   result: "void",
-} as const;
+} as const; /* extra */
 export const IndexerCallbacksIndexEntityReferenceCallbackDefinition = {
   /** void (CXClientData, const CXIdxEntityRefInfo *) */
   parameters: [
@@ -3855,7 +3801,7 @@ export const IndexerCallbacksIndexEntityReferenceCallbackDefinition = {
     buf(CXIdxEntityRefInfoT), // const CXIdxEntityRefInfo *
   ],
   result: "void",
-} as const;
+} as const; /* extra */
 /**
  * A group of callbacks used by #clang_indexSourceFile and
  * #clang_indexTranslationUnit.
@@ -3898,11 +3844,79 @@ export const IndexerCallbacksT = {
   ],
 } as const;
 
+/******** End Struct ********/
+/******** Start ref ********/
+export const time_t = __time_t;
+/******** end ref ********/
+/******** Start Functions ********/
 /**
- * An indexing action/session, to be applied to one or multiple
- * translation units.
+ * Visitor invoked for each cursor found by a traversal.
+ *
+ * This visitor function will be invoked for each cursor found by
+ * clang_visitCursorChildren(). Its first argument is the cursor being
+ * visited, its second argument is the parent visitor for that cursor,
+ * and its third argument is the client data provided to
+ * clang_visitCursorChildren().
+ *
+ * The visitor should return one of the `CXChildVisitResult` values
+ * to direct clang_visitCursorChildren().
  */
-export const CXIndexActionT = ptr("void");
+export const CXCursorVisitorCallbackDefinition = {
+  parameters: [
+    CXCursorT, // cursor
+    CXCursorT, // parent
+    CXClientDataT, // client_data
+  ],
+
+  result: CXChildVisitResultT,
+} as const;
+/**
+ * Visitor invoked for each cursor found by a traversal.
+ *
+ * This visitor function will be invoked for each cursor found by
+ * clang_visitCursorChildren(). Its first argument is the cursor being
+ * visited, its second argument is the parent visitor for that cursor,
+ * and its third argument is the client data provided to
+ * clang_visitCursorChildren().
+ *
+ * The visitor should return one of the `CXChildVisitResult` values
+ * to direct clang_visitCursorChildren().
+ */
+export const CXCursorVisitorT = "function" as const;
+
+/**
+ * Visitor invoked for each file in a translation unit
+ * (used with clang_getInclusions()).
+ *
+ * This visitor function will be invoked by clang_getInclusions() for each
+ * file included (either at the top-level or by \#include directives) within
+ * a translation unit. The first argument is the file being included, and
+ * the second and third arguments provide the inclusion stack. The
+ * array is sorted in order of immediate inclusion. For example,
+ * the first element refers to the location that included 'included_file'.
+ */
+export const CXInclusionVisitorCallbackDefinition = {
+  parameters: [
+    CXFileT, // included_file
+    buf(CXSourceLocationT), // inclusion_stack
+    unsignedInt, // include_len
+    CXClientDataT, // client_data
+  ],
+
+  result: "void",
+} as const;
+/**
+ * Visitor invoked for each file in a translation unit
+ * (used with clang_getInclusions()).
+ *
+ * This visitor function will be invoked by clang_getInclusions() for each
+ * file included (either at the top-level or by \#include directives) within
+ * a translation unit. The first argument is the file being included, and
+ * the second and third arguments provide the inclusion stack. The
+ * array is sorted in order of immediate inclusion. For example,
+ * the first element refers to the location that included 'included_file'.
+ */
+export const CXInclusionVisitorT = "function" as const;
 
 /**
  * Visitor invoked for each field found by a traversal.
@@ -3920,6 +3934,7 @@ export const CXFieldVisitorCallbackDefinition = {
     CXCursorT, // C
     CXClientDataT, // client_data
   ],
+
   result: CXVisitorResultT,
 } as const;
 /**
@@ -3935,22 +3950,4 @@ export const CXFieldVisitorCallbackDefinition = {
  */
 export const CXFieldVisitorT = "function" as const;
 
-/**
- * A parsed comment.
- */
-export const CXCommentT = {
-  /** Struct size: 16 */
-  struct: [
-    ptr("void"), // ASTNode, offset 0, size 8
-    CXTranslationUnitT, // TranslationUnit, offset 8, size 8
-  ],
-} as const;
-
-/**
- * CXAPISet is an opaque type that represents a data structure containing all
- * the API information for a given translation unit. This can be used for a
- * single symbol symbol graph for a given symbol.
- */
-export const CXAPISetT = ptr("void");
-
-export const CXRewriterT = ptr("void");
+/******** End Functions ********/

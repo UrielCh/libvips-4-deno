@@ -5,7 +5,7 @@ import {
   CXSourceRangeT,
   CXTranslationUnitT,
   int,
-} from "./typeDefinitions.ts";
+} from "../typeDefinitions.ts";
 
 /**
  * Create CXRewriter.
