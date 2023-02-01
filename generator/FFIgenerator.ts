@@ -7,9 +7,9 @@ import { ensureDir } from "https://deno.land/std@0.175.0/fs/mod.ts";
 import {
   CXChildVisitResult,
   CXCursorKind,
-} from "../include/typeDefinitions.ts";
-import * as libclang from "../mod.ts";
-import { CXCursor } from "../mod.ts";
+} from "./clang/include/typeDefinitions.ts";
+import * as libclang from "./clang/mod.ts";
+import { CXCursor } from "./clang/mod.ts";
 import {
   AnyType,
   anyTypeToString,

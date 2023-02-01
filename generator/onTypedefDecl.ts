@@ -1,5 +1,5 @@
-import { CXChildVisitResult, CXCursorKind } from "../include/typeDefinitions.ts";
-import { CXCursor } from "../mod.ts";
+import { CXChildVisitResult, CXCursorKind } from "./clang/include/typeDefinitions.ts";
+import { CXCursor } from "./clang/mod.ts";
 import {
     commentToJSDcoString,
     toAnyType,

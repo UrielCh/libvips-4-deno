@@ -7,8 +7,8 @@ import {
   CXTypeKind,
   CXTypeLayoutError,
   CXVisitorResult,
-} from "../include/typeDefinitions.ts";
-import { CXComment, CXCursor, type CXType } from "../mod.ts";
+} from "./clang/include/typeDefinitions.ts";
+import { CXComment, CXCursor, type CXType } from "./clang/mod.ts";
 
 
 export interface CommonType {

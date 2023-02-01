@@ -1,4 +1,4 @@
-import { CXCursor } from "../mod.ts";
+import { CXCursor } from "./clang/mod.ts";
 import {
     commentToJSDcoString,
     FunctionParameter,
