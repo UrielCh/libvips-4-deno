@@ -3,8 +3,7 @@ import { cstringT, CXStringSetT, CXStringT, ptr } from "../typeDefinitions.ts";
 /**
  * Retrieve the character data associated with the given string.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCString = {
+export const clang_getCString = {
   parameters: [
     CXStringT, // string
   ],
@@ -14,8 +13,7 @@ const clang_getCString = {
 /**
  * Free the given string.
  */
-// deno-lint-ignore no-unused-vars
-const clang_disposeString = {
+export const clang_disposeString = {
   parameters: [
     CXStringT, // string
   ],
@@ -25,8 +23,7 @@ const clang_disposeString = {
 /**
  * Free the given string set.
  */
-// deno-lint-ignore no-unused-vars
-const clang_disposeStringSet = {
+export const clang_disposeStringSet = {
   parameters: [
     ptr(CXStringSetT), // set
   ],

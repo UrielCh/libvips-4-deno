@@ -16,8 +16,7 @@ import {
  *
  * It must be freed by `clang_CompilationDatabase_dispose.`
  */
-// deno-lint-ignore no-unused-vars
-const clang_CompilationDatabase_fromDirectory = {
+export const clang_CompilationDatabase_fromDirectory = {
   parameters: [
     cstringT, // BuildDir
     buf(CXCompilationDatabase_ErrorT), // ErrorCode
@@ -28,8 +27,7 @@ const clang_CompilationDatabase_fromDirectory = {
 /**
  * Free the given compilation database
  */
-// deno-lint-ignore no-unused-vars
-const clang_CompilationDatabase_dispose = {
+export const clang_CompilationDatabase_dispose = {
   parameters: [
     CXCompilationDatabaseT,
   ],
@@ -40,8 +38,7 @@ const clang_CompilationDatabase_dispose = {
  * Find the compile commands used for a file. The compile commands
  * must be freed by `clang_CompileCommands_dispose.`
  */
-// deno-lint-ignore no-unused-vars
-const clang_CompilationDatabase_getCompileCommands = {
+export const clang_CompilationDatabase_getCompileCommands = {
   parameters: [
     CXCompilationDatabaseT,
     cstringT, // CompleteFileName
@@ -52,8 +49,7 @@ const clang_CompilationDatabase_getCompileCommands = {
 /**
  * Get all the compile commands in the given compilation database.
  */
-// deno-lint-ignore no-unused-vars
-const clang_CompilationDatabase_getAllCompileCommands = {
+export const clang_CompilationDatabase_getAllCompileCommands = {
   parameters: [
     CXCompilationDatabaseT,
   ],
@@ -63,8 +59,7 @@ const clang_CompilationDatabase_getAllCompileCommands = {
 /**
  * Free the given CompileCommands
  */
-// deno-lint-ignore no-unused-vars
-const clang_CompileCommands_dispose = {
+export const clang_CompileCommands_dispose = {
   parameters: [
     CXCompileCommandsT,
   ],
@@ -74,8 +69,7 @@ const clang_CompileCommands_dispose = {
 /**
  * Get the number of CompileCommand we have for a file
  */
-// deno-lint-ignore no-unused-vars
-const clang_CompileCommands_getSize = {
+export const clang_CompileCommands_getSize = {
   parameters: [
     CXCompileCommandsT,
   ],
@@ -87,8 +81,7 @@ const clang_CompileCommands_getSize = {
  *
  * Note : 0 \<= i \< clang_CompileCommands_getSize(CXCompileCommands)
  */
-// deno-lint-ignore no-unused-vars
-const clang_CompileCommands_getCommand = {
+export const clang_CompileCommands_getCommand = {
   parameters: [
     CXCompileCommandsT,
     unsignedInt, // I
@@ -99,8 +92,7 @@ const clang_CompileCommands_getCommand = {
 /**
  * Get the working directory where the CompileCommand was executed from
  */
-// deno-lint-ignore no-unused-vars
-const clang_CompileCommand_getDirectory = {
+export const clang_CompileCommand_getDirectory = {
   parameters: [
     CXCompileCommandT,
   ],
@@ -110,8 +102,7 @@ const clang_CompileCommand_getDirectory = {
 /**
  * Get the filename associated with the CompileCommand.
  */
-// deno-lint-ignore no-unused-vars
-const clang_CompileCommand_getFilename = {
+export const clang_CompileCommand_getFilename = {
   parameters: [
     CXCompileCommandT,
   ],
@@ -121,8 +112,7 @@ const clang_CompileCommand_getFilename = {
 /**
  * Get the number of arguments in the compiler invocation.
  */
-// deno-lint-ignore no-unused-vars
-const clang_CompileCommand_getNumArgs = {
+export const clang_CompileCommand_getNumArgs = {
   parameters: [
     CXCompileCommandT,
   ],
@@ -135,8 +125,7 @@ const clang_CompileCommand_getNumArgs = {
  * Invariant :
  * - argument 0 is the compiler executable
  */
-// deno-lint-ignore no-unused-vars
-const clang_CompileCommand_getArg = {
+export const clang_CompileCommand_getArg = {
   parameters: [
     CXCompileCommandT,
     unsignedInt, // I
@@ -147,8 +136,7 @@ const clang_CompileCommand_getArg = {
 /**
  * Get the number of source mappings for the compiler invocation.
  */
-// deno-lint-ignore no-unused-vars
-const clang_CompileCommand_getNumMappedSources = {
+export const clang_CompileCommand_getNumMappedSources = {
   parameters: [
     CXCompileCommandT,
   ],
@@ -158,8 +146,7 @@ const clang_CompileCommand_getNumMappedSources = {
 /**
  * Get the I'th mapped source path for the compiler invocation.
  */
-// deno-lint-ignore no-unused-vars
-const clang_CompileCommand_getMappedSourcePath = {
+export const clang_CompileCommand_getMappedSourcePath = {
   parameters: [
     CXCompileCommandT,
     unsignedInt, // I
@@ -170,8 +157,7 @@ const clang_CompileCommand_getMappedSourcePath = {
 /**
  * Get the I'th mapped source content for the compiler invocation.
  */
-// deno-lint-ignore no-unused-vars
-const clang_CompileCommand_getMappedSourceContent = {
+export const clang_CompileCommand_getMappedSourceContent = {
   parameters: [
     CXCompileCommandT,
     unsignedInt, // I

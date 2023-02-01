@@ -11,6 +11,7 @@ const includePaths = [
     "/usr/lib/clang/14.0.0/include/",
     `${includeDirectory}`,
 ];
-await generateLibMapping({ headerRoot: includeDirectory, libFile: "/lib64/libclang.so.14.0.6", destination: './gen', includePaths });
+const libFile = '/usr/lib/llvm-14/lib/libclang.so.1'
+await generateLibMapping({ headerRoot: includeDirectory, libFile, destination: './gen', includePaths });
 console.log('All done!')
 

@@ -116,8 +116,7 @@ import {
  * -include-pch) allows 'excludeDeclsFromPCH' to remove redundant callbacks
  * (which gives the indexer the same performance benefit as the compiler).
  */
-// deno-lint-ignore no-unused-vars
-const clang_createIndex = {
+export const clang_createIndex = {
   parameters: [
     int, // excludeDeclarationsFromPCH
     int, // displayDiagnostics
@@ -131,8 +130,7 @@ const clang_createIndex = {
  * The index must not be destroyed until all of the translation units created
  * within that index have been destroyed.
  */
-// deno-lint-ignore no-unused-vars
-const clang_disposeIndex = {
+export const clang_disposeIndex = {
   parameters: [
     CXIndexT, // index
   ],
@@ -152,8 +150,7 @@ const clang_disposeIndex = {
  * ```
  * @param options A bitmask of options, a bitwise OR of CXGlobalOpt_XXX flags.
  */
-// deno-lint-ignore no-unused-vars
-const clang_CXIndex_setGlobalOptions = {
+export const clang_CXIndex_setGlobalOptions = {
   parameters: [
     CXIndexT,
     unsignedInt, // options
@@ -167,8 +164,7 @@ const clang_CXIndex_setGlobalOptions = {
  * @returns A bitmask of options, a bitwise OR of CXGlobalOpt_XXX flags that
  * are associated with the given CXIndex object.
  */
-// deno-lint-ignore no-unused-vars
-const clang_CXIndex_getGlobalOptions = {
+export const clang_CXIndex_getGlobalOptions = {
   parameters: [
     CXIndexT,
   ],
@@ -182,8 +178,7 @@ const clang_CXIndex_getGlobalOptions = {
  * files for certain libclang invocations. A null value (default) implies that
  * libclang invocations are not logged..
  */
-// deno-lint-ignore no-unused-vars
-const clang_CXIndex_setInvocationEmissionPathOption = {
+export const clang_CXIndex_setInvocationEmissionPathOption = {
   parameters: [
     CXIndexT,
     cstringT, // Path
@@ -196,8 +191,7 @@ const clang_CXIndex_setInvocationEmissionPathOption = {
  * multiple inclusions, either with the conventional
  * \#ifndef/\#define/\#endif macro guards or with \#pragma once.
  */
-// deno-lint-ignore no-unused-vars
-const clang_isFileMultipleIncludeGuarded = {
+export const clang_isFileMultipleIncludeGuarded = {
   parameters: [
     CXTranslationUnitT, // tu
     CXFileT, // file
@@ -212,8 +206,7 @@ const clang_isFileMultipleIncludeGuarded = {
  * @param file_name the name of the file.
  * @returns the file handle for the named file in the translation unit `tu,` or a NULL file handle if the file was not a part of this translation unit.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getFile = {
+export const clang_getFile = {
   parameters: [
     CXTranslationUnitT, // tu
     cstringT, // file_name
@@ -230,8 +223,7 @@ const clang_getFile = {
  * @returns a pointer to the buffer in memory that holds the contents of
  * `file,` or a NULL pointer when the file is not loaded.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getFileContents = {
+export const clang_getFileContents = {
   parameters: [
     CXTranslationUnitT, // tu
     CXFileT, // file
@@ -244,8 +236,7 @@ const clang_getFileContents = {
  * Retrieves the source location associated with a given file/line/column
  * in a particular translation unit.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getLocation = {
+export const clang_getLocation = {
   parameters: [
     CXTranslationUnitT, // tu
     CXFileT, // file
@@ -259,8 +250,7 @@ const clang_getLocation = {
  * Retrieves the source location associated with a given character offset
  * in a particular translation unit.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getLocationForOffset = {
+export const clang_getLocationForOffset = {
   parameters: [
     CXTranslationUnitT, // tu
     CXFileT, // file
@@ -275,8 +265,7 @@ const clang_getLocationForOffset = {
  * The preprocessor will skip lines when they are surrounded by an
  * if/ifdef/ifndef directive whose condition does not evaluate to true.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getSkippedRanges = {
+export const clang_getSkippedRanges = {
   parameters: [
     CXTranslationUnitT, // tu
     CXFileT, // file
@@ -291,8 +280,7 @@ const clang_getSkippedRanges = {
  * The preprocessor will skip lines when they are surrounded by an
  * if/ifdef/ifndef directive whose condition does not evaluate to true.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getAllSkippedRanges = {
+export const clang_getAllSkippedRanges = {
   parameters: [
     CXTranslationUnitT, // tu
   ],
@@ -303,8 +291,7 @@ const clang_getAllSkippedRanges = {
  * Determine the number of diagnostics produced for the given
  * translation unit.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getNumDiagnostics = {
+export const clang_getNumDiagnostics = {
   parameters: [
     CXTranslationUnitT, // Unit
   ],
@@ -320,8 +307,7 @@ const clang_getNumDiagnostics = {
  * @returns the requested diagnostic. This diagnostic must be freed
  * via a call to `clang_disposeDiagnostic().`
  */
-// deno-lint-ignore no-unused-vars
-const clang_getDiagnostic = {
+export const clang_getDiagnostic = {
   parameters: [
     CXTranslationUnitT, // Unit
     unsignedInt, // Index
@@ -335,8 +321,7 @@ const clang_getDiagnostic = {
  *
  * @param Unit the translation unit to query.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getDiagnosticSetFromTU = {
+export const clang_getDiagnosticSetFromTU = {
   parameters: [
     CXTranslationUnitT, // Unit
   ],
@@ -346,8 +331,7 @@ const clang_getDiagnosticSetFromTU = {
 /**
  * Get the original translation unit source file name.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getTranslationUnitSpelling = {
+export const clang_getTranslationUnitSpelling = {
   parameters: [
     CXTranslationUnitT, // CTUnit
   ],
@@ -388,8 +372,7 @@ const clang_getTranslationUnitSpelling = {
  * CXUnsavedFile) are copied when necessary, so the client only needs to
  * guarantee their validity until the call to this function returns.
  */
-// deno-lint-ignore no-unused-vars
-const clang_createTranslationUnitFromSourceFile = {
+export const clang_createTranslationUnitFromSourceFile = {
   parameters: [
     CXIndexT, // CIdx
     cstringT, // source_filename
@@ -407,8 +390,7 @@ const clang_createTranslationUnitFromSourceFile = {
  * routine returns a `NULL` `CXTranslationUnit,` without further detailed
  * error codes.
  */
-// deno-lint-ignore no-unused-vars
-const clang_createTranslationUnit = {
+export const clang_createTranslationUnit = {
   parameters: [
     CXIndexT, // CIdx
     cstringT, // ast_filename
@@ -423,8 +405,7 @@ const clang_createTranslationUnit = {
  * `CXTranslationUnit.`
  * @returns Zero on success, otherwise returns an error code.
  */
-// deno-lint-ignore no-unused-vars
-const clang_createTranslationUnit2 = {
+export const clang_createTranslationUnit2 = {
   parameters: [
     CXIndexT, // CIdx
     cstringT, // ast_filename
@@ -444,8 +425,7 @@ const clang_createTranslationUnit2 = {
  * preamble) geared toward improving the performance of these routines. The
  * set of optimizations enabled may change from one version to the next.
  */
-// deno-lint-ignore no-unused-vars
-const clang_defaultEditingTranslationUnitOptions = {
+export const clang_defaultEditingTranslationUnitOptions = {
   parameters: [],
   result: unsignedInt,
 } as const;
@@ -456,8 +436,7 @@ const clang_defaultEditingTranslationUnitOptions = {
  * routine returns a `NULL` `CXTranslationUnit,` without further detailed
  * error codes.
  */
-// deno-lint-ignore no-unused-vars
-const clang_parseTranslationUnit = {
+export const clang_parseTranslationUnit = {
   parameters: [
     CXIndexT, // CIdx
     cstringT, // source_filename
@@ -505,8 +484,7 @@ const clang_parseTranslationUnit = {
  * diagnostics produced by the compiler.
  * @returns Zero on success, otherwise returns an error code.
  */
-// deno-lint-ignore no-unused-vars
-const clang_parseTranslationUnit2 = {
+export const clang_parseTranslationUnit2 = {
   parameters: [
     CXIndexT, // CIdx
     cstringT, // source_filename
@@ -525,8 +503,7 @@ const clang_parseTranslationUnit2 = {
  * for `command_line_args` including argv[0]. This is useful if the standard
  * library paths are relative to the binary.
  */
-// deno-lint-ignore no-unused-vars
-const clang_parseTranslationUnit2FullArgv = {
+export const clang_parseTranslationUnit2FullArgv = {
   parameters: [
     CXIndexT, // CIdx
     cstringT, // source_filename
@@ -549,8 +526,7 @@ const clang_parseTranslationUnit2FullArgv = {
  * set contains an unspecified set of options that save translation units with
  * the most commonly-requested data.
  */
-// deno-lint-ignore no-unused-vars
-const clang_defaultSaveOptions = {
+export const clang_defaultSaveOptions = {
   parameters: [
     CXTranslationUnitT, // TU
   ],
@@ -577,8 +553,7 @@ const clang_defaultSaveOptions = {
  * enumeration. Zero (CXSaveError_None) indicates that the translation unit was
  * saved successfully, while a non-zero value indicates that a problem occurred.
  */
-// deno-lint-ignore no-unused-vars
-const clang_saveTranslationUnit = {
+export const clang_saveTranslationUnit = {
   parameters: [
     CXTranslationUnitT, // TU
     cstringT, // FileName
@@ -593,8 +568,7 @@ const clang_saveTranslationUnit = {
  * A suspended translation unit uses significantly less memory but on the other
  * side does not support any other calls than `clang_reparseTranslationUnit` to resume it or `clang_disposeTranslationUnit` to dispose it completely.
  */
-// deno-lint-ignore no-unused-vars
-const clang_suspendTranslationUnit = {
+export const clang_suspendTranslationUnit = {
   parameters: [
     CXTranslationUnitT,
   ],
@@ -604,8 +578,7 @@ const clang_suspendTranslationUnit = {
 /**
  * Destroy the specified CXTranslationUnit object.
  */
-// deno-lint-ignore no-unused-vars
-const clang_disposeTranslationUnit = {
+export const clang_disposeTranslationUnit = {
   parameters: [
     CXTranslationUnitT,
   ],
@@ -622,8 +595,7 @@ const clang_disposeTranslationUnit = {
  * of reparsing. The set of optimizations enabled may change from one version
  * to the next.
  */
-// deno-lint-ignore no-unused-vars
-const clang_defaultReparseOptions = {
+export const clang_defaultReparseOptions = {
   parameters: [
     CXTranslationUnitT, // TU
   ],
@@ -664,8 +636,7 @@ const clang_defaultReparseOptions = {
  * `clang_disposeTranslationUnit(TU).`  The error codes returned by this
  * routine are described by the `CXErrorCode` enum.
  */
-// deno-lint-ignore no-unused-vars
-const clang_reparseTranslationUnit = {
+export const clang_reparseTranslationUnit = {
   parameters: [
     CXTranslationUnitT, // TU
     unsignedInt, // num_unsaved_files
@@ -679,8 +650,7 @@ const clang_reparseTranslationUnit = {
  * Returns the human-readable null-terminated C string that represents
  * the name of the memory category. This string should never be freed.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getTUResourceUsageName = {
+export const clang_getTUResourceUsageName = {
   parameters: [
     CXTUResourceUsageKindT, // kind
   ],
@@ -691,16 +661,14 @@ const clang_getTUResourceUsageName = {
  * Return the memory usage of a translation unit. This object
  * should be released with clang_disposeCXTUResourceUsage().
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCXTUResourceUsage = {
+export const clang_getCXTUResourceUsage = {
   parameters: [
     CXTranslationUnitT, // TU
   ],
   result: CXTUResourceUsageT,
 } as const;
 
-// deno-lint-ignore no-unused-vars
-const clang_disposeCXTUResourceUsage = {
+export const clang_disposeCXTUResourceUsage = {
   parameters: [
     CXTUResourceUsageT, // usage
   ],
@@ -712,8 +680,7 @@ const clang_disposeCXTUResourceUsage = {
  *
  * The CXTargetInfo object cannot outlive the CXTranslationUnit object.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getTranslationUnitTargetInfo = {
+export const clang_getTranslationUnitTargetInfo = {
   parameters: [
     CXTranslationUnitT, // CTUnit
   ],
@@ -723,8 +690,7 @@ const clang_getTranslationUnitTargetInfo = {
 /**
  * Destroy the CXTargetInfo object.
  */
-// deno-lint-ignore no-unused-vars
-const clang_TargetInfo_dispose = {
+export const clang_TargetInfo_dispose = {
   parameters: [
     CXTargetInfoT, // Info
   ],
@@ -736,8 +702,7 @@ const clang_TargetInfo_dispose = {
  *
  * Returns the empty string in case of any error.
  */
-// deno-lint-ignore no-unused-vars
-const clang_TargetInfo_getTriple = {
+export const clang_TargetInfo_getTriple = {
   parameters: [
     CXTargetInfoT, // Info
   ],
@@ -749,8 +714,7 @@ const clang_TargetInfo_getTriple = {
  *
  * Returns -1 in case of error.
  */
-// deno-lint-ignore no-unused-vars
-const clang_TargetInfo_getPointerWidth = {
+export const clang_TargetInfo_getPointerWidth = {
   parameters: [
     CXTargetInfoT, // Info
   ],
@@ -760,8 +724,7 @@ const clang_TargetInfo_getPointerWidth = {
 /**
  * Retrieve the NULL cursor, which represents no entity.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getNullCursor = {
+export const clang_getNullCursor = {
   parameters: [],
   result: CXCursorT,
 } as const;
@@ -772,8 +735,7 @@ const clang_getNullCursor = {
  * The translation unit cursor can be used to start traversing the
  * various declarations within the given translation unit.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getTranslationUnitCursor = {
+export const clang_getTranslationUnitCursor = {
   parameters: [
     CXTranslationUnitT,
   ],
@@ -783,8 +745,7 @@ const clang_getTranslationUnitCursor = {
 /**
  * Determine whether two cursors are equivalent.
  */
-// deno-lint-ignore no-unused-vars
-const clang_equalCursors = {
+export const clang_equalCursors = {
   parameters: [
     CXCursorT,
     CXCursorT,
@@ -795,8 +756,7 @@ const clang_equalCursors = {
 /**
  * Returns non-zero if `cursor` is null.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_isNull = {
+export const clang_Cursor_isNull = {
   parameters: [
     CXCursorT, // cursor
   ],
@@ -806,8 +766,7 @@ const clang_Cursor_isNull = {
 /**
  * Compute a hash value for the given cursor.
  */
-// deno-lint-ignore no-unused-vars
-const clang_hashCursor = {
+export const clang_hashCursor = {
   parameters: [
     CXCursorT,
   ],
@@ -817,8 +776,7 @@ const clang_hashCursor = {
 /**
  * Retrieve the kind of the given cursor.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCursorKind = {
+export const clang_getCursorKind = {
   parameters: [
     CXCursorT,
   ],
@@ -828,8 +786,7 @@ const clang_getCursorKind = {
 /**
  * Determine whether the given cursor kind represents a declaration.
  */
-// deno-lint-ignore no-unused-vars
-const clang_isDeclaration = {
+export const clang_isDeclaration = {
   parameters: [
     CXCursorKindT,
   ],
@@ -844,8 +801,7 @@ const clang_isDeclaration = {
  * @returns non-zero if the cursor represents a declaration and it is
  * invalid, otherwise NULL.
  */
-// deno-lint-ignore no-unused-vars
-const clang_isInvalidDeclaration = {
+export const clang_isInvalidDeclaration = {
   parameters: [
     CXCursorT,
   ],
@@ -860,8 +816,7 @@ const clang_isInvalidDeclaration = {
  * other cursors. Use clang_getCursorReferenced() to determine whether a
  * particular cursor refers to another entity.
  */
-// deno-lint-ignore no-unused-vars
-const clang_isReference = {
+export const clang_isReference = {
   parameters: [
     CXCursorKindT,
   ],
@@ -871,8 +826,7 @@ const clang_isReference = {
 /**
  * Determine whether the given cursor kind represents an expression.
  */
-// deno-lint-ignore no-unused-vars
-const clang_isExpression = {
+export const clang_isExpression = {
   parameters: [
     CXCursorKindT,
   ],
@@ -882,8 +836,7 @@ const clang_isExpression = {
 /**
  * Determine whether the given cursor kind represents a statement.
  */
-// deno-lint-ignore no-unused-vars
-const clang_isStatement = {
+export const clang_isStatement = {
   parameters: [
     CXCursorKindT,
   ],
@@ -893,8 +846,7 @@ const clang_isStatement = {
 /**
  * Determine whether the given cursor kind represents an attribute.
  */
-// deno-lint-ignore no-unused-vars
-const clang_isAttribute = {
+export const clang_isAttribute = {
   parameters: [
     CXCursorKindT,
   ],
@@ -904,8 +856,7 @@ const clang_isAttribute = {
 /**
  * Determine whether the given cursor has any attributes.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_hasAttrs = {
+export const clang_Cursor_hasAttrs = {
   parameters: [
     CXCursorT, // C
   ],
@@ -916,8 +867,7 @@ const clang_Cursor_hasAttrs = {
  * Determine whether the given cursor kind represents an invalid
  * cursor.
  */
-// deno-lint-ignore no-unused-vars
-const clang_isInvalid = {
+export const clang_isInvalid = {
   parameters: [
     CXCursorKindT,
   ],
@@ -928,8 +878,7 @@ const clang_isInvalid = {
  * Determine whether the given cursor kind represents a translation
  * unit.
  */
-// deno-lint-ignore no-unused-vars
-const clang_isTranslationUnit = {
+export const clang_isTranslationUnit = {
   parameters: [
     CXCursorKindT,
   ],
@@ -941,8 +890,7 @@ const clang_isTranslationUnit = {
  * Determine whether the given cursor represents a preprocessing
  * element, such as a preprocessor directive or macro instantiation.
  */
-// deno-lint-ignore no-unused-vars
-const clang_isPreprocessing = {
+export const clang_isPreprocessing = {
   parameters: [
     CXCursorKindT,
   ],
@@ -954,8 +902,7 @@ const clang_isPreprocessing = {
  * Determine whether the given cursor represents a currently
  * unexposed piece of the AST (e.g., CXCursor_UnexposedStmt).
  */
-// deno-lint-ignore no-unused-vars
-const clang_isUnexposed = {
+export const clang_isUnexposed = {
   parameters: [
     CXCursorKindT,
   ],
@@ -965,8 +912,7 @@ const clang_isUnexposed = {
 /**
  * Determine the linkage of the entity referred to by a given cursor.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCursorLinkage = {
+export const clang_getCursorLinkage = {
   parameters: [
     CXCursorT, // cursor
   ],
@@ -983,8 +929,7 @@ const clang_getCursorLinkage = {
  * @param cursor The cursor to query.
  * @returns The visibility of the cursor.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCursorVisibility = {
+export const clang_getCursorVisibility = {
   parameters: [
     CXCursorT, // cursor
   ],
@@ -998,8 +943,7 @@ const clang_getCursorVisibility = {
  * @param cursor The cursor to query.
  * @returns The availability of the cursor.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCursorAvailability = {
+export const clang_getCursorAvailability = {
   parameters: [
     CXCursorT, // cursor
   ],
@@ -1035,8 +979,7 @@ const clang_getCursorAvailability = {
  * platform-availability structures returned. There are
  * `min(N,` availability_size) such structures.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCursorPlatformAvailability = {
+export const clang_getCursorPlatformAvailability = {
   parameters: [
     CXCursorT, // cursor
     buf(int), // always_deprecated
@@ -1052,8 +995,7 @@ const clang_getCursorPlatformAvailability = {
 /**
  * Free the memory associated with a `CXPlatformAvailability` structure.
  */
-// deno-lint-ignore no-unused-vars
-const clang_disposeCXPlatformAvailability = {
+export const clang_disposeCXPlatformAvailability = {
   parameters: [
     buf(CXPlatformAvailabilityT), // availability
   ],
@@ -1064,8 +1006,7 @@ const clang_disposeCXPlatformAvailability = {
  * If cursor refers to a variable declaration and it has initializer returns
  * cursor referring to the initializer otherwise return null cursor.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_getVarDeclInitializer = {
+export const clang_Cursor_getVarDeclInitializer = {
   parameters: [
     CXCursorT, // cursor
   ],
@@ -1077,8 +1018,7 @@ const clang_Cursor_getVarDeclInitializer = {
  * If cursor refers to a variable declaration that doesn't have global storage
  * returns 0. Otherwise returns -1.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_hasVarDeclGlobalStorage = {
+export const clang_Cursor_hasVarDeclGlobalStorage = {
   parameters: [
     CXCursorT, // cursor
   ],
@@ -1090,8 +1030,7 @@ const clang_Cursor_hasVarDeclGlobalStorage = {
  * returns 1. If cursor refers to a variable declaration that doesn't have
  * external storage returns 0. Otherwise returns -1.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_hasVarDeclExternalStorage = {
+export const clang_Cursor_hasVarDeclExternalStorage = {
   parameters: [
     CXCursorT, // cursor
   ],
@@ -1101,8 +1040,7 @@ const clang_Cursor_hasVarDeclExternalStorage = {
 /**
  * Determine the "language" of the entity referred to by a given cursor.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCursorLanguage = {
+export const clang_getCursorLanguage = {
   parameters: [
     CXCursorT, // cursor
   ],
@@ -1113,8 +1051,7 @@ const clang_getCursorLanguage = {
  * Determine the "thread-local storage (TLS) kind" of the declaration
  * referred to by a cursor.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCursorTLSKind = {
+export const clang_getCursorTLSKind = {
   parameters: [
     CXCursorT, // cursor
   ],
@@ -1124,8 +1061,7 @@ const clang_getCursorTLSKind = {
 /**
  * Returns the translation unit that a cursor originated from.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_getTranslationUnit = {
+export const clang_Cursor_getTranslationUnit = {
   parameters: [
     CXCursorT,
   ],
@@ -1135,8 +1071,7 @@ const clang_Cursor_getTranslationUnit = {
 /**
  * Creates an empty CXCursorSet.
  */
-// deno-lint-ignore no-unused-vars
-const clang_createCXCursorSet = {
+export const clang_createCXCursorSet = {
   parameters: [],
   result: CXCursorSetT,
 } as const;
@@ -1144,8 +1079,7 @@ const clang_createCXCursorSet = {
 /**
  * Disposes a CXCursorSet and releases its associated memory.
  */
-// deno-lint-ignore no-unused-vars
-const clang_disposeCXCursorSet = {
+export const clang_disposeCXCursorSet = {
   parameters: [
     CXCursorSetT, // cset
   ],
@@ -1157,8 +1091,7 @@ const clang_disposeCXCursorSet = {
  *
  * @returns non-zero if the set contains the specified cursor.
  */
-// deno-lint-ignore no-unused-vars
-const clang_CXCursorSet_contains = {
+export const clang_CXCursorSet_contains = {
   parameters: [
     CXCursorSetT, // cset
     CXCursorT, // cursor
@@ -1171,8 +1104,7 @@ const clang_CXCursorSet_contains = {
  *
  * @returns zero if the CXCursor was already in the set, and non-zero otherwise.
  */
-// deno-lint-ignore no-unused-vars
-const clang_CXCursorSet_insert = {
+export const clang_CXCursorSet_insert = {
   parameters: [
     CXCursorSetT, // cset
     CXCursorT, // cursor
@@ -1210,8 +1142,7 @@ const clang_CXCursorSet_insert = {
  *
  * For global declarations, the semantic parent is the translation unit.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCursorSemanticParent = {
+export const clang_getCursorSemanticParent = {
   parameters: [
     CXCursorT, // cursor
   ],
@@ -1248,8 +1179,7 @@ const clang_getCursorSemanticParent = {
  * For declarations written in the global scope, the lexical parent is
  * the translation unit.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCursorLexicalParent = {
+export const clang_getCursorLexicalParent = {
   parameters: [
     CXCursorT, // cursor
   ],
@@ -1297,8 +1227,7 @@ const clang_getCursorLexicalParent = {
  * functions, will be set to the number of overridden functions in the
  * array pointed to by `overridden.`
  */
-// deno-lint-ignore no-unused-vars
-const clang_getOverriddenCursors = {
+export const clang_getOverriddenCursors = {
   parameters: [
     CXCursorT, // cursor
     buf(buf(CXCursorT)), // overridden
@@ -1310,8 +1239,7 @@ const clang_getOverriddenCursors = {
 /**
  * Free the set of overridden cursors returned by `clang_getOverriddenCursors().`
  */
-// deno-lint-ignore no-unused-vars
-const clang_disposeOverriddenCursors = {
+export const clang_disposeOverriddenCursors = {
   parameters: [
     ptr(CXCursorT), // overridden
   ],
@@ -1322,8 +1250,7 @@ const clang_disposeOverriddenCursors = {
  * Retrieve the file that is included by the given inclusion directive
  * cursor.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getIncludedFile = {
+export const clang_getIncludedFile = {
   parameters: [
     CXCursorT, // cursor
   ],
@@ -1345,8 +1272,7 @@ const clang_getIncludedFile = {
  * @returns a cursor representing the entity at the given source location, or
  * a NULL cursor if no such entity can be found.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCursor = {
+export const clang_getCursor = {
   parameters: [
     CXTranslationUnitT,
     CXSourceLocationT,
@@ -1364,8 +1290,7 @@ const clang_getCursor = {
  * The location of a reference is where that reference occurs within the
  * source code.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCursorLocation = {
+export const clang_getCursorLocation = {
   parameters: [
     CXCursorT,
   ],
@@ -1383,8 +1308,7 @@ const clang_getCursorLocation = {
  * the extent covers the location of the reference (e.g., where the referenced
  * entity was actually used).
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCursorExtent = {
+export const clang_getCursorExtent = {
   parameters: [
     CXCursorT,
   ],
@@ -1394,8 +1318,7 @@ const clang_getCursorExtent = {
 /**
  * Retrieve the type of a CXCursor (if any).
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCursorType = {
+export const clang_getCursorType = {
   parameters: [
     CXCursorT, // C
   ],
@@ -1408,8 +1331,7 @@ const clang_getCursorType = {
  *
  * If the type is invalid, an empty string is returned.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getTypeSpelling = {
+export const clang_getTypeSpelling = {
   parameters: [
     CXTypeT, // CT
   ],
@@ -1422,8 +1344,7 @@ const clang_getTypeSpelling = {
  * If the cursor does not reference a typedef declaration, an invalid type is
  * returned.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getTypedefDeclUnderlyingType = {
+export const clang_getTypedefDeclUnderlyingType = {
   parameters: [
     CXCursorT, // C
   ],
@@ -1436,8 +1357,7 @@ const clang_getTypedefDeclUnderlyingType = {
  * If the cursor does not reference an enum declaration, an invalid type is
  * returned.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getEnumDeclIntegerType = {
+export const clang_getEnumDeclIntegerType = {
   parameters: [
     CXCursorT, // C
   ],
@@ -1452,8 +1372,7 @@ const clang_getEnumDeclIntegerType = {
  * returned. Since this is also potentially a valid constant value, the kind of
  * the cursor must be verified before calling this function.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getEnumConstantDeclValue = {
+export const clang_getEnumConstantDeclValue = {
   parameters: [
     CXCursorT, // C
   ],
@@ -1468,8 +1387,7 @@ const clang_getEnumConstantDeclValue = {
  * returned. Since this is also potentially a valid constant value, the kind of
  * the cursor must be verified before calling this function.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getEnumConstantDeclUnsignedValue = {
+export const clang_getEnumConstantDeclUnsignedValue = {
   parameters: [
     CXCursorT, // C
   ],
@@ -1481,8 +1399,7 @@ const clang_getEnumConstantDeclUnsignedValue = {
  *
  * If a cursor that is not a bit field declaration is passed in, -1 is returned.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getFieldDeclBitWidth = {
+export const clang_getFieldDeclBitWidth = {
   parameters: [
     CXCursorT, // C
   ],
@@ -1496,8 +1413,7 @@ const clang_getFieldDeclBitWidth = {
  * The number of arguments can be determined for calls as well as for
  * declarations of functions or methods. For other cursors -1 is returned.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_getNumArguments = {
+export const clang_Cursor_getNumArguments = {
   parameters: [
     CXCursorT, // C
   ],
@@ -1511,8 +1427,7 @@ const clang_Cursor_getNumArguments = {
  * of functions or methods. For other cursors and for invalid indices, an
  * invalid cursor is returned.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_getArgument = {
+export const clang_Cursor_getArgument = {
   parameters: [
     CXCursorT, // C
     unsignedInt, // i
@@ -1536,8 +1451,7 @@ const clang_Cursor_getArgument = {
  *
  * The value 3 would be returned from this call.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_getNumTemplateArguments = {
+export const clang_Cursor_getNumTemplateArguments = {
   parameters: [
     CXCursorT, // C
   ],
@@ -1561,8 +1475,7 @@ const clang_Cursor_getNumTemplateArguments = {
  * For I = 0, 1, and 2, Type, Integral, and Integral will be returned,
  * respectively.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_getTemplateArgumentKind = {
+export const clang_Cursor_getTemplateArgumentKind = {
   parameters: [
     CXCursorT, // C
     unsignedInt, // I
@@ -1588,8 +1501,7 @@ const clang_Cursor_getTemplateArgumentKind = {
  * If called with I = 0, "float", will be returned.
  * Invalid types will be returned for I == 1 or 2.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_getTemplateArgumentType = {
+export const clang_Cursor_getTemplateArgumentType = {
   parameters: [
     CXCursorT, // C
     unsignedInt, // I
@@ -1615,8 +1527,7 @@ const clang_Cursor_getTemplateArgumentType = {
  * If called with I = 1 or 2, -7 or true will be returned, respectively.
  * For I == 0, this function's behavior is undefined.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_getTemplateArgumentValue = {
+export const clang_Cursor_getTemplateArgumentValue = {
   parameters: [
     CXCursorT, // C
     unsignedInt, // I
@@ -1642,8 +1553,7 @@ const clang_Cursor_getTemplateArgumentValue = {
  * If called with I = 1 or 2, 2147483649 or true will be returned, respectively.
  * For I == 0, this function's behavior is undefined.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_getTemplateArgumentUnsignedValue = {
+export const clang_Cursor_getTemplateArgumentUnsignedValue = {
   parameters: [
     CXCursorT, // C
     unsignedInt, // I
@@ -1657,8 +1567,7 @@ const clang_Cursor_getTemplateArgumentUnsignedValue = {
  * @returns non-zero if the CXTypes represent the same type and
  *          zero otherwise.
  */
-// deno-lint-ignore no-unused-vars
-const clang_equalTypes = {
+export const clang_equalTypes = {
   parameters: [
     CXTypeT, // A
     CXTypeT, // B
@@ -1674,8 +1583,7 @@ const clang_equalTypes = {
  * type with all the "sugar" removed. For example, if 'T' is a typedef
  * for 'int', the canonical type for 'T' would be 'int'.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCanonicalType = {
+export const clang_getCanonicalType = {
   parameters: [
     CXTypeT, // T
   ],
@@ -1687,8 +1595,7 @@ const clang_getCanonicalType = {
  * without looking through typedefs that may have added "const" at a
  * different level.
  */
-// deno-lint-ignore no-unused-vars
-const clang_isConstQualifiedType = {
+export const clang_isConstQualifiedType = {
   parameters: [
     CXTypeT, // T
   ],
@@ -1699,8 +1606,7 @@ const clang_isConstQualifiedType = {
  * Determine whether a CXCursor that is a macro, is
  * function like.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_isMacroFunctionLike = {
+export const clang_Cursor_isMacroFunctionLike = {
   parameters: [
     CXCursorT, // C
   ],
@@ -1711,8 +1617,7 @@ const clang_Cursor_isMacroFunctionLike = {
  * Determine whether a CXCursor that is a macro, is a
  * builtin one.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_isMacroBuiltin = {
+export const clang_Cursor_isMacroBuiltin = {
   parameters: [
     CXCursorT, // C
   ],
@@ -1723,8 +1628,7 @@ const clang_Cursor_isMacroBuiltin = {
  * Determine whether a CXCursor that is a function declaration, is an
  * inline declaration.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_isFunctionInlined = {
+export const clang_Cursor_isFunctionInlined = {
   parameters: [
     CXCursorT, // C
   ],
@@ -1736,8 +1640,7 @@ const clang_Cursor_isFunctionInlined = {
  * without looking through typedefs that may have added "volatile" at
  * a different level.
  */
-// deno-lint-ignore no-unused-vars
-const clang_isVolatileQualifiedType = {
+export const clang_isVolatileQualifiedType = {
   parameters: [
     CXTypeT, // T
   ],
@@ -1749,8 +1652,7 @@ const clang_isVolatileQualifiedType = {
  * without looking through typedefs that may have added "restrict" at a
  * different level.
  */
-// deno-lint-ignore no-unused-vars
-const clang_isRestrictQualifiedType = {
+export const clang_isRestrictQualifiedType = {
   parameters: [
     CXTypeT, // T
   ],
@@ -1760,8 +1662,7 @@ const clang_isRestrictQualifiedType = {
 /**
  * Returns the address space of the given type.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getAddressSpace = {
+export const clang_getAddressSpace = {
   parameters: [
     CXTypeT, // T
   ],
@@ -1771,8 +1672,7 @@ const clang_getAddressSpace = {
 /**
  * Returns the typedef name of the given type.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getTypedefName = {
+export const clang_getTypedefName = {
   parameters: [
     CXTypeT, // CT
   ],
@@ -1782,8 +1682,7 @@ const clang_getTypedefName = {
 /**
  * For pointer types, returns the type of the pointee.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getPointeeType = {
+export const clang_getPointeeType = {
   parameters: [
     CXTypeT, // T
   ],
@@ -1847,8 +1746,7 @@ const clang_getNonReferenceType = {
 /**
  * Return the cursor for the declaration of the given type.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getTypeDeclaration = {
+export const clang_getTypeDeclaration = {
   parameters: [
     CXTypeT, // T
   ],
@@ -1858,8 +1756,7 @@ const clang_getTypeDeclaration = {
 /**
  * Returns the Objective-C type encoding for the specified declaration.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getDeclObjCTypeEncoding = {
+export const clang_getDeclObjCTypeEncoding = {
   parameters: [
     CXCursorT, // C
   ],
@@ -1869,8 +1766,7 @@ const clang_getDeclObjCTypeEncoding = {
 /**
  * Returns the Objective-C type encoding for the specified CXType.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Type_getObjCEncoding = {
+export const clang_Type_getObjCEncoding = {
   parameters: [
     CXTypeT, // type
   ],
@@ -1880,8 +1776,7 @@ const clang_Type_getObjCEncoding = {
 /**
  * Retrieve the spelling of a given CXTypeKind.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getTypeKindSpelling = {
+export const clang_getTypeKindSpelling = {
   parameters: [
     CXTypeKindT, // K
   ],
@@ -1893,8 +1788,7 @@ const clang_getTypeKindSpelling = {
  *
  * If a non-function type is passed in, CXCallingConv_Invalid is returned.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getFunctionTypeCallingConv = {
+export const clang_getFunctionTypeCallingConv = {
   parameters: [
     CXTypeT, // T
   ],
@@ -1906,8 +1800,7 @@ const clang_getFunctionTypeCallingConv = {
  *
  * If a non-function type is passed in, an invalid type is returned.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getResultType = {
+export const clang_getResultType = {
   parameters: [
     CXTypeT, // T
   ],
@@ -1920,8 +1813,7 @@ const clang_getResultType = {
  *
  * If a non-function type is passed in, an error code of -1 is returned.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getExceptionSpecificationType = {
+export const clang_getExceptionSpecificationType = {
   parameters: [
     CXTypeT, // T
   ],
@@ -1934,8 +1826,7 @@ const clang_getExceptionSpecificationType = {
  *
  * If a non-function type is passed in, -1 is returned.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getNumArgTypes = {
+export const clang_getNumArgTypes = {
   parameters: [
     CXTypeT, // T
   ],
@@ -1948,8 +1839,7 @@ const clang_getNumArgTypes = {
  * If a non-function type is passed in or the function does not have enough
  * parameters, an invalid type is returned.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getArgType = {
+export const clang_getArgType = {
   parameters: [
     CXTypeT, // T
     unsignedInt, // i
@@ -1962,8 +1852,7 @@ const clang_getArgType = {
  *
  * If the type is not an ObjC object, an invalid type is returned.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Type_getObjCObjectBaseType = {
+export const clang_Type_getObjCObjectBaseType = {
   parameters: [
     CXTypeT, // T
   ],
@@ -1975,8 +1864,7 @@ const clang_Type_getObjCObjectBaseType = {
  *
  * If the type is not an ObjC object, 0 is returned.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Type_getNumObjCProtocolRefs = {
+export const clang_Type_getNumObjCProtocolRefs = {
   parameters: [
     CXTypeT, // T
   ],
@@ -1989,8 +1877,7 @@ const clang_Type_getNumObjCProtocolRefs = {
  * If the type is not an ObjC object or there are not enough protocol
  * references, an invalid cursor is returned.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Type_getObjCProtocolDecl = {
+export const clang_Type_getObjCProtocolDecl = {
   parameters: [
     CXTypeT, // T
     unsignedInt, // i
@@ -2003,8 +1890,7 @@ const clang_Type_getObjCProtocolDecl = {
  *
  * If the type is not an ObjC object, 0 is returned.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Type_getNumObjCTypeArgs = {
+export const clang_Type_getNumObjCTypeArgs = {
   parameters: [
     CXTypeT, // T
   ],
@@ -2017,8 +1903,7 @@ const clang_Type_getNumObjCTypeArgs = {
  * If the type is not an ObjC or the index is not valid,
  * an invalid type is returned.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Type_getObjCTypeArg = {
+export const clang_Type_getObjCTypeArg = {
   parameters: [
     CXTypeT, // T
     unsignedInt, // i
@@ -2029,8 +1914,7 @@ const clang_Type_getObjCTypeArg = {
 /**
  * Return 1 if the CXType is a variadic function type, and 0 otherwise.
  */
-// deno-lint-ignore no-unused-vars
-const clang_isFunctionTypeVariadic = {
+export const clang_isFunctionTypeVariadic = {
   parameters: [
     CXTypeT, // T
   ],
@@ -2042,8 +1926,7 @@ const clang_isFunctionTypeVariadic = {
  *
  * This only returns a valid type if the cursor refers to a function or method.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCursorResultType = {
+export const clang_getCursorResultType = {
   parameters: [
     CXCursorT, // C
   ],
@@ -2057,8 +1940,7 @@ const clang_getCursorResultType = {
  * This only returns a valid result if the cursor refers to a function or
  * method.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCursorExceptionSpecificationType = {
+export const clang_getCursorExceptionSpecificationType = {
   parameters: [
     CXCursorT, // C
   ],
@@ -2069,8 +1951,7 @@ const clang_getCursorExceptionSpecificationType = {
  * Return 1 if the CXType is a POD (plain old data) type, and 0
  * otherwise.
  */
-// deno-lint-ignore no-unused-vars
-const clang_isPODType = {
+export const clang_isPODType = {
   parameters: [
     CXTypeT, // T
   ],
@@ -2083,8 +1964,7 @@ const clang_isPODType = {
  * If a type is passed in that is not an array, complex, or vector type,
  * an invalid type is returned.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getElementType = {
+export const clang_getElementType = {
   parameters: [
     CXTypeT, // T
   ],
@@ -2097,8 +1977,7 @@ const clang_getElementType = {
  * If a type is passed in that is not an array or vector type,
  * -1 is returned.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getNumElements = {
+export const clang_getNumElements = {
   parameters: [
     CXTypeT, // T
   ],
@@ -2110,8 +1989,7 @@ const clang_getNumElements = {
  *
  * If a non-array type is passed in, an invalid type is returned.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getArrayElementType = {
+export const clang_getArrayElementType = {
   parameters: [
     CXTypeT, // T
   ],
@@ -2123,8 +2001,7 @@ const clang_getArrayElementType = {
  *
  * If a non-array type is passed in, -1 is returned.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getArraySize = {
+export const clang_getArraySize = {
   parameters: [
     CXTypeT, // T
   ],
@@ -2136,8 +2013,7 @@ const clang_getArraySize = {
  *
  * If a non-elaborated type is passed in, an invalid type is returned.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Type_getNamedType = {
+export const clang_Type_getNamedType = {
   parameters: [
     CXTypeT, // T
   ],
@@ -2152,8 +2028,7 @@ const clang_Type_getNamedType = {
  *
  * @returns non-zero if transparent and zero otherwise.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Type_isTransparentTagTypedef = {
+export const clang_Type_isTransparentTagTypedef = {
   parameters: [
     CXTypeT, // T
   ],
@@ -2163,8 +2038,7 @@ const clang_Type_isTransparentTagTypedef = {
 /**
  * Retrieve the nullability kind of a pointer type.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Type_getNullability = {
+export const clang_Type_getNullability = {
   parameters: [
     CXTypeT, // T
   ],
@@ -2183,8 +2057,7 @@ const clang_Type_getNullability = {
  * If the type declaration is not a constant size type,
  * CXTypeLayoutError_NotConstantSize is returned.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Type_getAlignOf = {
+export const clang_Type_getAlignOf = {
   parameters: [
     CXTypeT, // T
   ],
@@ -2196,8 +2069,7 @@ const clang_Type_getAlignOf = {
  *
  * If a non-member-pointer type is passed in, an invalid type is returned.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Type_getClassType = {
+export const clang_Type_getClassType = {
   parameters: [
     CXTypeT, // T
   ],
@@ -2213,8 +2085,7 @@ const clang_Type_getClassType = {
  * If the type declaration is a dependent type, CXTypeLayoutError_Dependent is
  * returned.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Type_getSizeOf = {
+export const clang_Type_getSizeOf = {
   parameters: [
     CXTypeT, // T
   ],
@@ -2234,8 +2105,7 @@ const clang_Type_getSizeOf = {
  * If the field's name S is not found,
  * CXTypeLayoutError_InvalidFieldName is returned.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Type_getOffsetOf = {
+export const clang_Type_getOffsetOf = {
   parameters: [
     CXTypeT, // T
     cstringT, // S
@@ -2248,8 +2118,7 @@ const clang_Type_getOffsetOf = {
  *
  * If the type is not an attributed type, an invalid type is returned.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Type_getModifiedType = {
+export const clang_Type_getModifiedType = {
   parameters: [
     CXTypeT, // T
   ],
@@ -2261,8 +2130,7 @@ const clang_Type_getModifiedType = {
  *
  * If a non-atomic type is passed in, an invalid type is returned.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Type_getValueType = {
+export const clang_Type_getValueType = {
   parameters: [
     CXTypeT, // CT
   ],
@@ -2282,8 +2150,7 @@ const clang_Type_getValueType = {
  * If the field's name S is not found,
  * CXTypeLayoutError_InvalidFieldName is returned.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_getOffsetOfField = {
+export const clang_Cursor_getOffsetOfField = {
   parameters: [
     CXCursorT, // C
   ],
@@ -2294,8 +2161,7 @@ const clang_Cursor_getOffsetOfField = {
  * Determine whether the given cursor represents an anonymous
  * tag or namespace
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_isAnonymous = {
+export const clang_Cursor_isAnonymous = {
   parameters: [
     CXCursorT, // C
   ],
@@ -2306,8 +2172,7 @@ const clang_Cursor_isAnonymous = {
  * Determine whether the given cursor represents an anonymous record
  * declaration.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_isAnonymousRecordDecl = {
+export const clang_Cursor_isAnonymousRecordDecl = {
   parameters: [
     CXCursorT, // C
   ],
@@ -2318,8 +2183,7 @@ const clang_Cursor_isAnonymousRecordDecl = {
  * Determine whether the given cursor represents an inline namespace
  * declaration.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_isInlineNamespace = {
+export const clang_Cursor_isInlineNamespace = {
   parameters: [
     CXCursorT, // C
   ],
@@ -2330,8 +2194,7 @@ const clang_Cursor_isInlineNamespace = {
  * Returns the number of template arguments for given template
  * specialization, or -1 if type `T` is not a template specialization.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Type_getNumTemplateArguments = {
+export const clang_Type_getNumTemplateArguments = {
   parameters: [
     CXTypeT, // T
   ],
@@ -2345,8 +2208,7 @@ const clang_Type_getNumTemplateArguments = {
  * This function only returns template type arguments and does not handle
  * template template arguments or variadic packs.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Type_getTemplateArgumentAsType = {
+export const clang_Type_getTemplateArgumentAsType = {
   parameters: [
     CXTypeT, // T
     unsignedInt, // i
@@ -2360,8 +2222,7 @@ const clang_Type_getTemplateArgumentAsType = {
  * The ref-qualifier is returned for C++ functions or methods. For other types
  * or non-C++ declarations, CXRefQualifier_None is returned.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Type_getCXXRefQualifier = {
+export const clang_Type_getCXXRefQualifier = {
   parameters: [
     CXTypeT, // T
   ],
@@ -2372,8 +2233,7 @@ const clang_Type_getCXXRefQualifier = {
  * Returns non-zero if the cursor specifies a Record member that is a
  * bitfield.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_isBitField = {
+export const clang_Cursor_isBitField = {
   parameters: [
     CXCursorT, // C
   ],
@@ -2384,8 +2244,7 @@ const clang_Cursor_isBitField = {
  * Returns 1 if the base class specified by the cursor with kind
  * CX_CXXBaseSpecifier is virtual.
  */
-// deno-lint-ignore no-unused-vars
-const clang_isVirtualBase = {
+export const clang_isVirtualBase = {
   parameters: [
     CXCursorT,
   ],
@@ -2399,8 +2258,7 @@ const clang_isVirtualBase = {
  * its parent scope is returned. Otherwise, if the cursor refers to a base
  * specifier or access specifier, the specifier itself is returned.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCXXAccessSpecifier = {
+export const clang_getCXXAccessSpecifier = {
   parameters: [
     CXCursorT,
   ],
@@ -2413,8 +2271,7 @@ const clang_getCXXAccessSpecifier = {
  * If the passed in Cursor is not a function or variable declaration,
  * CX_SC_Invalid is returned else the storage class.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_getStorageClass = {
+export const clang_Cursor_getStorageClass = {
   parameters: [
     CXCursorT,
   ],
@@ -2429,8 +2286,7 @@ const clang_Cursor_getStorageClass = {
  * @returns The number of overloaded declarations referenced by `cursor.` If it
  * is not a `CXCursor_OverloadedDeclRef` cursor, returns 0.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getNumOverloadedDecls = {
+export const clang_getNumOverloadedDecls = {
   parameters: [
     CXCursorT, // cursor
   ],
@@ -2449,8 +2305,7 @@ const clang_getNumOverloadedDecls = {
  * associated set of overloaded declarations, or if the index is out of bounds,
  * returns `clang_getNullCursor();`
  */
-// deno-lint-ignore no-unused-vars
-const clang_getOverloadedDecl = {
+export const clang_getOverloadedDecl = {
   parameters: [
     CXCursorT, // cursor
     unsignedInt, // index
@@ -2462,8 +2317,7 @@ const clang_getOverloadedDecl = {
  * For cursors representing an iboutletcollection attribute,
  * this function returns the collection element type.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getIBOutletCollectionType = {
+export const clang_getIBOutletCollectionType = {
   parameters: [
     CXCursorT,
   ],
@@ -2489,8 +2343,7 @@ const clang_getIBOutletCollectionType = {
  * @returns a non-zero value if the traversal was terminated
  * prematurely by the visitor returning `CXChildVisit_Break.`
  */
-// deno-lint-ignore no-unused-vars
-const clang_visitChildren = {
+export const clang_visitChildren = {
   parameters: [
     CXCursorT, // parent
     CXCursorVisitorT, // visitor
@@ -2508,8 +2361,7 @@ const clang_visitChildren = {
  * compared across translation units to determine, e.g., when references in
  * one translation refer to an entity defined in another translation unit.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCursorUSR = {
+export const clang_getCursorUSR = {
   parameters: [
     CXCursorT,
   ],
@@ -2519,8 +2371,7 @@ const clang_getCursorUSR = {
 /**
  * Construct a USR for a specified Objective-C class.
  */
-// deno-lint-ignore no-unused-vars
-const clang_constructUSR_ObjCClass = {
+export const clang_constructUSR_ObjCClass = {
   parameters: [
     cstringT, // class_name
   ],
@@ -2530,8 +2381,7 @@ const clang_constructUSR_ObjCClass = {
 /**
  * Construct a USR for a specified Objective-C category.
  */
-// deno-lint-ignore no-unused-vars
-const clang_constructUSR_ObjCCategory = {
+export const clang_constructUSR_ObjCCategory = {
   parameters: [
     cstringT, // class_name
     cstringT, // category_name
@@ -2542,8 +2392,7 @@ const clang_constructUSR_ObjCCategory = {
 /**
  * Construct a USR for a specified Objective-C protocol.
  */
-// deno-lint-ignore no-unused-vars
-const clang_constructUSR_ObjCProtocol = {
+export const clang_constructUSR_ObjCProtocol = {
   parameters: [
     cstringT, // protocol_name
   ],
@@ -2554,8 +2403,7 @@ const clang_constructUSR_ObjCProtocol = {
  * Construct a USR for a specified Objective-C instance variable and
  * the USR for its containing class.
  */
-// deno-lint-ignore no-unused-vars
-const clang_constructUSR_ObjCIvar = {
+export const clang_constructUSR_ObjCIvar = {
   parameters: [
     cstringT, // name
     CXStringT, // classUSR
@@ -2567,8 +2415,7 @@ const clang_constructUSR_ObjCIvar = {
  * Construct a USR for a specified Objective-C method and
  * the USR for its containing class.
  */
-// deno-lint-ignore no-unused-vars
-const clang_constructUSR_ObjCMethod = {
+export const clang_constructUSR_ObjCMethod = {
   parameters: [
     cstringT, // name
     unsignedInt, // isInstanceMethod
@@ -2581,8 +2428,7 @@ const clang_constructUSR_ObjCMethod = {
  * Construct a USR for a specified Objective-C property and the USR
  * for its containing class.
  */
-// deno-lint-ignore no-unused-vars
-const clang_constructUSR_ObjCProperty = {
+export const clang_constructUSR_ObjCProperty = {
   parameters: [
     cstringT, // property
     CXStringT, // classUSR
@@ -2593,8 +2439,7 @@ const clang_constructUSR_ObjCProperty = {
 /**
  * Retrieve a name for the entity referenced by this cursor.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCursorSpelling = {
+export const clang_getCursorSpelling = {
   parameters: [
     CXCursorT,
   ],
@@ -2611,8 +2456,7 @@ const clang_getCursorSpelling = {
  * than the actual number of pieces, it will return a NULL (invalid) range.
  * @param options Reserved.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_getSpellingNameRange = {
+export const clang_Cursor_getSpellingNameRange = {
   parameters: [
     CXCursorT,
     unsignedInt, // pieceIndex
@@ -2624,8 +2468,7 @@ const clang_Cursor_getSpellingNameRange = {
 /**
  * Get a property value for the given printing policy.
  */
-// deno-lint-ignore no-unused-vars
-const clang_PrintingPolicy_getProperty = {
+export const clang_PrintingPolicy_getProperty = {
   parameters: [
     CXPrintingPolicyT, // Policy
     CXPrintingPolicyPropertyT, // Property
@@ -2636,8 +2479,7 @@ const clang_PrintingPolicy_getProperty = {
 /**
  * Set a property value for the given printing policy.
  */
-// deno-lint-ignore no-unused-vars
-const clang_PrintingPolicy_setProperty = {
+export const clang_PrintingPolicy_setProperty = {
   parameters: [
     CXPrintingPolicyT, // Policy
     CXPrintingPolicyPropertyT, // Property
@@ -2651,8 +2493,7 @@ const clang_PrintingPolicy_setProperty = {
  *
  * The policy should be released after use with `clang_PrintingPolicy_dispose.`
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCursorPrintingPolicy = {
+export const clang_getCursorPrintingPolicy = {
   parameters: [
     CXCursorT,
   ],
@@ -2662,8 +2503,7 @@ const clang_getCursorPrintingPolicy = {
 /**
  * Release a printing policy.
  */
-// deno-lint-ignore no-unused-vars
-const clang_PrintingPolicy_dispose = {
+export const clang_PrintingPolicy_dispose = {
   parameters: [
     CXPrintingPolicyT, // Policy
   ],
@@ -2679,8 +2519,7 @@ const clang_PrintingPolicy_dispose = {
  * @returns The pretty printed declaration or the empty string for
  * other cursors.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCursorPrettyPrinted = {
+export const clang_getCursorPrettyPrinted = {
   parameters: [
     CXCursorT, // Cursor
     CXPrintingPolicyT, // Policy
@@ -2695,8 +2534,7 @@ const clang_getCursorPrettyPrinted = {
  * such as the parameters of a function or template or the arguments of a
  * class template specialization.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCursorDisplayName = {
+export const clang_getCursorDisplayName = {
   parameters: [
     CXCursorT,
   ],
@@ -2714,8 +2552,7 @@ const clang_getCursorDisplayName = {
  * definition, it returns that declaration or definition unchanged.
  * Otherwise, returns the NULL cursor.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCursorReferenced = {
+export const clang_getCursorReferenced = {
   parameters: [
     CXCursorT,
   ],
@@ -2749,8 +2586,7 @@ const clang_getCursorReferenced = {
  * e.g., because there is no definition of that entity within this
  * translation unit, returns a NULL cursor.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCursorDefinition = {
+export const clang_getCursorDefinition = {
   parameters: [
     CXCursorT,
   ],
@@ -2761,8 +2597,7 @@ const clang_getCursorDefinition = {
  * Determine whether the declaration pointed to by this cursor
  * is also a definition of that entity.
  */
-// deno-lint-ignore no-unused-vars
-const clang_isCursorDefinition = {
+export const clang_isCursorDefinition = {
   parameters: [
     CXCursorT,
   ],
@@ -2792,8 +2627,7 @@ const clang_isCursorDefinition = {
  *
  * @returns The canonical cursor for the entity referred to by the given cursor.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCanonicalCursor = {
+export const clang_getCanonicalCursor = {
   parameters: [
     CXCursorT,
   ],
@@ -2811,8 +2645,7 @@ const clang_getCanonicalCursor = {
  * expression and the cursor is pointing to a selector identifier, or -1
  * otherwise.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_getObjCSelectorIndex = {
+export const clang_Cursor_getObjCSelectorIndex = {
   parameters: [
     CXCursorT,
   ],
@@ -2830,8 +2663,7 @@ const clang_Cursor_getObjCSelectorIndex = {
  * If the method/message is "static" or the cursor does not point to a
  * method/message, it will return zero.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_isDynamicCall = {
+export const clang_Cursor_isDynamicCall = {
   parameters: [
     CXCursorT, // C
   ],
@@ -2842,8 +2674,7 @@ const clang_Cursor_isDynamicCall = {
  * Given a cursor pointing to an Objective-C message or property
  * reference, or C++ method call, returns the CXType of the receiver.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_getReceiverType = {
+export const clang_Cursor_getReceiverType = {
   parameters: [
     CXCursorT, // C
   ],
@@ -2857,8 +2688,7 @@ const clang_Cursor_getReceiverType = {
  *
  * @param reserved Reserved for future use, pass 0.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_getObjCPropertyAttributes = {
+export const clang_Cursor_getObjCPropertyAttributes = {
   parameters: [
     CXCursorT, // C
     unsignedInt, // reserved
@@ -2870,8 +2700,7 @@ const clang_Cursor_getObjCPropertyAttributes = {
  * Given a cursor that represents a property declaration, return the
  * name of the method that implements the getter.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_getObjCPropertyGetterName = {
+export const clang_Cursor_getObjCPropertyGetterName = {
   parameters: [
     CXCursorT, // C
   ],
@@ -2882,8 +2711,7 @@ const clang_Cursor_getObjCPropertyGetterName = {
  * Given a cursor that represents a property declaration, return the
  * name of the method that implements the setter, if any.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_getObjCPropertySetterName = {
+export const clang_Cursor_getObjCPropertySetterName = {
   parameters: [
     CXCursorT, // C
   ],
@@ -2896,8 +2724,7 @@ const clang_Cursor_getObjCPropertySetterName = {
  * type or the parameter respectively. The bits are formed from
  * CXObjCDeclQualifierKind.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_getObjCDeclQualifiers = {
+export const clang_Cursor_getObjCDeclQualifiers = {
   parameters: [
     CXCursorT, // C
   ],
@@ -2909,8 +2736,7 @@ const clang_Cursor_getObjCDeclQualifiers = {
  * declaration, return non-zero if the declaration was affected by "\@optional".
  * Returns zero if the cursor is not such a declaration or it is "\@required".
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_isObjCOptional = {
+export const clang_Cursor_isObjCOptional = {
   parameters: [
     CXCursorT, // C
   ],
@@ -2920,8 +2746,7 @@ const clang_Cursor_isObjCOptional = {
 /**
  * Returns non-zero if the given cursor is a variadic function or method.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_isVariadic = {
+export const clang_Cursor_isVariadic = {
   parameters: [
     CXCursorT, // C
   ],
@@ -2939,8 +2764,7 @@ const clang_Cursor_isVariadic = {
  * @param isGenerated If non-NULL, and the attribute is present, will be set to
  * non-zero if the 'generated_declaration' is set in the attribute.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_isExternalSymbol = {
+export const clang_Cursor_isExternalSymbol = {
   parameters: [
     CXCursorT, // C
     buf(CXStringT), // language
@@ -2955,8 +2779,7 @@ const clang_Cursor_isExternalSymbol = {
  * comment's source range. The range may include multiple consecutive comments
  * with whitespace in between.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_getCommentRange = {
+export const clang_Cursor_getCommentRange = {
   parameters: [
     CXCursorT, // C
   ],
@@ -2967,8 +2790,7 @@ const clang_Cursor_getCommentRange = {
  * Given a cursor that represents a declaration, return the associated
  * comment text, including comment markers.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_getRawCommentText = {
+export const clang_Cursor_getRawCommentText = {
   parameters: [
     CXCursorT, // C
   ],
@@ -2981,8 +2803,7 @@ const clang_Cursor_getRawCommentText = {
  * \\paragraph ; otherwise return the
  * first paragraph.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_getBriefCommentText = {
+export const clang_Cursor_getBriefCommentText = {
   parameters: [
     CXCursorT, // C
   ],
@@ -2992,8 +2813,7 @@ const clang_Cursor_getBriefCommentText = {
 /**
  * Retrieve the CXString representing the mangled name of the cursor.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_getMangling = {
+export const clang_Cursor_getMangling = {
   parameters: [
     CXCursorT,
   ],
@@ -3004,8 +2824,7 @@ const clang_Cursor_getMangling = {
  * Retrieve the CXStrings representing the mangled symbols of the C++
  * constructor or destructor at the cursor.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_getCXXManglings = {
+export const clang_Cursor_getCXXManglings = {
   parameters: [
     CXCursorT,
   ],
@@ -3016,8 +2835,7 @@ const clang_Cursor_getCXXManglings = {
  * Retrieve the CXStrings representing the mangled symbols of the ObjC
  * class interface or implementation at the cursor.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_getObjCManglings = {
+export const clang_Cursor_getObjCManglings = {
   parameters: [
     CXCursorT,
   ],
@@ -3027,8 +2845,7 @@ const clang_Cursor_getObjCManglings = {
 /**
  * Given a CXCursor_ModuleImportDecl cursor, return the associated module.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_getModule = {
+export const clang_Cursor_getModule = {
   parameters: [
     CXCursorT, // C
   ],
@@ -3039,8 +2856,7 @@ const clang_Cursor_getModule = {
  * Given a CXFile header file, return the module that contains it, if one
  * exists.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getModuleForFile = {
+export const clang_getModuleForFile = {
   parameters: [
     CXTranslationUnitT,
     CXFileT,
@@ -3052,8 +2868,7 @@ const clang_getModuleForFile = {
  * @param Module a module object.
  * @returns the module file where the provided module object came from.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Module_getASTFile = {
+export const clang_Module_getASTFile = {
   parameters: [
     CXModuleT, // Module
   ],
@@ -3065,8 +2880,7 @@ const clang_Module_getASTFile = {
  * @returns the parent of a sub-module or NULL if the given module is top-level,
  * e.g. for 'std.vector' it will return the 'std' module.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Module_getParent = {
+export const clang_Module_getParent = {
   parameters: [
     CXModuleT, // Module
   ],
@@ -3078,8 +2892,7 @@ const clang_Module_getParent = {
  * @returns the name of the module, e.g. for the 'std.vector' sub-module it
  * will return "vector".
  */
-// deno-lint-ignore no-unused-vars
-const clang_Module_getName = {
+export const clang_Module_getName = {
   parameters: [
     CXModuleT, // Module
   ],
@@ -3090,8 +2903,7 @@ const clang_Module_getName = {
  * @param Module a module object.
  * @returns the full name of the module, e.g. "std.vector".
  */
-// deno-lint-ignore no-unused-vars
-const clang_Module_getFullName = {
+export const clang_Module_getFullName = {
   parameters: [
     CXModuleT, // Module
   ],
@@ -3102,8 +2914,7 @@ const clang_Module_getFullName = {
  * @param Module a module object.
  * @returns non-zero if the module is a system one.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Module_isSystem = {
+export const clang_Module_isSystem = {
   parameters: [
     CXModuleT, // Module
   ],
@@ -3114,8 +2925,7 @@ const clang_Module_isSystem = {
  * @param Module a module object.
  * @returns the number of top level headers associated with this module.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Module_getNumTopLevelHeaders = {
+export const clang_Module_getNumTopLevelHeaders = {
   parameters: [
     CXTranslationUnitT,
     CXModuleT, // Module
@@ -3128,8 +2938,7 @@ const clang_Module_getNumTopLevelHeaders = {
  * @param Index top level header index (zero-based).
  * @returns the specified top level header associated with the module.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Module_getTopLevelHeader = {
+export const clang_Module_getTopLevelHeader = {
   parameters: [
     CXTranslationUnitT,
     CXModuleT, // Module
@@ -3141,8 +2950,7 @@ const clang_Module_getTopLevelHeader = {
 /**
  * Determine if a C++ constructor is a converting constructor.
  */
-// deno-lint-ignore no-unused-vars
-const clang_CXXConstructor_isConvertingConstructor = {
+export const clang_CXXConstructor_isConvertingConstructor = {
   parameters: [
     CXCursorT, // C
   ],
@@ -3152,8 +2960,7 @@ const clang_CXXConstructor_isConvertingConstructor = {
 /**
  * Determine if a C++ constructor is a copy constructor.
  */
-// deno-lint-ignore no-unused-vars
-const clang_CXXConstructor_isCopyConstructor = {
+export const clang_CXXConstructor_isCopyConstructor = {
   parameters: [
     CXCursorT, // C
   ],
@@ -3163,8 +2970,7 @@ const clang_CXXConstructor_isCopyConstructor = {
 /**
  * Determine if a C++ constructor is the default constructor.
  */
-// deno-lint-ignore no-unused-vars
-const clang_CXXConstructor_isDefaultConstructor = {
+export const clang_CXXConstructor_isDefaultConstructor = {
   parameters: [
     CXCursorT, // C
   ],
@@ -3174,8 +2980,7 @@ const clang_CXXConstructor_isDefaultConstructor = {
 /**
  * Determine if a C++ constructor is a move constructor.
  */
-// deno-lint-ignore no-unused-vars
-const clang_CXXConstructor_isMoveConstructor = {
+export const clang_CXXConstructor_isMoveConstructor = {
   parameters: [
     CXCursorT, // C
   ],
@@ -3185,8 +2990,7 @@ const clang_CXXConstructor_isMoveConstructor = {
 /**
  * Determine if a C++ field is declared 'mutable'.
  */
-// deno-lint-ignore no-unused-vars
-const clang_CXXField_isMutable = {
+export const clang_CXXField_isMutable = {
   parameters: [
     CXCursorT, // C
   ],
@@ -3196,8 +3000,7 @@ const clang_CXXField_isMutable = {
 /**
  * Determine if a C++ method is declared '= default'.
  */
-// deno-lint-ignore no-unused-vars
-const clang_CXXMethod_isDefaulted = {
+export const clang_CXXMethod_isDefaulted = {
   parameters: [
     CXCursorT, // C
   ],
@@ -3219,8 +3022,7 @@ const clang_CXXMethod_isDeleted = {
  * Determine if a C++ member function or member function template is
  * pure virtual.
  */
-// deno-lint-ignore no-unused-vars
-const clang_CXXMethod_isPureVirtual = {
+export const clang_CXXMethod_isPureVirtual = {
   parameters: [
     CXCursorT, // C
   ],
@@ -3231,8 +3033,7 @@ const clang_CXXMethod_isPureVirtual = {
  * Determine if a C++ member function or member function template is
  * declared 'static'.
  */
-// deno-lint-ignore no-unused-vars
-const clang_CXXMethod_isStatic = {
+export const clang_CXXMethod_isStatic = {
   parameters: [
     CXCursorT, // C
   ],
@@ -3244,8 +3045,7 @@ const clang_CXXMethod_isStatic = {
  * explicitly declared 'virtual' or if it overrides a virtual method from
  * one of the base classes.
  */
-// deno-lint-ignore no-unused-vars
-const clang_CXXMethod_isVirtual = {
+export const clang_CXXMethod_isVirtual = {
   parameters: [
     CXCursorT, // C
   ],
@@ -3318,8 +3118,7 @@ const clang_CXXMethod_isMoveAssignmentOperator = {
  * Determine if a C++ record is abstract, i.e. whether a class or struct
  * has a pure virtual member function.
  */
-// deno-lint-ignore no-unused-vars
-const clang_CXXRecord_isAbstract = {
+export const clang_CXXRecord_isAbstract = {
   parameters: [
     CXCursorT, // C
   ],
@@ -3329,8 +3128,7 @@ const clang_CXXRecord_isAbstract = {
 /**
  * Determine if an enum declaration refers to a scoped enum.
  */
-// deno-lint-ignore no-unused-vars
-const clang_EnumDecl_isScoped = {
+export const clang_EnumDecl_isScoped = {
   parameters: [
     CXCursorT, // C
   ],
@@ -3341,8 +3139,7 @@ const clang_EnumDecl_isScoped = {
  * Determine if a C++ member function or member function template is
  * declared 'const'.
  */
-// deno-lint-ignore no-unused-vars
-const clang_CXXMethod_isConst = {
+export const clang_CXXMethod_isConst = {
   parameters: [
     CXCursorT, // C
   ],
@@ -3365,8 +3162,7 @@ const clang_CXXMethod_isConst = {
  * by instantiating the template `C.` If `C` is not a template, returns
  * `CXCursor_NoDeclFound.`
  */
-// deno-lint-ignore no-unused-vars
-const clang_getTemplateCursorKind = {
+export const clang_getTemplateCursorKind = {
   parameters: [
     CXCursorT, // C
   ],
@@ -3400,8 +3196,7 @@ const clang_getTemplateCursorKind = {
  * template or a member thereof, the template or member that it specializes or
  * from which it was instantiated. Otherwise, returns a NULL cursor.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getSpecializedCursorTemplate = {
+export const clang_getSpecializedCursorTemplate = {
   parameters: [
     CXCursorT, // C
   ],
@@ -3427,8 +3222,7 @@ const clang_getSpecializedCursorTemplate = {
  * @returns The piece of the name pointed to by the given cursor. If there is no
  * name, or if the PieceIndex is out-of-range, a null-cursor will be returned.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCursorReferenceNameRange = {
+export const clang_getCursorReferenceNameRange = {
   parameters: [
     CXCursorT, // C
     unsignedInt, // NameFlags
@@ -3446,8 +3240,7 @@ const clang_getCursorReferenceNameRange = {
  * exist. The returned pointer must be freed with clang_disposeTokens before the
  * translation unit is destroyed.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getToken = {
+export const clang_getToken = {
   parameters: [
     CXTranslationUnitT, // TU
     CXSourceLocationT, // Location
@@ -3458,8 +3251,7 @@ const clang_getToken = {
 /**
  * Determine the kind of the given token.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getTokenKind = {
+export const clang_getTokenKind = {
   parameters: [
     CXTokenT,
   ],
@@ -3472,8 +3264,7 @@ const clang_getTokenKind = {
  * The spelling of a token is the textual representation of that token, e.g.,
  * the text of an identifier or keyword.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getTokenSpelling = {
+export const clang_getTokenSpelling = {
   parameters: [
     CXTranslationUnitT,
     CXTokenT,
@@ -3484,8 +3275,7 @@ const clang_getTokenSpelling = {
 /**
  * Retrieve the source location of the given token.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getTokenLocation = {
+export const clang_getTokenLocation = {
   parameters: [
     CXTranslationUnitT,
     CXTokenT,
@@ -3496,8 +3286,7 @@ const clang_getTokenLocation = {
 /**
  * Retrieve a source range that covers the given token.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getTokenExtent = {
+export const clang_getTokenExtent = {
   parameters: [
     CXTranslationUnitT,
     CXTokenT,
@@ -3517,8 +3306,7 @@ const clang_getTokenExtent = {
  * freed with clang_disposeTokens() before the translation unit is destroyed.
  * @param NumTokens will be set to the number of tokens in the `*Tokens` array.
  */
-// deno-lint-ignore no-unused-vars
-const clang_tokenize = {
+export const clang_tokenize = {
   parameters: [
     CXTranslationUnitT, // TU
     CXSourceRangeT, // Range
@@ -3554,8 +3342,7 @@ const clang_tokenize = {
  * @param Cursors an array of `NumTokens` cursors, whose contents will be
  * replaced with the cursors corresponding to each token.
  */
-// deno-lint-ignore no-unused-vars
-const clang_annotateTokens = {
+export const clang_annotateTokens = {
   parameters: [
     CXTranslationUnitT, // TU
     buf(CXTokenT), // Tokens
@@ -3568,8 +3355,7 @@ const clang_annotateTokens = {
 /**
  * Free the given set of tokens.
  */
-// deno-lint-ignore no-unused-vars
-const clang_disposeTokens = {
+export const clang_disposeTokens = {
   parameters: [
     CXTranslationUnitT, // TU
     ptr(CXTokenT), // Tokens
@@ -3584,16 +3370,14 @@ const clang_disposeTokens = {
  *
  * \@\{
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCursorKindSpelling = {
+export const clang_getCursorKindSpelling = {
   parameters: [
     CXCursorKindT, // Kind
   ],
   result: CXStringT,
 } as const;
 
-// deno-lint-ignore no-unused-vars
-const clang_getDefinitionSpellingAndExtent = {
+export const clang_getDefinitionSpellingAndExtent = {
   parameters: [
     CXCursorT,
     cstringArrayT, // startBuf
@@ -3606,14 +3390,12 @@ const clang_getDefinitionSpellingAndExtent = {
   result: "void",
 } as const;
 
-// deno-lint-ignore no-unused-vars
-const clang_enableStackTraces = {
+export const clang_enableStackTraces = {
   parameters: [],
   result: "void",
 } as const;
 
-// deno-lint-ignore no-unused-vars
-const clang_executeOnThread = {
+export const clang_executeOnThread = {
   parameters: [
     func({
       /** void (void *) */
@@ -3635,8 +3417,7 @@ const clang_executeOnThread = {
  * @param chunk_number the 0-based index of the chunk in the completion string.
  * @returns the kind of the chunk at the index `chunk_number.`
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCompletionChunkKind = {
+export const clang_getCompletionChunkKind = {
   parameters: [
     CXCompletionStringT, // completion_string
     unsignedInt, // chunk_number
@@ -3652,8 +3433,7 @@ const clang_getCompletionChunkKind = {
  * @param chunk_number the 0-based index of the chunk in the completion string.
  * @returns the text associated with the chunk at index `chunk_number.`
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCompletionChunkText = {
+export const clang_getCompletionChunkText = {
   parameters: [
     CXCompletionStringT, // completion_string
     unsignedInt, // chunk_number
@@ -3670,8 +3450,7 @@ const clang_getCompletionChunkText = {
  * @returns the completion string associated with the chunk at index
  * `chunk_number.`
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCompletionChunkCompletionString = {
+export const clang_getCompletionChunkCompletionString = {
   parameters: [
     CXCompletionStringT, // completion_string
     unsignedInt, // chunk_number
@@ -3682,8 +3461,7 @@ const clang_getCompletionChunkCompletionString = {
 /**
  * Retrieve the number of chunks in the given code-completion string.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getNumCompletionChunks = {
+export const clang_getNumCompletionChunks = {
   parameters: [
     CXCompletionStringT, // completion_string
   ],
@@ -3701,8 +3479,7 @@ const clang_getNumCompletionChunks = {
  * @returns The priority of this completion string. Smaller values indicate
  * higher-priority (more likely) completions.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCompletionPriority = {
+export const clang_getCompletionPriority = {
   parameters: [
     CXCompletionStringT, // completion_string
   ],
@@ -3716,8 +3493,7 @@ const clang_getCompletionPriority = {
  * @param completion_string The completion string to query.
  * @returns The availability of the completion string.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCompletionAvailability = {
+export const clang_getCompletionAvailability = {
   parameters: [
     CXCompletionStringT, // completion_string
   ],
@@ -3732,8 +3508,7 @@ const clang_getCompletionAvailability = {
  * @returns the number of annotations associated with the given completion
  * string.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCompletionNumAnnotations = {
+export const clang_getCompletionNumAnnotations = {
   parameters: [
     CXCompletionStringT, // completion_string
   ],
@@ -3749,8 +3524,7 @@ const clang_getCompletionNumAnnotations = {
  * @returns annotation string associated with the completion at index
  * `annotation_number,` or a NULL string if that annotation is not available.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCompletionAnnotation = {
+export const clang_getCompletionAnnotation = {
   parameters: [
     CXCompletionStringT, // completion_string
     unsignedInt, // annotation_number
@@ -3772,8 +3546,7 @@ const clang_getCompletionAnnotation = {
  * @returns The name of the completion parent, e.g., "NSObject" if
  * the completion string represents a method in the NSObject class.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCompletionParent = {
+export const clang_getCompletionParent = {
   parameters: [
     CXCompletionStringT, // completion_string
     buf(CXCursorKindT), // kind
@@ -3785,8 +3558,7 @@ const clang_getCompletionParent = {
  * Retrieve the brief documentation comment attached to the declaration
  * that corresponds to the given completion string.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCompletionBriefComment = {
+export const clang_getCompletionBriefComment = {
   parameters: [
     CXCompletionStringT, // completion_string
   ],
@@ -3801,8 +3573,7 @@ const clang_getCompletionBriefComment = {
  * @returns A non-context-sensitive completion string for declaration and macro
  * definition cursors, or NULL for other kinds of cursors.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCursorCompletionString = {
+export const clang_getCursorCompletionString = {
   parameters: [
     CXCursorT, // cursor
   ],
@@ -3820,8 +3591,7 @@ const clang_getCursorCompletionString = {
  * @returns The number of fix-its which must be applied before the completion at
  * completion_index can be applied
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCompletionNumFixIts = {
+export const clang_getCompletionNumFixIts = {
   parameters: [
     ptr(CXCodeCompleteResultsT), // results
     unsignedInt, // completion_index
@@ -3868,8 +3638,7 @@ const clang_getCompletionNumFixIts = {
  * @returns The fix-it string that must replace the code at replacement_range
  * before the completion at completion_index can be applied
  */
-// deno-lint-ignore no-unused-vars
-const clang_getCompletionFixIt = {
+export const clang_getCompletionFixIt = {
   parameters: [
     ptr(CXCodeCompleteResultsT), // results
     unsignedInt, // completion_index
@@ -3883,8 +3652,7 @@ const clang_getCompletionFixIt = {
  * Returns a default set of code-completion options that can be
  * passed to`clang_codeCompleteAt().`
  */
-// deno-lint-ignore no-unused-vars
-const clang_defaultCodeCompleteOptions = {
+export const clang_defaultCodeCompleteOptions = {
   parameters: [],
   result: unsignedInt,
 } as const;
@@ -3948,8 +3716,7 @@ const clang_defaultCodeCompleteOptions = {
  * freed with `clang_disposeCodeCompleteResults().` If code
  * completion fails, returns NULL.
  */
-// deno-lint-ignore no-unused-vars
-const clang_codeCompleteAt = {
+export const clang_codeCompleteAt = {
   parameters: [
     CXTranslationUnitT, // TU
     cstringT, // complete_filename
@@ -3970,8 +3737,7 @@ const clang_codeCompleteAt = {
  *
  * @param NumResults The number of results in `Results.`
  */
-// deno-lint-ignore no-unused-vars
-const clang_sortCodeCompletionResults = {
+export const clang_sortCodeCompletionResults = {
   parameters: [
     ptr(CXCompletionResultT), // Results
     unsignedInt, // NumResults
@@ -3982,8 +3748,7 @@ const clang_sortCodeCompletionResults = {
 /**
  * Free the given set of code-completion results.
  */
-// deno-lint-ignore no-unused-vars
-const clang_disposeCodeCompleteResults = {
+export const clang_disposeCodeCompleteResults = {
   parameters: [
     ptr(CXCodeCompleteResultsT), // Results
   ],
@@ -3994,8 +3759,7 @@ const clang_disposeCodeCompleteResults = {
  * Determine the number of diagnostics produced prior to the
  * location where code completion was performed.
  */
-// deno-lint-ignore no-unused-vars
-const clang_codeCompleteGetNumDiagnostics = {
+export const clang_codeCompleteGetNumDiagnostics = {
   parameters: [
     ptr(CXCodeCompleteResultsT), // Results
   ],
@@ -4011,8 +3775,7 @@ const clang_codeCompleteGetNumDiagnostics = {
  * @returns the requested diagnostic. This diagnostic must be freed
  * via a call to `clang_disposeDiagnostic().`
  */
-// deno-lint-ignore no-unused-vars
-const clang_codeCompleteGetDiagnostic = {
+export const clang_codeCompleteGetDiagnostic = {
   parameters: [
     ptr(CXCodeCompleteResultsT), // Results
     unsignedInt, // Index
@@ -4028,8 +3791,7 @@ const clang_codeCompleteGetDiagnostic = {
  * @returns the kinds of completions that are appropriate for use
  * along with the given code completion results.
  */
-// deno-lint-ignore no-unused-vars
-const clang_codeCompleteGetContexts = {
+export const clang_codeCompleteGetContexts = {
   parameters: [
     ptr(CXCodeCompleteResultsT), // Results
   ],
@@ -4050,8 +3812,7 @@ const clang_codeCompleteGetContexts = {
  * @returns the container kind, or CXCursor_InvalidCode if there is not a
  * container
  */
-// deno-lint-ignore no-unused-vars
-const clang_codeCompleteGetContainerKind = {
+export const clang_codeCompleteGetContainerKind = {
   parameters: [
     ptr(CXCodeCompleteResultsT), // Results
     buf(unsignedInt), // IsIncomplete
@@ -4067,8 +3828,7 @@ const clang_codeCompleteGetContainerKind = {
  * @param Results the code completion results to query
  * @returns the USR for the container
  */
-// deno-lint-ignore no-unused-vars
-const clang_codeCompleteGetContainerUSR = {
+export const clang_codeCompleteGetContainerUSR = {
   parameters: [
     ptr(CXCodeCompleteResultsT), // Results
   ],
@@ -4085,8 +3845,7 @@ const clang_codeCompleteGetContainerUSR = {
  * @returns the selector (or partial selector) that has been entered thus far
  * for an Objective-C message send.
  */
-// deno-lint-ignore no-unused-vars
-const clang_codeCompleteGetObjCSelector = {
+export const clang_codeCompleteGetObjCSelector = {
   parameters: [
     ptr(CXCodeCompleteResultsT), // Results
   ],
@@ -4097,8 +3856,7 @@ const clang_codeCompleteGetObjCSelector = {
  * Return a version string, suitable for showing to a user, but not
  * intended to be parsed (the format is not guaranteed to be stable).
  */
-// deno-lint-ignore no-unused-vars
-const clang_getClangVersion = {
+export const clang_getClangVersion = {
   parameters: [],
   result: CXStringT,
 } as const;
@@ -4109,8 +3867,7 @@ const clang_getClangVersion = {
  * @param isEnabled Flag to indicate if crash recovery is enabled.  A non-zero
  *        value enables crash recovery, while 0 disables it.
  */
-// deno-lint-ignore no-unused-vars
-const clang_toggleCrashRecovery = {
+export const clang_toggleCrashRecovery = {
   parameters: [
     unsignedInt, // isEnabled
   ],
@@ -4123,8 +3880,7 @@ const clang_toggleCrashRecovery = {
  * file. This does not include headers included by the PCH file (unless one
  * is inspecting the inclusions in the PCH file itself).
  */
-// deno-lint-ignore no-unused-vars
-const clang_getInclusions = {
+export const clang_getInclusions = {
   parameters: [
     CXTranslationUnitT, // tu
     CXInclusionVisitorT, // visitor
@@ -4139,8 +3895,7 @@ const clang_getInclusions = {
  * into its corresponding type.
  * If it's an expression, tries to evaluate the expression.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_Evaluate = {
+export const clang_Cursor_Evaluate = {
   parameters: [
     CXCursorT, // C
   ],
@@ -4150,8 +3905,7 @@ const clang_Cursor_Evaluate = {
 /**
  * Returns the kind of the evaluated result.
  */
-// deno-lint-ignore no-unused-vars
-const clang_EvalResult_getKind = {
+export const clang_EvalResult_getKind = {
   parameters: [
     CXEvalResultT, // E
   ],
@@ -4162,8 +3916,7 @@ const clang_EvalResult_getKind = {
  * Returns the evaluation result as integer if the
  * kind is Int.
  */
-// deno-lint-ignore no-unused-vars
-const clang_EvalResult_getAsInt = {
+export const clang_EvalResult_getAsInt = {
   parameters: [
     CXEvalResultT, // E
   ],
@@ -4175,8 +3928,7 @@ const clang_EvalResult_getAsInt = {
  * kind is Int. This prevents overflows that may happen if the result is
  * returned with clang_EvalResult_getAsInt.
  */
-// deno-lint-ignore no-unused-vars
-const clang_EvalResult_getAsLongLong = {
+export const clang_EvalResult_getAsLongLong = {
   parameters: [
     CXEvalResultT, // E
   ],
@@ -4187,8 +3939,7 @@ const clang_EvalResult_getAsLongLong = {
  * Returns a non-zero value if the kind is Int and the evaluation
  * result resulted in an unsigned integer.
  */
-// deno-lint-ignore no-unused-vars
-const clang_EvalResult_isUnsignedInt = {
+export const clang_EvalResult_isUnsignedInt = {
   parameters: [
     CXEvalResultT, // E
   ],
@@ -4199,8 +3950,7 @@ const clang_EvalResult_isUnsignedInt = {
  * Returns the evaluation result as an unsigned integer if
  * the kind is Int and clang_EvalResult_isUnsignedInt is non-zero.
  */
-// deno-lint-ignore no-unused-vars
-const clang_EvalResult_getAsUnsigned = {
+export const clang_EvalResult_getAsUnsigned = {
   parameters: [
     CXEvalResultT, // E
   ],
@@ -4211,8 +3961,7 @@ const clang_EvalResult_getAsUnsigned = {
  * Returns the evaluation result as double if the
  * kind is double.
  */
-// deno-lint-ignore no-unused-vars
-const clang_EvalResult_getAsDouble = {
+export const clang_EvalResult_getAsDouble = {
   parameters: [
     CXEvalResultT, // E
   ],
@@ -4225,8 +3974,7 @@ const clang_EvalResult_getAsDouble = {
  * instead call clang_EvalResult_dispose on the CXEvalResult returned
  * by clang_Cursor_Evaluate.
  */
-// deno-lint-ignore no-unused-vars
-const clang_EvalResult_getAsStr = {
+export const clang_EvalResult_getAsStr = {
   parameters: [
     CXEvalResultT, // E
   ],
@@ -4236,8 +3984,7 @@ const clang_EvalResult_getAsStr = {
 /**
  * Disposes the created Eval memory.
  */
-// deno-lint-ignore no-unused-vars
-const clang_EvalResult_dispose = {
+export const clang_EvalResult_dispose = {
   parameters: [
     CXEvalResultT, // E
   ],
@@ -4251,8 +3998,7 @@ const clang_EvalResult_dispose = {
  * @returns the requested remapping. This remapping must be freed
  * via a call to `clang_remap_dispose().` Can return NULL if an error occurred.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getRemappings = {
+export const clang_getRemappings = {
   parameters: [
     cstringT, // path
   ],
@@ -4267,8 +4013,7 @@ const clang_getRemappings = {
  * @returns the requested remapping. This remapping must be freed
  * via a call to `clang_remap_dispose().` Can return NULL if an error occurred.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getRemappingsFromFileList = {
+export const clang_getRemappingsFromFileList = {
   parameters: [
     cstringArrayT, // filePaths
     unsignedInt, // numFiles
@@ -4279,8 +4024,7 @@ const clang_getRemappingsFromFileList = {
 /**
  * Determine the number of remappings.
  */
-// deno-lint-ignore no-unused-vars
-const clang_remap_getNumFiles = {
+export const clang_remap_getNumFiles = {
   parameters: [
     CXRemappingT,
   ],
@@ -4294,8 +4038,7 @@ const clang_remap_getNumFiles = {
  * @param transformed If non-NULL, will be set to the filename that the original
  * is associated with.
  */
-// deno-lint-ignore no-unused-vars
-const clang_remap_getFilenames = {
+export const clang_remap_getFilenames = {
   parameters: [
     CXRemappingT,
     unsignedInt, // index
@@ -4308,8 +4051,7 @@ const clang_remap_getFilenames = {
 /**
  * Dispose the remapping.
  */
-// deno-lint-ignore no-unused-vars
-const clang_remap_dispose = {
+export const clang_remap_dispose = {
   parameters: [
     CXRemappingT,
   ],
@@ -4327,8 +4069,7 @@ const clang_remap_dispose = {
  * a macro (and not a macro argument) the CXSourceRange will be invalid.
  * @returns one of the CXResult enumerators.
  */
-// deno-lint-ignore no-unused-vars
-const clang_findReferencesInFile = {
+export const clang_findReferencesInFile = {
   parameters: [
     CXCursorT, // cursor
     CXFileT, // file
@@ -4346,8 +4087,7 @@ const clang_findReferencesInFile = {
  * each directive found.
  * @returns one of the CXResult enumerators.
  */
-// deno-lint-ignore no-unused-vars
-const clang_findIncludesInFile = {
+export const clang_findIncludesInFile = {
   parameters: [
     CXTranslationUnitT, // TU
     CXFileT, // file
@@ -4356,64 +4096,56 @@ const clang_findIncludesInFile = {
   result: CXResultT,
 } as const;
 
-// deno-lint-ignore no-unused-vars
-const clang_index_isEntityObjCContainerKind = {
+export const clang_index_isEntityObjCContainerKind = {
   parameters: [
     CXIdxEntityKindT,
   ],
   result: int,
 } as const;
 
-// deno-lint-ignore no-unused-vars
-const clang_index_getObjCContainerDeclInfo = {
+export const clang_index_getObjCContainerDeclInfo = {
   parameters: [
     ptr(CXIdxDeclInfoT),
   ],
   result: ptr(CXIdxObjCContainerDeclInfoT),
 } as const;
 
-// deno-lint-ignore no-unused-vars
-const clang_index_getObjCInterfaceDeclInfo = {
+export const clang_index_getObjCInterfaceDeclInfo = {
   parameters: [
     ptr(CXIdxDeclInfoT),
   ],
   result: ptr(CXIdxObjCInterfaceDeclInfoT),
 } as const;
 
-// deno-lint-ignore no-unused-vars
-const clang_index_getObjCCategoryDeclInfo = {
+export const clang_index_getObjCCategoryDeclInfo = {
   parameters: [
     ptr(CXIdxDeclInfoT),
   ],
   result: ptr(CXIdxObjCCategoryDeclInfoT),
 } as const;
 
-// deno-lint-ignore no-unused-vars
-const clang_index_getObjCProtocolRefListInfo = {
+export const clang_index_getObjCProtocolRefListInfo = {
   parameters: [
     ptr(CXIdxDeclInfoT),
   ],
   result: ptr(CXIdxObjCProtocolRefListInfoT),
 } as const;
 
-// deno-lint-ignore no-unused-vars
-const clang_index_getObjCPropertyDeclInfo = {
+export const clang_index_getObjCPropertyDeclInfo = {
   parameters: [
     ptr(CXIdxDeclInfoT),
   ],
   result: ptr(CXIdxObjCPropertyDeclInfoT),
 } as const;
 
-// deno-lint-ignore no-unused-vars
-const clang_index_getIBOutletCollectionAttrInfo = {
+export const clang_index_getIBOutletCollectionAttrInfo = {
   parameters: [
     ptr(CXIdxAttrInfoT),
   ],
   result: ptr(CXIdxIBOutletCollectionAttrInfoT),
 } as const;
 
-// deno-lint-ignore no-unused-vars
-const clang_index_getCXXClassDeclInfo = {
+export const clang_index_getCXXClassDeclInfo = {
   parameters: [
     ptr(CXIdxDeclInfoT),
   ],
@@ -4424,8 +4156,7 @@ const clang_index_getCXXClassDeclInfo = {
  * For retrieving a custom CXIdxClientContainer attached to a
  * container.
  */
-// deno-lint-ignore no-unused-vars
-const clang_index_getClientContainer = {
+export const clang_index_getClientContainer = {
   parameters: [
     ptr(CXIdxContainerInfoT),
   ],
@@ -4436,8 +4167,7 @@ const clang_index_getClientContainer = {
  * For setting a custom CXIdxClientContainer attached to a
  * container.
  */
-// deno-lint-ignore no-unused-vars
-const clang_index_setClientContainer = {
+export const clang_index_setClientContainer = {
   parameters: [
     ptr(CXIdxContainerInfoT),
     CXIdxClientContainerT,
@@ -4448,8 +4178,7 @@ const clang_index_setClientContainer = {
 /**
  * For retrieving a custom CXIdxClientEntity attached to an entity.
  */
-// deno-lint-ignore no-unused-vars
-const clang_index_getClientEntity = {
+export const clang_index_getClientEntity = {
   parameters: [
     ptr(CXIdxEntityInfoT),
   ],
@@ -4459,8 +4188,7 @@ const clang_index_getClientEntity = {
 /**
  * For setting a custom CXIdxClientEntity attached to an entity.
  */
-// deno-lint-ignore no-unused-vars
-const clang_index_setClientEntity = {
+export const clang_index_setClientEntity = {
   parameters: [
     ptr(CXIdxEntityInfoT),
     CXIdxClientEntityT,
@@ -4474,8 +4202,7 @@ const clang_index_setClientEntity = {
  *
  * @param CIdx The index object with which the index action will be associated.
  */
-// deno-lint-ignore no-unused-vars
-const clang_IndexAction_create = {
+export const clang_IndexAction_create = {
   parameters: [
     CXIndexT, // CIdx
   ],
@@ -4488,8 +4215,7 @@ const clang_IndexAction_create = {
  * The index action must not be destroyed until all of the translation units
  * created within that index action have been destroyed.
  */
-// deno-lint-ignore no-unused-vars
-const clang_IndexAction_dispose = {
+export const clang_IndexAction_dispose = {
   parameters: [
     CXIndexActionT,
   ],
@@ -4516,8 +4242,7 @@ const clang_IndexAction_dispose = {
  *
  * The rest of the parameters are the same as #clang_parseTranslationUnit.
  */
-// deno-lint-ignore no-unused-vars
-const clang_indexSourceFile = {
+export const clang_indexSourceFile = {
   parameters: [
     CXIndexActionT,
     CXClientDataT, // client_data
@@ -4540,8 +4265,7 @@ const clang_indexSourceFile = {
  * for `command_line_args` including argv[0]. This is useful if the standard
  * library paths are relative to the binary.
  */
-// deno-lint-ignore no-unused-vars
-const clang_indexSourceFileFullArgv = {
+export const clang_indexSourceFileFullArgv = {
   parameters: [
     CXIndexActionT,
     CXClientDataT, // client_data
@@ -4575,8 +4299,7 @@ const clang_indexSourceFileFullArgv = {
  * @returns If there is a failure from which there is no recovery, returns
  * non-zero, otherwise returns 0.
  */
-// deno-lint-ignore no-unused-vars
-const clang_indexTranslationUnit = {
+export const clang_indexTranslationUnit = {
   parameters: [
     CXIndexActionT,
     CXClientDataT, // client_data
@@ -4596,8 +4319,7 @@ const clang_indexTranslationUnit = {
  * location of the macro expansion and if it refers into a macro argument
  * retrieves the location of the argument.
  */
-// deno-lint-ignore no-unused-vars
-const clang_indexLoc_getFileLocation = {
+export const clang_indexLoc_getFileLocation = {
   parameters: [
     CXIdxLocT, // loc
     buf(CXIdxClientFileT), // indexFile
@@ -4612,8 +4334,7 @@ const clang_indexLoc_getFileLocation = {
 /**
  * Retrieve the CXSourceLocation represented by the given CXIdxLoc.
  */
-// deno-lint-ignore no-unused-vars
-const clang_indexLoc_getCXSourceLocation = {
+export const clang_indexLoc_getCXSourceLocation = {
   parameters: [
     CXIdxLocT, // loc
   ],
@@ -4636,8 +4357,7 @@ const clang_indexLoc_getCXSourceLocation = {
  * @returns a non-zero value if the traversal was terminated
  * prematurely by the visitor returning `CXFieldVisit_Break.`
  */
-// deno-lint-ignore no-unused-vars
-const clang_Type_visitFields = {
+export const clang_Type_visitFields = {
   parameters: [
     CXTypeT, // T
     CXFieldVisitorT, // visitor

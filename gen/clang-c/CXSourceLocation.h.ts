@@ -13,8 +13,7 @@ import {
 /**
  * Retrieve a NULL (invalid) source location.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getNullLocation = {
+export const clang_getNullLocation = {
   parameters: [],
   result: CXSourceLocationT,
 } as const;
@@ -27,8 +26,7 @@ const clang_getNullLocation = {
  * @returns non-zero if the source locations refer to the same location, zero
  * if they refer to different locations.
  */
-// deno-lint-ignore no-unused-vars
-const clang_equalLocations = {
+export const clang_equalLocations = {
   parameters: [
     CXSourceLocationT, // loc1
     CXSourceLocationT, // loc2
@@ -39,8 +37,7 @@ const clang_equalLocations = {
 /**
  * Returns non-zero if the given source location is in a system header.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Location_isInSystemHeader = {
+export const clang_Location_isInSystemHeader = {
   parameters: [
     CXSourceLocationT, // location
   ],
@@ -51,8 +48,7 @@ const clang_Location_isInSystemHeader = {
  * Returns non-zero if the given source location is in the main file of
  * the corresponding translation unit.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Location_isFromMainFile = {
+export const clang_Location_isFromMainFile = {
   parameters: [
     CXSourceLocationT, // location
   ],
@@ -62,8 +58,7 @@ const clang_Location_isFromMainFile = {
 /**
  * Retrieve a NULL (invalid) source range.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getNullRange = {
+export const clang_getNullRange = {
   parameters: [],
   result: CXSourceRangeT,
 } as const;
@@ -72,8 +67,7 @@ const clang_getNullRange = {
  * Retrieve a source range given the beginning and ending source
  * locations.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getRange = {
+export const clang_getRange = {
   parameters: [
     CXSourceLocationT, // begin
     CXSourceLocationT, // end
@@ -86,8 +80,7 @@ const clang_getRange = {
  *
  * @returns non-zero if the ranges are the same, zero if they differ.
  */
-// deno-lint-ignore no-unused-vars
-const clang_equalRanges = {
+export const clang_equalRanges = {
   parameters: [
     CXSourceRangeT, // range1
     CXSourceRangeT, // range2
@@ -98,8 +91,7 @@ const clang_equalRanges = {
 /**
  * Returns non-zero if `range` is null.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Range_isNull = {
+export const clang_Range_isNull = {
   parameters: [
     CXSourceRangeT, // range
   ],
@@ -124,8 +116,7 @@ const clang_Range_isNull = {
  * @param offset [out] if non-NULL, will be set to the offset into the
  * buffer to which the given source location points.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getExpansionLocation = {
+export const clang_getExpansionLocation = {
   parameters: [
     CXSourceLocationT, // location
     buf(CXFileT), // file
@@ -171,8 +162,7 @@ const clang_getExpansionLocation = {
  * @param column [out] if non-NULL, will be set to the column number of the
  * source location. For an invalid source location, zero is returned.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getPresumedLocation = {
+export const clang_getPresumedLocation = {
   parameters: [
     CXSourceLocationT, // location
     buf(CXStringT), // filename
@@ -190,8 +180,7 @@ const clang_getPresumedLocation = {
  * #clang_getExpansionLocation(). See that interface's documentation for
  * details.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getInstantiationLocation = {
+export const clang_getInstantiationLocation = {
   parameters: [
     CXSourceLocationT, // location
     buf(CXFileT), // file
@@ -220,8 +209,7 @@ const clang_getInstantiationLocation = {
  * @param offset [out] if non-NULL, will be set to the offset into the
  * buffer to which the given source location points.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getSpellingLocation = {
+export const clang_getSpellingLocation = {
   parameters: [
     CXSourceLocationT, // location
     buf(CXFileT), // file
@@ -251,8 +239,7 @@ const clang_getSpellingLocation = {
  * @param offset [out] if non-NULL, will be set to the offset into the
  * buffer to which the given source location points.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getFileLocation = {
+export const clang_getFileLocation = {
   parameters: [
     CXSourceLocationT, // location
     buf(CXFileT), // file
@@ -267,8 +254,7 @@ const clang_getFileLocation = {
  * Retrieve a source location representing the first character within a
  * source range.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getRangeStart = {
+export const clang_getRangeStart = {
   parameters: [
     CXSourceRangeT, // range
   ],
@@ -279,8 +265,7 @@ const clang_getRangeStart = {
  * Retrieve a source location representing the last character within a
  * source range.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getRangeEnd = {
+export const clang_getRangeEnd = {
   parameters: [
     CXSourceRangeT, // range
   ],
@@ -290,8 +275,7 @@ const clang_getRangeEnd = {
 /**
  * Destroy the given `CXSourceRangeList.`
  */
-// deno-lint-ignore no-unused-vars
-const clang_disposeSourceRangeList = {
+export const clang_disposeSourceRangeList = {
   parameters: [
     ptr(CXSourceRangeListT), // ranges
   ],

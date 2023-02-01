@@ -18,8 +18,7 @@ import {
  * declaration), return the associated parsed comment as a
  * `CXComment_FullComment` AST node.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Cursor_getParsedComment = {
+export const clang_Cursor_getParsedComment = {
   parameters: [
     CXCursorT, // C
   ],
@@ -30,8 +29,7 @@ const clang_Cursor_getParsedComment = {
  * @param Comment AST node of any kind.
  * @returns the type of the AST node.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Comment_getKind = {
+export const clang_Comment_getKind = {
   parameters: [
     CXCommentT, // Comment
   ],
@@ -42,8 +40,7 @@ const clang_Comment_getKind = {
  * @param Comment AST node of any kind.
  * @returns number of children of the AST node.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Comment_getNumChildren = {
+export const clang_Comment_getNumChildren = {
   parameters: [
     CXCommentT, // Comment
   ],
@@ -55,8 +52,7 @@ const clang_Comment_getNumChildren = {
  * @param ChildIdx child index (zero-based).
  * @returns the specified child of the AST node.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Comment_getChild = {
+export const clang_Comment_getChild = {
   parameters: [
     CXCommentT, // Comment
     unsignedInt, // ChildIdx
@@ -73,8 +69,7 @@ const clang_Comment_getChild = {
  *
  * @returns non-zero if `Comment` is whitespace.
  */
-// deno-lint-ignore no-unused-vars
-const clang_Comment_isWhitespace = {
+export const clang_Comment_isWhitespace = {
   parameters: [
     CXCommentT, // Comment
   ],
@@ -86,8 +81,7 @@ const clang_Comment_isWhitespace = {
  * immediately following it in the comment text.  Newlines between paragraphs
  * do not count.
  */
-// deno-lint-ignore no-unused-vars
-const clang_InlineContentComment_hasTrailingNewline = {
+export const clang_InlineContentComment_hasTrailingNewline = {
   parameters: [
     CXCommentT, // Comment
   ],
@@ -98,8 +92,7 @@ const clang_InlineContentComment_hasTrailingNewline = {
  * @param Comment a `CXComment_Text` AST node.
  * @returns text contained in the AST node.
  */
-// deno-lint-ignore no-unused-vars
-const clang_TextComment_getText = {
+export const clang_TextComment_getText = {
   parameters: [
     CXCommentT, // Comment
   ],
@@ -110,8 +103,7 @@ const clang_TextComment_getText = {
  * @param Comment a `CXComment_InlineCommand` AST node.
  * @returns name of the inline command.
  */
-// deno-lint-ignore no-unused-vars
-const clang_InlineCommandComment_getCommandName = {
+export const clang_InlineCommandComment_getCommandName = {
   parameters: [
     CXCommentT, // Comment
   ],
@@ -123,8 +115,7 @@ const clang_InlineCommandComment_getCommandName = {
  * @returns the most appropriate rendering mode, chosen on command
  * semantics in Doxygen.
  */
-// deno-lint-ignore no-unused-vars
-const clang_InlineCommandComment_getRenderKind = {
+export const clang_InlineCommandComment_getRenderKind = {
   parameters: [
     CXCommentT, // Comment
   ],
@@ -135,8 +126,7 @@ const clang_InlineCommandComment_getRenderKind = {
  * @param Comment a `CXComment_InlineCommand` AST node.
  * @returns number of command arguments.
  */
-// deno-lint-ignore no-unused-vars
-const clang_InlineCommandComment_getNumArgs = {
+export const clang_InlineCommandComment_getNumArgs = {
   parameters: [
     CXCommentT, // Comment
   ],
@@ -148,8 +138,7 @@ const clang_InlineCommandComment_getNumArgs = {
  * @param ArgIdx argument index (zero-based).
  * @returns text of the specified argument.
  */
-// deno-lint-ignore no-unused-vars
-const clang_InlineCommandComment_getArgText = {
+export const clang_InlineCommandComment_getArgText = {
   parameters: [
     CXCommentT, // Comment
     unsignedInt, // ArgIdx
@@ -162,8 +151,7 @@ const clang_InlineCommandComment_getArgText = {
  * node.
  * @returns HTML tag name.
  */
-// deno-lint-ignore no-unused-vars
-const clang_HTMLTagComment_getTagName = {
+export const clang_HTMLTagComment_getTagName = {
   parameters: [
     CXCommentT, // Comment
   ],
@@ -174,8 +162,7 @@ const clang_HTMLTagComment_getTagName = {
  * @param Comment a `CXComment_HTMLStartTag` AST node.
  * @returns non-zero if tag is self-closing (for example, \<br /\>).
  */
-// deno-lint-ignore no-unused-vars
-const clang_HTMLStartTagComment_isSelfClosing = {
+export const clang_HTMLStartTagComment_isSelfClosing = {
   parameters: [
     CXCommentT, // Comment
   ],
@@ -186,8 +173,7 @@ const clang_HTMLStartTagComment_isSelfClosing = {
  * @param Comment a `CXComment_HTMLStartTag` AST node.
  * @returns number of attributes (name-value pairs) attached to the start tag.
  */
-// deno-lint-ignore no-unused-vars
-const clang_HTMLStartTag_getNumAttrs = {
+export const clang_HTMLStartTag_getNumAttrs = {
   parameters: [
     CXCommentT, // Comment
   ],
@@ -199,8 +185,7 @@ const clang_HTMLStartTag_getNumAttrs = {
  * @param AttrIdx attribute index (zero-based).
  * @returns name of the specified attribute.
  */
-// deno-lint-ignore no-unused-vars
-const clang_HTMLStartTag_getAttrName = {
+export const clang_HTMLStartTag_getAttrName = {
   parameters: [
     CXCommentT, // Comment
     unsignedInt, // AttrIdx
@@ -213,8 +198,7 @@ const clang_HTMLStartTag_getAttrName = {
  * @param AttrIdx attribute index (zero-based).
  * @returns value of the specified attribute.
  */
-// deno-lint-ignore no-unused-vars
-const clang_HTMLStartTag_getAttrValue = {
+export const clang_HTMLStartTag_getAttrValue = {
   parameters: [
     CXCommentT, // Comment
     unsignedInt, // AttrIdx
@@ -226,8 +210,7 @@ const clang_HTMLStartTag_getAttrValue = {
  * @param Comment a `CXComment_BlockCommand` AST node.
  * @returns name of the block command.
  */
-// deno-lint-ignore no-unused-vars
-const clang_BlockCommandComment_getCommandName = {
+export const clang_BlockCommandComment_getCommandName = {
   parameters: [
     CXCommentT, // Comment
   ],
@@ -238,8 +221,7 @@ const clang_BlockCommandComment_getCommandName = {
  * @param Comment a `CXComment_BlockCommand` AST node.
  * @returns number of word-like arguments.
  */
-// deno-lint-ignore no-unused-vars
-const clang_BlockCommandComment_getNumArgs = {
+export const clang_BlockCommandComment_getNumArgs = {
   parameters: [
     CXCommentT, // Comment
   ],
@@ -251,8 +233,7 @@ const clang_BlockCommandComment_getNumArgs = {
  * @param ArgIdx argument index (zero-based).
  * @returns text of the specified word-like argument.
  */
-// deno-lint-ignore no-unused-vars
-const clang_BlockCommandComment_getArgText = {
+export const clang_BlockCommandComment_getArgText = {
   parameters: [
     CXCommentT, // Comment
     unsignedInt, // ArgIdx
@@ -265,8 +246,7 @@ const clang_BlockCommandComment_getArgText = {
  * `CXComment_VerbatimBlockCommand` AST node.
  * @returns paragraph argument of the block command.
  */
-// deno-lint-ignore no-unused-vars
-const clang_BlockCommandComment_getParagraph = {
+export const clang_BlockCommandComment_getParagraph = {
   parameters: [
     CXCommentT, // Comment
   ],
@@ -277,8 +257,7 @@ const clang_BlockCommandComment_getParagraph = {
  * @param Comment a `CXComment_ParamCommand` AST node.
  * @returns parameter name.
  */
-// deno-lint-ignore no-unused-vars
-const clang_ParamCommandComment_getParamName = {
+export const clang_ParamCommandComment_getParamName = {
   parameters: [
     CXCommentT, // Comment
   ],
@@ -290,8 +269,7 @@ const clang_ParamCommandComment_getParamName = {
  * @returns non-zero if the parameter that this AST node represents was found
  * in the function prototype and `clang_ParamCommandComment_getParamIndex` function will return a meaningful value.
  */
-// deno-lint-ignore no-unused-vars
-const clang_ParamCommandComment_isParamIndexValid = {
+export const clang_ParamCommandComment_isParamIndexValid = {
   parameters: [
     CXCommentT, // Comment
   ],
@@ -302,8 +280,7 @@ const clang_ParamCommandComment_isParamIndexValid = {
  * @param Comment a `CXComment_ParamCommand` AST node.
  * @returns zero-based parameter index in function prototype.
  */
-// deno-lint-ignore no-unused-vars
-const clang_ParamCommandComment_getParamIndex = {
+export const clang_ParamCommandComment_getParamIndex = {
   parameters: [
     CXCommentT, // Comment
   ],
@@ -315,8 +292,7 @@ const clang_ParamCommandComment_getParamIndex = {
  * @returns non-zero if parameter passing direction was specified explicitly in
  * the comment.
  */
-// deno-lint-ignore no-unused-vars
-const clang_ParamCommandComment_isDirectionExplicit = {
+export const clang_ParamCommandComment_isDirectionExplicit = {
   parameters: [
     CXCommentT, // Comment
   ],
@@ -327,8 +303,7 @@ const clang_ParamCommandComment_isDirectionExplicit = {
  * @param Comment a `CXComment_ParamCommand` AST node.
  * @returns parameter passing direction.
  */
-// deno-lint-ignore no-unused-vars
-const clang_ParamCommandComment_getDirection = {
+export const clang_ParamCommandComment_getDirection = {
   parameters: [
     CXCommentT, // Comment
   ],
@@ -339,8 +314,7 @@ const clang_ParamCommandComment_getDirection = {
  * @param Comment a `CXComment_TParamCommand` AST node.
  * @returns template parameter name.
  */
-// deno-lint-ignore no-unused-vars
-const clang_TParamCommandComment_getParamName = {
+export const clang_TParamCommandComment_getParamName = {
   parameters: [
     CXCommentT, // Comment
   ],
@@ -355,8 +329,7 @@ const clang_TParamCommandComment_getParamName = {
  * `clang_TParamCommandComment_getIndex` functions will return a meaningful
  * value.
  */
-// deno-lint-ignore no-unused-vars
-const clang_TParamCommandComment_isParamPositionValid = {
+export const clang_TParamCommandComment_isParamPositionValid = {
   parameters: [
     CXCommentT, // Comment
   ],
@@ -377,8 +350,7 @@ const clang_TParamCommandComment_isParamPositionValid = {
  * for C and TT nesting depth is 0,
  * for T nesting depth is 1.
  */
-// deno-lint-ignore no-unused-vars
-const clang_TParamCommandComment_getDepth = {
+export const clang_TParamCommandComment_getDepth = {
   parameters: [
     CXCommentT, // Comment
   ],
@@ -403,8 +375,7 @@ const clang_TParamCommandComment_getDepth = {
  * at depth 0 T's index is 1 (same as TT's),
  * at depth 1 T's index is 0.
  */
-// deno-lint-ignore no-unused-vars
-const clang_TParamCommandComment_getIndex = {
+export const clang_TParamCommandComment_getIndex = {
   parameters: [
     CXCommentT, // Comment
     unsignedInt, // Depth
@@ -416,8 +387,7 @@ const clang_TParamCommandComment_getIndex = {
  * @param Comment a `CXComment_VerbatimBlockLine` AST node.
  * @returns text contained in the AST node.
  */
-// deno-lint-ignore no-unused-vars
-const clang_VerbatimBlockLineComment_getText = {
+export const clang_VerbatimBlockLineComment_getText = {
   parameters: [
     CXCommentT, // Comment
   ],
@@ -428,8 +398,7 @@ const clang_VerbatimBlockLineComment_getText = {
  * @param Comment a `CXComment_VerbatimLine` AST node.
  * @returns text contained in the AST node.
  */
-// deno-lint-ignore no-unused-vars
-const clang_VerbatimLineComment_getText = {
+export const clang_VerbatimLineComment_getText = {
   parameters: [
     CXCommentT, // Comment
   ],
@@ -443,8 +412,7 @@ const clang_VerbatimLineComment_getText = {
  * node.
  * @returns string containing an HTML tag.
  */
-// deno-lint-ignore no-unused-vars
-const clang_HTMLTagComment_getAsString = {
+export const clang_HTMLTagComment_getAsString = {
   parameters: [
     CXCommentT, // Comment
   ],
@@ -491,8 +459,7 @@ const clang_HTMLTagComment_getAsString = {
  * @param Comment a `CXComment_FullComment` AST node.
  * @returns string containing an HTML fragment.
  */
-// deno-lint-ignore no-unused-vars
-const clang_FullComment_getAsHTML = {
+export const clang_FullComment_getAsHTML = {
   parameters: [
     CXCommentT, // Comment
   ],
@@ -508,8 +475,7 @@ const clang_FullComment_getAsHTML = {
  * @param Comment a `CXComment_FullComment` AST node.
  * @returns string containing an XML document.
  */
-// deno-lint-ignore no-unused-vars
-const clang_FullComment_getAsXML = {
+export const clang_FullComment_getAsXML = {
   parameters: [
     CXCommentT, // Comment
   ],

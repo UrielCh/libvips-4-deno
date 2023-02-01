@@ -10,8 +10,7 @@ import {
 /**
  * Retrieve the complete file and path name of the given file.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getFileName = {
+export const clang_getFileName = {
   parameters: [
     CXFileT, // SFile
   ],
@@ -21,8 +20,7 @@ const clang_getFileName = {
 /**
  * Retrieve the last modification time of the given file.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getFileTime = {
+export const clang_getFileTime = {
   parameters: [
     CXFileT, // SFile
   ],
@@ -39,8 +37,7 @@ const clang_getFileTime = {
  * @returns If there was a failure getting the unique ID, returns non-zero,
  * otherwise returns 0.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getFileUniqueID = {
+export const clang_getFileUniqueID = {
   parameters: [
     CXFileT, // file
     buf(CXFileUniqueIDT), // outID
@@ -52,8 +49,7 @@ const clang_getFileUniqueID = {
  * Returns non-zero if the `file1` and `file2` point to the same file,
  * or they are both NULL.
  */
-// deno-lint-ignore no-unused-vars
-const clang_File_isEqual = {
+export const clang_File_isEqual = {
   parameters: [
     CXFileT, // file1
     CXFileT, // file2
@@ -66,8 +62,7 @@ const clang_File_isEqual = {
  *
  * An empty string may be returned. Use `clang_getFileName(`) in that case.
  */
-// deno-lint-ignore no-unused-vars
-const clang_File_tryGetRealPathName = {
+export const clang_File_tryGetRealPathName = {
   parameters: [
     CXFileT, // file
   ],

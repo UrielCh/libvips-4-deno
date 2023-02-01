@@ -15,8 +15,7 @@ import {
  * Return the timestamp for use with Clang's
  * `-fbuild-session-timestamp=` option.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getBuildSessionTimestamp = {
+export const clang_getBuildSessionTimestamp = {
   parameters: [],
   result: unsignedLongLong,
 } as const;
@@ -27,8 +26,7 @@ const clang_getBuildSessionTimestamp = {
  *
  * @param options is reserved, always pass 0.
  */
-// deno-lint-ignore no-unused-vars
-const clang_VirtualFileOverlay_create = {
+export const clang_VirtualFileOverlay_create = {
   parameters: [
     unsignedInt, // options
   ],
@@ -41,8 +39,7 @@ const clang_VirtualFileOverlay_create = {
  *
  * @returns 0 for success, non-zero to indicate an error.
  */
-// deno-lint-ignore no-unused-vars
-const clang_VirtualFileOverlay_addFileMapping = {
+export const clang_VirtualFileOverlay_addFileMapping = {
   parameters: [
     CXVirtualFileOverlayT,
     cstringT, // virtualPath
@@ -58,8 +55,7 @@ const clang_VirtualFileOverlay_addFileMapping = {
  *
  * @returns 0 for success, non-zero to indicate an error.
  */
-// deno-lint-ignore no-unused-vars
-const clang_VirtualFileOverlay_setCaseSensitivity = {
+export const clang_VirtualFileOverlay_setCaseSensitivity = {
   parameters: [
     CXVirtualFileOverlayT,
     int, // caseSensitive
@@ -78,8 +74,7 @@ const clang_VirtualFileOverlay_setCaseSensitivity = {
  *
  * @returns 0 for success, non-zero to indicate an error.
  */
-// deno-lint-ignore no-unused-vars
-const clang_VirtualFileOverlay_writeToBuffer = {
+export const clang_VirtualFileOverlay_writeToBuffer = {
   parameters: [
     CXVirtualFileOverlayT,
     unsignedInt, // options
@@ -95,8 +90,7 @@ const clang_VirtualFileOverlay_writeToBuffer = {
  *
  * @param buffer memory pointer to free.
  */
-// deno-lint-ignore no-unused-vars
-const clang_free = {
+export const clang_free = {
   parameters: [
     ptr("void"), // buffer
   ],
@@ -106,8 +100,7 @@ const clang_free = {
 /**
  * Dispose a `CXVirtualFileOverlay` object.
  */
-// deno-lint-ignore no-unused-vars
-const clang_VirtualFileOverlay_dispose = {
+export const clang_VirtualFileOverlay_dispose = {
   parameters: [
     CXVirtualFileOverlayT,
   ],
@@ -120,8 +113,7 @@ const clang_VirtualFileOverlay_dispose = {
  *
  * @param options is reserved, always pass 0.
  */
-// deno-lint-ignore no-unused-vars
-const clang_ModuleMapDescriptor_create = {
+export const clang_ModuleMapDescriptor_create = {
   parameters: [
     unsignedInt, // options
   ],
@@ -133,8 +125,7 @@ const clang_ModuleMapDescriptor_create = {
  *
  * @returns 0 for success, non-zero to indicate an error.
  */
-// deno-lint-ignore no-unused-vars
-const clang_ModuleMapDescriptor_setFrameworkModuleName = {
+export const clang_ModuleMapDescriptor_setFrameworkModuleName = {
   parameters: [
     CXModuleMapDescriptorT,
     cstringT, // name
@@ -147,8 +138,7 @@ const clang_ModuleMapDescriptor_setFrameworkModuleName = {
  *
  * @returns 0 for success, non-zero to indicate an error.
  */
-// deno-lint-ignore no-unused-vars
-const clang_ModuleMapDescriptor_setUmbrellaHeader = {
+export const clang_ModuleMapDescriptor_setUmbrellaHeader = {
   parameters: [
     CXModuleMapDescriptorT,
     cstringT, // name
@@ -167,8 +157,7 @@ const clang_ModuleMapDescriptor_setUmbrellaHeader = {
  *
  * @returns 0 for success, non-zero to indicate an error.
  */
-// deno-lint-ignore no-unused-vars
-const clang_ModuleMapDescriptor_writeToBuffer = {
+export const clang_ModuleMapDescriptor_writeToBuffer = {
   parameters: [
     CXModuleMapDescriptorT,
     unsignedInt, // options
@@ -181,8 +170,7 @@ const clang_ModuleMapDescriptor_writeToBuffer = {
 /**
  * Dispose a `CXModuleMapDescriptor` object.
  */
-// deno-lint-ignore no-unused-vars
-const clang_ModuleMapDescriptor_dispose = {
+export const clang_ModuleMapDescriptor_dispose = {
   parameters: [
     CXModuleMapDescriptorT,
   ],

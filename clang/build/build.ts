@@ -341,7 +341,13 @@ export async function generateLibMapping(configurations: { headerRoot: string, l
           configurations.libFile,
           { [name]: { type: "pointer" } },
         );
-      } catch (_err) {
+      } catch (err) {
+        if (err.message.includes("No such file or directory")) {
+          console.error(`can log load lib ${configurations.libFile} No such file or directory`)
+          return;
+        }
+        console.log(err.message)
+        // Failed to register symbol clang_CXXMethod_isMoveAssignmentOperator: Could not obtain symbol from the library: /usr/lib/llvm-14/lib/libclang-14.so.1: undefined symbol: clang_CXXMethod_isMoveAssignmentOperator
         isAvailable = false;
       }
       emplaceRefs(imports, result);

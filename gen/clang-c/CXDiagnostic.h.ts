@@ -14,8 +14,7 @@ import {
 /**
  * Determine the number of diagnostics in a CXDiagnosticSet.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getNumDiagnosticsInSet = {
+export const clang_getNumDiagnosticsInSet = {
   parameters: [
     CXDiagnosticSetT, // Diags
   ],
@@ -31,8 +30,7 @@ const clang_getNumDiagnosticsInSet = {
  * @returns the requested diagnostic. This diagnostic must be freed
  * via a call to `clang_disposeDiagnostic().`
  */
-// deno-lint-ignore no-unused-vars
-const clang_getDiagnosticInSet = {
+export const clang_getDiagnosticInSet = {
   parameters: [
     CXDiagnosticSetT, // Diags
     unsignedInt, // Index
@@ -54,8 +52,7 @@ const clang_getDiagnosticInSet = {
  * @returns A loaded CXDiagnosticSet if successful, and NULL otherwise.  These
  * diagnostics should be released using clang_disposeDiagnosticSet().
  */
-// deno-lint-ignore no-unused-vars
-const clang_loadDiagnostics = {
+export const clang_loadDiagnostics = {
   parameters: [
     cstringT, // file
     buf(CXLoadDiag_ErrorT), // error
@@ -67,8 +64,7 @@ const clang_loadDiagnostics = {
 /**
  * Release a CXDiagnosticSet and all of its contained diagnostics.
  */
-// deno-lint-ignore no-unused-vars
-const clang_disposeDiagnosticSet = {
+export const clang_disposeDiagnosticSet = {
   parameters: [
     CXDiagnosticSetT, // Diags
   ],
@@ -81,8 +77,7 @@ const clang_disposeDiagnosticSet = {
  * This CXDiagnosticSet does not need to be released by
  * clang_disposeDiagnosticSet.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getChildDiagnostics = {
+export const clang_getChildDiagnostics = {
   parameters: [
     CXDiagnosticT, // D
   ],
@@ -92,8 +87,7 @@ const clang_getChildDiagnostics = {
 /**
  * Destroy a diagnostic.
  */
-// deno-lint-ignore no-unused-vars
-const clang_disposeDiagnostic = {
+export const clang_disposeDiagnostic = {
   parameters: [
     CXDiagnosticT, // Diagnostic
   ],
@@ -113,8 +107,7 @@ const clang_disposeDiagnostic = {
  * created by combining `CXDiagnosticDisplayOptions` values.
  * @returns A new string containing for formatted diagnostic.
  */
-// deno-lint-ignore no-unused-vars
-const clang_formatDiagnostic = {
+export const clang_formatDiagnostic = {
   parameters: [
     CXDiagnosticT, // Diagnostic
     unsignedInt, // Options
@@ -128,8 +121,7 @@ const clang_formatDiagnostic = {
  *
  * @returns A set of display options suitable for use with `clang_formatDiagnostic().`
  */
-// deno-lint-ignore no-unused-vars
-const clang_defaultDiagnosticDisplayOptions = {
+export const clang_defaultDiagnosticDisplayOptions = {
   parameters: [],
   result: unsignedInt,
 } as const;
@@ -137,8 +129,7 @@ const clang_defaultDiagnosticDisplayOptions = {
 /**
  * Determine the severity of the given diagnostic.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getDiagnosticSeverity = {
+export const clang_getDiagnosticSeverity = {
   parameters: [
     CXDiagnosticT,
   ],
@@ -151,8 +142,7 @@ const clang_getDiagnosticSeverity = {
  * This location is where Clang would print the caret ('^') when
  * displaying the diagnostic on the command line.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getDiagnosticLocation = {
+export const clang_getDiagnosticLocation = {
   parameters: [
     CXDiagnosticT,
   ],
@@ -162,8 +152,7 @@ const clang_getDiagnosticLocation = {
 /**
  * Retrieve the text of the given diagnostic.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getDiagnosticSpelling = {
+export const clang_getDiagnosticSpelling = {
   parameters: [
     CXDiagnosticT,
   ],
@@ -180,8 +169,7 @@ const clang_getDiagnosticSpelling = {
  * @returns A string that contains the command-line option used to enable this
  * warning, such as "-Wconversion" or "-pedantic".
  */
-// deno-lint-ignore no-unused-vars
-const clang_getDiagnosticOption = {
+export const clang_getDiagnosticOption = {
   parameters: [
     CXDiagnosticT, // Diag
     buf(CXStringT), // Disable
@@ -199,8 +187,7 @@ const clang_getDiagnosticOption = {
  * @returns The number of the category that contains this diagnostic, or zero
  * if this diagnostic is uncategorized.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getDiagnosticCategory = {
+export const clang_getDiagnosticCategory = {
   parameters: [
     CXDiagnosticT,
   ],
@@ -216,8 +203,7 @@ const clang_getDiagnosticCategory = {
  * `clang_getDiagnosticCategory().`
  * @returns The name of the given diagnostic category.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getDiagnosticCategoryName = {
+export const clang_getDiagnosticCategoryName = {
   parameters: [
     unsignedInt, // Category
   ],
@@ -229,8 +215,7 @@ const clang_getDiagnosticCategoryName = {
  *
  * @returns The text of the given diagnostic category.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getDiagnosticCategoryText = {
+export const clang_getDiagnosticCategoryText = {
   parameters: [
     CXDiagnosticT,
   ],
@@ -241,8 +226,7 @@ const clang_getDiagnosticCategoryText = {
  * Determine the number of source ranges associated with the given
  * diagnostic.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getDiagnosticNumRanges = {
+export const clang_getDiagnosticNumRanges = {
   parameters: [
     CXDiagnosticT,
   ],
@@ -260,8 +244,7 @@ const clang_getDiagnosticNumRanges = {
  * @param Range the zero-based index specifying which range to
  * @returns the requested source range.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getDiagnosticRange = {
+export const clang_getDiagnosticRange = {
   parameters: [
     CXDiagnosticT, // Diagnostic
     unsignedInt, // Range
@@ -273,8 +256,7 @@ const clang_getDiagnosticRange = {
  * Determine the number of fix-it hints associated with the
  * given diagnostic.
  */
-// deno-lint-ignore no-unused-vars
-const clang_getDiagnosticNumFixIts = {
+export const clang_getDiagnosticNumFixIts = {
   parameters: [
     CXDiagnosticT, // Diagnostic
   ],
@@ -303,8 +285,7 @@ const clang_getDiagnosticNumFixIts = {
  * @returns A string containing text that should be replace the source
  * code indicated by the `ReplacementRange.`
  */
-// deno-lint-ignore no-unused-vars
-const clang_getDiagnosticFixIt = {
+export const clang_getDiagnosticFixIt = {
   parameters: [
     CXDiagnosticT, // Diagnostic
     unsignedInt, // FixIt

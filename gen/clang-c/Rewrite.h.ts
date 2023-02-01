@@ -10,8 +10,7 @@ import {
 /**
  * Create CXRewriter.
  */
-// deno-lint-ignore no-unused-vars
-const clang_CXRewriter_create = {
+export const clang_CXRewriter_create = {
   parameters: [
     CXTranslationUnitT, // TU
   ],
@@ -21,8 +20,7 @@ const clang_CXRewriter_create = {
 /**
  * Insert the specified string at the specified location in the original buffer.
  */
-// deno-lint-ignore no-unused-vars
-const clang_CXRewriter_insertTextBefore = {
+export const clang_CXRewriter_insertTextBefore = {
   parameters: [
     CXRewriterT, // Rew
     CXSourceLocationT, // Loc
@@ -35,8 +33,7 @@ const clang_CXRewriter_insertTextBefore = {
  * Replace the specified range of characters in the input with the specified
  * replacement.
  */
-// deno-lint-ignore no-unused-vars
-const clang_CXRewriter_replaceText = {
+export const clang_CXRewriter_replaceText = {
   parameters: [
     CXRewriterT, // Rew
     CXSourceRangeT, // ToBeReplaced
@@ -48,8 +45,7 @@ const clang_CXRewriter_replaceText = {
 /**
  * Remove the specified range.
  */
-// deno-lint-ignore no-unused-vars
-const clang_CXRewriter_removeText = {
+export const clang_CXRewriter_removeText = {
   parameters: [
     CXRewriterT, // Rew
     CXSourceRangeT, // ToBeRemoved
@@ -61,8 +57,7 @@ const clang_CXRewriter_removeText = {
  * Save all changed files to disk.
  * Returns 1 if any files were not saved successfully, returns 0 otherwise.
  */
-// deno-lint-ignore no-unused-vars
-const clang_CXRewriter_overwriteChangedFiles = {
+export const clang_CXRewriter_overwriteChangedFiles = {
   parameters: [
     CXRewriterT, // Rew
   ],
@@ -72,8 +67,7 @@ const clang_CXRewriter_overwriteChangedFiles = {
 /**
  * Write out rewritten version of the main file to stdout.
  */
-// deno-lint-ignore no-unused-vars
-const clang_CXRewriter_writeMainFileToStdOut = {
+export const clang_CXRewriter_writeMainFileToStdOut = {
   parameters: [
     CXRewriterT, // Rew
   ],
@@ -83,8 +77,7 @@ const clang_CXRewriter_writeMainFileToStdOut = {
 /**
  * Free the given CXRewriter.
  */
-// deno-lint-ignore no-unused-vars
-const clang_CXRewriter_dispose = {
+export const clang_CXRewriter_dispose = {
   parameters: [
     CXRewriterT, // Rew
   ],
