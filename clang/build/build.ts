@@ -198,6 +198,36 @@ export class FFIgenerator {
     return results;
   }
 
+
+  /**
+   * functions files
+   */
+  emplaceRefs(imports: Set<string>, type: AnyType) {
+    if (type.kind === "ref" || type.kind === "enum") {
+      imports.add(type.name.endsWith("_t") ? type.name : type.reprName);
+    } else if (type.kind === "plain") {
+      if (type.type === "void") {
+        return;
+      }
+      imports.add(type.name);
+    } else if (type.kind === "struct") {
+      imports.add(type.reprName);
+    } else if (type.kind === "function") {
+      imports.add("func");
+      type.parameters.forEach((param) => {
+        this.emplaceRefs(imports, param.type);
+      });
+      this.emplaceRefs(imports, type.result);
+    } else if (type.kind === "pointer") {
+      if (type.useBuffer) {
+        imports.add("buf");
+      } else {
+        imports.add("ptr");
+      }
+      this.emplaceRefs(imports, type.pointee);
+    }
+  }
+
   async generate() {
     await ensureDir(this.destination);
     const includePaths = (this.includePaths || []).map(a => `-I${a}`);
@@ -343,35 +373,6 @@ export class FFIgenerator {
     Deno.writeTextFileSync(join(this.destination, "typeDefinitions.ts"), results.join("\n"));
     // utils.formatSync(join(destination, "typeDefinitions.ts"));
 
-    /**
-     * functions files
-     */
-    const emplaceRefs = (imports: Set<string>, type: AnyType) => {
-      if (type.kind === "ref" || type.kind === "enum") {
-        imports.add(type.name.endsWith("_t") ? type.name : type.reprName);
-      } else if (type.kind === "plain") {
-        if (type.type === "void") {
-          return;
-        }
-        imports.add(type.name);
-      } else if (type.kind === "struct") {
-        imports.add(type.reprName);
-      } else if (type.kind === "function") {
-        imports.add("func");
-        type.parameters.forEach((param) => {
-          emplaceRefs(imports, param.type);
-        });
-        emplaceRefs(imports, type.result);
-      } else if (type.kind === "pointer") {
-        if (type.useBuffer) {
-          imports.add("buf");
-        } else {
-          imports.add("ptr");
-        }
-        emplaceRefs(imports, type.pointee);
-      }
-    };
-
     /** filter non exported function */
     for (const [fileName, apiFunctions] of ctxtGl.FUNCTIONS_MAP) {
       const imports = new Set<string>();
@@ -394,23 +395,22 @@ export class FFIgenerator {
           // Failed to register symbol clang_CXXMethod_isMoveAssignmentOperator: Could not obtain symbol from the library: /usr/lib/llvm-14/lib/libclang-14.so.1: undefined symbol: clang_CXXMethod_isMoveAssignmentOperator
           isAvailable = false;
         }
-        emplaceRefs(imports, result);
-        parameters.forEach((param) => emplaceRefs(imports, param.type));
+        this.emplaceRefs(imports, result);
+        parameters.forEach((param) => this.emplaceRefs(imports, param.type));
         //const comment = 
         functionResults.push(`${cmt(apiFunction, '')}${isAvailable ? "export " : "// deno-lint-ignore no-unused-vars\n"}const ${name} = {`);
         if (parameters.length) {
           functionResults.push(`  parameters: [`);
           for (const param of parameters) {
             const { code } = anyTypeToString(param.type);
-            functionResults.push(`    ${code},${param.name || param.comment
-              ? ` // ${[param.name, param.comment].filter(Boolean).join(", ")}`
-              : ""}`);
+            const comment = param.name || param.comment ? ` // ${[param.name, param.comment].filter(Boolean).join(", ")}`: "";
+            functionResults.push(`    ${code},${comment}`);
           }
           functionResults.push(`  ],`)
         }
-        functionResults.push(`  result: ${anyTypeToString(result).code},
-} as const;
-`);
+        functionResults.push(`  result: ${anyTypeToString(result).code},`);
+        functionResults.push(`} as const;`);
+        functionResults.push('');
       }
       // generate imports
       if (imports.size) {
@@ -418,13 +418,13 @@ export class FFIgenerator {
         if (fileName.includes('/')) {
           relatif = '..'
         }
-        functionResults.unshift(`import {
-${[...imports].sort((a, b) => a.localeCompare(b)).map((importName) =>
-          `  ${importName},`
-        ).join("\n")
-          }
-} from "${relatif}/typeDefinitions.ts";
-`);
+        let toImport = 'import {\n';
+        const imps = [...imports].sort((a, b) => a.localeCompare(b));
+        for (const importName of imps) {
+          toImport += `  ${importName},\n`;
+        }
+        toImport += `} from "${relatif}/typeDefinitions.ts";\n`;
+        functionResults.unshift(toImport);
       }
       // if there is any function write a file
       if (functionResults.length) {
