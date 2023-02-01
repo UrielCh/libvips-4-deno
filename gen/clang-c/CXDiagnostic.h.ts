@@ -122,7 +122,6 @@ export const clang_formatDiagnostic = {
  * @returns A set of display options suitable for use with `clang_formatDiagnostic().`
  */
 export const clang_defaultDiagnosticDisplayOptions = {
-  parameters: [],
   result: unsignedInt,
 } as const;
 

@@ -1,4 +1,9 @@
-import { cstringT, CXStringSetT, CXStringT, ptr } from "../typeDefinitions.ts";
+import {
+  cstringT,
+  CXStringSetT,
+  CXStringT,
+  ptr,
+} from "../typeDefinitions.ts";
 
 /**
  * Retrieve the character data associated with the given string.

@@ -352,22 +352,21 @@ export async function generateLibMapping(configurations: { headerRoot: string, l
       }
       emplaceRefs(imports, result);
       parameters.forEach((param) => emplaceRefs(imports, param.type));
-      functionResults.push(
-        `${cmt(apiFunction)}${isAvailable ? "export " : "// deno-lint-ignore no-unused-vars\n"
-        }const ${name} = {
-  parameters: [
-    ${parameters.map((param) =>
-          `${anyTypeToString(param.type).code}, ${param.name || param.comment
-            ? `// ${[param.name, param.comment].filter(Boolean).join(", ")}`
-            : ""
-          }`
-        ).join("\n")
+      //const comment = 
+      functionResults.push(`${cmt(apiFunction, '')}${isAvailable ? "export " : "// deno-lint-ignore no-unused-vars\n"}const ${name} = {`);
+      if (parameters.length) {
+        functionResults.push(`  parameters: [`);
+        for (const param of parameters) {
+          const { code } = anyTypeToString(param.type);
+          functionResults.push(`    ${code},${param.name || param.comment
+            ? ` // ${[param.name, param.comment].filter(Boolean).join(", ")}`
+            : ""}`);
         }
-  ],
-  result: ${anyTypeToString(result).code},
+        functionResults.push(`  ],`)
+      }
+      functionResults.push(`  result: ${anyTypeToString(result).code},
 } as const;
-`,
-      );
+`);
     }
     // generate imports
     if (imports.size) {
@@ -388,7 +387,7 @@ ${[...imports].sort((a, b) => a.localeCompare(b)).map((importName) =>
       const dst = join(destination, `${fileName}.ts`);
       await ensureDir(dirname(dst));
       Deno.writeTextFileSync(dst, functionResults.join("\n"));
-      utils.formatSync(dst);
+      // utils.formatSync(dst);
     }
   }
 }

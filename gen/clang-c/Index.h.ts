@@ -142,6 +142,7 @@ export const clang_disposeIndex = {
  *
  * For example:
  *
+ *
  * ```cpp
  * CXIndex idx = ...;
  * clang_CXIndex_setGlobalOptions(idx,
@@ -426,7 +427,6 @@ export const clang_createTranslationUnit2 = {
  * set of optimizations enabled may change from one version to the next.
  */
 export const clang_defaultEditingTranslationUnitOptions = {
-  parameters: [],
   result: unsignedInt,
 } as const;
 
@@ -725,7 +725,6 @@ export const clang_TargetInfo_getPointerWidth = {
  * Retrieve the NULL cursor, which represents no entity.
  */
 export const clang_getNullCursor = {
-  parameters: [],
   result: CXCursorT,
 } as const;
 
@@ -886,7 +885,7 @@ export const clang_isTranslationUnit = {
 } as const;
 
 /**
- * \*
+ *\*
  * Determine whether the given cursor represents a preprocessing
  * element, such as a preprocessor directive or macro instantiation.
  */
@@ -898,7 +897,7 @@ export const clang_isPreprocessing = {
 } as const;
 
 /**
- * \*
+ *\*
  * Determine whether the given cursor represents a currently
  * unexposed piece of the AST (e.g., CXCursor_UnexposedStmt).
  */
@@ -1072,7 +1071,6 @@ export const clang_Cursor_getTranslationUnit = {
  * Creates an empty CXCursorSet.
  */
 export const clang_createCXCursorSet = {
-  parameters: [],
   result: CXCursorSetT,
 } as const;
 
@@ -2568,6 +2566,8 @@ export const clang_getCursorReferenced = {
  * unit, but only one of those declarations can also be a
  * definition. For example, given:
  *
+ *
+ *
  * ```cpp
  *  int f(int, int);
  *  int g(int x, int y) { return f(x, y); }
@@ -2800,7 +2800,7 @@ export const clang_Cursor_getRawCommentText = {
 /**
  * Given a cursor that represents a documentable entity (e.g.,
  * declaration), return the associated
- * \\paragraph ; otherwise return the
+ *\\paragraph ; otherwise return the
  * first paragraph.
  */
 export const clang_Cursor_getBriefCommentText = {
@@ -3391,19 +3391,18 @@ export const clang_getDefinitionSpellingAndExtent = {
 } as const;
 
 export const clang_enableStackTraces = {
-  parameters: [],
   result: "void",
 } as const;
 
 export const clang_executeOnThread = {
   parameters: [
     func({
-      /** void (void *) */
-      parameters: [
-        ptr("void"), // void *
-      ],
-      result: "void",
-    }), // fn
+  /** void (void *) */
+  parameters: [
+    ptr("void"), // void *
+  ],
+  result: "void",
+}), // fn
     ptr("void"), // user_data
     unsignedInt, // stack_size
   ],
@@ -3653,7 +3652,6 @@ export const clang_getCompletionFixIt = {
  * passed to`clang_codeCompleteAt().`
  */
 export const clang_defaultCodeCompleteOptions = {
-  parameters: [],
   result: unsignedInt,
 } as const;
 
@@ -3857,7 +3855,6 @@ export const clang_codeCompleteGetObjCSelector = {
  * intended to be parsed (the format is not guaranteed to be stable).
  */
 export const clang_getClangVersion = {
-  parameters: [],
   result: CXStringT,
 } as const;
 

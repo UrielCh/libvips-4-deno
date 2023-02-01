@@ -14,7 +14,6 @@ import {
  * Retrieve a NULL (invalid) source location.
  */
 export const clang_getNullLocation = {
-  parameters: [],
   result: CXSourceLocationT,
 } as const;
 
@@ -59,7 +58,6 @@ export const clang_Location_isFromMainFile = {
  * Retrieve a NULL (invalid) source range.
  */
 export const clang_getNullRange = {
-  parameters: [],
   result: CXSourceRangeT,
 } as const;
 

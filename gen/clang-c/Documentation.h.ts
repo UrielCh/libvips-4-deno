@@ -343,6 +343,7 @@ export const clang_TParamCommandComment_isParamPositionValid = {
  *
  * For example,
  *
+ *
  * ```
  *     template<typename C, template<typename T> class TT>
  *     void test(TT<int> aaa);
@@ -363,6 +364,7 @@ export const clang_TParamCommandComment_getDepth = {
  * given nesting depth.
  *
  * For example,
+ *
  *
  * ```
  *     template<typename C, template<typename T> class TT>
@@ -427,18 +429,23 @@ export const clang_HTMLTagComment_getAsString = {
  *
  * Currently the following CSS classes are used:
  *
+ *
  * @li "para-brief" for
- * \\paragraph  and equivalent commands;
+ *\\paragraph  and equivalent commands;
  * @li "para-returns" for \\returns paragraph and equivalent commands;
+ *
  *
  * @li "word-returns" for the "Returns" word in \\returns paragraph.
  *
  * Function argument documentation is rendered as a list with arguments
  * sorted in function prototype order. CSS classes used:
  *
+ *
  * @li "param-name-index-NUMBER" for parameter name ();
  *
+ *
  * @li "param-descr-index-NUMBER" for parameter description ();
+ *
  *
  * @li "param-name-index-invalid" and "param-descr-index-invalid" are used if
  * parameter index is invalid.
@@ -446,12 +453,16 @@ export const clang_HTMLTagComment_getAsString = {
  * Template parameter documentation is rendered as a list with
  * parameters sorted in template parameter list order. CSS classes used:
  *
+ *
  * @li "tparam-name-index-NUMBER" for parameter name ();
+ *
  *
  * @li "tparam-descr-index-NUMBER" for parameter description ();
  *
+ *
  * @li "tparam-name-index-other" and "tparam-descr-index-other" are used for
  * names inside template template parameters;
+ *
  *
  * @li "tparam-name-index-invalid" and "tparam-descr-index-invalid" are used if
  * parameter position is invalid.
