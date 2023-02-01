@@ -3159,32 +3159,6 @@ export const CXCommentT = {
 } as const;
 
 /**
- * Describes a version number of the form major.minor.subminor.
- */
-export const CXVersionT = {
-  /** Struct size: 12 */
-  struct: [
-    /**
-     * The major version number, e.g., the '10' in '10.7.3'. A negative
-     * value indicates that there is no version number at all.
-     */
-    int, // Major, offset 0, size 4
-    /**
-     * The minor version number, e.g., the '7' in '10.7.3'. This value
-     * will be negative if no minor version number was provided, e.g., for
-     * version '10'.
-     */
-    int, // Minor, offset 4, size 4
-    /**
-     * The subminor version number, e.g., the '3' in '10.7.3'. This value
-     * will be negative if no minor or subminor version number was provided,
-     * e.g., in version '10' or '10.7'.
-     */
-    int, // Subminor, offset 8, size 4
-  ],
-} as const;
-
-/**
  * Provides the contents of a file that has not yet been saved to disk.
  *
  * Each CXUnsavedFile instance provides the name of a file on the
@@ -3208,43 +3182,6 @@ export const CXUnsavedFileT = {
      * The length of the unsaved contents of this buffer.
      */
     unsignedLong, // Length, offset 16, size 8
-  ],
-} as const;
-
-export const CXTUResourceUsageEntryT = {
-  /** Struct size: 16 */
-  struct: [
-    /**
-     * The memory usage category.
-     */
-    CXTUResourceUsageKindT, // kind, offset 0, size 4
-    /**
-     * Amount of resources used.
-     * The units will depend on the resource kind.
-     */
-    unsignedLong, // amount, offset 8, size 8
-  ],
-} as const;
-
-/**
- * The memory usage of a CXTranslationUnit, broken into categories.
- */
-export const CXTUResourceUsageT = {
-  /** Struct size: 24 */
-  struct: [
-    /**
-     * Private data member, used for queries.
-     */
-    ptr("void"), // data, offset 0, size 8
-    /**
-     * The number of entries in the 'entries' array.
-     */
-    unsignedInt, // numEntries, offset 8, size 4
-    /**
-     * An array of key-value pairs, representing the breakdown of memory
-     * usage.
-     */
-    ptr(CXTUResourceUsageEntryT), // entries, offset 16, size 8
   ],
 } as const;
 
@@ -3362,60 +3299,6 @@ export const CXIdxLocT = {
   ],
 } as const;
 
-/**
- * Data for ppIncludedFile callback.
- */
-export const CXIdxIncludedFileInfoT = {
-  /** Struct size: 56 */
-  struct: [
-    /**
-     * Location of '#' in the \#include/\#import directive.
-     */
-    CXIdxLocT, // hashLoc, offset 0, size 24
-    /**
-     * Filename as written in the \#include/\#import directive.
-     */
-    cstringT, // filename, offset 24, size 8
-    /**
-     * The actual file that the \#include/\#import directive resolved to.
-     */
-    CXFileT, // file, offset 32, size 8
-    int, // isImport, offset 40, size 4
-    int, // isAngled, offset 44, size 4
-    /**
-     * Non-zero if the directive was automatically turned into a module
-     * import.
-     */
-    int, // isModuleImport, offset 48, size 4
-  ],
-} as const;
-
-/**
- * Data for IndexerCallbacks#importedASTFile.
- */
-export const CXIdxImportedASTFileInfoT = {
-  /** Struct size: 48 */
-  struct: [
-    /**
-     * Top level AST file containing the imported PCH, module or submodule.
-     */
-    CXFileT, // file, offset 0, size 8
-    /**
-     * The imported module or NULL if the AST file is a PCH.
-     */
-    CXModuleT, // module, offset 8, size 8
-    /**
-     * Location where the file is imported. Applicable only for modules.
-     */
-    CXIdxLocT, // loc, offset 16, size 24
-    /**
-     * Non-zero if an inclusion directive was automatically turned into
-     * a module import. Applicable only for modules.
-     */
-    int, // isImplicit, offset 40, size 4
-  ],
-} as const;
-
 export const CXIdxAttrInfoT = {
   /** Struct size: 64 */
   struct: [
@@ -3491,6 +3374,275 @@ export const CXIdxObjCContainerDeclInfoT = {
   ],
 } as const;
 
+export const CXIdxObjCPropertyDeclInfoT = {
+  /** Struct size: 24 */
+  struct: [
+    ptr(CXIdxDeclInfoT), // declInfo, offset 0, size 8
+    ptr(CXIdxEntityInfoT), // getter, offset 8, size 8
+    ptr(CXIdxEntityInfoT), // setter, offset 16, size 8
+  ],
+} as const;
+
+/**
+ * Identifies a specific source location within a translation
+ * unit.
+ *
+ * Use clang_getExpansionLocation() or clang_getSpellingLocation()
+ * to map a source location to a particular file, line, and column.
+ */
+export const CXSourceLocationT = {
+  /** Struct size: 24 */
+  struct: [
+    ptr("void"), // ptr_data[0], offset 0, size 8
+    ptr("void"), // ptr_data[1], offset 8, size 8
+    unsignedInt, // int_data, offset 16, size 4
+  ],
+} as const;
+
+/**
+ * Identifies a half-open character range in the source code.
+ *
+ * Use clang_getRangeStart() and clang_getRangeEnd() to retrieve the
+ * starting and end locations from a source range, respectively.
+ */
+export const CXSourceRangeT = {
+  /** Struct size: 24 */
+  struct: [
+    ptr("void"), // ptr_data[0], offset 0, size 8
+    ptr("void"), // ptr_data[1], offset 8, size 8
+    unsignedInt, // begin_int_data, offset 16, size 4
+    unsignedInt, // end_int_data, offset 20, size 4
+  ],
+} as const;
+
+/**
+ * Identifies an array of ranges.
+ */
+export const CXSourceRangeListT = {
+  /** Struct size: 16 */
+  struct: [
+    /**
+     * The number of ranges in the `ranges` array.
+     */
+    unsignedInt, // count, offset 0, size 4
+    /**
+     * An array of `CXSourceRanges.`
+     */
+    ptr(CXSourceRangeT), // ranges, offset 8, size 8
+  ],
+} as const;
+
+/**
+ * Uniquely identifies a CXFile, that refers to the same underlying file,
+ * across an indexing session.
+ */
+export const CXFileUniqueIDT = {
+  /** Struct size: 24 */
+  struct: [
+    unsignedLongLong, // data[0], offset 0, size 8
+    unsignedLongLong, // data[1], offset 8, size 8
+    unsignedLongLong, // data[2], offset 16, size 8
+  ],
+} as const;
+
+/**
+ * A character string.
+ *
+ * The `CXString` type is used to return strings from the interface when
+ * the ownership of that string might differ from one call to the next.
+ * Use `clang_getCString(`) to retrieve the string data and, once finished
+ * with the string data, call `clang_disposeString(`) to free the string.
+ */
+export const CXStringT = {
+  /** Struct size: 16 */
+  struct: [
+    ptr("void"), // data, offset 0, size 8
+    unsignedInt, // private_flags, offset 8, size 4
+  ],
+} as const;
+
+export const CXStringSetT = {
+  /** Struct size: 16 */
+  struct: [
+    ptr(CXStringT), // Strings, offset 0, size 8
+    unsignedInt, // Count, offset 8, size 4
+  ],
+} as const;
+
+/**
+ * Describes a version number of the form major.minor.subminor.
+ */
+export const CXVersionT = {
+  /** Struct size: 12 */
+  struct: [
+    /**
+     * The major version number, e.g., the '10' in '10.7.3'. A negative
+     * value indicates that there is no version number at all.
+     */
+    int, // Major, offset 0, size 4
+    /**
+     * The minor version number, e.g., the '7' in '10.7.3'. This value
+     * will be negative if no minor version number was provided, e.g., for
+     * version '10'.
+     */
+    int, // Minor, offset 4, size 4
+    /**
+     * The subminor version number, e.g., the '3' in '10.7.3'. This value
+     * will be negative if no minor or subminor version number was provided,
+     * e.g., in version '10' or '10.7'.
+     */
+    int, // Subminor, offset 8, size 4
+  ],
+} as const;
+
+export const CXTUResourceUsageEntryT = {
+  /** Struct size: 16 */
+  struct: [
+    /**
+     * The memory usage category.
+     */
+    CXTUResourceUsageKindT, // kind, offset 0, size 4
+    /**
+     * Amount of resources used.
+     * The units will depend on the resource kind.
+     */
+    unsignedLong, // amount, offset 8, size 8
+  ],
+} as const;
+
+/**
+ * The memory usage of a CXTranslationUnit, broken into categories.
+ */
+export const CXTUResourceUsageT = {
+  /** Struct size: 24 */
+  struct: [
+    /**
+     * Private data member, used for queries.
+     */
+    ptr("void"), // data, offset 0, size 8
+    /**
+     * The number of entries in the 'entries' array.
+     */
+    unsignedInt, // numEntries, offset 8, size 4
+    /**
+     * An array of key-value pairs, representing the breakdown of memory
+     * usage.
+     */
+    ptr(CXTUResourceUsageEntryT), // entries, offset 16, size 8
+  ],
+} as const;
+
+/**
+ * Describes the availability of a given entity on a particular platform, e.g.,
+ * a particular class might only be available on Mac OS 10.7 or newer.
+ */
+export const CXPlatformAvailabilityT = {
+  /** Struct size: 72 */
+  struct: [
+    /**
+     * A string that describes the platform for which this structure
+     * provides availability information.
+     *
+     * Possible values are "ios" or "macos".
+     */
+    CXStringT, // Platform, offset 0, size 16
+    /**
+     * The version number in which this entity was introduced.
+     */
+    CXVersionT, // Introduced, offset 16, size 12
+    /**
+     * The version number in which this entity was deprecated (but is
+     * still available).
+     */
+    CXVersionT, // Deprecated, offset 28, size 12
+    /**
+     * The version number in which this entity was obsoleted, and therefore
+     * is no longer available.
+     */
+    CXVersionT, // Obsoleted, offset 40, size 12
+    /**
+     * Whether the entity is unconditionally unavailable on this platform.
+     */
+    int, // Unavailable, offset 52, size 4
+    /**
+     * An optional message to provide to a user of this API, e.g., to
+     * suggest replacement APIs.
+     */
+    CXStringT, // Message, offset 56, size 16
+  ],
+} as const;
+
+export const CXCursorAndRangeVisitorCallbackDefinition = {
+  /** enum CXVisitorResult (void *, CXCursor, CXSourceRange) */
+  parameters: [
+    ptr("void"), // void *
+    CXCursorT, // CXCursor
+    CXSourceRangeT, // CXSourceRange
+  ],
+  result: CXVisitorResultT,
+} as const; /* extra */
+export const CXCursorAndRangeVisitorT = {
+  /** Struct size: 16 */
+  struct: [
+    ptr("void"), // context, offset 0, size 8
+    func(CXCursorAndRangeVisitorCallbackDefinition), // visit, offset 8, size 8
+  ],
+} as const;
+
+/**
+ * Data for ppIncludedFile callback.
+ */
+export const CXIdxIncludedFileInfoT = {
+  /** Struct size: 56 */
+  struct: [
+    /**
+     * Location of '#' in the \#include/\#import directive.
+     */
+    CXIdxLocT, // hashLoc, offset 0, size 24
+    /**
+     * Filename as written in the \#include/\#import directive.
+     */
+    cstringT, // filename, offset 24, size 8
+    /**
+     * The actual file that the \#include/\#import directive resolved to.
+     */
+    CXFileT, // file, offset 32, size 8
+    int, // isImport, offset 40, size 4
+    int, // isAngled, offset 44, size 4
+    /**
+     * Non-zero if the directive was automatically turned into a module
+     * import.
+     */
+    int, // isModuleImport, offset 48, size 4
+  ],
+} as const;
+
+/**
+ * Data for IndexerCallbacks#importedASTFile.
+ */
+export const CXIdxImportedASTFileInfoT = {
+  /** Struct size: 48 */
+  struct: [
+    /**
+     * Top level AST file containing the imported PCH, module or submodule.
+     */
+    CXFileT, // file, offset 0, size 8
+    /**
+     * The imported module or NULL if the AST file is a PCH.
+     */
+    CXModuleT, // module, offset 8, size 8
+    /**
+     * Location where the file is imported. Applicable only for modules.
+     */
+    CXIdxLocT, // loc, offset 16, size 24
+    /**
+     * Non-zero if an inclusion directive was automatically turned into
+     * a module import. Applicable only for modules.
+     */
+    int, // isImplicit, offset 40, size 4
+  ],
+} as const;
+
 export const CXIdxBaseClassInfoT = {
   /** Struct size: 64 */
   struct: [
@@ -3534,15 +3686,6 @@ export const CXIdxObjCCategoryDeclInfoT = {
     CXCursorT, // classCursor, offset 16, size 32
     CXIdxLocT, // classLoc, offset 48, size 24
     ptr(CXIdxObjCProtocolRefListInfoT), // protocols, offset 72, size 8
-  ],
-} as const;
-
-export const CXIdxObjCPropertyDeclInfoT = {
-  /** Struct size: 24 */
-  struct: [
-    ptr(CXIdxDeclInfoT), // declInfo, offset 0, size 8
-    ptr(CXIdxEntityInfoT), // getter, offset 8, size 8
-    ptr(CXIdxEntityInfoT), // setter, offset 16, size 8
   ],
 } as const;
 
@@ -3698,149 +3841,6 @@ export const IndexerCallbacksT = {
      * Called to index a reference of an entity.
      */
     func(IndexerCallbacksIndexEntityReferenceCallbackDefinition), // indexEntityReference, offset 56, size 8
-  ],
-} as const;
-
-/**
- * Identifies a specific source location within a translation
- * unit.
- *
- * Use clang_getExpansionLocation() or clang_getSpellingLocation()
- * to map a source location to a particular file, line, and column.
- */
-export const CXSourceLocationT = {
-  /** Struct size: 24 */
-  struct: [
-    ptr("void"), // ptr_data[0], offset 0, size 8
-    ptr("void"), // ptr_data[1], offset 8, size 8
-    unsignedInt, // int_data, offset 16, size 4
-  ],
-} as const;
-
-/**
- * Identifies a half-open character range in the source code.
- *
- * Use clang_getRangeStart() and clang_getRangeEnd() to retrieve the
- * starting and end locations from a source range, respectively.
- */
-export const CXSourceRangeT = {
-  /** Struct size: 24 */
-  struct: [
-    ptr("void"), // ptr_data[0], offset 0, size 8
-    ptr("void"), // ptr_data[1], offset 8, size 8
-    unsignedInt, // begin_int_data, offset 16, size 4
-    unsignedInt, // end_int_data, offset 20, size 4
-  ],
-} as const;
-
-/**
- * Identifies an array of ranges.
- */
-export const CXSourceRangeListT = {
-  /** Struct size: 16 */
-  struct: [
-    /**
-     * The number of ranges in the `ranges` array.
-     */
-    unsignedInt, // count, offset 0, size 4
-    /**
-     * An array of `CXSourceRanges.`
-     */
-    ptr(CXSourceRangeT), // ranges, offset 8, size 8
-  ],
-} as const;
-
-/**
- * Uniquely identifies a CXFile, that refers to the same underlying file,
- * across an indexing session.
- */
-export const CXFileUniqueIDT = {
-  /** Struct size: 24 */
-  struct: [
-    unsignedLongLong, // data[0], offset 0, size 8
-    unsignedLongLong, // data[1], offset 8, size 8
-    unsignedLongLong, // data[2], offset 16, size 8
-  ],
-} as const;
-
-/**
- * A character string.
- *
- * The `CXString` type is used to return strings from the interface when
- * the ownership of that string might differ from one call to the next.
- * Use `clang_getCString(`) to retrieve the string data and, once finished
- * with the string data, call `clang_disposeString(`) to free the string.
- */
-export const CXStringT = {
-  /** Struct size: 16 */
-  struct: [
-    ptr("void"), // data, offset 0, size 8
-    unsignedInt, // private_flags, offset 8, size 4
-  ],
-} as const;
-
-export const CXStringSetT = {
-  /** Struct size: 16 */
-  struct: [
-    ptr(CXStringT), // Strings, offset 0, size 8
-    unsignedInt, // Count, offset 8, size 4
-  ],
-} as const;
-
-/**
- * Describes the availability of a given entity on a particular platform, e.g.,
- * a particular class might only be available on Mac OS 10.7 or newer.
- */
-export const CXPlatformAvailabilityT = {
-  /** Struct size: 72 */
-  struct: [
-    /**
-     * A string that describes the platform for which this structure
-     * provides availability information.
-     *
-     * Possible values are "ios" or "macos".
-     */
-    CXStringT, // Platform, offset 0, size 16
-    /**
-     * The version number in which this entity was introduced.
-     */
-    CXVersionT, // Introduced, offset 16, size 12
-    /**
-     * The version number in which this entity was deprecated (but is
-     * still available).
-     */
-    CXVersionT, // Deprecated, offset 28, size 12
-    /**
-     * The version number in which this entity was obsoleted, and therefore
-     * is no longer available.
-     */
-    CXVersionT, // Obsoleted, offset 40, size 12
-    /**
-     * Whether the entity is unconditionally unavailable on this platform.
-     */
-    int, // Unavailable, offset 52, size 4
-    /**
-     * An optional message to provide to a user of this API, e.g., to
-     * suggest replacement APIs.
-     */
-    CXStringT, // Message, offset 56, size 16
-  ],
-} as const;
-
-export const CXCursorAndRangeVisitorCallbackDefinition = {
-  /** enum CXVisitorResult (void *, CXCursor, CXSourceRange) */
-  parameters: [
-    ptr("void"), // void *
-    CXCursorT, // CXCursor
-    CXSourceRangeT, // CXSourceRange
-  ],
-  result: CXVisitorResultT,
-} as const; /* extra */
-export const CXCursorAndRangeVisitorT = {
-  /** Struct size: 16 */
-  struct: [
-    ptr("void"), // context, offset 0, size 8
-    func(CXCursorAndRangeVisitorCallbackDefinition), // visit, offset 8, size 8
   ],
 } as const;
 

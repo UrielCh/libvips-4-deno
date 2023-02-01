@@ -118,20 +118,26 @@ export class FFIgenerator {
           added = 0;
           if (!missingStruct.has(anyType.reprName))
             continue;
-          //if (!selection.has(anyType.reprName)) {
-          //  // missingStruct.delete(anyType.reprName);
-          //  continue;
-          //}
+          if (!selection.has(anyType.reprName)) {
+            continue;
+          }
           // check missing type usage;
+          let uncomplet = false;
           for (const field of anyType.fields) {
             const { structField, dependencies } = structFieldToDeinlineString(anyType, field);
-            if (missingStruct.has(structField))
-              continue loop;
+            if (missingStruct.has(structField)) {
+              selection.add(structField)
+              uncomplet = true;
+            }
             for (const dep of dependencies) {
-              if (missingStruct.has(dep))
-                continue loop;
+              if (missingStruct.has(dep)) {
+                selection.add(dep)
+                uncomplet = true;
+              }
             }
           }
+          if (uncomplet)
+            continue loop;
 
           const next: string[] = [];
           added++;
@@ -367,11 +373,11 @@ export class FFIgenerator {
 
     const { dependencies } = await this.genFunctionFiles(ctxtGl);
 
-    const {code: enumCode} = this.generateEnum(ctxtGl);
-    const {code: ptrCode} = this.generatePrts(ctxtGl);
-    const {code: structCode} = this.generateStruct(ctxtGl, dependencies);
-    const {code: RefCode} = this.generateRefs(ctxtGl);
-    const {code: funcCode} = this.generateFunctions(ctxtGl);
+    const { code: enumCode } = this.generateEnum(ctxtGl);
+    const { code: ptrCode } = this.generatePrts(ctxtGl);
+    const { code: structCode } = this.generateStruct(ctxtGl, dependencies);
+    const { code: RefCode } = this.generateRefs(ctxtGl);
+    const { code: funcCode } = this.generateFunctions(ctxtGl);
 
     results.push(...enumCode);
     results.push(...ptrCode);
