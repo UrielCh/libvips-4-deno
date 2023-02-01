@@ -1,15 +1,10 @@
 import {
-  buf,
-  cstringT,
-  CXAPISetT,
   CXCommentInlineCommandRenderKindT,
   CXCommentKindT,
   CXCommentParamPassDirectionT,
   CXCommentT,
   CXCursorT,
-  CXErrorCodeT,
   CXStringT,
-  CXTranslationUnitT,
   unsignedInt,
 } from "../typeDefinitions.ts";
 
@@ -489,81 +484,6 @@ export const clang_FullComment_getAsHTML = {
 export const clang_FullComment_getAsXML = {
   parameters: [
     CXCommentT, // Comment
-  ],
-  result: CXStringT,
-} as const;
-
-/**
- * Traverses the translation unit to create a `CXAPISet.`
- *
- * @param tu is the `CXTranslationUnit` to build the `CXAPISet` for.
- * @param out_api is a pointer to the output of this function. It is needs to be
- * disposed of by calling clang_disposeAPISet.
- * @returns Error code indicating success or failure of the APISet creation.
- */
-// deno-lint-ignore no-unused-vars
-const clang_createAPISet = {
-  parameters: [
-    CXTranslationUnitT, // tu
-    buf(CXAPISetT), // out_api
-  ],
-  result: CXErrorCodeT,
-} as const;
-
-/**
- * Dispose of an APISet.
- *
- * The provided `CXAPISet` can not be used after this function is called.
- */
-// deno-lint-ignore no-unused-vars
-const clang_disposeAPISet = {
-  parameters: [
-    CXAPISetT, // api
-  ],
-  result: "void",
-} as const;
-
-/**
- * Generate a single symbol symbol graph for the given USR. Returns a null
- * string if the associated symbol can not be found in the provided `CXAPISet.`
- *
- * The output contains the symbol graph as well as some additional information
- * about related symbols.
- *
- * @param usr is a string containing the USR of the symbol to generate the
- * symbol graph for.
- * @param api the `CXAPISet` to look for the symbol in.
- * @returns a string containing the serialized symbol graph representation for
- * the symbol being queried or a null string if it can not be found in the
- * APISet.
- */
-// deno-lint-ignore no-unused-vars
-const clang_getSymbolGraphForUSR = {
-  parameters: [
-    cstringT, // usr
-    CXAPISetT, // api
-  ],
-  result: CXStringT,
-} as const;
-
-/**
- * Generate a single symbol symbol graph for the declaration at the given
- * cursor. Returns a null string if the AST node for the cursor isn't a
- * declaration.
- *
- * The output contains the symbol graph as well as some additional information
- * about related symbols.
- *
- * @param cursor the declaration for which to generate the single symbol symbol
- * graph.
- * @returns a string containing the serialized symbol graph representation for
- * the symbol being queried or a null string if it can not be found in the
- * APISet.
- */
-// deno-lint-ignore no-unused-vars
-const clang_getSymbolGraphForCursor = {
-  parameters: [
-    CXCursorT, // cursor
   ],
   result: CXStringT,
 } as const;

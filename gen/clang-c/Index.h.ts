@@ -1688,60 +1688,6 @@ export const clang_getPointeeType = {
 } as const;
 
 /**
- * Retrieve the unqualified variant of the given type, removing as
- * little sugar as possible.
- *
- * For example, given the following series of typedefs:
- *
- * ```cpp
- * typedef int Integer;
- * typedef const Integer CInteger;
- * typedef CInteger DifferenceType;
- * ```
- * Executing `clang_getUnqualifiedType(`) on a `CXType` that
- * represents `DifferenceType,` will desugar to a type representing
- * `Integer,` that has no qualifiers.
- *
- * And, executing `clang_getUnqualifiedType(`) on the type of the
- * first argument of the following function declaration:
- *
- * ```cpp
- * void foo(const int);
- * ```
- * Will return a type representing `int,` removing the `const` qualifier.
- *
- * Sugar over array types is not desugared.
- *
- * A type can be checked for qualifiers with `clang_isConstQualifiedType(),` `clang_isVolatileQualifiedType(`) and `clang_isRestrictQualifiedType().`
- *
- * A type that resulted from a call to `clang_getUnqualifiedType` will return `false` for all of the above calls.
- */
-// deno-lint-ignore no-unused-vars
-const clang_getUnqualifiedType = {
-  parameters: [
-    CXTypeT, // CT
-  ],
-  result: CXTypeT,
-} as const;
-
-/**
- * For reference types (e.g., "const int&"), returns the type that the
- * reference refers to (e.g "const int").
- *
- * Otherwise, returns the type itself.
- *
- * A type that has kind `CXType_LValueReference` or
- * `CXType_RValueReference` is a reference type.
- */
-// deno-lint-ignore no-unused-vars
-const clang_getNonReferenceType = {
-  parameters: [
-    CXTypeT, // CT
-  ],
-  result: CXTypeT,
-} as const;
-
-/**
  * Return the cursor for the declaration of the given type.
  */
 export const clang_getTypeDeclaration = {
@@ -3008,17 +2954,6 @@ export const clang_CXXMethod_isDefaulted = {
 } as const;
 
 /**
- * Determine if a C++ method is declared '= delete'.
- */
-// deno-lint-ignore no-unused-vars
-const clang_CXXMethod_isDeleted = {
-  parameters: [
-    CXCursorT, // C
-  ],
-  result: unsignedInt,
-} as const;
-
-/**
  * Determine if a C++ member function or member function template is
  * pure virtual.
  */
@@ -3046,68 +2981,6 @@ export const clang_CXXMethod_isStatic = {
  * one of the base classes.
  */
 export const clang_CXXMethod_isVirtual = {
-  parameters: [
-    CXCursorT, // C
-  ],
-  result: unsignedInt,
-} as const;
-
-/**
- * Determine if a C++ member function is a copy-assignment operator,
- * returning 1 if such is the case and 0 otherwise.
- *
- * > A copy-assignment operator `X::operator=` is a non-static,
- * > non-template member function of _class_ `X` with exactly one
- * > parameter of type `X`, `X\&`, `const X\&`, `volatile X\&` or `const
- * > volatile X\&`.
- *
- * That is, for example, the `operator=` in:
- *
- * class Foo {
- * bool operator=(const volatile Foo\&);
- * };
- *
- * Is a copy-assignment operator, while the `operator=` in:
- *
- * class Bar {
- * bool operator=(const int\&);
- * };
- *
- * Is not.
- */
-// deno-lint-ignore no-unused-vars
-const clang_CXXMethod_isCopyAssignmentOperator = {
-  parameters: [
-    CXCursorT, // C
-  ],
-  result: unsignedInt,
-} as const;
-
-/**
- * Determine if a C++ member function is a move-assignment operator,
- * returning 1 if such is the case and 0 otherwise.
- *
- * > A move-assignment operator `X::operator=` is a non-static,
- * > non-template member function of _class_ `X` with exactly one
- * > parameter of type `X\&\&`, `const X\&\&`, `volatile X\&\&` or `const
- * > volatile X\&\&`.
- *
- * That is, for example, the `operator=` in:
- *
- * class Foo {
- * bool operator=(const volatile Foo\&\&);
- * };
- *
- * Is a move-assignment operator, while the `operator=` in:
- *
- * class Bar {
- * bool operator=(const int\&\&);
- * };
- *
- * Is not.
- */
-// deno-lint-ignore no-unused-vars
-const clang_CXXMethod_isMoveAssignmentOperator = {
   parameters: [
     CXCursorT, // C
   ],

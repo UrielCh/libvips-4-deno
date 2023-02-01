@@ -61,7 +61,7 @@ export class FFIgenerator {
     this.index = new libclang.CXIndex(false, true);
   }
 
-  generateEnum(ctxtGl: ContextGlobal): string[] {
+  generateEnum(ctxtGl: ContextGlobal): { code: string[] } {
     const results: string[] = [];
     /** enums */
     const enumsType = [...ctxtGl.TYPE_MEMORY.values()].filter(a => a.kind === "enum") as EnumType[];
@@ -79,10 +79,10 @@ export class FFIgenerator {
       } // fin loop enum
       results.push(`/******** End enums ********/`)
     }
-    return results;
+    return { code: results };
   }
 
-  generatePrts(ctxtGl: ContextGlobal): string[] {
+  generatePrts(ctxtGl: ContextGlobal): { code: string[] } {
     const results: string[] = [];
     /**
      * ptr
@@ -100,10 +100,10 @@ export class FFIgenerator {
       }
       results.push(`/******** End pointer ********/`)
     }
-    return results;
+    return { code: results };
   }
 
-  generateStruct(ctxtGl: ContextGlobal): string[] {
+  generateStruct(ctxtGl: ContextGlobal, selection: Set<string>): { code: string[] } {
     const results: string[] = [];
     /**
      * struct
@@ -112,10 +112,16 @@ export class FFIgenerator {
     if (stuctType.length) {
       const missingStruct = new Set<string>(stuctType.map(s => s.reprName));
       results.push(`/******** Start Struct ********/`)
-      while (missingStruct.size)
+      let added = 1;
+      while (added > 0)
         loop: for (const anyType of stuctType) {
+          added = 0;
           if (!missingStruct.has(anyType.reprName))
             continue;
+          //if (!selection.has(anyType.reprName)) {
+          //  // missingStruct.delete(anyType.reprName);
+          //  continue;
+          //}
           // check missing type usage;
           for (const field of anyType.fields) {
             const { structField, dependencies } = structFieldToDeinlineString(anyType, field);
@@ -128,11 +134,15 @@ export class FFIgenerator {
           }
 
           const next: string[] = [];
+          added++;
           next.push(`${cmt(anyType, '')}export const ${anyType.reprName} = {`);
           next.push(`  /** Struct size: ${anyType.size} */`);
           next.push(`  struct: [`);
           for (const field of anyType.fields) {
-            const { structField, extraCode } = structFieldToDeinlineString(anyType, field);
+            const { structField, extraCode, dependencies: structDependencies } = structFieldToDeinlineString(anyType, field);
+            for (const type of structDependencies) {
+              selection.add(type);
+            }
             if (extraCode)
               results.push(extraCode)
             next.push(`${cmt(field, '    ')}    ${structField}, // ${field.name}, offset ${field.offset}, size ${field.size}`);
@@ -144,10 +154,10 @@ export class FFIgenerator {
         }
       results.push(`/******** End Struct ********/`)
     }
-    return results;
+    return { code: results };
   }
 
-  generateRefs(ctxtGl: ContextGlobal): string[] {
+  generateRefs(ctxtGl: ContextGlobal): { code: string[] } {
     const results: string[] = [];
     /**
      * ref
@@ -167,11 +177,11 @@ export class FFIgenerator {
       }
       results.push(`/******** end ref ********/`)
     }
-    return results;
+    return { code: results };
   }
 
 
-  generateFunctions(ctxtGl: ContextGlobal): string[] {
+  generateFunctions(ctxtGl: ContextGlobal): { code: string[] } {
     const results: string[] = [];
     /**
      * function
@@ -195,7 +205,7 @@ export class FFIgenerator {
       results.push(`/******** End Functions ********/`)
     }
 
-    return results;
+    return { code: results };
   }
 
 
@@ -355,25 +365,29 @@ export class FFIgenerator {
       }
     }
 
-    results.push(...this.generateEnum(ctxtGl));
+    const { dependencies } = await this.genFunctionFiles(ctxtGl);
 
-    results.push(...this.generatePrts(ctxtGl));
+    const {code: enumCode} = this.generateEnum(ctxtGl);
+    const {code: ptrCode} = this.generatePrts(ctxtGl);
+    const {code: structCode} = this.generateStruct(ctxtGl, dependencies);
+    const {code: RefCode} = this.generateRefs(ctxtGl);
+    const {code: funcCode} = this.generateFunctions(ctxtGl);
 
-    results.push(...this.generateStruct(ctxtGl));
-
-    results.push(...this.generateRefs(ctxtGl));
-
-    results.push(...this.generateFunctions(ctxtGl));
-
+    results.push(...enumCode);
+    results.push(...ptrCode);
+    results.push(...structCode);
+    results.push(...RefCode);
+    results.push(...funcCode);
     results.push('');
     /**
      * Write to file with all types
      */
-
     Deno.writeTextFileSync(join(this.destination, "typeDefinitions.ts"), results.join("\n"));
     // utils.formatSync(join(destination, "typeDefinitions.ts"));
+  }
 
-    /** filter non exported function */
+  async genFunctionFiles(ctxtGl: ContextGlobal): Promise<{ dependencies: Set<string> }> {    /** filter non exported function */
+    const allDependencies = new Set<string>();
     for (const [fileName, apiFunctions] of ctxtGl.FUNCTIONS_MAP) {
       const imports = new Set<string>();
 
@@ -388,13 +402,14 @@ export class FFIgenerator {
           );
         } catch (err) {
           if (err.message.includes("No such file or directory")) {
-            console.error(`can log load lib ${this.libFile} No such file or directory`)
-            return;
+            throw Error(`can log load lib ${this.libFile} No such file or directory`)
           }
           console.log(err.message)
           // Failed to register symbol clang_CXXMethod_isMoveAssignmentOperator: Could not obtain symbol from the library: /usr/lib/llvm-14/lib/libclang-14.so.1: undefined symbol: clang_CXXMethod_isMoveAssignmentOperator
           isAvailable = false;
         }
+        if (!isAvailable)
+          continue;
         this.emplaceRefs(imports, result);
         parameters.forEach((param) => this.emplaceRefs(imports, param.type));
         //const comment = 
@@ -402,13 +417,16 @@ export class FFIgenerator {
         if (parameters.length) {
           functionResults.push(`  parameters: [`);
           for (const param of parameters) {
-            const { code } = anyTypeToString(param.type);
-            const comment = param.name || param.comment ? ` // ${[param.name, param.comment].filter(Boolean).join(", ")}`: "";
+            const { code, dependencies: paramDependencies } = anyTypeToString(param.type);
+            paramDependencies.forEach((dep) => allDependencies.add(dep));
+            const comment = param.name || param.comment ? ` // ${[param.name, param.comment].filter(Boolean).join(", ")}` : "";
             functionResults.push(`    ${code},${comment}`);
           }
           functionResults.push(`  ],`)
         }
-        functionResults.push(`  result: ${anyTypeToString(result).code},`);
+        const { code, dependencies: retDependencies } = anyTypeToString(result);
+        retDependencies.forEach((dep) => allDependencies.add(dep));
+        functionResults.push(`  result: ${code},`);
         functionResults.push(`} as const;`);
         functionResults.push('');
       }
@@ -434,5 +452,7 @@ export class FFIgenerator {
         // utils.formatSync(dst);
       }
     }
+    return { dependencies: allDependencies }
   }
+
 }
