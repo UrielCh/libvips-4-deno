@@ -6,9 +6,9 @@
     "configurations": [
         {
             "request": "launch",
-            "name": "Launch build",
+            "name": "build clanglib",
             "type": "node",
-            "program": "${workspaceFolder}/clang/build/mapLibClang.ts",
+            "program": "${workspaceFolder}/generateLibClang.ts",
             "cwd": "${workspaceFolder}",
             "runtimeExecutable": "deno",
             "runtimeArgs": [
