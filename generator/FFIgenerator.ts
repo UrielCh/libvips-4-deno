@@ -40,6 +40,7 @@ function cmt(elm: CommonType, offset = '  '): string {
 
 export class FFIgenerator {
   private headerRoot: string;
+  private files?: string[];
   private libFile: string;
   private destination: string;
   private includePaths: string[];
@@ -52,10 +53,11 @@ export class FFIgenerator {
    * @param configurations.destination The destination directory for the generated files
    * @param configurations.includePaths Additional include paths will be passed as -I to the C compiler
    */
-  constructor(configurations: { headerRoot: string, libFile: string, destination: string, includePaths?: string[] }) {
+  constructor(configurations: { headers: string, files?: string[], libFile: string, destination: string, includePaths?: string[] }) {
     this.destination = configurations.destination;
     this.libFile = configurations.libFile;
-    this.headerRoot = configurations.headerRoot;
+    this.files = configurations.files;
+    this.headerRoot = configurations.headers;
     this.includePaths = configurations.includePaths || [];
     this.index = new libclang.CXIndex(false, true);
   }
@@ -246,10 +248,20 @@ export class FFIgenerator {
     const includePaths = (this.includePaths || []).map(a => `-I${a}`);
 
     const HEADER_FILES: string[] = []
-    for await (const header of walk(this.headerRoot, { exts: ["h", "hpp"] })) {
-      const path = header.path.replace(this.headerRoot, "")
-      HEADER_FILES.push(path.replace(/^\//, ''));
+    if (this.files) {
+      for (const header of this.files) {
+        HEADER_FILES.push(header.replace(/^\//, ''));
+      }
+    } else {
+      for await (const header of walk(this.headerRoot, { exts: ["h", "hpp"] })) {
+        const path = header.path.replace(this.headerRoot, "")
+        HEADER_FILES.push(path.replace(/^\//, ''));
+      }
     }
+    // console.log(HEADER_FILES);
+    // HEADER_FILES = ['vips.h']; // , ...HEADER_FILES.filter(a => a!= 'vips.h')];
+    // console.log(HEADER_FILES);
+    // return;
 
     const headerRoot = this.headerRoot;
     const visiteHeaderFile = (ctxtGl: ContextGlobal, fileName: string) => {
@@ -331,9 +343,8 @@ export class FFIgenerator {
     }
 
     // Hard-coded exceptions
-    {
+    try {
       // const INDEX_FUCNTIONS = ctxtGl.FUNCTIONS_MAP.get("Index.h")!;
-
       // clang_annotateTokens takes a user-defined C array of tokens, not a token pointer like tokens are usually passed around as.
       const clang_annotateTokens = ctxtGl.getExistingFunction("clang-c/Index.h", "clang_annotateTokens");
       const clang_annotateTokens_arg1 = clang_annotateTokens.parameters[1];
@@ -341,7 +352,6 @@ export class FFIgenerator {
         throw new Error("unreachable");
       }
       clang_annotateTokens_arg1.type.useBuffer = true;
-
       // clang_disposeOverriddenCursors takes a C array of cursors as pointer received through an out-buffer from clang_getOverriddenCursors.
       const clang_disposeOverriddenCursors = ctxtGl.getExistingFunction("clang-c/Index.h", "clang_disposeOverriddenCursors");
       const clang_disposeOverriddenCursors_arg0 = clang_disposeOverriddenCursors.parameters[0];
@@ -349,6 +359,8 @@ export class FFIgenerator {
         throw new Error("unreachable");
       }
       clang_disposeOverriddenCursors_arg0.type.useBuffer = false;
+    } catch (_e) {
+      // ignore
     }
 
     const results: string[] = [

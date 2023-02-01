@@ -6,7 +6,7 @@
     "configurations": [
         {
             "request": "launch",
-            "name": "build clanglib",
+            "name": "build libClang",
             "type": "node",
             "program": "${workspaceFolder}/generateLibClang.ts",
             "cwd": "${workspaceFolder}",
@@ -18,6 +18,22 @@
                 "--allow-all"
             ],
             "attachSimplePort": 9229
+        },
+        {
+            "request": "launch",
+            "name": "build libVips",
+            "type": "node",
+            "program": "${workspaceFolder}/generateLibVips.ts",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "deno",
+            "runtimeArgs": [
+                "run",
+                "--unstable",
+                "--inspect-wait",
+                "--allow-all"
+            ],
+            "attachSimplePort": 9229
         }
+
     ]
 }
