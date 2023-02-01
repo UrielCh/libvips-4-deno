@@ -3,11 +3,11 @@
 /**
  * format a source file using deno fmt
  */
-export const formatSync = (filePath: string) => {
-    new Deno.Command("deno", {
-        args: ["fmt", filePath],
-    }).outputSync();
-};
+// export const formatSync = (filePath: string) => {
+//     new Deno.Command("deno", {
+//         args: ["fmt", filePath],
+//     }).outputSync();
+// };
 
 // export const filterSymboles = (libFile: string, apiFunctions: FunctionType[]): FunctionType[] {
 //     for (const { name } of apiFunctions) {

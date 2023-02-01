@@ -3,7 +3,7 @@ import {
     join,
     fromFileUrl,
   } from "https://deno.land/std@0.170.0/path/mod.ts";
-  import { FFIgenerator } from "./build.ts";
+  import { FFIgenerator } from "./FFIgenerator.ts";
 
 // const includeDirectory = '/home/uriel/libclang_deno/build/include/'
 const includeDirectory = join(dirname(fromFileUrl(import.meta.url)), "..", "..", "sample", "libClang");

@@ -45,7 +45,6 @@ export class FFIgenerator {
   private includePaths: string[];
   private index: libclang.CXIndex;
 
-
   /**
    * Generator entry point
    * @param configurations.headerRoot The root directory of the header files
@@ -210,10 +209,8 @@ export class FFIgenerator {
       }
       results.push(`/******** End Functions ********/`)
     }
-
     return { code: results };
   }
-
 
   /**
    * functions files
@@ -371,7 +368,7 @@ export class FFIgenerator {
       }
     }
 
-    const { dependencies } = await this.genFunctionFiles(ctxtGl);
+    const { dependencies, fileNames } = await this.genFunctionFiles(ctxtGl);
 
     const { code: enumCode } = this.generateEnum(ctxtGl);
     const { code: ptrCode } = this.generatePrts(ctxtGl);
@@ -389,11 +386,41 @@ export class FFIgenerator {
      * Write to file with all types
      */
     Deno.writeTextFileSync(join(this.destination, "typeDefinitions.ts"), results.join("\n"));
-    // utils.formatSync(join(destination, "typeDefinitions.ts"));
+    // utils.formatSync(join(destination, "typeDefinitions.ts"));  
+    this.genFFiFile(ctxtGl, fileNames);
   }
 
-  async genFunctionFiles(ctxtGl: ContextGlobal): Promise<{ dependencies: Set<string> }> {    /** filter non exported function */
+  genFFiFile(ctxtGl: ContextGlobal, fileNames: string[]): void {
+    const results: string[] = [];
+    const IMPORTS: string[] = ['const IMPORTS = {'];
+    for (const [fileName] of ctxtGl.FUNCTIONS_MAP) {
+      if (!fileNames.includes(fileName))
+        continue;
+
+      const sanitized = fileName.replaceAll(/[\/.-]/g, '_').replace(/.[hp]+$/, '')
+      results.push(`import * as ${sanitized} from "./${fileName}.ts";`)
+      IMPORTS.push(`  ...${sanitized},`);
+    }
+    IMPORTS.push(`} as const;`);
+    results.push("");
+    results.push(...IMPORTS);
+    results.push("");
+    results.push("export type libShape = ReturnType<typeof Deno.dlopen<typeof IMPORTS>>;");
+    results.push("");
+    results.push("export function getLib(path: string): libShape {");
+    results.push("  return Deno.dlopen(path, IMPORTS);");
+    results.push("}");
+    Deno.writeTextFileSync(join(this.destination, "ffi.ts"), results.join("\n"));
+  }
+
+  /**
+   * generate one ts file per header file having at least one exported function
+   * @param ctxtGl 
+   * @returns 
+   */
+  async genFunctionFiles(ctxtGl: ContextGlobal): Promise<{ dependencies: Set<string>, fileNames: string[] }> {    /** filter non exported function */
     const allDependencies = new Set<string>();
+    const fileNames: string[] = [];
     for (const [fileName, apiFunctions] of ctxtGl.FUNCTIONS_MAP) {
       const imports = new Set<string>();
 
@@ -457,10 +484,11 @@ export class FFIgenerator {
         const dst = join(this.destination, `${fileName}.ts`);
         await ensureDir(dirname(dst));
         Deno.writeTextFileSync(dst, functionResults.join("\n"));
+        fileNames.push(fileName);
         // utils.formatSync(dst);
       }
     }
-    return { dependencies: allDependencies }
+    return { dependencies: allDependencies, fileNames }
   }
 
 }
