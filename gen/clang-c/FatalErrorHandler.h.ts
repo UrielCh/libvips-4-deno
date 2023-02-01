@@ -3,6 +3,7 @@
  * Replaces currently installed error handler (if any).
  */
 export const clang_install_aborting_llvm_fatal_error_handler = {
+  parameters: [],
   result: "void",
 } as const;
 
@@ -12,5 +13,6 @@ export const clang_install_aborting_llvm_fatal_error_handler = {
  * message to stderr and call exit(1).
  */
 export const clang_uninstall_llvm_fatal_error_handler = {
+  parameters: [],
   result: "void",
 } as const;

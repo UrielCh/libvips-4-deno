@@ -16,6 +16,7 @@ import {
  * `-fbuild-session-timestamp=` option.
  */
 export const clang_getBuildSessionTimestamp = {
+  parameters: [],
   result: unsignedLongLong,
 } as const;
 

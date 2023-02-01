@@ -429,6 +429,8 @@ export class FFIgenerator {
             functionResults.push(`    ${code},${comment}`);
           }
           functionResults.push(`  ],`)
+        } else {
+          functionResults.push(`  parameters: [],`);
         }
         const { code, dependencies: retDependencies } = anyTypeToString(result);
         retDependencies.forEach((dep) => allDependencies.add(dep));

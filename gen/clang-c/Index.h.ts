@@ -427,6 +427,7 @@ export const clang_createTranslationUnit2 = {
  * set of optimizations enabled may change from one version to the next.
  */
 export const clang_defaultEditingTranslationUnitOptions = {
+  parameters: [],
   result: unsignedInt,
 } as const;
 
@@ -725,6 +726,7 @@ export const clang_TargetInfo_getPointerWidth = {
  * Retrieve the NULL cursor, which represents no entity.
  */
 export const clang_getNullCursor = {
+  parameters: [],
   result: CXCursorT,
 } as const;
 
@@ -1071,6 +1073,7 @@ export const clang_Cursor_getTranslationUnit = {
  * Creates an empty CXCursorSet.
  */
 export const clang_createCXCursorSet = {
+  parameters: [],
   result: CXCursorSetT,
 } as const;
 
@@ -3264,6 +3267,7 @@ export const clang_getDefinitionSpellingAndExtent = {
 } as const;
 
 export const clang_enableStackTraces = {
+  parameters: [],
   result: "void",
 } as const;
 
@@ -3525,6 +3529,7 @@ export const clang_getCompletionFixIt = {
  * passed to`clang_codeCompleteAt().`
  */
 export const clang_defaultCodeCompleteOptions = {
+  parameters: [],
   result: unsignedInt,
 } as const;
 
@@ -3728,6 +3733,7 @@ export const clang_codeCompleteGetObjCSelector = {
  * intended to be parsed (the format is not guaranteed to be stable).
  */
 export const clang_getClangVersion = {
+  parameters: [],
   result: CXStringT,
 } as const;
 
