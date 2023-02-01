@@ -7,7 +7,7 @@ import {
 
 // const includeDirectory = '/home/uriel/libclang_deno/build/include/'
 const includeDirectory = join(dirname(fromFileUrl(import.meta.url)), "sample", "libClang");
-const destination = join(dirname(fromFileUrl(import.meta.url)), "gen");
+const destination = join(dirname(fromFileUrl(import.meta.url)), "generated");
 const includePaths = [
     "/usr/lib/clang/14.0.0/include/",
     `${includeDirectory}`,
