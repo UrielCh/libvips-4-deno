@@ -1690,6 +1690,8 @@ export const clang_getPointeeType = {
   result: CXTypeT,
 } as const;
 
+// Symbol clang_getUnqualifiedType not exported by lib libclang.so.1
+// Symbol clang_getNonReferenceType not exported by lib libclang.so.1
 /**
  * Return the cursor for the declaration of the given type.
  */
@@ -2956,6 +2958,7 @@ export const clang_CXXMethod_isDefaulted = {
   result: unsignedInt,
 } as const;
 
+// Symbol clang_CXXMethod_isDeleted not exported by lib libclang.so.1
 /**
  * Determine if a C++ member function or member function template is
  * pure virtual.
@@ -2990,6 +2993,8 @@ export const clang_CXXMethod_isVirtual = {
   result: unsignedInt,
 } as const;
 
+// Symbol clang_CXXMethod_isCopyAssignmentOperator not exported by lib libclang.so.1
+// Symbol clang_CXXMethod_isMoveAssignmentOperator not exported by lib libclang.so.1
 /**
  * Determine if a C++ record is abstract, i.e. whether a class or struct
  * has a pure virtual member function.

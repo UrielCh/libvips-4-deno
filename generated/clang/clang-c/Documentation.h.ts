@@ -487,3 +487,8 @@ export const clang_FullComment_getAsXML = {
   ],
   result: CXStringT,
 } as const;
+
+// Symbol clang_createAPISet not exported by lib libclang.so.1
+// Symbol clang_disposeAPISet not exported by lib libclang.so.1
+// Symbol clang_getSymbolGraphForUSR not exported by lib libclang.so.1
+// Symbol clang_getSymbolGraphForCursor not exported by lib libclang.so.1

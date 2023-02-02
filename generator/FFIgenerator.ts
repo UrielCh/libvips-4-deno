@@ -1,4 +1,5 @@
 import {
+  basename,
   dirname,
   join,
 } from "https://deno.land/std@0.170.0/path/mod.ts";
@@ -511,6 +512,7 @@ export class FFIgenerator {
       }
     }
     console.log(availibleTypes.size, 'Availible Types');
+    const dropSumboles: string[] = [];
     const longestType = Math.max(15, ...[...availibleTypes].map(s => s.length));
     for (const [fileName, apiFunctions] of ctxtGl.FUNCTIONS_MAP) {
       const imports = new Set<string>();
@@ -528,7 +530,9 @@ export class FFIgenerator {
           if (err.message.includes("No such file or directory")) {
             throw Error(`can log load lib ${this.libFile} No such file or directory`)
           }
-          console.log(err.message)
+          dropSumboles.push(name);
+          functionResults.push(`// Symbol ${name} not exported by lib ${basename(this.libFile)}`);
+          // console.log(err.message)
           // Failed to register symbol clang_CXXMethod_isMoveAssignmentOperator: Could not obtain symbol from the library: /usr/lib/llvm-14/lib/libclang-14.so.1: undefined symbol: clang_CXXMethod_isMoveAssignmentOperator
           isAvailable = false;
         }
@@ -600,9 +604,9 @@ export class FFIgenerator {
         await ensureDir(dirname(dst));
         Deno.writeTextFileSync(dst, importText + functionResults.join("\n"));
         fileNames.push(fileName);
-        console.log(`Writing ${dst} with ${fncCount} functions`);
+        console.log(`Writing ${fileName}.ts with ${fncCount} functions, ${dropSumboles.length} symbol dropped`);
       } else {
-        console.log(`empty ${dst} will not be writen`);
+        console.log(`Empty   ${fileName}.ts will not be writen, ${dropSumboles.length} symbol dropped`);
       }
     }
     return { dependencies: allDependencies, fileNames }
