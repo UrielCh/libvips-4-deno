@@ -71,25 +71,26 @@ export class FFIgenerator {
    * @param ctxtGl context
    * @returns 
    */
-  private generateEnum(ctxtGl: ContextGlobal): { code: string[] } {
+  private generateEnum(ctxtGl: ContextGlobal): { code: string[], cnt: number } {
     const results: string[] = [];
+    let cnt = 0;
     /** enums */
     const enumsType = [...ctxtGl.TYPE_MEMORY.values()].filter(a => a.kind === "enum") as EnumType[];
     if (enumsType.length) {
       results.push(`/******** Start enums ********/`)
       for (const anyType of enumsType) {
         results.push(`${cmt(anyType, '')}export const enum ${anyType.name} {`);
-
         for (const value of anyType.values) {
           results.push(`${cmt(value)}  ${value.name}${value.value === null ? "" : ` = ${value.value}`},`)
         }
         results.push(`}`)
         const { code } = anyTypeToString(anyType.type);
         results.push(`${cmt(anyType, '')}export const ${anyType.reprName} = ${code};\n`); // fin push
+        cnt++;
       } // fin loop enum
       results.push(`/******** End enums ********/`)
     }
-    return { code: results };
+    return { code: results, cnt };
   }
 
   /**
@@ -97,11 +98,9 @@ export class FFIgenerator {
    * @param ctxtGl 
    * @returns 
    */
-  private generatePrts(ctxtGl: ContextGlobal): { code: string[] } {
+  private generatePrts(ctxtGl: ContextGlobal): { code: string[], cnt: number } {
     const results: string[] = [];
-    /**
-     * ptr
-     */
+    let cnt = 0;
     const ptrType = [...ctxtGl.TYPE_MEMORY.values()].filter(a => a.kind === "pointer") as PointerType[];
     if (ptrType.length) {
       results.push(`/******** Start pointer ********/`)
@@ -112,10 +111,11 @@ export class FFIgenerator {
         const type = anyType.useBuffer ? "buf" : "ptr";
         const { code } = anyTypeToString(anyType.pointee);
         results.push(`${cmt(anyType, '')}export const ${anyType.name}T = ${type}(${code});`);
+        cnt++;
       }
       results.push(`/******** End pointer ********/`)
     }
-    return { code: results };
+    return { code: results, cnt };
   }
 
   /**
@@ -124,11 +124,9 @@ export class FFIgenerator {
    * @param selection 
    * @returns 
    */
-  private generateStruct(ctxtGl: ContextGlobal, selection: Set<string>): { code: string[] } {
+  private generateStruct(ctxtGl: ContextGlobal, selection: Set<string>): { code: string[], cnt: number } {
     const results: string[] = [];
-    /**
-     * struct
-     */
+    let cnt = 0;
     const stuctType = [...ctxtGl.TYPE_MEMORY.values()].filter(a => a.kind === "struct") as StructType[];
     if (stuctType.length) {
       const missingStruct = new Set<string>(stuctType.map(s => s.reprName));
@@ -177,11 +175,12 @@ export class FFIgenerator {
           next.push(`  ],`);
           next.push(`} as const;\n`);
           results.push(next.join('\n'));
+          cnt++;
           missingStruct.delete(anyType.reprName);
         }
       results.push(`/******** End Struct ********/`)
     }
-    return { code: results };
+    return { code: results, cnt };
   }
 
   /**
@@ -189,11 +188,9 @@ export class FFIgenerator {
    * @param ctxtGl 
    * @returns 
    */
-  private generateRefs(ctxtGl: ContextGlobal): { code: string[] } {
+  private generateRefs(ctxtGl: ContextGlobal): { code: string[], cnt: number } {
     const results: string[] = [];
-    /**
-     * ref
-     */
+    let cnt = 0;
     const RefType = new Map<string, ReferenceType>();
     for (const [name, anyType] of ctxtGl.TYPE_MEMORY) {
       if (anyType.kind === "ref") {
@@ -206,10 +203,11 @@ export class FFIgenerator {
         const expName = name.endsWith("_t") ? name : `${name}T`;
         const curName = anyType.name.endsWith("_t") ? anyType.name : anyType.reprName;
         results.push(`${cmt(anyType)}export const ${expName} = ${curName};`);
+        cnt++;
       }
       results.push(`/******** end ref ********/`)
     }
-    return { code: results };
+    return { code: results, cnt };
   }
 
   /**
@@ -217,11 +215,9 @@ export class FFIgenerator {
    * @param ctxtGl 
    * @returns 
    */
-  private generateFunctions(ctxtGl: ContextGlobal): { code: string[] } {
+  private generateFunctions(ctxtGl: ContextGlobal): { code: string[], cnt: number } {
     const results: string[] = [];
-    /**
-     * function
-     */
+    let cnt = 0;
     const fncType = [...ctxtGl.TYPE_MEMORY.values()].filter(a => a.kind === "function") as FunctionType[];
     if (fncType.length) {
       results.push(`/******** Start Functions ********/`)
@@ -237,10 +233,11 @@ export class FFIgenerator {
         results.push(`  result: ${code},`);
         results.push(`} as const;`);
         results.push(`${cmt(anyType, '')}export const ${anyType.reprName} = "function" as const;\n`);
+        cnt++;
       }
       results.push(`/******** End Functions ********/`)
     }
-    return { code: results };
+    return { code: results, cnt };
   }
 
   /**
@@ -420,16 +417,25 @@ export class FFIgenerator {
       }
     }
 
-    const { code: enumCode } = this.generateEnum(ctxtGl);
-    const { code: ptrCode } = this.generatePrts(ctxtGl);
-    const { code: structCode } = this.generateStruct(ctxtGl, dependencies);
-    const { code: RefCode } = this.generateRefs(ctxtGl);
-    const { code: funcCode } = this.generateFunctions(ctxtGl);
+    const { code: enumCode, cnt: enumCnt } = this.generateEnum(ctxtGl);
+    console.log(`Generate ${enumCnt.toString().padStart(3)} enums   in typeDefinitions.ts`)
+
+    const { code: ptrCode, cnt: ptrCnt  } = this.generatePrts(ctxtGl);
+    console.log(`Generate ${ptrCnt.toString().padStart(3)} ptrs    in typeDefinitions.ts`)
+
+    const { code: structCode, cnt: structCnt  } = this.generateStruct(ctxtGl, dependencies);
+    console.log(`Generate ${structCnt.toString().padStart(3)} structs in typeDefinitions.ts`)
+
+    const { code: refCode, cnt: refCnt  } = this.generateRefs(ctxtGl);
+    console.log(`Generate ${refCnt.toString().padStart(3)} refs    in typeDefinitions.ts`)
+
+    const { code: funcCode, cnt: funcCnt  } = this.generateFunctions(ctxtGl);
+    console.log(`Generate ${funcCnt.toString().padStart(3)} fncts   in typeDefinitions.ts`)
 
     results.push(...enumCode);
     results.push(...ptrCode);
     results.push(...structCode);
-    results.push(...RefCode);
+    results.push(...refCode);
     results.push(...funcCode);
     results.push('');
     /**
