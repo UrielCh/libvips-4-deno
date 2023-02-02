@@ -27,6 +27,7 @@ import { onEnumDecl } from "./onEnumDecl.ts";
 import { onFunctionDecl } from "./onFunctionDecl.ts";
 import { onTypedefDecl } from "./onTypedefDecl.ts";
 // import * as utils from "./utils.ts";
+import * as pc from "https://deno.land/std@0.171.0/fmt/colors.ts";
 
 import { walk } from "https://deno.land/std@0.171.0/fs/walk.ts";
 
@@ -130,7 +131,7 @@ export class FFIgenerator {
     const stuctType = [...ctxtGl.TYPE_MEMORY.values()].filter(a => a.kind === "struct") as StructType[];
     if (stuctType.length) {
       const missingStruct = new Set<string>(stuctType.map(s => s.reprName));
-      console.log('Missing Struct size is', missingStruct.size)
+      console.log('Missing Struct size is', pc.green(missingStruct.size.toString()))
       results.push(`/******** Start Struct ********/`)
       let added = 1;
       while (added > 0)
@@ -142,23 +143,28 @@ export class FFIgenerator {
             continue;
           }
           // check missing type usage;
-          let uncomplet = false;
+          const uncomplet = new Set<string>;
           for (const field of anyType.fields) {
             const { structField, dependencies } = structFieldToDeinlineString(anyType, field);
             if (missingStruct.has(structField)) {
               selection.add(structField)
-              uncomplet = true;
+              uncomplet.add(`"${structField}" is missing`);
             }
             for (const dep of dependencies) {
               if (missingStruct.has(dep)) {
                 selection.add(dep)
-                uncomplet = true;
+                uncomplet.add(`"${dep}" is missing`);
               }
             }
           }
-          if (uncomplet)
+          if (uncomplet.size) {
+            let missingList = [...uncomplet].join(', ');
+            // if (missingList.length > 100) {
+            //   missingList = missingList.substring(0, 100) + '...';
+            // }
+            console.log(`Postpone generation of ${pc.red(anyType.reprName)} ${missingList}`)
             continue loop;
-
+          }
           const next: string[] = [];
           added++;
           next.push(`${cmt(anyType, '')}export const ${anyType.reprName} = {`);
@@ -421,19 +427,19 @@ export class FFIgenerator {
     }
 
     const { code: enumCode, cnt: enumCnt } = this.generateEnum(ctxtGl);
-    console.log(`Generate ${enumCnt.toString().padStart(3)} enums   in typeDefinitions.ts`)
+    console.log(`Generate ${pc.green(enumCnt.toString().padStart(3))} enums   in typeDefinitions.ts`)
 
     const { code: ptrCode, cnt: ptrCnt  } = this.generatePrts(ctxtGl);
-    console.log(`Generate ${ptrCnt.toString().padStart(3)} ptrs    in typeDefinitions.ts`)
+    console.log(`Generate ${pc.green(ptrCnt.toString().padStart(3))} ptrs    in typeDefinitions.ts`)
 
     const { code: structCode, cnt: structCnt  } = this.generateStruct(ctxtGl, dependencies);
-    console.log(`Generate ${structCnt.toString().padStart(3)} structs in typeDefinitions.ts`)
+    console.log(`Generate ${pc.green(structCnt.toString().padStart(3))} structs in typeDefinitions.ts`)
 
     const { code: refCode, cnt: refCnt  } = this.generateRefs(ctxtGl);
-    console.log(`Generate ${refCnt.toString().padStart(3)} refs    in typeDefinitions.ts`)
+    console.log(`Generate ${pc.green(refCnt.toString().padStart(3))} refs    in typeDefinitions.ts`)
 
     const { code: funcCode, cnt: funcCnt  } = this.generateFunctions(ctxtGl);
-    console.log(`Generate ${funcCnt.toString().padStart(3)} fncts   in typeDefinitions.ts`)
+    console.log(`Generate ${pc.green(funcCnt.toString().padStart(3))} fncts   in typeDefinitions.ts`)
 
     results.push(...enumCode);
     results.push(...ptrCode);
@@ -520,7 +526,7 @@ export class FFIgenerator {
         continue
       }
     }
-    console.log(availibleTypes.size, 'Availible Types');
+    console.log(pc.green(availibleTypes.size.toString()), 'Availible Types');
     const longestType = Math.max(15, ...[...availibleTypes].map(s => s.length));
     const longestFilename = 3 + Math.max(...[...ctxtGl.FUNCTIONS_MAP.keys()].map(s => s.length));
 
@@ -619,9 +625,9 @@ export class FFIgenerator {
         await ensureDir(dirname(dst));
         Deno.writeTextFileSync(dst, importText + functionResults.join("\n"));
         fileNames.push(fileName);
-        console.log(`Writing ${fnEx.padEnd(longestFilename, ' ')} with ${fncCount.toString().padStart(3, ' ')} functions, ${dropSumboles.length} symbol dropped, need ${imports.size} import`);
+        console.log(`Writing ${fnEx.padEnd(longestFilename, ' ')} with ${pc.green(fncCount.toString().padStart(3, ' '))} functions, ${pc.green(dropSumboles.length.toString())} symbol dropped, need ${pc.green(imports.size.toString())} import`);
       } else {
-        console.log(`Empty   ${fnEx.padEnd(longestFilename, ' ')} will not be writen, ${dropSumboles.length} symbol dropped`);
+        console.log(`Empty   ${fnEx.padEnd(longestFilename, ' ')} will ${pc.red("not")} be writen, ${pc.green(dropSumboles.length.toString())} symbol dropped`);
       }
     }
     return { dependencies: allDependencies, fileNames }
