@@ -1,3 +1,3 @@
-import { libclang } from '../../clang/ffi.ts'
+import { libclang } from '../../generator/clang/ffi.ts'
 
 libclang;

@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
     paths:
       - ".github/workflows/testUbuntu.yml"
-      - "build/**"
+      - "generator/**"
       - "lib/**"
       - "test/**"
       - "deno.json"
@@ -13,7 +13,7 @@ on:
     branches: [ "main" ]
     paths:
       - ".github/workflows/testUbuntu.yml"
-      - "build/**"
+      - "generator/**"
       - "lib/**"
       - "test/**"
       - "deno.json"
@@ -47,7 +47,7 @@ jobs:
       run: |
         export LIBCLANG_PATH=/usr/lib/llvm-14/lib/
         deno task test
-        
+
     - name: Regen code LibClang
       run: |
         deno task genLibClang

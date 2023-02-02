@@ -6,8 +6,8 @@ import {
 import {
   CXChildVisitResult,
   CXCursorKind,
-} from "../../clang/include/typeDefinitions.ts";
-import { CXDiagnosticSet, CXIndex } from "../../clang/mod.ts";
+} from "../../generator/clang/include/typeDefinitions.ts";
+import { CXDiagnosticSet, CXIndex } from "../../generator/clang/mod.ts";
 
 Deno.test("class CXIndex", async (t) => {
   await t.step("new CXIndex()", () => {
