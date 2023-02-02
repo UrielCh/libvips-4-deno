@@ -513,6 +513,8 @@ export class FFIgenerator {
     }
     console.log(availibleTypes.size, 'Availible Types');
     const longestType = Math.max(15, ...[...availibleTypes].map(s => s.length));
+    const longestFilename = 3 + Math.max(...[...ctxtGl.FUNCTIONS_MAP.keys()].map(s => s.length));
+
     for (const [fileName, apiFunctions] of ctxtGl.FUNCTIONS_MAP) {
       const imports = new Set<string>();
       const functionResults: string[] = [];
@@ -599,14 +601,15 @@ export class FFIgenerator {
         importText += toImport + '\n';
       }
       // if there is any function write a file
-      const dst = join(this.destination, `${fileName}.ts`);
+      const fnEx = `${fileName}.ts`;
+      const dst = join(this.destination, fnEx);
       if (fncCount) {
         await ensureDir(dirname(dst));
         Deno.writeTextFileSync(dst, importText + functionResults.join("\n"));
         fileNames.push(fileName);
-        console.log(`Writing ${fileName}.ts with ${fncCount} functions, ${dropSumboles.length} symbol dropped`);
+        console.log(`Writing ${fnEx.padEnd(longestFilename, ' ')} with ${fncCount.toString().padStart(3, ' ')} functions, ${dropSumboles.length} symbol dropped`);
       } else {
-        console.log(`Empty   ${fileName}.ts will not be writen, ${dropSumboles.length} symbol dropped`);
+        console.log(`Empty   ${fnEx.padEnd(longestFilename, ' ')} will not be writen, ${dropSumboles.length} symbol dropped`);
       }
     }
     return { dependencies: allDependencies, fileNames }
