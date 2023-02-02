@@ -523,6 +523,7 @@ export class FFIgenerator {
 
     const orderedFilename = [...ctxtGl.FUNCTIONS_MAP.keys()].sort();
     for (const fileName of orderedFilename) {
+      const fnEx = `${fileName}.ts`;
       const apiFunctions = ctxtGl.FUNCTIONS_MAP.get(fileName);
       if (!apiFunctions) continue;
       const imports = new Set<string>();
@@ -610,13 +611,12 @@ export class FFIgenerator {
         importText += toImport + '\n';
       }
       // if there is any function write a file
-      const fnEx = `${fileName}.ts`;
       const dst = join(this.destination, fnEx);
       if (fncCount) {
         await ensureDir(dirname(dst));
         Deno.writeTextFileSync(dst, importText + functionResults.join("\n"));
         fileNames.push(fileName);
-        console.log(`Writing ${fnEx.padEnd(longestFilename, ' ')} with ${fncCount.toString().padStart(3, ' ')} functions, ${dropSumboles.length} symbol dropped`);
+        console.log(`Writing ${fnEx.padEnd(longestFilename, ' ')} with ${fncCount.toString().padStart(3, ' ')} functions, ${dropSumboles.length} symbol dropped, need ${imports.size} import`);
       } else {
         console.log(`Empty   ${fnEx.padEnd(longestFilename, ' ')} will not be writen, ${dropSumboles.length} symbol dropped`);
       }
