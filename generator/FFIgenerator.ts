@@ -512,11 +512,11 @@ export class FFIgenerator {
       }
     }
     console.log(availibleTypes.size, 'Availible Types');
-    const dropSumboles: string[] = [];
     const longestType = Math.max(15, ...[...availibleTypes].map(s => s.length));
     for (const [fileName, apiFunctions] of ctxtGl.FUNCTIONS_MAP) {
       const imports = new Set<string>();
       const functionResults: string[] = [];
+      const dropSumboles: string[] = [];
       let fncCount = 0;
       for (const apiFunction of apiFunctions) {
         const { name, parameters, result } = apiFunction;
