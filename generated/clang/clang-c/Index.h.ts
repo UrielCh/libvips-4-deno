@@ -1242,7 +1242,7 @@ export const clang_getOverriddenCursors = {
  */
 export const clang_disposeOverriddenCursors = {
   parameters: [
-    buf(CXCursorT), // overridden
+    ptr(CXCursorT), // overridden
   ],
   result: "void",
 } as const;
@@ -3221,7 +3221,7 @@ export const clang_tokenize = {
 export const clang_annotateTokens = {
   parameters: [
     CXTranslationUnitT, // TU
-    ptr(CXTokenT), // Tokens
+    buf(CXTokenT), // Tokens
     unsignedInt, // NumTokens
     buf(CXCursorT), // Cursors
   ],

@@ -9,7 +9,7 @@ const __dirname = dirname(fromFileUrl(import.meta.url));
 const includeDirectory = join(__dirname, "sample", "libClang");
 const destination = join(__dirname, "generated", 'clang');
 const includePaths = [
-  "/usr/lib/clang/14.0.0/include/",
+  "/usr/lib/clang/14/include/",
   `${includeDirectory}`,
 ];
 const libFile = '/usr/lib/llvm-14/lib/libclang.so.1'

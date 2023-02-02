@@ -59,6 +59,9 @@ export class FFIgenerator {
     this.files = configurations.files;
     this.headerRoot = configurations.headers;
     this.includePaths = configurations.includePaths || [];
+    for (const inc of this.includePaths) {
+      Deno.statSync(inc).isDirectory || (() => { throw new Error(`Include path ${inc} is not a directory`); })
+    }
     this.index = new libclang.CXIndex(false, true);
   }
 
@@ -279,16 +282,16 @@ export class FFIgenerator {
         }
         switch (cx.kind) {
           case CXCursorKind.CXCursor_EnumDecl: {
-            onEnumDecl(ctxt, cx)
+            onEnumDecl(ctxt, cx);
             break;
           }
           case CXCursorKind.CXCursor_TypedefDecl: {
-            onTypedefDecl(ctxt, cx)
-            break
+            onTypedefDecl(ctxt, cx);
+            break;
           }
           case CXCursorKind.CXCursor_FunctionDecl: {
-            onFunctionDecl(ctxt, cx)
-            break
+            onFunctionDecl(ctxt, cx);
+            break;
           }
         }
         return CXChildVisitResult.CXChildVisit_Continue;
