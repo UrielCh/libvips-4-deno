@@ -32,7 +32,7 @@ jobs:
 
     - name: Install LLVM
       run: |
-        sudo apt-get install -y libclang1-14
+        sudo apt-get install -y libclang1-14 libclang-14-dev
 
     - name: run test no LIBCLANG_PATH
       run: |
