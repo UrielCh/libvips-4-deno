@@ -26,9 +26,9 @@ jobs:
       with:
         deno-version: 1.30.0
 
-    - name: Uninstall old LLVM
-      run: |
-        sudo apt-get remove -y libclang*
+    # - name: Uninstall old LLVM
+    #   run: |
+    #     sudo apt-get remove -y libclang*
 
     - name: Install LLVM
       run: |
