@@ -49,6 +49,11 @@ export interface EnumType extends CommonType {
   values: EnumValue[];
 }
 
+export interface ReferenceType extends CommonType {
+  kind: "ref";
+  reprName: `${string}T`;
+}
+
 export interface FunctionParameter extends CommonType {
   type: AnyType;
 }
@@ -77,11 +82,6 @@ export interface PointerType extends CommonType {
   kind: "pointer";
   pointee: AnyType;
   useBuffer: boolean;
-}
-
-export interface ReferenceType extends CommonType {
-  kind: "ref";
-  reprName: `${string}T`;
 }
 
 export type AnyType =

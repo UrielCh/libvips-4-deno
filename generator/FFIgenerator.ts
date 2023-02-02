@@ -65,7 +65,12 @@ export class FFIgenerator {
     this.index = new libclang.CXIndex(false, true);
   }
 
-  generateEnum(ctxtGl: ContextGlobal): { code: string[] } {
+  /**
+   * Generate all enums for typeDefinitions.ts
+   * @param ctxtGl context
+   * @returns 
+   */
+  private generateEnum(ctxtGl: ContextGlobal): { code: string[] } {
     const results: string[] = [];
     /** enums */
     const enumsType = [...ctxtGl.TYPE_MEMORY.values()].filter(a => a.kind === "enum") as EnumType[];
@@ -86,7 +91,12 @@ export class FFIgenerator {
     return { code: results };
   }
 
-  generatePrts(ctxtGl: ContextGlobal): { code: string[] } {
+  /**
+   * Generate all pointer refs for typeDefinitions.ts
+   * @param ctxtGl 
+   * @returns 
+   */
+  private generatePrts(ctxtGl: ContextGlobal): { code: string[] } {
     const results: string[] = [];
     /**
      * ptr
@@ -107,7 +117,13 @@ export class FFIgenerator {
     return { code: results };
   }
 
-  generateStruct(ctxtGl: ContextGlobal, selection: Set<string>): { code: string[] } {
+  /**
+   * Generate all struct for typeDefinitions.ts
+   * @param ctxtGl 
+   * @param selection 
+   * @returns 
+   */
+  private generateStruct(ctxtGl: ContextGlobal, selection: Set<string>): { code: string[] } {
     const results: string[] = [];
     /**
      * struct
@@ -167,7 +183,12 @@ export class FFIgenerator {
     return { code: results };
   }
 
-  generateRefs(ctxtGl: ContextGlobal): { code: string[] } {
+  /**
+   * Generate all refs for typeDefinitions.ts
+   * @param ctxtGl 
+   * @returns 
+   */
+  private generateRefs(ctxtGl: ContextGlobal): { code: string[] } {
     const results: string[] = [];
     /**
      * ref
@@ -190,8 +211,12 @@ export class FFIgenerator {
     return { code: results };
   }
 
-
-  generateFunctions(ctxtGl: ContextGlobal): { code: string[] } {
+  /**
+   * Generate all function for typeDefinitions.ts
+   * @param ctxtGl 
+   * @returns 
+   */
+  private generateFunctions(ctxtGl: ContextGlobal): { code: string[] } {
     const results: string[] = [];
     /**
      * function
@@ -220,7 +245,7 @@ export class FFIgenerator {
   /**
    * functions files
    */
-  emplaceRefs(imports: Set<string>, type: AnyType) {
+  private emplaceRefs(imports: Set<string>, type: AnyType) {
     if (type.kind === "ref" || type.kind === "enum") {
       imports.add(type.name.endsWith("_t") ? type.name : type.reprName);
     } else if (type.kind === "plain") {
@@ -246,7 +271,10 @@ export class FFIgenerator {
     }
   }
 
-  async generate() {
+  /**
+   * start generation
+   */
+  public async generate() {
     await ensureDir(this.destination);
     const includePaths = (this.includePaths || []).map(a => `-I${a}`);
 
@@ -366,6 +394,14 @@ export class FFIgenerator {
       // ignore
     }
 
+    /**
+     * Generate functions fiels
+     */
+    const { dependencies, fileNames } = await this.genFunctionFiles(ctxtGl);
+
+    /**
+     * Generate typeDefinitions.ts
+     */
     const results: string[] = [
       'export const ptr = (_type: unknown) => "pointer" as const;',
       'export const buf = (_type: unknown) => "buffer" as const;',
@@ -382,8 +418,6 @@ export class FFIgenerator {
         results.push('');
       }
     }
-
-    const { dependencies, fileNames } = await this.genFunctionFiles(ctxtGl);
 
     const { code: enumCode } = this.generateEnum(ctxtGl);
     const { code: ptrCode } = this.generatePrts(ctxtGl);
@@ -436,10 +470,52 @@ export class FFIgenerator {
   async genFunctionFiles(ctxtGl: ContextGlobal): Promise<{ dependencies: Set<string>, fileNames: string[] }> {    /** filter non exported function */
     const allDependencies = new Set<string>();
     const fileNames: string[] = [];
+
+    const availibleTypes = new Set<string>(["ptr", "buf", "func"]);
+    for (const [name, anyType] of ctxtGl.TYPE_MEMORY) {
+      if (anyType.kind === "pointer") {
+        if (anyType.name.includes(" ") || anyType.name.includes("*")) {
+          continue;
+        }
+        availibleTypes.add(`${anyType.name}T`);
+        continue
+      }
+      if (anyType.kind === "enum") {
+        availibleTypes.add(anyType.reprName);
+        availibleTypes.add(anyType.name);
+        continue
+      }
+      if (anyType.kind === "struct") {
+        availibleTypes.add(anyType.reprName);
+        continue
+      }
+      if (anyType.kind === "ref") {
+        const expName = name.endsWith("_t") ? name : `${name}T`;
+        const curName = anyType.name.endsWith("_t") ? anyType.name : anyType.reprName;
+        // results.push(`${cmt(anyType)}export const ${expName} = ${curName};`);
+        availibleTypes.add(expName);
+        availibleTypes.add(curName);
+        continue
+      }
+
+      if (anyType.kind === "function") {
+        availibleTypes.add(`${anyType.name}CallbackDefinition`);
+        availibleTypes.add(anyType.reprName);
+        continue
+      }
+
+      if (anyType.kind === "plain") {
+        availibleTypes.add(anyType.name);
+        availibleTypes.add(name);
+        continue
+      }
+    }
+    console.log(availibleTypes.size, 'Availible Types');
+    const longestType = Math.max(15, ...[...availibleTypes].map(s => s.length));
     for (const [fileName, apiFunctions] of ctxtGl.FUNCTIONS_MAP) {
       const imports = new Set<string>();
-
       const functionResults: string[] = [];
+      let fncCount = 0;
       for (const apiFunction of apiFunctions) {
         const { name, parameters, result } = apiFunction;
         let isAvailable = true;
@@ -458,29 +534,53 @@ export class FFIgenerator {
         }
         if (!isAvailable)
           continue;
-        this.emplaceRefs(imports, result);
-        parameters.forEach((param) => this.emplaceRefs(imports, param.type));
-        //const comment = 
-        functionResults.push(`${cmt(apiFunction, '')}${isAvailable ? "export " : "// deno-lint-ignore no-unused-vars\n"}const ${name} = {`);
+        // prepare function dependency
+        const functionimports = new Set<string>();
+        const functionBody: string[] = [];
+        const functionDepencency: string[] = [];
+
+        // add function dependency in inmports
+        this.emplaceRefs(functionimports, result);
+        parameters.forEach((param) => this.emplaceRefs(functionimports, param.type));
+        // "// deno-lint-ignore no-unused-vars\n"
+        functionBody.push(`${cmt(apiFunction, '')}export const ${name} = {`);
+        // list function parameters
         if (parameters.length) {
-          functionResults.push(`  parameters: [`);
+          functionBody.push(`  parameters: [`);
           for (const param of parameters) {
             const { code, dependencies: paramDependencies } = anyTypeToString(param.type);
-            paramDependencies.forEach((dep) => allDependencies.add(dep));
+            functionDepencency.push(...paramDependencies);
             const comment = param.name || param.comment ? ` // ${[param.name, param.comment].filter(Boolean).join(", ")}` : "";
-            functionResults.push(`    ${code},${comment}`);
+            functionBody.push(`    ${code},${comment}`);
           }
-          functionResults.push(`  ],`)
+          functionBody.push(`  ],`)
         } else {
-          functionResults.push(`  parameters: [],`);
+          functionBody.push(`  parameters: [],`);
         }
         const { code, dependencies: retDependencies } = anyTypeToString(result);
-        retDependencies.forEach((dep) => allDependencies.add(dep));
-        functionResults.push(`  result: ${code},`);
-        functionResults.push(`} as const;`);
-        functionResults.push('');
+        functionDepencency.push(...retDependencies);
+        functionBody.push(`  result: ${code},`);
+        functionBody.push(`} as const;`);
+        functionBody.push('');
+
+        let accept = true;
+        for (const type of functionimports) {
+          if (availibleTypes.has(type))
+            continue;
+          functionResults.push(`// type ${type.padEnd(longestType, ' ')} missing from typeDefinitions.ts, ${name} will not be available`);
+          accept = false;
+          continue;
+        }
+        if (!accept)
+          continue;
+        fncCount++;
+        // accept the fuction and it's depencencys
+        functionimports.forEach(d => imports.add(d));
+        functionDepencency.forEach((dep) => allDependencies.add(dep));
+        functionResults.push(functionBody.join("\n"));
       }
       // generate imports
+      let importText = '';
       if (imports.size) {
         let relatif = '.'
         if (fileName.includes('/')) {
@@ -492,15 +592,17 @@ export class FFIgenerator {
           toImport += `  ${importName},\n`;
         }
         toImport += `} from "${relatif}/typeDefinitions.ts";\n`;
-        functionResults.unshift(toImport);
+        importText += toImport + '\n';
       }
       // if there is any function write a file
-      if (functionResults.length) {
-        const dst = join(this.destination, `${fileName}.ts`);
+      const dst = join(this.destination, `${fileName}.ts`);
+      if (fncCount) {
         await ensureDir(dirname(dst));
-        Deno.writeTextFileSync(dst, functionResults.join("\n"));
+        Deno.writeTextFileSync(dst, importText + functionResults.join("\n"));
         fileNames.push(fileName);
-        // utils.formatSync(dst);
+        console.log(`Writing ${dst} with ${fncCount} functions`);
+      } else {
+        console.log(`empty ${dst} will not be writen`);
       }
     }
     return { dependencies: allDependencies, fileNames }
