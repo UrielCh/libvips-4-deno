@@ -134,9 +134,9 @@ export class FFIgenerator {
       console.log('Missing Struct size is', pc.green(missingStruct.size.toString()))
       results.push(`/******** Start Struct ********/`)
       let added = 1;
-      while (added > 0)
+      for (let pass = 1; added > 0; pass++) {
+        added = 0;
         loop: for (const anyType of stuctType) {
-          added = 0;
           if (!missingStruct.has(anyType.reprName))
             continue;
           if (!selection.has(anyType.reprName)) {
@@ -148,21 +148,21 @@ export class FFIgenerator {
             const { structField, dependencies } = structFieldToDeinlineString(anyType, field);
             if (missingStruct.has(structField)) {
               selection.add(structField)
-              uncomplet.add(`"${structField}" is missing`);
+              uncomplet.add(`"${structField}"`);
             }
             for (const dep of dependencies) {
               if (missingStruct.has(dep)) {
                 selection.add(dep)
-                uncomplet.add(`"${dep}" is missing`);
+                uncomplet.add(`"${dep}"`);
               }
             }
           }
           if (uncomplet.size) {
-            let missingList = [...uncomplet].join(', ');
+            const missingList = [...uncomplet].join(', ');
             // if (missingList.length > 100) {
             //   missingList = missingList.substring(0, 100) + '...';
             // }
-            console.log(`Postpone generation of ${pc.red(anyType.reprName)} ${missingList}`)
+            console.log(`${pc.green(pass.toString())} Postpone generation of ${pc.red(anyType.reprName)} missing: ${missingList}`)
             continue loop;
           }
           const next: string[] = [];
@@ -185,6 +185,7 @@ export class FFIgenerator {
           cnt++;
           missingStruct.delete(anyType.reprName);
         }
+      }
       results.push(`/******** End Struct ********/`)
       if (missingStruct.size)
         console.log('missingStruct:', [...missingStruct].join(', '))
@@ -429,16 +430,16 @@ export class FFIgenerator {
     const { code: enumCode, cnt: enumCnt } = this.generateEnum(ctxtGl);
     console.log(`Generate ${pc.green(enumCnt.toString().padStart(3))} enums   in typeDefinitions.ts`)
 
-    const { code: ptrCode, cnt: ptrCnt  } = this.generatePrts(ctxtGl);
+    const { code: ptrCode, cnt: ptrCnt } = this.generatePrts(ctxtGl);
     console.log(`Generate ${pc.green(ptrCnt.toString().padStart(3))} ptrs    in typeDefinitions.ts`)
 
-    const { code: structCode, cnt: structCnt  } = this.generateStruct(ctxtGl, dependencies);
+    const { code: structCode, cnt: structCnt } = this.generateStruct(ctxtGl, dependencies);
     console.log(`Generate ${pc.green(structCnt.toString().padStart(3))} structs in typeDefinitions.ts`)
 
-    const { code: refCode, cnt: refCnt  } = this.generateRefs(ctxtGl);
+    const { code: refCode, cnt: refCnt } = this.generateRefs(ctxtGl);
     console.log(`Generate ${pc.green(refCnt.toString().padStart(3))} refs    in typeDefinitions.ts`)
 
-    const { code: funcCode, cnt: funcCnt  } = this.generateFunctions(ctxtGl);
+    const { code: funcCode, cnt: funcCnt } = this.generateFunctions(ctxtGl);
     console.log(`Generate ${pc.green(funcCnt.toString().padStart(3))} fncts   in typeDefinitions.ts`)
 
     results.push(...enumCode);
@@ -526,7 +527,7 @@ export class FFIgenerator {
         continue
       }
     }
-    console.log(pc.green(availibleTypes.size.toString()), 'Availible Types');
+    console.log(pc.green(availibleTypes.size.toString()), 'Available Types');
     const longestType = Math.max(15, ...[...availibleTypes].map(s => s.length));
     const longestFilename = 3 + Math.max(...[...ctxtGl.FUNCTIONS_MAP.keys()].map(s => s.length));
 
