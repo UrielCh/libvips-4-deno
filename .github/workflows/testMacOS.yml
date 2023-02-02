@@ -36,11 +36,21 @@ jobs:
     - name: run test no LIBCLANG_PATH
       run: |
         deno task test
+
     - name: run test LIBCLANG_PATH pointing to file
       run: |
         export LIBCLANG_PATH="$(brew --prefix llvm@14)/lib/libclang.dylib"
         deno task test
+
     - name: run test LIBCLANG_PATH pointing to directory
       run: |
         export LIBCLANG_PATH="$(brew --prefix llvm@14)/lib/"
-        deno task test        
+        deno task test
+        
+    - name: Regen code LibClang
+      run: |
+        deno task genLibClang
+
+    - name: check LibClang code
+      run: |
+        deno run generated/libvips/ffi.ts

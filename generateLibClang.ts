@@ -13,7 +13,7 @@ const includePaths = [
   `${includeDirectory}`,
 ];
 const libFile = '/usr/lib/llvm-14/lib/libclang.so.1'
-const generator = new FFIgenerator({ headerRoot: includeDirectory, libFile, destination, includePaths });
+const generator = new FFIgenerator({ headers: includeDirectory, libFile, destination, includePaths });
 await generator.generate();
 console.log('All done!')
 

@@ -48,3 +48,15 @@ jobs:
       run: |
         $Env:LIBCLANG_PATH="C:\Program Files\LLVM\bin\"
         deno task test
+
+    - name: run test no LIBCLANG_PATH
+      run: |
+        deno task test
+
+    - name: Regen code LibClang
+      run: |
+        deno task genLibClang
+
+    - name: check LibClang code
+      run: |
+        deno run generated/libvips/ffi.ts

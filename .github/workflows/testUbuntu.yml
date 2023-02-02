@@ -47,3 +47,12 @@ jobs:
       run: |
         export LIBCLANG_PATH=/usr/lib/llvm-14/lib/
         deno task test
+        
+    - name: Regen code LibClang
+      run: |
+        deno task genLibClang
+
+    - name: check LibClang code
+      run: |
+        deno run generated/libvips/ffi.ts
+      
