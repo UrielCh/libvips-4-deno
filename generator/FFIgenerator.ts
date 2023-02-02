@@ -515,7 +515,10 @@ export class FFIgenerator {
     const longestType = Math.max(15, ...[...availibleTypes].map(s => s.length));
     const longestFilename = 3 + Math.max(...[...ctxtGl.FUNCTIONS_MAP.keys()].map(s => s.length));
 
-    for (const [fileName, apiFunctions] of ctxtGl.FUNCTIONS_MAP) {
+    const orderedFilename = [...ctxtGl.FUNCTIONS_MAP.keys()].sort();
+    for (const fileName of orderedFilename) {
+      const apiFunctions = ctxtGl.FUNCTIONS_MAP.get(fileName);
+      if (!apiFunctions) continue;
       const imports = new Set<string>();
       const functionResults: string[] = [];
       const dropSumboles: string[] = [];
