@@ -337,7 +337,13 @@ export class FFIgenerator {
     }
 
     const ctxtGl = new ContextGlobal();
-    HEADER_FILES.forEach((fileName) => visiteHeaderFile(ctxtGl, fileName));
+    HEADER_FILES.forEach((fileName) => {
+      try {
+        visiteHeaderFile(ctxtGl, fileName)
+      } catch (e) {
+        console.error(`failed to parse ${fileName}, error:${e.message}`);
+      }
+    });
 
     const markReturnedByPointer = (typeName: string, type: AnyType) => {
       if (
@@ -463,7 +469,8 @@ export class FFIgenerator {
       if (!fileNames.includes(fileName))
         continue;
 
-      const sanitized = fileName.replaceAll(/[\/.-]/g, '_').replace(/.[hp]+$/, '')
+      let sanitized = fileName.replaceAll(/[\/.-]/g, '_').replace(/.[hp]+$/, '')
+      sanitized = 'fnc' + sanitized.substring(0, 1).toUpperCase() + sanitized.substring(1);
       results.push(`import * as ${sanitized} from "./${fileName}.ts";`)
       IMPORTS.push(`  ...${sanitized},`);
     }
