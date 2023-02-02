@@ -130,6 +130,7 @@ export class FFIgenerator {
     const stuctType = [...ctxtGl.TYPE_MEMORY.values()].filter(a => a.kind === "struct") as StructType[];
     if (stuctType.length) {
       const missingStruct = new Set<string>(stuctType.map(s => s.reprName));
+      console.log('Missing Struct size is', missingStruct.size)
       results.push(`/******** Start Struct ********/`)
       let added = 1;
       while (added > 0)
@@ -179,6 +180,8 @@ export class FFIgenerator {
           missingStruct.delete(anyType.reprName);
         }
       results.push(`/******** End Struct ********/`)
+      if (missingStruct.size)
+        console.log('missingStruct:', [...missingStruct].join(', '))
     }
     return { code: results, cnt };
   }
