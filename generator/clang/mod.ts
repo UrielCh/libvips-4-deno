@@ -58,7 +58,7 @@ export { getClangVersion } from "./fncs.ts";
 export { getBuildSessionTimestamp } from "./fncs.ts";
 export { toggleCrashRecovery } from "./fncs.ts";
 export { enableStackTraces } from "./fncs.ts";
-export { CXIndex } from "./rest.ts";
+export { CXIndex } from "./CXIndex.ts";
 export type { TargetInfo } from "./interface.ts";
 export type { UnsavedFile } from "./interface.ts";
 export { CXTranslationUnit } from "./rest.ts";
