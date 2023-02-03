@@ -1,7 +1,7 @@
 import { CXSourceRange } from "./CXSourceRange.ts";
 import { CXTranslationUnit } from "./CXTranslationUnit.ts";
 import { CXVisitorResult } from "./include/typeDefinitions.ts";
-import { CXCursor} from "./rest.ts";
+import { CXCursor } from "./CXCursor.ts";
 
 export const GLOBAL = {
     CURRENT_TU: null as null | CXTranslationUnit,

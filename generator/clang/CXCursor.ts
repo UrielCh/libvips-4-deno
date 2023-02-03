@@ -10,7 +10,8 @@ import { libclang } from "./ffi.ts";
 import { GLOBAL } from "./global.ts";
 import { CXAvailabilityKind, CXChildVisitResult, CXCursorKind, CXCursorVisitorCallbackDefinition, CXCursor_ExceptionSpecificationKind, CXLanguageKind, CXLinkageKind, CXNameRefFlags, CXResult, CXTemplateArgumentKind, CXTLSKind, CXTypeLayoutError, CXVisibilityKind, CXVisitorResult, CX_CXXAccessSpecifier, CX_StorageClass } from "./include/typeDefinitions.ts";
 import { AvailabilityEntry, SemVerString } from "./interface.ts";
-import { CXComment, CXPrintingPolicy, CXType, CX_CURSOR_AND_RANGE_VISITOR_CALLBACK } from "./rest.ts";
+import { CXPrintingPolicy, CXType, CX_CURSOR_AND_RANGE_VISITOR_CALLBACK } from "./rest.ts";
+import { CXComment } from "./CXComment.ts";
 import { cxstringSetToStringArray, cxstringToString, NULL, NULLBUF } from "./utils.ts";
 
 const OUT = new Uint8Array(16);

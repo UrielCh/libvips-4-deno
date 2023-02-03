@@ -67,7 +67,7 @@ export { CXFile } from "./CXFile.ts";
 export type { SemVerString } from "./interface.ts";
 export type { AvailabilityEntry } from "./interface.ts";
 export { CXCursor } from "./CXCursor.ts";
-export { CXComment } from "./rest.ts";
+export { CXComment } from "./CXComment.ts";
 export { CXSourceRange } from "./CXSourceRange.ts";
 export { CXSourceLocation } from "./CXSourceLocation.ts";
 export { CXDiagnosticSet } from "./CXDiagnosticSet.ts";
