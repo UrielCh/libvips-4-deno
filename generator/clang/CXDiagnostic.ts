@@ -2,7 +2,8 @@ import { CONSTRUCTOR } from "./common.ts";
 import { CXSourceRange } from "./CXSourceRange.ts";
 import { libclang } from "./ffi.ts";
 import { CXDiagnosticDisplayOptions, CXDiagnosticSeverity } from "./include/typeDefinitions.ts";
-import { CXDiagnosticSet, CXSourceLocation, CXTranslationUnit } from "./rest.ts";
+import { CXDiagnosticSet, CXTranslationUnit } from "./rest.ts";
+import { CXSourceLocation } from "./CXSourceLocation.ts";
 import { cxstringToString, NULL } from "./utils.ts";
 
 const OUT = new Uint8Array(16);

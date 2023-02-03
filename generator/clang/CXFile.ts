@@ -1,4 +1,5 @@
-import { CXSourceLocation, CXTranslationUnit } from "./rest.ts";
+import { CXTranslationUnit } from "./rest.ts";
+import { CXSourceLocation } from "./CXSourceLocation.ts";
 import { CONSTRUCTOR, POINTER, DISPOSE } from "./common.ts";
 import {
   charBufferToString,

@@ -1,6 +1,7 @@
 import { BUFFER, CONSTRUCTOR } from "./common.ts";
 import { libclang } from "./ffi.ts";
-import { CXSourceLocation, CXTranslationUnit } from "./rest.ts";
+import { CXTranslationUnit } from "./rest.ts";
+import { CXSourceLocation } from "./CXSourceLocation.ts";
 
 /**
  * Identifies a half-open character range in the source code.
