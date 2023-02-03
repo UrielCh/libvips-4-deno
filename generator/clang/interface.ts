@@ -90,3 +90,22 @@ export interface AvailabilityEntry {
   unavailable: boolean;
 }
 
+export interface GlobalOptions {
+  /**
+   * Used to indicate that threads that libclang creates for indexing
+   * purposes should use background priority.
+   *
+   * Affects {@link CXIndexAction#indexSourceFile}, {@link CXIndexAction.indexTranslationUnit},
+   * {@link CXIndex#parseTranslationUnit}, {@link CXTranslationUnit#save}.
+   */
+  threadBackgroundPriorityForIndexing: boolean;
+  /**
+   * Used to indicate that threads that libclang creates for editing
+   * purposes should use background priority.
+   *
+   * Affects {@link CXIndex#reparseTranslationUnit}, {@link CXTranslationUnit#codeCompleteAt},
+   * {@link CXTranslationUnit#annotateTokens}
+   */
+  threadBackgroundPriorityForEditing: boolean;
+}
+

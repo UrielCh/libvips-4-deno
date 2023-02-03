@@ -53,11 +53,11 @@ export type { CXModule } from './CXModule.ts'; // exported class as type
 export { CXCodeCompleteResults } from './CXCodeCompleteResults.ts';
 export type { CXIndexAction } from './CXIndexAction.ts';
 export { CXSourceRangeList } from './CXSourceRangeList.ts';
-export { setAbortOnFatalError } from "./rest.ts";
-export { getClangVersion } from "./rest.ts";
-export { getBuildSessionTimestamp } from "./rest.ts";
-export { toggleCrashRecovery } from "./rest.ts";
-export { enableStackTraces } from "./rest.ts";
+export { setAbortOnFatalError } from "./fncs.ts";
+export { getClangVersion } from "./fncs.ts";
+export { getBuildSessionTimestamp } from "./fncs.ts";
+export { toggleCrashRecovery } from "./fncs.ts";
+export { enableStackTraces } from "./fncs.ts";
 export { CXIndex } from "./rest.ts";
 export type { TargetInfo } from "./interface.ts";
 export type { UnsavedFile } from "./interface.ts";
