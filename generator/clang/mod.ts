@@ -71,4 +71,4 @@ export { CXSourceRange } from "./CXSourceRange.ts";
 export { CXSourceLocation } from "./CXSourceLocation.ts";
 export { CXDiagnosticSet } from "./CXDiagnosticSet.ts";
 export { CXDiagnostic } from "./CXDiagnostic.ts";
-export { CXRemapping } from "./rest.ts";
+export { CXRemapping } from "./CXRemapping.ts";
