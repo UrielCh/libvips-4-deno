@@ -1,7 +1,7 @@
 import { CONSTRUCTOR } from "./common.ts";
 import { libclang } from "./ffi.ts";
 
-import { CXTranslationUnit } from "./rest.ts";
+import { CXTranslationUnit } from "./CXTranslationUnit.ts";
 import { CXSourceRange } from "./CXSourceRange.ts";
 
 const SOURCE_RANGE_LIST_FINALIZATION_REGISTRY = new FinalizationRegistry<

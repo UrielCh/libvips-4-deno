@@ -3,7 +3,7 @@ import { CXSourceLocation } from "./CXSourceLocation.ts";
 import { CXSourceRange } from "./CXSourceRange.ts";
 import { libclang } from "./ffi.ts";
 import { CXTokenKind } from "./include/typeDefinitions.ts";
-import { CXTranslationUnit } from "./rest.ts";
+import { CXTranslationUnit } from "./CXTranslationUnit.ts";
 import { cxstringToString } from "./utils.ts";
 
 const TOKEN_POINTER_USAGE_MAP = new Map<

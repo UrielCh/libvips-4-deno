@@ -1,7 +1,7 @@
 import { CONSTRUCTOR, POINTER } from "./common.ts";
 import { CXFile } from "./CXFile.ts";
 import { libclang } from "./ffi.ts";
-import { CXTranslationUnit } from "./rest.ts";
+import { CXTranslationUnit } from "./CXTranslationUnit.ts";
 import { cxstringToString, NULL } from "./utils.ts";
 
 /**

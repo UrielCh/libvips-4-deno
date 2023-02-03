@@ -2,7 +2,7 @@ import { CONSTRUCTOR } from "./common.ts";
 import { CXDiagnostic } from "./CXDiagnostic.ts";
 import { libclang } from "./ffi.ts";
 import { CXLoadDiag_Error } from "./include/typeDefinitions.ts";
-import { CXTranslationUnit } from "./rest.ts";
+import { CXTranslationUnit } from "./CXTranslationUnit.ts";
 import { cstr, cxstringToString, NULL } from "./utils.ts";
 
 const DIAGNOSTIC_SET_FINALIZATION_REGISTRY = new FinalizationRegistry<

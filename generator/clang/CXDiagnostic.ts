@@ -2,7 +2,7 @@ import { CONSTRUCTOR } from "./common.ts";
 import { CXSourceRange } from "./CXSourceRange.ts";
 import { libclang } from "./ffi.ts";
 import { CXDiagnosticDisplayOptions, CXDiagnosticSeverity } from "./include/typeDefinitions.ts";
-import { CXTranslationUnit } from "./rest.ts";
+import { CXTranslationUnit } from "./CXTranslationUnit.ts";
 import { CXDiagnosticSet } from "./CXDiagnosticSet.ts";
 import { CXSourceLocation } from "./CXSourceLocation.ts";
 import { cxstringToString, NULL } from "./utils.ts";

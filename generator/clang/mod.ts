@@ -61,7 +61,7 @@ export { enableStackTraces } from "./fncs.ts";
 export { CXIndex } from "./CXIndex.ts";
 export type { TargetInfo } from "./interface.ts";
 export type { UnsavedFile } from "./interface.ts";
-export { CXTranslationUnit } from "./rest.ts";
+export { CXTranslationUnit } from "./CXTranslationUnit.ts";
 export { CXFile } from "./CXFile.ts";
 export type { SemVerString } from "./interface.ts";
 export type { AvailabilityEntry } from "./interface.ts";

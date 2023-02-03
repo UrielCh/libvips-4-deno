@@ -1,7 +1,7 @@
 import { CONSTRUCTOR } from "./common.ts";
 import { libclang } from "./ffi.ts";
 import { CXCompletionContext, CXCursorKind } from "./include/typeDefinitions.ts";
-import { CXTranslationUnit } from "./rest.ts";
+import { CXTranslationUnit } from "./CXTranslationUnit.ts";
 import { CXDiagnostic } from "./CXDiagnostic.ts";
 import { CXSourceRange } from "./CXSourceRange.ts";
 import { cxstringToString, NULL } from "./utils.ts";

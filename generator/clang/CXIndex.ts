@@ -3,7 +3,7 @@ import { CXIndexAction } from "./CXIndexAction.ts";
 import { libclang } from "./ffi.ts";
 import { CXErrorCode, CXGlobalOptFlags, CXReparse_Flags, CXTranslationUnit_Flags } from "./include/typeDefinitions.ts";
 import { GlobalOptions } from "./interface.ts";
-import { CXTranslationUnit } from "./rest.ts";
+import { CXTranslationUnit } from "./CXTranslationUnit.ts";
 import { cstr, CStringArray, NULL, NULLBUF, throwIfError } from "./utils.ts";
 
 const OUT = new Uint8Array(16);

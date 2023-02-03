@@ -1,6 +1,6 @@
 import { BUFFER, CONSTRUCTOR } from "./common.ts";
 import { libclang } from "./ffi.ts";
-import { CXTranslationUnit } from "./rest.ts";
+import { CXTranslationUnit } from "./CXTranslationUnit.ts";
 import { CXSourceLocation } from "./CXSourceLocation.ts";
 
 /**
