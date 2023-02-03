@@ -1,5 +1,6 @@
 import {
   cstringT,
+  gbooleanT,
   int,
 } from "./typeDefinitions.ts";
 
@@ -30,8 +31,14 @@ export const vips_thread_shutdown = {
   result: "void",
 } as const;
 
-// type GOptionGroupT   missing from typeDefinitions.ts, vips_add_option_entries will not be available
-// type gbooleanT       missing from typeDefinitions.ts, vips_leak_set will not be available
+// type GOptionGroupT                                           missing from typeDefinitions.ts, vips_add_option_entries will not be available
+export const vips_leak_set = {
+  parameters: [
+    gbooleanT, // leak
+  ],
+  result: "void",
+} as const;
+
 export const vips_version_string = {
   parameters: [],
   result: cstringT,
