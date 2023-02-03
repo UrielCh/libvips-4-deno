@@ -42,9 +42,9 @@ export {
 } from './rest.ts';
 export type {
     CXPrintingPolicy,
-    CXType,
 } from './rest.ts';
 
+export type { CXType } from './CXType.ts';
 export type { CXToken } from './CXToken.ts';
 export type { CXEvalResult } from './CXEvalResult.ts';
 export type { CXCompletionString } from './CXCompletionString.ts';
