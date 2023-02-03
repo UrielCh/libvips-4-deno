@@ -44,7 +44,6 @@ export type {
     CXCodeCompleteResults,
     CXCompletionString,
     CXEvalResult,
-    CXIndexAction,
     CXModule,
     CXPrintingPolicy,
     CXRewriter,
@@ -53,6 +52,7 @@ export type {
     CXType,
 } from './rest.ts';
 
+export type { CXIndexAction } from './CXIndexAction.ts';
 export { CXSourceRangeList } from './CXSourceRangeList.ts';
 export { setAbortOnFatalError } from "./rest.ts";
 export { getClangVersion } from "./rest.ts";
