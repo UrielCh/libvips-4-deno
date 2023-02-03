@@ -41,11 +41,11 @@ export {
     CXVisitorResult,
 } from './rest.ts';
 export type {
-    CXEvalResult,
     CXPrintingPolicy,
     CXToken,
     CXType,
 } from './rest.ts';
+export type { CXEvalResult } from './CXEvalResult.ts';
 export type { CXCompletionString } from './CXCompletionString.ts';
 export type { CXRewriter } from './CXRewriter.ts'; // exported class as type
 export { CXTUResourceUsage } from './CXTUResourceUsage.ts';
@@ -63,8 +63,8 @@ export type { TargetInfo } from "./interface.ts";
 export type { UnsavedFile } from "./interface.ts";
 export { CXTranslationUnit } from "./rest.ts";
 export { CXFile } from "./CXFile.ts";
-export type { SemVerString } from "./rest.ts";
-export type { AvailabilityEntry } from "./rest.ts";
+export type { SemVerString } from "./interface.ts";
+export type { AvailabilityEntry } from "./interface.ts";
 export { CXCursor } from "./rest.ts";
 export { CXComment } from "./rest.ts";
 export { CXSourceRange } from "./CXSourceRange.ts";

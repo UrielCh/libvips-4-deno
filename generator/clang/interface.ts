@@ -51,4 +51,42 @@ export interface CXTUResourceUsageEntry {
   bytes: number;
 }
 
+export type SemVerString = `${number}.${number}.${number}`;
+
+/**
+ * Describes the availability of a given entity on a particular platform, e.g.,
+ * a particular class might only be available on Mac OS 10.7 or newer.
+ */
+export interface AvailabilityEntry {
+  /**
+   * The version number in which this entity was deprecated (but is
+   * still available).
+   */
+  deprecated: SemVerString;
+  /**
+   * The version number in which this entity was introduced.
+   */
+  introduced: SemVerString;
+  /**
+   * An optional message to provide to a user of this API, e.g., to
+   * suggest replacement APIs.
+   */
+  message: string;
+  /**
+   * The version number in which this entity was obsoleted, and therefore
+   * is no longer available.
+   */
+  obsoleted: SemVerString;
+  /**
+   * A string that describes the platform for which this structure
+   * provides availability information.
+   *
+   * Possible values are "ios" or "macos".
+   */
+  platform: string;
+  /**
+   * Whether the entity is unconditionally unavailable on this platform.
+   */
+  unavailable: boolean;
+}
 
