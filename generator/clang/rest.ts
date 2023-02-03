@@ -114,10 +114,10 @@ export type {
   CXType,
 };
 
+import { GLOBAL } from "./global.ts";
+
 const OUT = new Uint8Array(16);
 const OUT_64 = new BigUint64Array(OUT.buffer);
-
-let CURRENT_TU: null | CXTranslationUnit = null;
 
 let CURRENT_CURSOR_VISITOR_CALLBACK: (
   cursor: CXCursor,
@@ -131,26 +131,18 @@ const CX_CURSOR_VISITOR_CALLBACK = new Deno.UnsafeCallback(
   CXCursorVisitorCallbackDefinition,
   (cursor, parent, _client_data) => {
     return CURRENT_CURSOR_VISITOR_CALLBACK(
-      CXCursor[CONSTRUCTOR](CURRENT_TU, cursor)!,
-      CXCursor[CONSTRUCTOR](CURRENT_TU, parent)!,
+      CXCursor[CONSTRUCTOR](GLOBAL.CURRENT_TU, cursor)!,
+      CXCursor[CONSTRUCTOR](GLOBAL.CURRENT_TU, parent)!,
     );
   },
 );
 
-let CURRENT_CURSOR_AND_RANGE_VISITOR_CALLBACK: (
-  cursor: CXCursor,
-  range: null | CXSourceRange,
-) => CXVisitorResult = () => {
-  // Take advantage of Deno internally handling throwing callback functions by explicitly returning
-  // 0, which happens to be the `CXVisitorResult.CXVisit_Break` value.
-  throw new Error("Invalid CXCursorAndRangeVisitor callback");
-};
 const CX_CURSOR_AND_RANGE_VISITOR_CALLBACK = new Deno.UnsafeCallback(
   CXCursorAndRangeVisitorCallbackDefinition,
   (_context: Deno.PointerValue, cursor, range) => {
-    return CURRENT_CURSOR_AND_RANGE_VISITOR_CALLBACK(
-      CXCursor[CONSTRUCTOR](CURRENT_TU, cursor)!,
-      CXSourceRange[CONSTRUCTOR](CURRENT_TU, range),
+    return GLOBAL.CURRENT_CURSOR_AND_RANGE_VISITOR_CALLBACK(
+      CXCursor[CONSTRUCTOR](GLOBAL.CURRENT_TU, cursor)!,
+      CXSourceRange[CONSTRUCTOR](GLOBAL.CURRENT_TU, range),
     );
   },
 );
@@ -164,7 +156,7 @@ let CURRENT_INCLUSION_VISITOR_CALLBACK: (
 const CX_INCLUSION_VISITOR_CALLBACK = new Deno.UnsafeCallback(
   CXInclusionVisitorCallbackDefinition,
   (includedFilePointer, inclusionStackPointer, includeLength, _clientData) => {
-    const tu = CURRENT_TU!;
+    const tu = GLOBAL.CURRENT_TU!;
     const includedFile = CXFile[CONSTRUCTOR](tu, includedFilePointer);
     const inclusionStack: CXSourceLocation[] = [];
     for (let i = 0; i < includeLength; i++) {
@@ -194,7 +186,7 @@ const CX_FIELD_VISITOR_CALLBACK = new Deno.UnsafeCallback(
   CXFieldVisitorCallbackDefinition,
   (cursor, _userData): CXVisitorResult => {
     return CURRENT_FIELD_VISITOR_CALLBACK(
-      CXCursor[CONSTRUCTOR](CURRENT_TU!, cursor)!,
+      CXCursor[CONSTRUCTOR](GLOBAL.CURRENT_TU!, cursor)!,
     );
   },
 );
@@ -756,9 +748,9 @@ export class CXTranslationUnit {
   getInclusions(
     callback: (file: CXFile, inclusionStack: CXSourceLocation[]) => void,
   ): void {
-    const savedTu = CURRENT_TU;
+    const savedTu = GLOBAL.CURRENT_TU;
     const savedCallback = CURRENT_INCLUSION_VISITOR_CALLBACK;
-    CURRENT_TU = this;
+    GLOBAL.CURRENT_TU = this;
     CURRENT_INCLUSION_VISITOR_CALLBACK = callback;
     try {
       libclang.symbols.clang_getInclusions(
@@ -767,7 +759,7 @@ export class CXTranslationUnit {
         NULL,
       );
     } finally {
-      CURRENT_TU = savedTu;
+      GLOBAL.CURRENT_TU = savedTu;
       CURRENT_INCLUSION_VISITOR_CALLBACK = savedCallback;
     }
   }
@@ -784,9 +776,9 @@ export class CXTranslationUnit {
     file: CXFile,
     callback: (cursor: CXCursor, sourceRange: CXSourceRange) => CXVisitorResult,
   ): CXResult {
-    const savedTu = CURRENT_TU;
-    const savedCallback = CURRENT_CURSOR_AND_RANGE_VISITOR_CALLBACK;
-    CURRENT_TU = this;
+    const savedTu = GLOBAL.CURRENT_TU;
+    const savedCallback = GLOBAL.CURRENT_CURSOR_AND_RANGE_VISITOR_CALLBACK;
+    GLOBAL.CURRENT_TU = this;
     // @ts-expect-error The sourceRange is guaranteed to be non-null.
     CURRENT_CURSOR_AND_RANGE_VISITOR_CALLBACK = callback;
     OUT_64[1] = BigInt(CX_CURSOR_AND_RANGE_VISITOR_CALLBACK.pointer);
@@ -798,8 +790,8 @@ export class CXTranslationUnit {
       );
       return result;
     } finally {
-      CURRENT_TU = savedTu;
-      CURRENT_CURSOR_AND_RANGE_VISITOR_CALLBACK = savedCallback;
+      GLOBAL.CURRENT_TU = savedTu;
+      GLOBAL.CURRENT_CURSOR_AND_RANGE_VISITOR_CALLBACK = savedCallback;
     }
   }
 
@@ -2143,9 +2135,9 @@ export class CXCursor {
   visitChildren(
     callback: (cursor: CXCursor, parent: CXCursor) => CXChildVisitResult,
   ): boolean {
-    const savedTu = CURRENT_TU;
+    const savedTu = GLOBAL.CURRENT_TU;
     const savedCallback = CURRENT_CURSOR_VISITOR_CALLBACK;
-    CURRENT_TU = this.tu;
+    GLOBAL.CURRENT_TU = this.tu;
     CURRENT_CURSOR_VISITOR_CALLBACK = callback;
     try {
       const result = libclang.symbols.clang_visitChildren(
@@ -2155,7 +2147,7 @@ export class CXCursor {
       ) > 0;
       return result;
     } finally {
-      CURRENT_TU = savedTu;
+      GLOBAL.CURRENT_TU = savedTu;
       CURRENT_CURSOR_VISITOR_CALLBACK = savedCallback;
     }
   }
@@ -2789,10 +2781,10 @@ export class CXCursor {
       range: null | CXSourceRange,
     ) => CXVisitorResult,
   ): CXResult {
-    const savedTu = CURRENT_TU;
-    const savedCallback = CURRENT_CURSOR_AND_RANGE_VISITOR_CALLBACK;
-    CURRENT_TU = this.tu;
-    CURRENT_CURSOR_AND_RANGE_VISITOR_CALLBACK = callback;
+    const savedTu = GLOBAL.CURRENT_TU;
+    const savedCallback = GLOBAL.CURRENT_CURSOR_AND_RANGE_VISITOR_CALLBACK;
+    GLOBAL.CURRENT_TU = this.tu;
+    GLOBAL.CURRENT_CURSOR_AND_RANGE_VISITOR_CALLBACK = callback;
     OUT_64[1] = BigInt(CX_CURSOR_AND_RANGE_VISITOR_CALLBACK.pointer);
     try {
       const result = libclang.symbols.clang_findReferencesInFile(
@@ -2802,8 +2794,8 @@ export class CXCursor {
       );
       return result;
     } finally {
-      CURRENT_TU = savedTu;
-      CURRENT_CURSOR_AND_RANGE_VISITOR_CALLBACK = savedCallback;
+      GLOBAL.CURRENT_TU = savedTu;
+      GLOBAL.CURRENT_CURSOR_AND_RANGE_VISITOR_CALLBACK = savedCallback;
     }
   }
 }
@@ -3996,9 +3988,9 @@ class CXType {
     return libclang.symbols.clang_Type_getCXXRefQualifier(this.#buffer);
   }
   visitFields(callback: (cursor: CXCursor) => CXVisitorResult): boolean {
-    const savedTu = CURRENT_TU;
+    const savedTu = GLOBAL.CURRENT_TU;
     const savedCallback = CURRENT_FIELD_VISITOR_CALLBACK;
-    CURRENT_TU = this.tu;
+    GLOBAL.CURRENT_TU = this.tu;
     CURRENT_FIELD_VISITOR_CALLBACK = callback;
     try {
       const result = libclang.symbols.clang_Type_visitFields(
@@ -4008,7 +4000,7 @@ class CXType {
       );
       return result > 0;
     } finally {
-      CURRENT_TU = savedTu;
+      GLOBAL.CURRENT_TU = savedTu;
       CURRENT_FIELD_VISITOR_CALLBACK = savedCallback;
     }
   }
