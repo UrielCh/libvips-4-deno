@@ -69,7 +69,7 @@ export type { AvailabilityEntry } from "./rest.ts";
 export { CXCursor } from "./rest.ts";
 export { CXComment } from "./rest.ts";
 export { CXSourceRange } from "./CXSourceRange.ts";
-export { CXSourceLocation } from "./rest.ts";
+export { CXSourceLocation } from "./CXSourceLocation.ts";
 export { CXDiagnosticSet } from "./rest.ts";
 export { CXDiagnostic } from "./CXDiagnostic.ts";
 export { CXRemapping } from "./rest.ts";
