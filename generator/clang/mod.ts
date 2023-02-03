@@ -48,12 +48,12 @@ export type {
     CXModule,
     CXPrintingPolicy,
     CXRewriter,
-    CXSourceRangeList,
     CXToken,
     CXTUResourceUsage,
     CXType,
 } from './rest.ts';
 
+export { CXSourceRangeList } from './CXSourceRangeList.ts';
 export { setAbortOnFatalError } from "./rest.ts";
 export { getClangVersion } from "./rest.ts";
 export { getBuildSessionTimestamp } from "./rest.ts";
@@ -63,7 +63,7 @@ export { CXIndex } from "./rest.ts";
 export type { TargetInfo } from "./rest.ts";
 export type { UnsavedFile } from "./rest.ts";
 export { CXTranslationUnit } from "./rest.ts";
-export { CXFile } from "./rest.ts";
+export { CXFile } from "./CXFile.ts";
 export type { SemVerString } from "./rest.ts";
 export type { AvailabilityEntry } from "./rest.ts";
 export { CXCursor } from "./rest.ts";
