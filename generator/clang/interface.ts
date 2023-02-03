@@ -39,4 +39,16 @@ export interface TargetInfo {
   }
   
 export type DependentsSet = Set<WeakRef<Dependent>>;
-  
+
+export interface CXTUResourceUsageEntry {
+  /**
+   * Human-readable string that represents the name of the memory category.
+   */
+  kind: string;
+  /**
+   * Number of bytes used by the memory category.
+   */
+  bytes: number;
+}
+
+

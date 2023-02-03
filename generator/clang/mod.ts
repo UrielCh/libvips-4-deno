@@ -46,10 +46,10 @@ export type {
     CXPrintingPolicy,
     CXRewriter,
     CXToken,
-    CXTUResourceUsage,
     CXType,
 } from './rest.ts';
 
+export { CXTUResourceUsage } from './CXTUResourceUsage.ts';
 export { CXModule } from './CXModule.ts'; // exported as type
 export { CXCodeCompleteResults } from './CXCodeCompleteResults.ts';
 export type { CXIndexAction } from './CXIndexAction.ts';
