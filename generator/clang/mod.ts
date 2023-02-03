@@ -42,9 +42,10 @@ export {
 } from './rest.ts';
 export type {
     CXPrintingPolicy,
-    CXToken,
     CXType,
 } from './rest.ts';
+
+export type { CXToken } from './CXToken.ts';
 export type { CXEvalResult } from './CXEvalResult.ts';
 export type { CXCompletionString } from './CXCompletionString.ts';
 export type { CXRewriter } from './CXRewriter.ts'; // exported class as type
@@ -65,7 +66,7 @@ export { CXTranslationUnit } from "./CXTranslationUnit.ts";
 export { CXFile } from "./CXFile.ts";
 export type { SemVerString } from "./interface.ts";
 export type { AvailabilityEntry } from "./interface.ts";
-export { CXCursor } from "./rest.ts";
+export { CXCursor } from "./CXCursor.ts";
 export { CXComment } from "./rest.ts";
 export { CXSourceRange } from "./CXSourceRange.ts";
 export { CXSourceLocation } from "./CXSourceLocation.ts";

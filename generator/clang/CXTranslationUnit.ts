@@ -14,7 +14,8 @@ import { libclang } from "./ffi.ts";
 import { GLOBAL } from "./global.ts";
 import { CXCodeComplete_Flags, CXInclusionVisitorCallbackDefinition, CXReparse_Flags, CXResult, CXSaveError, CXVisitorResult } from "./include/typeDefinitions.ts";
 import { Dependent, DependentsSet, TargetInfo, UnsavedFile } from "./interface.ts";
-import { CXCursor, CX_CURSOR_AND_RANGE_VISITOR_CALLBACK } from "./rest.ts";
+import { CX_CURSOR_AND_RANGE_VISITOR_CALLBACK } from "./rest.ts";
+import { CXCursor } from "./CXCursor.ts";
 import { cstr, cxstringToString, NULL, NULLBUF, throwIfError } from "./utils.ts";
 
 const OUT = new Uint8Array(16);
