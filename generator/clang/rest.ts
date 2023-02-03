@@ -1,4 +1,5 @@
 import { libclang } from "./ffi.ts";
+import {CONSTRUCTOR, POINTER, BUFFER, DISPOSE, REGISTER, DEREGISTER } from "./common.ts";
 import {
   CX_CXXAccessSpecifier,
   CX_StorageClass,
@@ -108,13 +109,6 @@ export type {
   CXTUResourceUsage,
   CXType,
 };
-
-const CONSTRUCTOR = Symbol("[[constructor]]");
-const POINTER = Symbol("[[pointer]]");
-const BUFFER = Symbol("[[buffer]]");
-const DISPOSE = Symbol("[[dispose]]");
-const REGISTER = Symbol("[[register]]");
-const DEREGISTER = Symbol("[[deregister]]");
 
 const OUT = new Uint8Array(16);
 const OUT_64 = new BigUint64Array(OUT.buffer);
