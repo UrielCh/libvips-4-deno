@@ -1,7 +1,8 @@
 import { CONSTRUCTOR } from "./common.ts";
 import { libclang } from "./ffi.ts";
 import { CXCompletionContext, CXCursorKind } from "./include/typeDefinitions.ts";
-import { CXCompletionString, CXDiagnostic, CXSourceRange, CXTranslationUnit } from "./rest.ts";
+import { CXCompletionString, CXDiagnostic, CXTranslationUnit } from "./rest.ts";
+import { CXSourceRange } from "./CXSourceRange.ts";
 import { cxstringToString, NULL } from "./utils.ts";
 
 const COMPLETION_RESULTS_FINALIZATION_REGISTRY = new FinalizationRegistry<
