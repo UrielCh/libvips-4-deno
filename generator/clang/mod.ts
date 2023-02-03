@@ -41,7 +41,6 @@ export {
     CXVisitorResult,
 } from './rest.ts';
 export type {
-    CXCodeCompleteResults,
     CXCompletionString,
     CXEvalResult,
     CXModule,
@@ -52,6 +51,7 @@ export type {
     CXType,
 } from './rest.ts';
 
+export { CXCodeCompleteResults } from './CXCodeCompleteResults.ts';
 export type { CXIndexAction } from './CXIndexAction.ts';
 export { CXSourceRangeList } from './CXSourceRangeList.ts';
 export { setAbortOnFatalError } from "./rest.ts";
