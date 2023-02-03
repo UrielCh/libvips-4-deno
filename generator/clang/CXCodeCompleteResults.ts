@@ -1,10 +1,11 @@
 import { CONSTRUCTOR } from "./common.ts";
 import { libclang } from "./ffi.ts";
 import { CXCompletionContext, CXCursorKind } from "./include/typeDefinitions.ts";
-import { CXCompletionString, CXTranslationUnit } from "./rest.ts";
+import { CXTranslationUnit } from "./rest.ts";
 import { CXDiagnostic } from "./CXDiagnostic.ts";
 import { CXSourceRange } from "./CXSourceRange.ts";
 import { cxstringToString, NULL } from "./utils.ts";
+import { CXCompletionString } from "./CXCompletionString.ts";
 
 const COMPLETION_RESULTS_FINALIZATION_REGISTRY = new FinalizationRegistry<
   Deno.PointerValue

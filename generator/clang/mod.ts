@@ -41,12 +41,12 @@ export {
     CXVisitorResult,
 } from './rest.ts';
 export type {
-    CXCompletionString,
     CXEvalResult,
     CXPrintingPolicy,
     CXToken,
     CXType,
 } from './rest.ts';
+export type { CXCompletionString } from './CXCompletionString.ts';
 export type { CXRewriter } from './CXRewriter.ts'; // exported class as type
 export { CXTUResourceUsage } from './CXTUResourceUsage.ts';
 export type { CXModule } from './CXModule.ts'; // exported class as type
