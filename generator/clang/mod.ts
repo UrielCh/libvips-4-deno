@@ -39,11 +39,9 @@ export {
     CXTypeNullabilityKind,
     CXVisibilityKind,
     CXVisitorResult,
-} from './rest.ts';
-export type {
-    CXPrintingPolicy,
-} from './rest.ts';
+} from "./include/typeDefinitions.ts";
 
+export type { CXPrintingPolicy } from './CXPrintingPolicy.ts';
 export type { CXType } from './CXType.ts';
 export type { CXToken } from './CXToken.ts';
 export type { CXEvalResult } from './CXEvalResult.ts';
