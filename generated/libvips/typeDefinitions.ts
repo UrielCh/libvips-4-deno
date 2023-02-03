@@ -12,8 +12,8 @@ export const int = "i32" as const;
 export const gint = "i32" as const;
 
 /**
- * `const char *`, C string
- */
+   * `const char *`, C string
+   */
 export const cstringT = "buffer" as const;
 
 export const long = "i64" as const;
@@ -27,8 +27,8 @@ export const double = "f64" as const;
 export const VipsArgumentTable = "i32" as const;
 
 /**
- * `char **`, C string array
- */
+   * `char **`, C string array
+   */
 export const cstringArrayT = "buffer" as const;
 
 /**

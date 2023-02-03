@@ -4,8 +4,8 @@ export const func = (_func: unknown) => "function" as const;
 export const unsignedInt = "u32" as const;
 
 /**
- * `const char *`, C string
- */
+   * `const char *`, C string
+   */
 export const cstringT = "buffer" as const;
 
 export const int = "i32" as const;
@@ -15,8 +15,8 @@ export const unsignedLong = "u64" as const;
 export const size_t = "u64" as const;
 
 /**
- * `char **`, C string array
- */
+   * `char **`, C string array
+   */
 export const cstringArrayT = "buffer" as const;
 
 export const longLong = "i64" as const;

@@ -285,259 +285,272 @@ export const toAnyType = (
   type: CXType,
 ): AnyType => {
   const typekind = type.kind;
-  if (typekind === CXTypeKind.CXType_Elaborated) {
-    const typeDeclaration = type.getTypeDeclaration();
-    if (!typeDeclaration) throw Error('internal error "typeDeclaration" is null');
-    if (typeDeclaration.kind === CXCursorKind.CXCursor_EnumDecl) {
-      const name = type.getSpelling().substring(5); // drop `enum ` prefix
+
+  switch (typekind) {
+    case CXTypeKind.CXType_Elaborated: {
+      const typeDeclaration = type.getTypeDeclaration();
+      if (!typeDeclaration) throw Error('internal error "typeDeclaration" is null');
+      if (typeDeclaration.kind === CXCursorKind.CXCursor_EnumDecl) {
+        const name = type.getSpelling().substring(5); // drop `enum ` prefix
+        if (typeMemory.has(name)) {
+          return typeMemory.get(name)!;
+        }
+        const result = toEnumType(typeMemory, name, typeDeclaration);
+        typeMemory.set(name, result);
+        return result;
+      } else if (typeDeclaration.kind === CXCursorKind.CXCursor_StructDecl) {
+        const structDeclaration = type.getTypeDeclaration();
+        const name = type.getSpelling().substring("struct ".length);
+        const fields: StructField[] = [];
+        const size = type.getSizeOf();
+        if (size === CXTypeLayoutError.CXTypeLayoutError_Invalid) {
+          throw new Error("Invalid type: " + name);
+        } else if (size === CXTypeLayoutError.CXTypeLayoutError_Incomplete) {
+          const voidType: PlainType = {
+            comment: "/** opaque */",
+            kind: "plain",
+            name,
+            type: "void",
+          };
+          return voidType;
+        }
+        if (!structDeclaration) throw Error('internal error "structDeclaration" is null');
+        const structType: StructType = {
+          fields,
+          kind: "struct",
+          name,
+          size,
+          reprName: `${name}T`,
+          comment: commentToJSDcoString(
+            structDeclaration.getParsedComment(),
+            structDeclaration.getRawCommentText(),
+          ),
+        };
+        type.visitFields((fieldCursor) => {
+          if (fieldCursor.kind !== CXCursorKind.CXCursor_FieldDecl) {
+            throw new Error(
+              "Unexpected field type: " + fieldCursor.getKindSpelling(),
+            );
+          }
+          const fieldType = fieldCursor.getType();
+          if (!fieldType) throw Error('internal error "fieldType" is null');
+          if (fieldType.kind === CXTypeKind.CXType_ConstantArray) {
+            const length = fieldType.getArraySize();
+            const elementType = fieldType.getArrayElementType();
+            if (!elementType) throw Error('internal error "elementType" is null');
+            const baseName = fieldCursor.getDisplayName();
+            const baseOffset = fieldCursor.getOffsetOfField() / 8;
+            const elementSize = elementType.getSizeOf();
+            const comment = commentToJSDcoString(
+              fieldCursor.getParsedComment(),
+              fieldCursor.getRawCommentText(),
+            );
+            for (let i = 0; i < length; i++) {
+              fields.push({
+                name: `${baseName}[${i}]`,
+                type: toAnyType(typeMemory, elementType),
+                offset: baseOffset + i * elementSize,
+                size: elementSize,
+                comment: i === 0 ? comment : null,
+              });
+            }
+            return CXVisitorResult.CXVisit_Continue;
+          }
+          const field: StructField = {
+            name: fieldCursor.getDisplayName(),
+            type: toAnyType(typeMemory, fieldType),
+            offset: fieldCursor.getOffsetOfField() / 8,
+            size: fieldType.getSizeOf(),
+            comment: commentToJSDcoString(
+              fieldCursor.getParsedComment(),
+              fieldCursor.getRawCommentText(),
+            ),
+          };
+          if (field.type.kind === "pointer") {
+            // Never use `buf()` in struct fields as it doesn't really make much sense to do so.
+            field.type.useBuffer = false;
+          }
+          fields.push(field);
+          return CXVisitorResult.CXVisit_Continue;
+        });
+
+        typeMemory.set(name, structType);
+        return structType;
+      } else {
+        throw new Error("Unknown elaborated type");
+      }
+    }
+
+
+    case CXTypeKind.CXType_FunctionProto: {
+      const typeDeclaration = type.getTypeDeclaration();
+      if (!typeDeclaration) throw Error('internal error "typeDeclaration" is null');
+      const resultType = type.getResultType();
+      if (!resultType) throw Error('internal error "resultType" is null');
+      const result: FunctionType = {
+        comment: commentToJSDcoString(
+          typeDeclaration.getParsedComment(),
+          typeDeclaration.getRawCommentText(),
+        ),
+        kind: "function",
+        name: type.getSpelling(),
+        parameters: [],
+        reprName: `${type.getSpelling()}T`,
+        result: toAnyType(typeMemory, resultType),
+      };
+      const length = type.getNumberOfArgumentTypes();
+      for (let i = 0; i < length; i++) {
+        const argument = type.getArgumentType(i);
+        if (!argument) throw Error('internal error "argument" is null');
+        result.parameters.push({
+          comment: null,
+          name: argument.getSpelling(),
+          type: toAnyType(typeMemory, argument),
+        });
+      }
+      return result;
+    }
+
+    case CXTypeKind.CXType_Pointer: {
+      const pointee = type.getPointeeType();
+      if (!pointee) throw Error('internal error "pointee" is null')
+
+      if (
+        pointee.kind === CXTypeKind.CXType_Char_S
+      ) {
+        // `const char *` or `char *`
+        const cstringResult: ReferenceType = {
+          comment: null,
+          kind: "ref",
+          name: "cstringT",
+          reprName: "cstringT",
+        };
+        if (!typeMemory.has("cstringT")) {
+          typeMemory.set("cstringT", {
+            kind: "plain",
+            comment: `/**
+   * \`const char *\`, C string
+   */`,
+            name: "cstringT",
+            type: "buffer",
+          });
+        }
+        return cstringResult;
+      } else if (
+        pointee.kind === CXTypeKind.CXType_Pointer &&
+        pointee.getPointeeType()!.kind === CXTypeKind.CXType_Char_S
+      ) {
+        // `const char **` or `char **`
+        const cstringArrayResult: ReferenceType = {
+          comment: null,
+          kind: "ref",
+          name: "cstringArrayT",
+          reprName: "cstringArrayT",
+        };
+        if (!typeMemory.has("cstringArrayT")) {
+          typeMemory.set("cstringArrayT", {
+            kind: "plain",
+            comment: `/**
+   * \`char **\`, C string array
+   */`,
+            name: "cstringArrayT",
+            type: "buffer",
+          });
+        }
+        return cstringArrayResult;
+      }
+
+      const pointeeAnyType = toAnyType(typeMemory, pointee);
+
+      const result: PointerType = {
+        kind: "pointer",
+        name: type.getSpelling(),
+        pointee: pointeeAnyType,
+        comment: null,
+        useBuffer: pointeeAnyType.kind === "struct" ||
+          pointeeAnyType.kind === "plain" && pointeeAnyType.type !== "void" ||
+          pointeeAnyType.kind === "pointer" || pointeeAnyType.kind === "ref" ||
+          pointeeAnyType.kind === "enum",
+      };
+      return result;
+    }
+
+    case CXTypeKind.CXType_Typedef: {
+      const name = type.getTypedefName();
+      const result: ReferenceType = {
+        kind: "ref",
+        name,
+        reprName: `${name}T`,
+        comment: null,
+      };
+      if (!typeMemory.has(name)) {
+        // Check for potentially needed system header definitions.
+        const typedecl = type.getTypeDeclaration();
+        if (!typedecl) throw Error('internal error "typedecl" is null')
+        const location = typedecl.getLocation();
+        if (location.isInSystemHeader()) {
+          const sourceType = typedecl.getTypedefDeclarationOfUnderlyingType();
+          if (!sourceType) throw Error('internal error "sourceType" is null')
+          const sourceAnyType = toAnyType(typeMemory, sourceType);
+          typeMemory.set(name, sourceAnyType);
+        }
+      }
+      return result;
+    }
+
+    case CXTypeKind.CXType_Enum: {
+      let name = type.getSpelling();
+      if (name.startsWith("enum ")) {
+        name = name.substring("enum ".length);
+      }
       if (typeMemory.has(name)) {
         return typeMemory.get(name)!;
       }
+      const typeDeclaration = type.getTypeDeclaration();
+      if (!typeDeclaration) throw Error('internal error "typeDeclaration" is null');
       const result = toEnumType(typeMemory, name, typeDeclaration);
       typeMemory.set(name, result);
       return result;
-    } else if (typeDeclaration.kind === CXCursorKind.CXCursor_StructDecl) {
-      const structDeclaration = type.getTypeDeclaration();
-      const name = type.getSpelling().substring("struct ".length);
-      const fields: StructField[] = [];
-      const size = type.getSizeOf();
-      if (size === CXTypeLayoutError.CXTypeLayoutError_Invalid) {
-        throw new Error("Invalid type: " + name);
-      } else if (size === CXTypeLayoutError.CXTypeLayoutError_Incomplete) {
-        const voidType: PlainType = {
-          comment: "/** opaque */",
+    }
+
+    case CXTypeKind.CXType_Void:
+    case CXTypeKind.CXType_Bool:
+    case CXTypeKind.CXType_Char_U:
+    case CXTypeKind.CXType_UChar:
+    case CXTypeKind.CXType_UShort:
+    case CXTypeKind.CXType_UInt:
+    case CXTypeKind.CXType_ULong:
+    case CXTypeKind.CXType_ULongLong:
+    case CXTypeKind.CXType_Char_S:
+    case CXTypeKind.CXType_SChar:
+    case CXTypeKind.CXType_Short:
+    case CXTypeKind.CXType_Int:
+    case CXTypeKind.CXType_Long:
+    case CXTypeKind.CXType_LongLong:
+    case CXTypeKind.CXType_Float:
+    case CXTypeKind.CXType_Double:
+    case CXTypeKind.CXType_NullPtr:
+      {
+        const spellingName = toPlainTypeName(type.getSpelling());
+        // const canonycalName = toPlainTypeName(type.getCanonicalType().getSpelling());
+        
+        const existing = typeMemory.get(spellingName);
+        if (existing) {
+          return existing;
+        }
+        const result: PlainType = {
           kind: "plain",
-          name,
-          type: "void",
+          name: spellingName,
+          type: getPlainTypeInfo(typekind, type),
+          comment: null,
         };
-        return voidType;
+        typeMemory.set(spellingName, result);
+        return result;
       }
-      if (!structDeclaration) throw Error('internal error "structDeclaration" is null');
-      const structType: StructType = {
-        fields,
-        kind: "struct",
-        name,
-        size,
-        reprName: `${name}T`,
-        comment: commentToJSDcoString(
-          structDeclaration.getParsedComment(),
-          structDeclaration.getRawCommentText(),
-        ),
-      };
-      type.visitFields((fieldCursor) => {
-        if (fieldCursor.kind !== CXCursorKind.CXCursor_FieldDecl) {
-          throw new Error(
-            "Unexpected field type: " + fieldCursor.getKindSpelling(),
-          );
-        }
-        const fieldType = fieldCursor.getType();
-        if (!fieldType) throw Error('internal error "fieldType" is null');
-        if (fieldType.kind === CXTypeKind.CXType_ConstantArray) {
-          const length = fieldType.getArraySize();
-          const elementType = fieldType.getArrayElementType();
-          if (!elementType) throw Error('internal error "elementType" is null');
-          const baseName = fieldCursor.getDisplayName();
-          const baseOffset = fieldCursor.getOffsetOfField() / 8;
-          const elementSize = elementType.getSizeOf();
-          const comment = commentToJSDcoString(
-            fieldCursor.getParsedComment(),
-            fieldCursor.getRawCommentText(),
-          );
-          for (let i = 0; i < length; i++) {
-            fields.push({
-              name: `${baseName}[${i}]`,
-              type: toAnyType(typeMemory, elementType),
-              offset: baseOffset + i * elementSize,
-              size: elementSize,
-              comment: i === 0 ? comment : null,
-            });
-          }
-          return CXVisitorResult.CXVisit_Continue;
-        }
-        const field: StructField = {
-          name: fieldCursor.getDisplayName(),
-          type: toAnyType(typeMemory, fieldType),
-          offset: fieldCursor.getOffsetOfField() / 8,
-          size: fieldType.getSizeOf(),
-          comment: commentToJSDcoString(
-            fieldCursor.getParsedComment(),
-            fieldCursor.getRawCommentText(),
-          ),
-        };
-        if (field.type.kind === "pointer") {
-          // Never use `buf()` in struct fields as it doesn't really make much sense to do so.
-          field.type.useBuffer = false;
-        }
-        fields.push(field);
-        return CXVisitorResult.CXVisit_Continue;
-      });
-
-      typeMemory.set(name, structType);
-      return structType;
-    } else {
-      throw new Error("Unknown elaborated type");
-    }
-  } else if (typekind === CXTypeKind.CXType_FunctionProto) {
-    const typeDeclaration = type.getTypeDeclaration();
-    if (!typeDeclaration) throw Error('internal error "typeDeclaration" is null');
-    const resultType = type.getResultType();
-    if (!resultType) throw Error('internal error "resultType" is null');
-    const result: FunctionType = {
-      comment: commentToJSDcoString(
-        typeDeclaration.getParsedComment(),
-        typeDeclaration.getRawCommentText(),
-      ),
-      kind: "function",
-      name: type.getSpelling(),
-      parameters: [],
-      reprName: `${type.getSpelling()}T`,
-      result: toAnyType(typeMemory, resultType),
-    };
-    const length = type.getNumberOfArgumentTypes();
-    for (let i = 0; i < length; i++) {
-      const argument = type.getArgumentType(i);
-      if (!argument) throw Error('internal error "argument" is null');
-      result.parameters.push({
-        comment: null,
-        name: argument.getSpelling(),
-        type: toAnyType(typeMemory, argument),
-      });
-    }
-    return result;
-  } else if (typekind === CXTypeKind.CXType_Pointer) {
-    const pointee = type.getPointeeType();
-    if (!pointee) throw Error('internal error "pointee" is null')
-
-    if (
-      pointee.kind === CXTypeKind.CXType_Char_S
-    ) {
-      // `const char *` or `char *`
-      const cstringResult: ReferenceType = {
-        comment: null,
-        kind: "ref",
-        name: "cstringT",
-        reprName: "cstringT",
-      };
-      if (!typeMemory.has("cstringT")) {
-        typeMemory.set("cstringT", {
-          kind: "plain",
-          comment: `/**
- * \`const char *\`, C string
- */`,
-          name: "cstringT",
-          type: "buffer",
-        });
-      }
-      return cstringResult;
-    } else if (
-      pointee.kind === CXTypeKind.CXType_Pointer &&
-      pointee.getPointeeType()!.kind === CXTypeKind.CXType_Char_S
-    ) {
-      // `const char **` or `char **`
-      const cstringArrayResult: ReferenceType = {
-        comment: null,
-        kind: "ref",
-        name: "cstringArrayT",
-        reprName: "cstringArrayT",
-      };
-      if (!typeMemory.has("cstringArrayT")) {
-        typeMemory.set("cstringArrayT", {
-          kind: "plain",
-          comment: `/**
- * \`char **\`, C string array
- */`,
-          name: "cstringArrayT",
-          type: "buffer",
-        });
-      }
-      return cstringArrayResult;
-    }
-
-    const pointeeAnyType = toAnyType(typeMemory, pointee);
-
-    const result: PointerType = {
-      kind: "pointer",
-      name: type.getSpelling(),
-      pointee: pointeeAnyType,
-      comment: null,
-      useBuffer: pointeeAnyType.kind === "struct" ||
-        pointeeAnyType.kind === "plain" && pointeeAnyType.type !== "void" ||
-        pointeeAnyType.kind === "pointer" || pointeeAnyType.kind === "ref" ||
-        pointeeAnyType.kind === "enum",
-    };
-    return result;
-  } else if (typekind === CXTypeKind.CXType_Typedef) {
-    const name = type.getTypedefName();
-    const result: ReferenceType = {
-      kind: "ref",
-      name,
-      reprName: `${name}T`,
-      comment: null,
-    };
-    if (!typeMemory.has(name)) {
-      // Check for potentially needed system header definitions.
-      const typedecl = type.getTypeDeclaration();
-      if (!typedecl) throw Error('internal error "typedecl" is null')
-      const location = typedecl.getLocation();
-      if (location.isInSystemHeader()) {
-        const sourceType = typedecl.getTypedefDeclarationOfUnderlyingType();
-        if (!sourceType) throw Error('internal error "sourceType" is null')
-        const sourceAnyType = toAnyType(typeMemory, sourceType);
-        typeMemory.set(name, sourceAnyType);
-      }
-    }
-    return result;
-  } else if (
-    typekind === CXTypeKind.CXType_Enum
-  ) {
-    let name = type.getSpelling();
-    if (name.startsWith("enum ")) {
-      name = name.substring("enum ".length);
-    }
-    if (typeMemory.has(name)) {
-      return typeMemory.get(name)!;
-    }
-    const typeDeclaration = type.getTypeDeclaration();
-    if (!typeDeclaration) throw Error('internal error "typeDeclaration" is null');
-    const result = toEnumType(typeMemory, name, typeDeclaration);
-    typeMemory.set(name, result);
-    return result;
-  } else if (
-    typekind !== CXTypeKind.CXType_Void &&
-    typekind !== CXTypeKind.CXType_Bool &&
-    typekind !== CXTypeKind.CXType_Char_U &&
-    typekind !== CXTypeKind.CXType_UChar &&
-    typekind !== CXTypeKind.CXType_UShort &&
-    typekind !== CXTypeKind.CXType_UInt &&
-    typekind !== CXTypeKind.CXType_ULong &&
-    typekind !== CXTypeKind.CXType_ULongLong &&
-    typekind !== CXTypeKind.CXType_Char_S &&
-    typekind !== CXTypeKind.CXType_SChar &&
-    typekind !== CXTypeKind.CXType_Short &&
-    typekind !== CXTypeKind.CXType_Int &&
-    typekind !== CXTypeKind.CXType_Long &&
-    typekind !== CXTypeKind.CXType_LongLong &&
-    typekind !== CXTypeKind.CXType_Float &&
-    typekind !== CXTypeKind.CXType_Double &&
-    typekind !== CXTypeKind.CXType_NullPtr
-  ) {
-    throw new Error(
-      `Unsupported type kind: ${typekind}, spelling '${type.getSpelling()}', '${type.getKindSpelling()}'`,
-    );
-  } else {
-    const name = toPlainTypeName(type.getSpelling());
-    const existing = typeMemory.get(name);
-    if (existing) {
-      return existing;
-    }
-    const result: PlainType = {
-      kind: "plain",
-      name,
-      type: getPlainTypeInfo(typekind, type),
-      comment: null,
-    };
-    typeMemory.set(name, result);
-    return result;
+    default:
+      throw new Error(
+        `Unsupported type kind: ${typekind}, spelling '${type.getSpelling()}', '${type.getKindSpelling()}'`,
+      );
   }
 };
 

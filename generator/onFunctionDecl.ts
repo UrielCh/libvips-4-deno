@@ -7,17 +7,24 @@ import {
 import { ContextFile } from "./Context.ts";
 
 export function onFunctionDecl(ctxt: ContextFile, cx: CXCursor) {
+    const functionName = cx.getMangling();
+    // console.log('function name: ', functionName)
+    // if (functionName === 'vips_colourspace_issupported')
+    //     debugger;
     const parameters: FunctionParameter[] = [];
-    const resultAnyType = toAnyType(ctxt.TYPE_MEMORY, cx.getResultType()!);
+    const resultType = cx.getResultType()!;
+    const resultAnyType = toAnyType(ctxt.TYPE_MEMORY, resultType);
     const length = cx.getNumberOfArguments();
     for (let i = 0; i < length; i++) {
         const argument = cx.getArgument(i)!;
-        const argumentAnyType = toAnyType(ctxt.TYPE_MEMORY, argument.getType()!);
+        const argumentType = argument.getType()!;
+        const argumentAnyType = toAnyType(ctxt.TYPE_MEMORY, argumentType);
+        const comment = commentToJSDcoString(
+            argument.getParsedComment(),
+            argument.getRawCommentText(),
+        );
         parameters.push({
-            comment: commentToJSDcoString(
-                argument.getParsedComment(),
-                argument.getRawCommentText(),
-            ),
+            comment,
             name: argument.getDisplayName(),
             type: argumentAnyType,
         });
@@ -63,13 +70,12 @@ export function onFunctionDecl(ctxt: ContextFile, cx: CXCursor) {
         cx.getParsedComment(),
         cx.getRawCommentText(),
     );
-    const name = cx.getMangling();
     ctxt.functions.push({
         comment,
         kind: "function",
-        name,
+        name: functionName,
         parameters,
-        reprName: `${name}T`,
+        reprName: `${functionName}T`,
         result: resultAnyType,
     });
     if (resultAnyType.kind === "pointer") {
