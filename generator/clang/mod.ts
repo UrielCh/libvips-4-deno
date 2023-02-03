@@ -43,7 +43,6 @@ export {
 export type {
     CXCompletionString,
     CXEvalResult,
-    CXModule,
     CXPrintingPolicy,
     CXRewriter,
     CXToken,
@@ -51,6 +50,7 @@ export type {
     CXType,
 } from './rest.ts';
 
+export { CXModule } from './CXModule.ts'; // exported as type
 export { CXCodeCompleteResults } from './CXCodeCompleteResults.ts';
 export type { CXIndexAction } from './CXIndexAction.ts';
 export { CXSourceRangeList } from './CXSourceRangeList.ts';
