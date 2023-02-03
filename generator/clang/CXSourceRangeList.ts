@@ -1,7 +1,8 @@
 import { CONSTRUCTOR } from "./common.ts";
 import { libclang } from "./ffi.ts";
 
-import { CXSourceRange, CXTranslationUnit } from "./rest.ts";
+import { CXTranslationUnit } from "./rest.ts";
+import { CXSourceRange } from "./CXSourceRange.ts";
 
 const SOURCE_RANGE_LIST_FINALIZATION_REGISTRY = new FinalizationRegistry<
 Deno.PointerValue
