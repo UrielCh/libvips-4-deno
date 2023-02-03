@@ -60,6 +60,7 @@ import { CXCodeCompleteResults } from "./CXCodeCompleteResults.ts";
 import { CXSourceRange } from "./CXSourceRange.ts";
 import { CXDiagnostic } from "./CXDiagnostic.ts";
 import { CXModule } from "./CXModule.ts";
+import { Dependent, DependentsSet, TargetInfo, UnsavedFile } from "./interface.ts";
 export * from "./BuildSystem.ts";
 export * from "./CXCompilationDatabase.ts";
 export {
@@ -476,46 +477,6 @@ export class CXIndex {
     this.#disposed = true;
   }
 }
-
-/**
- * Target information for a given translation unit.
- */
-export interface TargetInfo {
-  /**
-   * Normalized target triple.
-   */
-  triple: string;
-  /**
-   * Pointer width of the target in bits.
-   */
-  pointerWidth: number;
-}
-
-/**
- * Provides the contents of a file that has not yet been saved to disk.
- *
- * Each {@link UnsavedFile} instance provides the name of a file on the
- * system along with the current contents of that file that have not
- * yet been saved to disk.
- */
-export interface UnsavedFile {
-  /**
-   * The file whose contents have not yet been saved.
-   *
-   * This file must already exist in the file system.
-   */
-  filename: string;
-  /**
-   * A buffer containing the unsaved contents of this file.
-   */
-  contents: Uint8Array;
-}
-
-interface Dependent {
-  [DISPOSE]?(): void;
-}
-
-type DependentsSet = Set<WeakRef<Dependent>>;
 
 type CXTranslationUnitCursor<T> = T extends CXSourceLocation ? CXCursor | null
   : CXCursor;
