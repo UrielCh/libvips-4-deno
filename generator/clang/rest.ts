@@ -1,8 +1,5 @@
 import { CONSTRUCTOR } from "./common.ts";
 import { CXSourceRange } from "./CXSourceRange.ts";
-export * from "./BuildSystem.ts";
-export * from "./CXCompilationDatabase.ts";
-
 import { GLOBAL } from "./global.ts";
 import { CXCursor } from "./CXCursor.ts";
 import { CXCursorAndRangeVisitorCallbackDefinition } from "./include/typeDefinitions.ts";
