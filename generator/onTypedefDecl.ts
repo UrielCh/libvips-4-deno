@@ -1,27 +1,28 @@
 import { CXChildVisitResult, CXCursorKind } from "./clang/include/typeDefinitions.ts";
 import { CXCursor } from "./clang/mod.ts";
 import {
-    commentToJSDcoString,
-    toAnyType,
+  commentToJSDcoString,
+  toAnyType,
 } from "./build_utils.ts";
 import { ContextFile } from "./Context.ts";
 
 /** call on CXCursorKind.CXCursor_TypedefDecl */
 export function onTypedefDecl(ctxt: ContextFile, cx: CXCursor) {
-    const typedefName = cx.getDisplayName();
+  const typedefName = cx.getDisplayName();
 
-    if (!ctxt.TYPE_MEMORY.has(typedefName)) {
-      const originalTypeDeclaration = cx
-        .getTypedefDeclarationOfUnderlyingType()!;
-      let structDeclAnyType = toAnyType(
-        ctxt.TYPE_MEMORY,
-        originalTypeDeclaration,
-      );
+  if (ctxt.TYPE_MEMORY.has(typedefName))
+    return;
 
-      if (
-        structDeclAnyType.kind === "pointer" &&
-        structDeclAnyType.pointee.kind === "function"
-      ) {
+  const originalTypeDeclaration = cx
+    .getTypedefDeclarationOfUnderlyingType()!;
+  let structDeclAnyType = toAnyType(
+    ctxt.TYPE_MEMORY,
+    originalTypeDeclaration,
+  );
+
+  switch (structDeclAnyType.kind) {
+    case "pointer": {
+      if (structDeclAnyType.pointee.kind === "function") {
         // Inject parameter names from cursor
         const parameters = structDeclAnyType.pointee.parameters;
         let i = 0;
@@ -46,7 +47,8 @@ export function onTypedefDecl(ctxt: ContextFile, cx: CXCursor) {
             cx.getRawCommentText(),
           ),
         };
-      } else if (structDeclAnyType.kind === "pointer") {
+
+      } else {
         structDeclAnyType = {
           ...structDeclAnyType,
           name: typedefName,
@@ -55,7 +57,11 @@ export function onTypedefDecl(ctxt: ContextFile, cx: CXCursor) {
             cx.getRawCommentText(),
           ),
         };
-      } else if (structDeclAnyType.kind === "function") {
+      }
+      break;
+    }
+    case "function":
+      {
         // Inject parameter names from cursor
         const parameters = structDeclAnyType.parameters;
         let i = 0;
@@ -80,56 +86,62 @@ export function onTypedefDecl(ctxt: ContextFile, cx: CXCursor) {
             cx.getRawCommentText(),
           ),
         };
-      } else if (structDeclAnyType.kind === "plain") {
-        structDeclAnyType = {
-          ...structDeclAnyType,
-          name: typedefName,
-          comment: commentToJSDcoString(
-            cx.getParsedComment(),
-            cx.getRawCommentText(),
-          ),
-        };
-      } else if (structDeclAnyType.kind === "struct") {
-        structDeclAnyType = {
-          ...structDeclAnyType,
-          name: typedefName,
-          reprName: `${typedefName}T`,
-          comment: commentToJSDcoString(
-            cx.getParsedComment(),
-            cx.getRawCommentText(),
-          ),
-        };
-      } else if (structDeclAnyType.kind === "enum") {
-        structDeclAnyType = {
-          ...structDeclAnyType,
-          name: typedefName,
-          reprName: `${typedefName}T`,
-          comment: commentToJSDcoString(
-            cx.getParsedComment(),
-            cx.getRawCommentText(),
-          ),
-        };
-      } else if (structDeclAnyType.kind === "ref") {
-        structDeclAnyType = {
-          ...structDeclAnyType,
-          comment: commentToJSDcoString(
-            cx.getParsedComment(),
-            cx.getRawCommentText(),
-          ),
-        };
-      } else {
-        throw new Error("unreachable");
+
+        break;
       }
-      if (structDeclAnyType.kind === "struct") {
-        for (const field of structDeclAnyType.fields) {
-          if (
-            field.type.kind === "pointer" &&
-            field.type.pointee.kind === "ref"
-          ) {
-            ctxt.POINTED_FROM_STRUCT.add(field.type.pointee.name);
-          }
-        }
+    case "plain":
+      structDeclAnyType = {
+        ...structDeclAnyType,
+        name: typedefName,
+        comment: commentToJSDcoString(
+          cx.getParsedComment(),
+          cx.getRawCommentText(),
+        ),
+      };
+      break;
+    case "struct":
+      structDeclAnyType = {
+        ...structDeclAnyType,
+        name: typedefName,
+        reprName: `${typedefName}T`,
+        comment: commentToJSDcoString(
+          cx.getParsedComment(),
+          cx.getRawCommentText(),
+        ),
+      };
+      break;
+    case "enum":
+      structDeclAnyType = {
+        ...structDeclAnyType,
+        name: typedefName,
+        reprName: `${typedefName}T`,
+        comment: commentToJSDcoString(
+          cx.getParsedComment(),
+          cx.getRawCommentText(),
+        ),
+      };
+      break;
+    case "ref":
+      structDeclAnyType = {
+        ...structDeclAnyType,
+        comment: commentToJSDcoString(
+          cx.getParsedComment(),
+          cx.getRawCommentText(),
+        ),
+      };
+      break;
+    default:
+      throw new Error("unreachable");
+  }
+  if (structDeclAnyType.kind === "struct") {
+    for (const field of structDeclAnyType.fields) {
+      if (
+        field.type.kind === "pointer" &&
+        field.type.pointee.kind === "ref"
+      ) {
+        ctxt.POINTED_FROM_STRUCT.add(field.type.pointee.name);
       }
-      ctxt.TYPE_MEMORY.set(typedefName, structDeclAnyType);
     }
+  }
+  ctxt.TYPE_MEMORY.set(typedefName, structDeclAnyType);
 }
