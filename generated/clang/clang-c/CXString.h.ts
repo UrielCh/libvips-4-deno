@@ -6,16 +6,6 @@ import {
 } from "../typeDefinitions.ts";
 
 /**
- * Retrieve the character data associated with the given string.
- */
-export const clang_getCString = {
-  parameters: [
-    CXStringT, // string
-  ],
-  result: cstringT,
-} as const;
-
-/**
  * Free the given string.
  */
 export const clang_disposeString = {
@@ -33,4 +23,14 @@ export const clang_disposeStringSet = {
     ptr(CXStringSetT), // set
   ],
   result: "void",
+} as const;
+
+/**
+ * Retrieve the character data associated with the given string.
+ */
+export const clang_getCString = {
+  parameters: [
+    CXStringT, // string
+  ],
+  result: cstringT,
 } as const;

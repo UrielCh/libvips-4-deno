@@ -7,122 +7,6 @@ import {
   VipsWindowT,
 } from "./typeDefinitions.ts";
 
-export const vips_window_unref = {
-  parameters: [
-    buf(VipsWindowT), // window
-  ],
-  result: int,
-} as const;
-
-export const vips_window_print = {
-  parameters: [
-    buf(VipsWindowT), // window
-  ],
-  result: "void",
-} as const;
-
-export const vips_buffer_dump_all = {
-  parameters: [],
-  result: "void",
-} as const;
-
-export const vips_buffer_done = {
-  parameters: [
-    ptr(VipsBufferT), // buffer
-  ],
-  result: "void",
-} as const;
-
-export const vips_buffer_undone = {
-  parameters: [
-    ptr(VipsBufferT), // buffer
-  ],
-  result: "void",
-} as const;
-
-export const vips_buffer_unref = {
-  parameters: [
-    ptr(VipsBufferT), // buffer
-  ],
-  result: "void",
-} as const;
-
-export const vips_buffer_new = {
-  parameters: [
-    ptr("void"), // im
-    buf(int), // area
-  ],
-  result: ptr(VipsBufferT),
-} as const;
-
-export const vips_buffer_ref = {
-  parameters: [
-    ptr("void"), // im
-    buf(int), // area
-  ],
-  result: ptr(VipsBufferT),
-} as const;
-
-export const vips_buffer_unref_ref = {
-  parameters: [
-    ptr(VipsBufferT), // buffer
-    ptr("void"), // im
-    buf(int), // area
-  ],
-  result: ptr(VipsBufferT),
-} as const;
-
-export const vips_buffer_print = {
-  parameters: [
-    ptr(VipsBufferT), // buffer
-  ],
-  result: "void",
-} as const;
-
-export const vips__render_shutdown = {
-  parameters: [],
-  result: "void",
-} as const;
-
-export const vips__region_take_ownership = {
-  parameters: [
-    ptr("void"), // reg
-  ],
-  result: "void",
-} as const;
-
-export const vips__region_check_ownership = {
-  parameters: [
-    ptr("void"), // reg
-  ],
-  result: "void",
-} as const;
-
-export const vips__region_no_ownership = {
-  parameters: [
-    ptr("void"), // reg
-  ],
-  result: "void",
-} as const;
-
-export const vips_region_fill = {
-  parameters: [
-    ptr("void"), // reg
-    buf(int), // r
-    VipsRegionFillFnT, // fn
-    ptr("void"), // a
-  ],
-  result: int,
-} as const;
-
-export const vips__image_wio_output = {
-  parameters: [
-    ptr("void"), // image
-  ],
-  result: int,
-} as const;
-
-// Symbol vips__image_pio_output not exported by lib libvips.so
 export const vips__argument_get_instance = {
   parameters: [
     buf(int), // argument_class
@@ -146,4 +30,120 @@ export const vips__demand_hint_array = {
     buf(ptr("void")), // in
   ],
   result: "void",
+} as const;
+
+// Symbol vips__image_pio_output not exported by lib libvips.so
+export const vips__image_wio_output = {
+  parameters: [
+    ptr("void"), // image
+  ],
+  result: int,
+} as const;
+
+export const vips__region_check_ownership = {
+  parameters: [
+    ptr("void"), // reg
+  ],
+  result: "void",
+} as const;
+
+export const vips__region_no_ownership = {
+  parameters: [
+    ptr("void"), // reg
+  ],
+  result: "void",
+} as const;
+
+export const vips__region_take_ownership = {
+  parameters: [
+    ptr("void"), // reg
+  ],
+  result: "void",
+} as const;
+
+export const vips__render_shutdown = {
+  parameters: [],
+  result: "void",
+} as const;
+
+export const vips_buffer_done = {
+  parameters: [
+    ptr(VipsBufferT), // buffer
+  ],
+  result: "void",
+} as const;
+
+export const vips_buffer_dump_all = {
+  parameters: [],
+  result: "void",
+} as const;
+
+export const vips_buffer_new = {
+  parameters: [
+    ptr("void"), // im
+    buf(int), // area
+  ],
+  result: ptr(VipsBufferT),
+} as const;
+
+export const vips_buffer_print = {
+  parameters: [
+    ptr(VipsBufferT), // buffer
+  ],
+  result: "void",
+} as const;
+
+export const vips_buffer_ref = {
+  parameters: [
+    ptr("void"), // im
+    buf(int), // area
+  ],
+  result: ptr(VipsBufferT),
+} as const;
+
+export const vips_buffer_undone = {
+  parameters: [
+    ptr(VipsBufferT), // buffer
+  ],
+  result: "void",
+} as const;
+
+export const vips_buffer_unref = {
+  parameters: [
+    ptr(VipsBufferT), // buffer
+  ],
+  result: "void",
+} as const;
+
+export const vips_buffer_unref_ref = {
+  parameters: [
+    ptr(VipsBufferT), // buffer
+    ptr("void"), // im
+    buf(int), // area
+  ],
+  result: ptr(VipsBufferT),
+} as const;
+
+export const vips_region_fill = {
+  parameters: [
+    ptr("void"), // reg
+    buf(int), // r
+    VipsRegionFillFnT, // fn
+    ptr("void"), // a
+  ],
+  result: int,
+} as const;
+
+export const vips_window_print = {
+  parameters: [
+    buf(VipsWindowT), // window
+  ],
+  result: "void",
+} as const;
+
+export const vips_window_unref = {
+  parameters: [
+    buf(VipsWindowT), // window
+  ],
+  result: int,
 } as const;

@@ -8,132 +8,35 @@ import {
   VipsVectorT,
 } from "./typeDefinitions.ts";
 
-export const vips_vector_init = {
-  parameters: [],
-  result: "void",
-} as const;
-
-export const vips_vector_isenabled = {
-  parameters: [],
-  result: int,
-} as const;
-
-export const vips_vector_set_enabled = {
+export const vips_executor_run = {
   parameters: [
-    int, // enabled
+    buf(VipsExecutorT), // executor
   ],
   result: "void",
 } as const;
 
-export const vips_vector_free = {
+export const vips_executor_set_array = {
   parameters: [
-    ptr(VipsVectorT), // vector
+    buf(VipsExecutorT), // executor
+    int, // var
+    ptr("void"), // value
   ],
   result: "void",
 } as const;
 
-export const vips_vector_new = {
+export const vips_executor_set_destination = {
   parameters: [
-    cstringT, // name
-    int, // dsize
+    buf(VipsExecutorT), // executor
+    ptr("void"), // value
   ],
-  result: ptr(VipsVectorT),
+  result: "void",
 } as const;
 
-export const vips_vector_constant = {
+export const vips_executor_set_parameter = {
   parameters: [
-    ptr(VipsVectorT), // vector
-    cstringT, // name
+    buf(VipsExecutorT), // executor
+    int, // var
     int, // value
-    int, // size
-  ],
-  result: "void",
-} as const;
-
-export const vips_vector_source_scanline = {
-  parameters: [
-    ptr(VipsVectorT), // vector
-    cstringT, // name
-    int, // line
-    int, // size
-  ],
-  result: "void",
-} as const;
-
-export const vips_vector_source_name = {
-  parameters: [
-    ptr(VipsVectorT), // vector
-    cstringT, // name
-    int, // size
-  ],
-  result: int,
-} as const;
-
-export const vips_vector_temporary = {
-  parameters: [
-    ptr(VipsVectorT), // vector
-    cstringT, // name
-    int, // size
-  ],
-  result: "void",
-} as const;
-
-export const vips_vector_parameter = {
-  parameters: [
-    ptr(VipsVectorT), // vector
-    cstringT, // name
-    int, // size
-  ],
-  result: int,
-} as const;
-
-export const vips_vector_destination = {
-  parameters: [
-    ptr(VipsVectorT), // vector
-    cstringT, // name
-    int, // size
-  ],
-  result: int,
-} as const;
-
-export const vips_vector_asm2 = {
-  parameters: [
-    ptr(VipsVectorT), // vector
-    cstringT, // op
-    cstringT, // a
-    cstringT, // b
-  ],
-  result: "void",
-} as const;
-
-export const vips_vector_asm3 = {
-  parameters: [
-    ptr(VipsVectorT), // vector
-    cstringT, // op
-    cstringT, // a
-    cstringT, // b
-    cstringT, // c
-  ],
-  result: "void",
-} as const;
-
-export const vips_vector_full = {
-  parameters: [
-    ptr(VipsVectorT), // vector
-  ],
-  result: int,
-} as const;
-
-export const vips_vector_compile = {
-  parameters: [
-    ptr(VipsVectorT), // vector
-  ],
-  result: int,
-} as const;
-
-export const vips_vector_print = {
-  parameters: [
-    ptr(VipsVectorT), // vector
   ],
   result: "void",
 } as const;
@@ -157,35 +60,132 @@ export const vips_executor_set_scanline = {
   result: "void",
 } as const;
 
-export const vips_executor_set_destination = {
+export const vips_vector_asm2 = {
   parameters: [
-    buf(VipsExecutorT), // executor
-    ptr("void"), // value
+    ptr(VipsVectorT), // vector
+    cstringT, // op
+    cstringT, // a
+    cstringT, // b
   ],
   result: "void",
 } as const;
 
-export const vips_executor_set_parameter = {
+export const vips_vector_asm3 = {
   parameters: [
-    buf(VipsExecutorT), // executor
-    int, // var
+    ptr(VipsVectorT), // vector
+    cstringT, // op
+    cstringT, // a
+    cstringT, // b
+    cstringT, // c
+  ],
+  result: "void",
+} as const;
+
+export const vips_vector_compile = {
+  parameters: [
+    ptr(VipsVectorT), // vector
+  ],
+  result: int,
+} as const;
+
+export const vips_vector_constant = {
+  parameters: [
+    ptr(VipsVectorT), // vector
+    cstringT, // name
     int, // value
+    int, // size
   ],
   result: "void",
 } as const;
 
-export const vips_executor_set_array = {
+export const vips_vector_destination = {
   parameters: [
-    buf(VipsExecutorT), // executor
-    int, // var
-    ptr("void"), // value
+    ptr(VipsVectorT), // vector
+    cstringT, // name
+    int, // size
+  ],
+  result: int,
+} as const;
+
+export const vips_vector_free = {
+  parameters: [
+    ptr(VipsVectorT), // vector
   ],
   result: "void",
 } as const;
 
-export const vips_executor_run = {
+export const vips_vector_full = {
   parameters: [
-    buf(VipsExecutorT), // executor
+    ptr(VipsVectorT), // vector
+  ],
+  result: int,
+} as const;
+
+export const vips_vector_init = {
+  parameters: [],
+  result: "void",
+} as const;
+
+export const vips_vector_isenabled = {
+  parameters: [],
+  result: int,
+} as const;
+
+export const vips_vector_new = {
+  parameters: [
+    cstringT, // name
+    int, // dsize
+  ],
+  result: ptr(VipsVectorT),
+} as const;
+
+export const vips_vector_parameter = {
+  parameters: [
+    ptr(VipsVectorT), // vector
+    cstringT, // name
+    int, // size
+  ],
+  result: int,
+} as const;
+
+export const vips_vector_print = {
+  parameters: [
+    ptr(VipsVectorT), // vector
+  ],
+  result: "void",
+} as const;
+
+export const vips_vector_set_enabled = {
+  parameters: [
+    int, // enabled
+  ],
+  result: "void",
+} as const;
+
+export const vips_vector_source_name = {
+  parameters: [
+    ptr(VipsVectorT), // vector
+    cstringT, // name
+    int, // size
+  ],
+  result: int,
+} as const;
+
+export const vips_vector_source_scanline = {
+  parameters: [
+    ptr(VipsVectorT), // vector
+    cstringT, // name
+    int, // line
+    int, // size
+  ],
+  result: "void",
+} as const;
+
+export const vips_vector_temporary = {
+  parameters: [
+    ptr(VipsVectorT), // vector
+    cstringT, // name
+    int, // size
   ],
   result: "void",
 } as const;

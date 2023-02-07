@@ -5,22 +5,10 @@ import {
   VipsTransformationT,
 } from "./typeDefinitions.ts";
 
-export const vips__transform_init = {
+export const vips__affine = {
   parameters: [
-    buf(VipsTransformationT), // trn
-  ],
-  result: "void",
-} as const;
-
-export const vips__transform_calc_inverse = {
-  parameters: [
-    buf(VipsTransformationT), // trn
-  ],
-  result: int,
-} as const;
-
-export const vips__transform_isidentity = {
-  parameters: [
+    buf(int), // in
+    buf(int), // out
     buf(VipsTransformationT), // trn
   ],
   result: int,
@@ -35,25 +23,14 @@ export const vips__transform_add = {
   result: int,
 } as const;
 
-export const vips__transform_print = {
+export const vips__transform_calc_inverse = {
   parameters: [
     buf(VipsTransformationT), // trn
   ],
-  result: "void",
+  result: int,
 } as const;
 
 export const vips__transform_forward_point = {
-  parameters: [
-    buf(VipsTransformationT), // trn
-    double, // x
-    double, // y
-    buf(double), // ox
-    buf(double), // oy
-  ],
-  result: "void",
-} as const;
-
-export const vips__transform_invert_point = {
   parameters: [
     buf(VipsTransformationT), // trn
     double, // x
@@ -73,6 +50,24 @@ export const vips__transform_forward_rect = {
   result: "void",
 } as const;
 
+export const vips__transform_init = {
+  parameters: [
+    buf(VipsTransformationT), // trn
+  ],
+  result: "void",
+} as const;
+
+export const vips__transform_invert_point = {
+  parameters: [
+    buf(VipsTransformationT), // trn
+    double, // x
+    double, // y
+    buf(double), // ox
+    buf(double), // oy
+  ],
+  result: "void",
+} as const;
+
 export const vips__transform_invert_rect = {
   parameters: [
     buf(VipsTransformationT), // trn
@@ -82,18 +77,23 @@ export const vips__transform_invert_rect = {
   result: "void",
 } as const;
 
+export const vips__transform_isidentity = {
+  parameters: [
+    buf(VipsTransformationT), // trn
+  ],
+  result: int,
+} as const;
+
+export const vips__transform_print = {
+  parameters: [
+    buf(VipsTransformationT), // trn
+  ],
+  result: "void",
+} as const;
+
 export const vips__transform_set_area = {
   parameters: [
     buf(VipsTransformationT),
   ],
   result: "void",
-} as const;
-
-export const vips__affine = {
-  parameters: [
-    buf(int), // in
-    buf(int), // out
-    buf(VipsTransformationT), // trn
-  ],
-  result: int,
 } as const;

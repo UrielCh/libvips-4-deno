@@ -8,59 +8,20 @@ import {
   VipsBufT,
 } from "./typeDefinitions.ts";
 
-export const vips_buf_rewind = {
+export const vips_buf_appendc = {
   parameters: [
     buf(VipsBufT), // buf
+    char, // ch
   ],
-  result: "void",
+  result: gbooleanT,
 } as const;
 
-export const vips_buf_destroy = {
+export const vips_buf_appendf = {
   parameters: [
     buf(VipsBufT), // buf
+    cstringT, // fmt
   ],
-  result: "void",
-} as const;
-
-export const vips_buf_init = {
-  parameters: [
-    buf(VipsBufT), // buf
-  ],
-  result: "void",
-} as const;
-
-export const vips_buf_set_static = {
-  parameters: [
-    buf(VipsBufT), // buf
-    cstringT, // base
-    int, // mx
-  ],
-  result: "void",
-} as const;
-
-export const vips_buf_set_dynamic = {
-  parameters: [
-    buf(VipsBufT), // buf
-    int, // mx
-  ],
-  result: "void",
-} as const;
-
-export const vips_buf_init_static = {
-  parameters: [
-    buf(VipsBufT), // buf
-    cstringT, // base
-    int, // mx
-  ],
-  result: "void",
-} as const;
-
-export const vips_buf_init_dynamic = {
-  parameters: [
-    buf(VipsBufT), // buf
-    int, // mx
-  ],
-  result: "void",
+  result: gbooleanT,
 } as const;
 
 export const vips_buf_appendns = {
@@ -80,12 +41,60 @@ export const vips_buf_appends = {
   result: gbooleanT,
 } as const;
 
-export const vips_buf_appendf = {
+// Symbol vips_buf_appendsc not exported by lib libvips.so
+export const vips_buf_destroy = {
   parameters: [
     buf(VipsBufT), // buf
-    cstringT, // fmt
   ],
-  result: gbooleanT,
+  result: "void",
+} as const;
+
+export const vips_buf_init = {
+  parameters: [
+    buf(VipsBufT), // buf
+  ],
+  result: "void",
+} as const;
+
+export const vips_buf_init_dynamic = {
+  parameters: [
+    buf(VipsBufT), // buf
+    int, // mx
+  ],
+  result: "void",
+} as const;
+
+export const vips_buf_init_static = {
+  parameters: [
+    buf(VipsBufT), // buf
+    cstringT, // base
+    int, // mx
+  ],
+  result: "void",
+} as const;
+
+export const vips_buf_rewind = {
+  parameters: [
+    buf(VipsBufT), // buf
+  ],
+  result: "void",
+} as const;
+
+export const vips_buf_set_dynamic = {
+  parameters: [
+    buf(VipsBufT), // buf
+    int, // mx
+  ],
+  result: "void",
+} as const;
+
+export const vips_buf_set_static = {
+  parameters: [
+    buf(VipsBufT), // buf
+    cstringT, // base
+    int, // mx
+  ],
+  result: "void",
 } as const;
 
 export const vips_buf_vappendf = {
@@ -96,13 +105,3 @@ export const vips_buf_vappendf = {
   ],
   result: gbooleanT,
 } as const;
-
-export const vips_buf_appendc = {
-  parameters: [
-    buf(VipsBufT), // buf
-    char, // ch
-  ],
-  result: gbooleanT,
-} as const;
-
-// Symbol vips_buf_appendsc not exported by lib libvips.so

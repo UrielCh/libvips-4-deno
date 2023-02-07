@@ -22,16 +22,49 @@ export const vips_format_sizeof_unsafe = {
   result: int,
 } as const;
 
-export const vips_image_get_width = {
+export const vips_image_get = {
   parameters: [
     buf(int), // image
+    cstringT, // name
+    buf(int), // value_copy
   ],
   result: int,
 } as const;
 
-export const vips_image_get_height = {
+export const vips_image_get_area = {
   parameters: [
     buf(int), // image
+    cstringT, // name
+    buf(ptr("void")), // data
+  ],
+  result: int,
+} as const;
+
+export const vips_image_get_array_double = {
+  parameters: [
+    buf(int), // image
+    cstringT, // name
+    buf(buf(double)), // out
+    buf(int), // n
+  ],
+  result: int,
+} as const;
+
+export const vips_image_get_array_int = {
+  parameters: [
+    buf(int), // image
+    cstringT, // name
+    buf(buf(int)), // out
+    buf(int), // n
+  ],
+  result: int,
+} as const;
+
+export const vips_image_get_as_string = {
+  parameters: [
+    buf(int), // image
+    cstringT, // name
+    cstringArrayT, // out
   ],
   result: int,
 } as const;
@@ -41,6 +74,53 @@ export const vips_image_get_bands = {
     buf(int), // image
   ],
   result: int,
+} as const;
+
+export const vips_image_get_blob = {
+  parameters: [
+    buf(int), // image
+    cstringT, // name
+    buf(ptr("void")), // data
+    buf(int), // length
+  ],
+  result: int,
+} as const;
+
+export const vips_image_get_coding = {
+  parameters: [
+    buf(int), // image
+  ],
+  result: int,
+} as const;
+
+export const vips_image_get_data = {
+  parameters: [
+    buf(int), // image
+  ],
+  result: ptr("void"),
+} as const;
+
+export const vips_image_get_double = {
+  parameters: [
+    buf(int), // image
+    cstringT, // name
+    buf(double), // out
+  ],
+  result: int,
+} as const;
+
+export const vips_image_get_fields = {
+  parameters: [
+    buf(int), // image
+  ],
+  result: buf(buf(int)),
+} as const;
+
+export const vips_image_get_filename = {
+  parameters: [
+    buf(int), // image
+  ],
+  result: cstringT,
 } as const;
 
 export const vips_image_get_format = {
@@ -57,16 +137,27 @@ export const vips_image_get_format_max = {
   result: double,
 } as const;
 
-export const vips_image_guess_format = {
+export const vips_image_get_height = {
   parameters: [
     buf(int), // image
   ],
   result: int,
 } as const;
 
-export const vips_image_get_coding = {
+export const vips_image_get_image = {
   parameters: [
     buf(int), // image
+    cstringT, // name
+    buf(buf(int)), // out
+  ],
+  result: int,
+} as const;
+
+export const vips_image_get_int = {
+  parameters: [
+    buf(int), // image
+    cstringT, // name
+    buf(int), // out
   ],
   result: int,
 } as const;
@@ -78,74 +169,11 @@ export const vips_image_get_interpretation = {
   result: int,
 } as const;
 
-export const vips_image_guess_interpretation = {
-  parameters: [
-    buf(int), // image
-  ],
-  result: int,
-} as const;
-
-export const vips_image_get_xres = {
-  parameters: [
-    buf(int), // image
-  ],
-  result: double,
-} as const;
-
-export const vips_image_get_yres = {
-  parameters: [
-    buf(int), // image
-  ],
-  result: double,
-} as const;
-
-export const vips_image_get_xoffset = {
-  parameters: [
-    buf(int), // image
-  ],
-  result: int,
-} as const;
-
-export const vips_image_get_yoffset = {
-  parameters: [
-    buf(int), // image
-  ],
-  result: int,
-} as const;
-
-export const vips_image_get_filename = {
-  parameters: [
-    buf(int), // image
-  ],
-  result: cstringT,
-} as const;
-
 export const vips_image_get_mode = {
   parameters: [
     buf(int), // image
   ],
   result: cstringT,
-} as const;
-
-export const vips_image_get_scale = {
-  parameters: [
-    buf(int), // image
-  ],
-  result: double,
-} as const;
-
-export const vips_image_get_offset = {
-  parameters: [
-    buf(int), // image
-  ],
-  result: double,
-} as const;
-
-export const vips_image_get_page_height = {
-  parameters: [
-    buf(int), // image
-  ],
-  result: int,
 } as const;
 
 export const vips_image_get_n_pages = {
@@ -162,6 +190,13 @@ export const vips_image_get_n_subifds = {
   result: int,
 } as const;
 
+export const vips_image_get_offset = {
+  parameters: [
+    buf(int), // image
+  ],
+  result: double,
+} as const;
+
 export const vips_image_get_orientation = {
   parameters: [
     buf(int), // image
@@ -176,11 +211,92 @@ export const vips_image_get_orientation_swap = {
   result: int,
 } as const;
 
-export const vips_image_get_data = {
+export const vips_image_get_page_height = {
   parameters: [
     buf(int), // image
   ],
-  result: ptr("void"),
+  result: int,
+} as const;
+
+export const vips_image_get_scale = {
+  parameters: [
+    buf(int), // image
+  ],
+  result: double,
+} as const;
+
+export const vips_image_get_string = {
+  parameters: [
+    buf(int), // image
+    cstringT, // name
+    cstringArrayT, // out
+  ],
+  result: int,
+} as const;
+
+export const vips_image_get_typeof = {
+  parameters: [
+    buf(int), // image
+    cstringT, // name
+  ],
+  result: int,
+} as const;
+
+export const vips_image_get_width = {
+  parameters: [
+    buf(int), // image
+  ],
+  result: int,
+} as const;
+
+export const vips_image_get_xoffset = {
+  parameters: [
+    buf(int), // image
+  ],
+  result: int,
+} as const;
+
+export const vips_image_get_xres = {
+  parameters: [
+    buf(int), // image
+  ],
+  result: double,
+} as const;
+
+export const vips_image_get_yoffset = {
+  parameters: [
+    buf(int), // image
+  ],
+  result: int,
+} as const;
+
+export const vips_image_get_yres = {
+  parameters: [
+    buf(int), // image
+  ],
+  result: double,
+} as const;
+
+export const vips_image_guess_format = {
+  parameters: [
+    buf(int), // image
+  ],
+  result: int,
+} as const;
+
+export const vips_image_guess_interpretation = {
+  parameters: [
+    buf(int), // image
+  ],
+  result: int,
+} as const;
+
+export const vips_image_history_printf = {
+  parameters: [
+    buf(int), // image
+    cstringT, // format
+  ],
+  result: int,
 } as const;
 
 export const vips_image_init_fields = {
@@ -198,39 +314,21 @@ export const vips_image_init_fields = {
   result: "void",
 } as const;
 
-export const vips_image_set = {
+export const vips_image_map = {
   parameters: [
     buf(int), // image
-    cstringT, // name
-    buf(int), // value
+    VipsImageMapFnT, // fn
+    ptr("void"), // a
+  ],
+  result: ptr("void"),
+} as const;
+
+export const vips_image_print_field = {
+  parameters: [
+    buf(int), // image
+    cstringT, // field
   ],
   result: "void",
-} as const;
-
-export const vips_image_get = {
-  parameters: [
-    buf(int), // image
-    cstringT, // name
-    buf(int), // value_copy
-  ],
-  result: int,
-} as const;
-
-export const vips_image_get_as_string = {
-  parameters: [
-    buf(int), // image
-    cstringT, // name
-    cstringArrayT, // out
-  ],
-  result: int,
-} as const;
-
-export const vips_image_get_typeof = {
-  parameters: [
-    buf(int), // image
-    cstringT, // name
-  ],
-  result: int,
 } as const;
 
 export const vips_image_remove = {
@@ -241,20 +339,13 @@ export const vips_image_remove = {
   result: int,
 } as const;
 
-export const vips_image_map = {
+export const vips_image_set = {
   parameters: [
     buf(int), // image
-    VipsImageMapFnT, // fn
-    ptr("void"), // a
+    cstringT, // name
+    buf(int), // value
   ],
-  result: ptr("void"),
-} as const;
-
-export const vips_image_get_fields = {
-  parameters: [
-    buf(int), // image
-  ],
-  result: buf(buf(int)),
+  result: "void",
 } as const;
 
 export const vips_image_set_area = {
@@ -267,13 +358,24 @@ export const vips_image_set_area = {
   result: "void",
 } as const;
 
-export const vips_image_get_area = {
+export const vips_image_set_array_double = {
   parameters: [
     buf(int), // image
     cstringT, // name
-    buf(ptr("void")), // data
+    buf(double), // array
+    int, // n
   ],
-  result: int,
+  result: "void",
+} as const;
+
+export const vips_image_set_array_int = {
+  parameters: [
+    buf(int), // image
+    cstringT, // name
+    buf(int), // array
+    int, // n
+  ],
+  result: "void",
 } as const;
 
 export const vips_image_set_blob = {
@@ -297,43 +399,6 @@ export const vips_image_set_blob_copy = {
   result: "void",
 } as const;
 
-export const vips_image_get_blob = {
-  parameters: [
-    buf(int), // image
-    cstringT, // name
-    buf(ptr("void")), // data
-    buf(int), // length
-  ],
-  result: int,
-} as const;
-
-export const vips_image_get_int = {
-  parameters: [
-    buf(int), // image
-    cstringT, // name
-    buf(int), // out
-  ],
-  result: int,
-} as const;
-
-export const vips_image_set_int = {
-  parameters: [
-    buf(int), // image
-    cstringT, // name
-    int, // i
-  ],
-  result: "void",
-} as const;
-
-export const vips_image_get_double = {
-  parameters: [
-    buf(int), // image
-    cstringT, // name
-    buf(double), // out
-  ],
-  result: int,
-} as const;
-
 export const vips_image_set_double = {
   parameters: [
     buf(int), // image
@@ -341,41 +406,6 @@ export const vips_image_set_double = {
     double, // d
   ],
   result: "void",
-} as const;
-
-export const vips_image_get_string = {
-  parameters: [
-    buf(int), // image
-    cstringT, // name
-    cstringArrayT, // out
-  ],
-  result: int,
-} as const;
-
-export const vips_image_set_string = {
-  parameters: [
-    buf(int), // image
-    cstringT, // name
-    cstringT, // str
-  ],
-  result: "void",
-} as const;
-
-export const vips_image_print_field = {
-  parameters: [
-    buf(int), // image
-    cstringT, // field
-  ],
-  result: "void",
-} as const;
-
-export const vips_image_get_image = {
-  parameters: [
-    buf(int), // image
-    cstringT, // name
-    buf(buf(int)), // out
-  ],
-  result: int,
 } as const;
 
 export const vips_image_set_image = {
@@ -387,50 +417,20 @@ export const vips_image_set_image = {
   result: "void",
 } as const;
 
-export const vips_image_set_array_int = {
+export const vips_image_set_int = {
   parameters: [
     buf(int), // image
     cstringT, // name
-    buf(int), // array
-    int, // n
+    int, // i
   ],
   result: "void",
 } as const;
 
-export const vips_image_get_array_int = {
+export const vips_image_set_string = {
   parameters: [
     buf(int), // image
     cstringT, // name
-    buf(buf(int)), // out
-    buf(int), // n
-  ],
-  result: int,
-} as const;
-
-export const vips_image_get_array_double = {
-  parameters: [
-    buf(int), // image
-    cstringT, // name
-    buf(buf(double)), // out
-    buf(int), // n
-  ],
-  result: int,
-} as const;
-
-export const vips_image_set_array_double = {
-  parameters: [
-    buf(int), // image
-    cstringT, // name
-    buf(double), // array
-    int, // n
+    cstringT, // str
   ],
   result: "void",
-} as const;
-
-export const vips_image_history_printf = {
-  parameters: [
-    buf(int), // image
-    cstringT, // format
-  ],
-  result: int,
 } as const;

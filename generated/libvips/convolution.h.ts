@@ -4,7 +4,42 @@ import {
   int,
 } from "./typeDefinitions.ts";
 
+export const vips_canny = {
+  parameters: [
+    buf(int), // in
+    buf(buf(int)), // out
+  ],
+  result: int,
+} as const;
+
+export const vips_compass = {
+  parameters: [
+    buf(int), // in
+    buf(buf(int)), // out
+    buf(int), // mask
+  ],
+  result: int,
+} as const;
+
 export const vips_conv = {
+  parameters: [
+    buf(int), // in
+    buf(buf(int)), // out
+    buf(int), // mask
+  ],
+  result: int,
+} as const;
+
+export const vips_conva = {
+  parameters: [
+    buf(int), // in
+    buf(buf(int)), // out
+    buf(int), // mask
+  ],
+  result: int,
+} as const;
+
+export const vips_convasep = {
   parameters: [
     buf(int), // in
     buf(buf(int)), // out
@@ -31,15 +66,6 @@ export const vips_convi = {
   result: int,
 } as const;
 
-export const vips_conva = {
-  parameters: [
-    buf(int), // in
-    buf(buf(int)), // out
-    buf(int), // mask
-  ],
-  result: int,
-} as const;
-
 export const vips_convsep = {
   parameters: [
     buf(int), // in
@@ -49,20 +75,11 @@ export const vips_convsep = {
   result: int,
 } as const;
 
-export const vips_convasep = {
+export const vips_fastcor = {
   parameters: [
     buf(int), // in
+    buf(int), // ref
     buf(buf(int)), // out
-    buf(int), // mask
-  ],
-  result: int,
-} as const;
-
-export const vips_compass = {
-  parameters: [
-    buf(int), // in
-    buf(buf(int)), // out
-    buf(int), // mask
   ],
   result: int,
 } as const;
@@ -84,24 +101,6 @@ export const vips_sharpen = {
   result: int,
 } as const;
 
-export const vips_spcor = {
-  parameters: [
-    buf(int), // in
-    buf(int), // ref
-    buf(buf(int)), // out
-  ],
-  result: int,
-} as const;
-
-export const vips_fastcor = {
-  parameters: [
-    buf(int), // in
-    buf(int), // ref
-    buf(buf(int)), // out
-  ],
-  result: int,
-} as const;
-
 export const vips_sobel = {
   parameters: [
     buf(int), // in
@@ -110,9 +109,10 @@ export const vips_sobel = {
   result: int,
 } as const;
 
-export const vips_canny = {
+export const vips_spcor = {
   parameters: [
     buf(int), // in
+    buf(int), // ref
     buf(buf(int)), // out
   ],
   result: int,

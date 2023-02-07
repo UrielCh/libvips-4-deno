@@ -6,30 +6,32 @@ import {
   ptr,
 } from "./typeDefinitions.ts";
 
-export const vips_shrink = {
+export const vips_affine = {
   parameters: [
     buf(int), // in
     buf(buf(int)), // out
-    double, // hshrink
-    double, // vshrink
+    double, // a
+    double, // b
+    double, // c
+    double, // d
   ],
   result: int,
 } as const;
 
-export const vips_shrinkh = {
+export const vips_mapim = {
   parameters: [
     buf(int), // in
     buf(buf(int)), // out
-    int, // hshrink
+    buf(int), // index
   ],
   result: int,
 } as const;
 
-export const vips_shrinkv = {
+export const vips_quadratic = {
   parameters: [
     buf(int), // in
     buf(buf(int)), // out
-    int, // vshrink
+    buf(int), // coeff
   ],
   result: int,
 } as const;
@@ -58,6 +60,60 @@ export const vips_reducev = {
     buf(int), // in
     buf(buf(int)), // out
     double, // vshrink
+  ],
+  result: int,
+} as const;
+
+export const vips_resize = {
+  parameters: [
+    buf(int), // in
+    buf(buf(int)), // out
+    double, // scale
+  ],
+  result: int,
+} as const;
+
+export const vips_rotate = {
+  parameters: [
+    buf(int), // in
+    buf(buf(int)), // out
+    double, // angle
+  ],
+  result: int,
+} as const;
+
+export const vips_shrink = {
+  parameters: [
+    buf(int), // in
+    buf(buf(int)), // out
+    double, // hshrink
+    double, // vshrink
+  ],
+  result: int,
+} as const;
+
+export const vips_shrinkh = {
+  parameters: [
+    buf(int), // in
+    buf(buf(int)), // out
+    int, // hshrink
+  ],
+  result: int,
+} as const;
+
+export const vips_shrinkv = {
+  parameters: [
+    buf(int), // in
+    buf(buf(int)), // out
+    int, // vshrink
+  ],
+  result: int,
+} as const;
+
+export const vips_similarity = {
+  parameters: [
+    buf(int), // in
+    buf(buf(int)), // out
   ],
   result: int,
 } as const;
@@ -95,62 +151,6 @@ export const vips_thumbnail_source = {
     buf(int), // source
     buf(buf(int)), // out
     int, // width
-  ],
-  result: int,
-} as const;
-
-export const vips_similarity = {
-  parameters: [
-    buf(int), // in
-    buf(buf(int)), // out
-  ],
-  result: int,
-} as const;
-
-export const vips_rotate = {
-  parameters: [
-    buf(int), // in
-    buf(buf(int)), // out
-    double, // angle
-  ],
-  result: int,
-} as const;
-
-export const vips_affine = {
-  parameters: [
-    buf(int), // in
-    buf(buf(int)), // out
-    double, // a
-    double, // b
-    double, // c
-    double, // d
-  ],
-  result: int,
-} as const;
-
-export const vips_resize = {
-  parameters: [
-    buf(int), // in
-    buf(buf(int)), // out
-    double, // scale
-  ],
-  result: int,
-} as const;
-
-export const vips_mapim = {
-  parameters: [
-    buf(int), // in
-    buf(buf(int)), // out
-    buf(int), // index
-  ],
-  result: int,
-} as const;
-
-export const vips_quadratic = {
-  parameters: [
-    buf(int), // in
-    buf(buf(int)), // out
-    buf(int), // coeff
   ],
   result: int,
 } as const;

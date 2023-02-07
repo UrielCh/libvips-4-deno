@@ -4,6 +4,15 @@ import {
   int,
 } from "./typeDefinitions.ts";
 
+export const im_video_test = {
+  parameters: [
+    buf(int), // im
+    int, // brightness
+    int, // error
+  ],
+  result: int,
+} as const;
+
 export const im_video_v4l1 = {
   parameters: [
     buf(int), // im
@@ -14,15 +23,6 @@ export const im_video_v4l1 = {
     int, // contrast
     int, // hue
     int, // ngrabs
-  ],
-  result: int,
-} as const;
-
-export const im_video_test = {
-  parameters: [
-    buf(int), // im
-    int, // brightness
-    int, // error
   ],
   result: int,
 } as const;

@@ -11,11 +11,13 @@ import {
 } from "../typeDefinitions.ts";
 
 /**
- * Retrieve a NULL (invalid) source location.
+ * Destroy the given `CXSourceRangeList.`
  */
-export const clang_getNullLocation = {
-  parameters: [],
-  result: CXSourceLocationT,
+export const clang_disposeSourceRangeList = {
+  parameters: [
+    ptr(CXSourceRangeListT), // ranges
+  ],
+  result: "void",
 } as const;
 
 /**
@@ -35,47 +37,6 @@ export const clang_equalLocations = {
 } as const;
 
 /**
- * Returns non-zero if the given source location is in a system header.
- */
-export const clang_Location_isInSystemHeader = {
-  parameters: [
-    CXSourceLocationT, // location
-  ],
-  result: int,
-} as const;
-
-/**
- * Returns non-zero if the given source location is in the main file of
- * the corresponding translation unit.
- */
-export const clang_Location_isFromMainFile = {
-  parameters: [
-    CXSourceLocationT, // location
-  ],
-  result: int,
-} as const;
-
-/**
- * Retrieve a NULL (invalid) source range.
- */
-export const clang_getNullRange = {
-  parameters: [],
-  result: CXSourceRangeT,
-} as const;
-
-/**
- * Retrieve a source range given the beginning and ending source
- * locations.
- */
-export const clang_getRange = {
-  parameters: [
-    CXSourceLocationT, // begin
-    CXSourceLocationT, // end
-  ],
-  result: CXSourceRangeT,
-} as const;
-
-/**
  * Determine whether two ranges are equivalent.
  *
  * @returns non-zero if the ranges are the same, zero if they differ.
@@ -86,16 +47,6 @@ export const clang_equalRanges = {
     CXSourceRangeT, // range2
   ],
   result: unsignedInt,
-} as const;
-
-/**
- * Returns non-zero if `range` is null.
- */
-export const clang_Range_isNull = {
-  parameters: [
-    CXSourceRangeT, // range
-  ],
-  result: int,
 } as const;
 
 /**
@@ -125,6 +76,71 @@ export const clang_getExpansionLocation = {
     buf(unsignedInt), // offset
   ],
   result: "void",
+} as const;
+
+/**
+ * Retrieve the file, line, column, and offset represented by
+ * the given source location.
+ *
+ * If the location refers into a macro expansion, return where the macro was
+ * expanded or where the macro argument was written, if the location points at
+ * a macro argument.
+ *
+ * @param location the location within a source file that will be decomposed
+ * into its parts.
+ * @param file [out] if non-NULL, will be set to the file to which the given
+ * source location points.
+ * @param line [out] if non-NULL, will be set to the line to which the given
+ * source location points.
+ * @param column [out] if non-NULL, will be set to the column to which the given
+ * source location points.
+ * @param offset [out] if non-NULL, will be set to the offset into the
+ * buffer to which the given source location points.
+ */
+export const clang_getFileLocation = {
+  parameters: [
+    CXSourceLocationT, // location
+    buf(CXFileT), // file
+    buf(unsignedInt), // line
+    buf(unsignedInt), // column
+    buf(unsignedInt), // offset
+  ],
+  result: "void",
+} as const;
+
+/**
+ * Legacy API to retrieve the file, line, column, and offset represented
+ * by the given source location.
+ *
+ * This interface has been replaced by the newer interface
+ * #clang_getExpansionLocation(). See that interface's documentation for
+ * details.
+ */
+export const clang_getInstantiationLocation = {
+  parameters: [
+    CXSourceLocationT, // location
+    buf(CXFileT), // file
+    buf(unsignedInt), // line
+    buf(unsignedInt), // column
+    buf(unsignedInt), // offset
+  ],
+  result: "void",
+} as const;
+
+/**
+ * Retrieve a NULL (invalid) source location.
+ */
+export const clang_getNullLocation = {
+  parameters: [],
+  result: CXSourceLocationT,
+} as const;
+
+/**
+ * Retrieve a NULL (invalid) source range.
+ */
+export const clang_getNullRange = {
+  parameters: [],
+  result: CXSourceRangeT,
 } as const;
 
 /**
@@ -173,22 +189,37 @@ export const clang_getPresumedLocation = {
 } as const;
 
 /**
- * Legacy API to retrieve the file, line, column, and offset represented
- * by the given source location.
- *
- * This interface has been replaced by the newer interface
- * #clang_getExpansionLocation(). See that interface's documentation for
- * details.
+ * Retrieve a source range given the beginning and ending source
+ * locations.
  */
-export const clang_getInstantiationLocation = {
+export const clang_getRange = {
   parameters: [
-    CXSourceLocationT, // location
-    buf(CXFileT), // file
-    buf(unsignedInt), // line
-    buf(unsignedInt), // column
-    buf(unsignedInt), // offset
+    CXSourceLocationT, // begin
+    CXSourceLocationT, // end
   ],
-  result: "void",
+  result: CXSourceRangeT,
+} as const;
+
+/**
+ * Retrieve a source location representing the last character within a
+ * source range.
+ */
+export const clang_getRangeEnd = {
+  parameters: [
+    CXSourceRangeT, // range
+  ],
+  result: CXSourceLocationT,
+} as const;
+
+/**
+ * Retrieve a source location representing the first character within a
+ * source range.
+ */
+export const clang_getRangeStart = {
+  parameters: [
+    CXSourceRangeT, // range
+  ],
+  result: CXSourceLocationT,
 } as const;
 
 /**
@@ -221,63 +252,32 @@ export const clang_getSpellingLocation = {
 } as const;
 
 /**
- * Retrieve the file, line, column, and offset represented by
- * the given source location.
- *
- * If the location refers into a macro expansion, return where the macro was
- * expanded or where the macro argument was written, if the location points at
- * a macro argument.
- *
- * @param location the location within a source file that will be decomposed
- * into its parts.
- * @param file [out] if non-NULL, will be set to the file to which the given
- * source location points.
- * @param line [out] if non-NULL, will be set to the line to which the given
- * source location points.
- * @param column [out] if non-NULL, will be set to the column to which the given
- * source location points.
- * @param offset [out] if non-NULL, will be set to the offset into the
- * buffer to which the given source location points.
+ * Returns non-zero if the given source location is in the main file of
+ * the corresponding translation unit.
  */
-export const clang_getFileLocation = {
+export const clang_Location_isFromMainFile = {
   parameters: [
     CXSourceLocationT, // location
-    buf(CXFileT), // file
-    buf(unsignedInt), // line
-    buf(unsignedInt), // column
-    buf(unsignedInt), // offset
   ],
-  result: "void",
+  result: int,
 } as const;
 
 /**
- * Retrieve a source location representing the first character within a
- * source range.
+ * Returns non-zero if the given source location is in a system header.
  */
-export const clang_getRangeStart = {
+export const clang_Location_isInSystemHeader = {
+  parameters: [
+    CXSourceLocationT, // location
+  ],
+  result: int,
+} as const;
+
+/**
+ * Returns non-zero if `range` is null.
+ */
+export const clang_Range_isNull = {
   parameters: [
     CXSourceRangeT, // range
   ],
-  result: CXSourceLocationT,
-} as const;
-
-/**
- * Retrieve a source location representing the last character within a
- * source range.
- */
-export const clang_getRangeEnd = {
-  parameters: [
-    CXSourceRangeT, // range
-  ],
-  result: CXSourceLocationT,
-} as const;
-
-/**
- * Destroy the given `CXSourceRangeList.`
- */
-export const clang_disposeSourceRangeList = {
-  parameters: [
-    ptr(CXSourceRangeListT), // ranges
-  ],
-  result: "void",
+  result: int,
 } as const;

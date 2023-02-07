@@ -21,6 +21,13 @@ export const vips_strdup = {
   result: cstringT,
 } as const;
 
+export const vips_tracked_close = {
+  parameters: [
+    int, // fd
+  ],
+  result: int,
+} as const;
+
 export const vips_tracked_free = {
   parameters: [
     ptr("void"), // s
@@ -28,11 +35,14 @@ export const vips_tracked_free = {
   result: "void",
 } as const;
 
-export const vips_tracked_malloc = {
-  parameters: [
-    int, // size
-  ],
-  result: ptr("void"),
+export const vips_tracked_get_allocs = {
+  parameters: [],
+  result: int,
+} as const;
+
+export const vips_tracked_get_files = {
+  parameters: [],
+  result: int,
 } as const;
 
 export const vips_tracked_get_mem = {
@@ -45,9 +55,11 @@ export const vips_tracked_get_mem_highwater = {
   result: int,
 } as const;
 
-export const vips_tracked_get_allocs = {
-  parameters: [],
-  result: int,
+export const vips_tracked_malloc = {
+  parameters: [
+    int, // size
+  ],
+  result: ptr("void"),
 } as const;
 
 export const vips_tracked_open = {
@@ -56,17 +68,5 @@ export const vips_tracked_open = {
     int, // flags
     int, // mode
   ],
-  result: int,
-} as const;
-
-export const vips_tracked_close = {
-  parameters: [
-    int, // fd
-  ],
-  result: int,
-} as const;
-
-export const vips_tracked_get_files = {
-  parameters: [],
   result: int,
 } as const;

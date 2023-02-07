@@ -10,14 +10,15 @@ import {
   VipsSListMap2FnT,
 } from "./typeDefinitions.ts";
 
-export const im__iprint = {
+export const im__cprint = {
   parameters: [
     im_objectT, // obj
   ],
   result: int,
 } as const;
 
-export const im__ivprint = {
+// Symbol im__displayprint not exported by lib libvips.so
+export const im__dmsprint = {
   parameters: [
     im_objectT, // obj
   ],
@@ -38,14 +39,21 @@ export const im__dvprint = {
   result: int,
 } as const;
 
-export const im__dmsprint = {
+export const im__gprint = {
   parameters: [
     im_objectT, // obj
   ],
   result: int,
 } as const;
 
-export const im__cprint = {
+export const im__iprint = {
+  parameters: [
+    im_objectT, // obj
+  ],
+  result: int,
+} as const;
+
+export const im__ivprint = {
   parameters: [
     im_objectT, // obj
   ],
@@ -59,10 +67,37 @@ export const im__sprint = {
   result: int,
 } as const;
 
-// Symbol im__displayprint not exported by lib libvips.so
-export const im__gprint = {
+export const im_allocate_vargv = {
   parameters: [
-    im_objectT, // obj
+    ptr(im_functionT), // fn
+    buf(im_objectT), // vargv
+  ],
+  result: int,
+} as const;
+
+export const im_close_plugins = {
+  parameters: [],
+  result: int,
+} as const;
+
+export const im_find_function = {
+  parameters: [
+    cstringT, // name
+  ],
+  result: ptr(im_functionT),
+} as const;
+
+export const im_find_package = {
+  parameters: [
+    cstringT, // name
+  ],
+  result: ptr(im_packageT),
+} as const;
+
+export const im_free_vargv = {
+  parameters: [
+    ptr(im_functionT), // fn
+    buf(im_objectT), // vargv
   ],
   result: int,
 } as const;
@@ -81,11 +116,6 @@ export const im_load_plugins = {
   result: int,
 } as const;
 
-export const im_close_plugins = {
-  parameters: [],
-  result: int,
-} as const;
-
 export const im_map_packages = {
   parameters: [
     VipsSListMap2FnT, // fn
@@ -94,41 +124,11 @@ export const im_map_packages = {
   result: ptr("void"),
 } as const;
 
-export const im_find_function = {
-  parameters: [
-    cstringT, // name
-  ],
-  result: ptr(im_functionT),
-} as const;
-
-export const im_find_package = {
-  parameters: [
-    cstringT, // name
-  ],
-  result: ptr(im_packageT),
-} as const;
-
 export const im_package_of_function = {
   parameters: [
     cstringT, // name
   ],
   result: ptr(im_packageT),
-} as const;
-
-export const im_free_vargv = {
-  parameters: [
-    ptr(im_functionT), // fn
-    buf(im_objectT), // vargv
-  ],
-  result: int,
-} as const;
-
-export const im_allocate_vargv = {
-  parameters: [
-    ptr(im_functionT), // fn
-    buf(im_objectT), // vargv
-  ],
-  result: int,
 } as const;
 
 export const im_run_command = {

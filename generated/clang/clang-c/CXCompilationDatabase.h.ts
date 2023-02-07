@@ -10,6 +10,16 @@ import {
 } from "../typeDefinitions.ts";
 
 /**
+ * Free the given compilation database
+ */
+export const clang_CompilationDatabase_dispose = {
+  parameters: [
+    CXCompilationDatabaseT,
+  ],
+  result: "void",
+} as const;
+
+/**
  * Creates a compilation database from the database found in directory
  * buildDir. For example, CMake can output a compile_commands.json which can
  * be used to build the database.
@@ -25,13 +35,13 @@ export const clang_CompilationDatabase_fromDirectory = {
 } as const;
 
 /**
- * Free the given compilation database
+ * Get all the compile commands in the given compilation database.
  */
-export const clang_CompilationDatabase_dispose = {
+export const clang_CompilationDatabase_getAllCompileCommands = {
   parameters: [
     CXCompilationDatabaseT,
   ],
-  result: "void",
+  result: CXCompileCommandsT,
 } as const;
 
 /**
@@ -47,46 +57,17 @@ export const clang_CompilationDatabase_getCompileCommands = {
 } as const;
 
 /**
- * Get all the compile commands in the given compilation database.
- */
-export const clang_CompilationDatabase_getAllCompileCommands = {
-  parameters: [
-    CXCompilationDatabaseT,
-  ],
-  result: CXCompileCommandsT,
-} as const;
-
-/**
- * Free the given CompileCommands
- */
-export const clang_CompileCommands_dispose = {
-  parameters: [
-    CXCompileCommandsT,
-  ],
-  result: "void",
-} as const;
-
-/**
- * Get the number of CompileCommand we have for a file
- */
-export const clang_CompileCommands_getSize = {
-  parameters: [
-    CXCompileCommandsT,
-  ],
-  result: unsignedInt,
-} as const;
-
-/**
- * Get the I'th CompileCommand for a file
+ * Get the I'th argument value in the compiler invocations
  *
- * Note : 0 \<= i \< clang_CompileCommands_getSize(CXCompileCommands)
+ * Invariant :
+ * - argument 0 is the compiler executable
  */
-export const clang_CompileCommands_getCommand = {
+export const clang_CompileCommand_getArg = {
   parameters: [
-    CXCompileCommandsT,
+    CXCompileCommandT,
     unsignedInt, // I
   ],
-  result: CXCompileCommandT,
+  result: CXStringT,
 } as const;
 
 /**
@@ -110,37 +91,14 @@ export const clang_CompileCommand_getFilename = {
 } as const;
 
 /**
- * Get the number of arguments in the compiler invocation.
+ * Get the I'th mapped source content for the compiler invocation.
  */
-export const clang_CompileCommand_getNumArgs = {
-  parameters: [
-    CXCompileCommandT,
-  ],
-  result: unsignedInt,
-} as const;
-
-/**
- * Get the I'th argument value in the compiler invocations
- *
- * Invariant :
- * - argument 0 is the compiler executable
- */
-export const clang_CompileCommand_getArg = {
+export const clang_CompileCommand_getMappedSourceContent = {
   parameters: [
     CXCompileCommandT,
     unsignedInt, // I
   ],
   result: CXStringT,
-} as const;
-
-/**
- * Get the number of source mappings for the compiler invocation.
- */
-export const clang_CompileCommand_getNumMappedSources = {
-  parameters: [
-    CXCompileCommandT,
-  ],
-  result: unsignedInt,
 } as const;
 
 /**
@@ -155,12 +113,54 @@ export const clang_CompileCommand_getMappedSourcePath = {
 } as const;
 
 /**
- * Get the I'th mapped source content for the compiler invocation.
+ * Get the number of arguments in the compiler invocation.
  */
-export const clang_CompileCommand_getMappedSourceContent = {
+export const clang_CompileCommand_getNumArgs = {
   parameters: [
     CXCompileCommandT,
+  ],
+  result: unsignedInt,
+} as const;
+
+/**
+ * Get the number of source mappings for the compiler invocation.
+ */
+export const clang_CompileCommand_getNumMappedSources = {
+  parameters: [
+    CXCompileCommandT,
+  ],
+  result: unsignedInt,
+} as const;
+
+/**
+ * Free the given CompileCommands
+ */
+export const clang_CompileCommands_dispose = {
+  parameters: [
+    CXCompileCommandsT,
+  ],
+  result: "void",
+} as const;
+
+/**
+ * Get the I'th CompileCommand for a file
+ *
+ * Note : 0 \<= i \< clang_CompileCommands_getSize(CXCompileCommands)
+ */
+export const clang_CompileCommands_getCommand = {
+  parameters: [
+    CXCompileCommandsT,
     unsignedInt, // I
   ],
-  result: CXStringT,
+  result: CXCompileCommandT,
+} as const;
+
+/**
+ * Get the number of CompileCommand we have for a file
+ */
+export const clang_CompileCommands_getSize = {
+  parameters: [
+    CXCompileCommandsT,
+  ],
+  result: unsignedInt,
 } as const;

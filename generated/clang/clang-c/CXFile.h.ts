@@ -8,6 +8,30 @@ import {
 } from "../typeDefinitions.ts";
 
 /**
+ * Returns non-zero if the `file1` and `file2` point to the same file,
+ * or they are both NULL.
+ */
+export const clang_File_isEqual = {
+  parameters: [
+    CXFileT, // file1
+    CXFileT, // file2
+  ],
+  result: int,
+} as const;
+
+/**
+ * Returns the real path name of `file.`
+ *
+ * An empty string may be returned. Use `clang_getFileName(`) in that case.
+ */
+export const clang_File_tryGetRealPathName = {
+  parameters: [
+    CXFileT, // file
+  ],
+  result: CXStringT,
+} as const;
+
+/**
  * Retrieve the complete file and path name of the given file.
  */
 export const clang_getFileName = {
@@ -43,28 +67,4 @@ export const clang_getFileUniqueID = {
     buf(CXFileUniqueIDT), // outID
   ],
   result: int,
-} as const;
-
-/**
- * Returns non-zero if the `file1` and `file2` point to the same file,
- * or they are both NULL.
- */
-export const clang_File_isEqual = {
-  parameters: [
-    CXFileT, // file1
-    CXFileT, // file2
-  ],
-  result: int,
-} as const;
-
-/**
- * Returns the real path name of `file.`
- *
- * An empty string may be returned. Use `clang_getFileName(`) in that case.
- */
-export const clang_File_tryGetRealPathName = {
-  parameters: [
-    CXFileT, // file
-  ],
-  result: CXStringT,
 } as const;

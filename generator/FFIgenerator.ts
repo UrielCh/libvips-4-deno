@@ -542,7 +542,7 @@ export class FFIgenerator {
       const functionResults: string[] = [];
       const dropSumboles: string[] = [];
       let fncCount = 0;
-      for (const apiFunction of apiFunctions) {
+      for (const apiFunction of apiFunctions.sort((a,b) => a.name.localeCompare(b.name))) {
         const { name, parameters, result } = apiFunction;
         let isAvailable = true;
         try {

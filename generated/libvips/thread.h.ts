@@ -5,12 +5,7 @@ import {
   ptr,
 } from "./typeDefinitions.ts";
 
-export const vips_g_mutex_new = {
-  parameters: [],
-  result: buf(int),
-} as const;
-
-export const vips_g_mutex_free = {
+export const vips_g_cond_free = {
   parameters: [
     buf(int),
   ],
@@ -22,11 +17,23 @@ export const vips_g_cond_new = {
   result: buf(int),
 } as const;
 
-export const vips_g_cond_free = {
+export const vips_g_mutex_free = {
   parameters: [
     buf(int),
   ],
   result: "void",
+} as const;
+
+export const vips_g_mutex_new = {
+  parameters: [],
+  result: buf(int),
+} as const;
+
+export const vips_g_thread_join = {
+  parameters: [
+    buf(int), // thread
+  ],
+  result: ptr("void"),
 } as const;
 
 export const vips_g_thread_new = {
@@ -36,13 +43,6 @@ export const vips_g_thread_new = {
     int, // gpointer
   ],
   result: buf(int),
-} as const;
-
-export const vips_g_thread_join = {
-  parameters: [
-    buf(int), // thread
-  ],
-  result: ptr("void"),
 } as const;
 
 export const vips_thread_isworker = {

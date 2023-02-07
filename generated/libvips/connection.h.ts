@@ -12,16 +12,16 @@ import {
   VipsTargetT,
 } from "./typeDefinitions.ts";
 
-export const vips_connection_get_type = {
-  parameters: [],
-  result: int,
-} as const;
-
 export const vips_connection_filename = {
   parameters: [
     buf(VipsConnectionT), // connection
   ],
   result: cstringT,
+} as const;
+
+export const vips_connection_get_type = {
+  parameters: [],
+  result: int,
 } as const;
 
 export const vips_connection_nick = {
@@ -31,6 +31,13 @@ export const vips_connection_nick = {
   result: cstringT,
 } as const;
 
+export const vips_g_input_stream_new_from_source = {
+  parameters: [
+    ptr(VipsSourceT), // source
+  ],
+  result: buf(int),
+} as const;
+
 export const vips_pipe_read_limit_set = {
   parameters: [
     int, // limit
@@ -38,59 +45,14 @@ export const vips_pipe_read_limit_set = {
   result: "void",
 } as const;
 
-export const vips_source_get_type = {
+export const vips_source_custom_get_type = {
   parameters: [],
   result: int,
 } as const;
 
-export const vips_source_new_from_descriptor = {
-  parameters: [
-    int, // descriptor
-  ],
-  result: ptr(VipsSourceT),
-} as const;
-
-export const vips_source_new_from_file = {
-  parameters: [
-    cstringT, // filename
-  ],
-  result: ptr(VipsSourceT),
-} as const;
-
-export const vips_source_new_from_blob = {
-  parameters: [
-    buf(int), // blob
-  ],
-  result: ptr(VipsSourceT),
-} as const;
-
-export const vips_source_new_from_memory = {
-  parameters: [
-    ptr("void"), // data
-    int, // size
-  ],
-  result: ptr(VipsSourceT),
-} as const;
-
-export const vips_source_new_from_options = {
-  parameters: [
-    cstringT, // options
-  ],
-  result: ptr(VipsSourceT),
-} as const;
-
-export const vips_source_minimise = {
-  parameters: [
-    ptr(VipsSourceT), // source
-  ],
-  result: "void",
-} as const;
-
-export const vips_source_unminimise = {
-  parameters: [
-    ptr(VipsSourceT), // source
-  ],
-  result: int,
+export const vips_source_custom_new = {
+  parameters: [],
+  result: ptr(VipsSourceCustomT),
 } as const;
 
 export const vips_source_decode = {
@@ -100,11 +62,21 @@ export const vips_source_decode = {
   result: int,
 } as const;
 
-export const vips_source_read = {
+export const vips_source_g_input_stream_new = {
+  parameters: [
+    buf(int), // stream
+  ],
+  result: ptr(VipsSourceGInputStreamT),
+} as const;
+
+export const vips_source_get_type = {
+  parameters: [],
+  result: int,
+} as const;
+
+export const vips_source_is_file = {
   parameters: [
     ptr(VipsSourceT), // source
-    ptr("void"), // data
-    int, // length
   ],
   result: int,
 } as const;
@@ -116,7 +88,7 @@ export const vips_source_is_mappable = {
   result: int,
 } as const;
 
-export const vips_source_is_file = {
+export const vips_source_length = {
   parameters: [
     ptr(VipsSourceT), // source
   ],
@@ -138,11 +110,54 @@ export const vips_source_map_blob = {
   result: buf(int),
 } as const;
 
-export const vips_source_seek = {
+export const vips_source_minimise = {
   parameters: [
     ptr(VipsSourceT), // source
-    int, // offset
-    int, // whence
+  ],
+  result: "void",
+} as const;
+
+export const vips_source_new_from_blob = {
+  parameters: [
+    buf(int), // blob
+  ],
+  result: ptr(VipsSourceT),
+} as const;
+
+export const vips_source_new_from_descriptor = {
+  parameters: [
+    int, // descriptor
+  ],
+  result: ptr(VipsSourceT),
+} as const;
+
+export const vips_source_new_from_file = {
+  parameters: [
+    cstringT, // filename
+  ],
+  result: ptr(VipsSourceT),
+} as const;
+
+export const vips_source_new_from_memory = {
+  parameters: [
+    ptr("void"), // data
+    int, // size
+  ],
+  result: ptr(VipsSourceT),
+} as const;
+
+export const vips_source_new_from_options = {
+  parameters: [
+    cstringT, // options
+  ],
+  result: ptr(VipsSourceT),
+} as const;
+
+export const vips_source_read = {
+  parameters: [
+    ptr(VipsSourceT), // source
+    ptr("void"), // data
+    int, // length
   ],
   result: int,
 } as const;
@@ -154,11 +169,11 @@ export const vips_source_rewind = {
   result: int,
 } as const;
 
-export const vips_source_sniff_at_most = {
+export const vips_source_seek = {
   parameters: [
     ptr(VipsSourceT), // source
-    buf(buf(unsignedChar)), // data
-    int, // length
+    int, // offset
+    int, // whence
   ],
   result: int,
 } as const;
@@ -171,35 +186,37 @@ export const vips_source_sniff = {
   result: buf(unsignedChar),
 } as const;
 
-export const vips_source_length = {
+export const vips_source_sniff_at_most = {
+  parameters: [
+    ptr(VipsSourceT), // source
+    buf(buf(unsignedChar)), // data
+    int, // length
+  ],
+  result: int,
+} as const;
+
+export const vips_source_unminimise = {
   parameters: [
     ptr(VipsSourceT), // source
   ],
   result: int,
 } as const;
 
-export const vips_source_custom_get_type = {
+export const vips_target_custom_get_type = {
   parameters: [],
   result: int,
 } as const;
 
-export const vips_source_custom_new = {
+export const vips_target_custom_new = {
   parameters: [],
-  result: ptr(VipsSourceCustomT),
+  result: ptr(VipsTargetCustomT),
 } as const;
 
-export const vips_g_input_stream_new_from_source = {
+export const vips_target_finish = {
   parameters: [
-    ptr(VipsSourceT), // source
+    ptr(VipsTargetT), // target
   ],
-  result: buf(int),
-} as const;
-
-export const vips_source_g_input_stream_new = {
-  parameters: [
-    buf(int), // stream
-  ],
-  result: ptr(VipsSourceGInputStreamT),
+  result: "void",
 } as const;
 
 export const vips_target_get_type = {
@@ -226,20 +243,12 @@ export const vips_target_new_to_memory = {
   result: ptr(VipsTargetT),
 } as const;
 
-export const vips_target_write = {
+export const vips_target_putc = {
   parameters: [
     ptr(VipsTargetT), // target
-    ptr("void"), // data
-    int, // length
+    int, // ch
   ],
   result: int,
-} as const;
-
-export const vips_target_finish = {
-  parameters: [
-    ptr(VipsTargetT), // target
-  ],
-  result: "void",
 } as const;
 
 export const vips_target_steal = {
@@ -257,15 +266,16 @@ export const vips_target_steal_text = {
   result: cstringT,
 } as const;
 
-export const vips_target_putc = {
+export const vips_target_write = {
   parameters: [
     ptr(VipsTargetT), // target
-    int, // ch
+    ptr("void"), // data
+    int, // length
   ],
   result: int,
 } as const;
 
-export const vips_target_writes = {
+export const vips_target_write_amp = {
   parameters: [
     ptr(VipsTargetT), // target
     cstringT, // str
@@ -281,20 +291,10 @@ export const vips_target_writef = {
   result: int,
 } as const;
 
-export const vips_target_write_amp = {
+export const vips_target_writes = {
   parameters: [
     ptr(VipsTargetT), // target
     cstringT, // str
   ],
   result: int,
-} as const;
-
-export const vips_target_custom_get_type = {
-  parameters: [],
-  result: int,
-} as const;
-
-export const vips_target_custom_new = {
-  parameters: [],
-  result: ptr(VipsTargetCustomT),
 } as const;

@@ -9,60 +9,83 @@ import {
   VipsCodingT,
 } from "./typeDefinitions.ts";
 
-export const vips_image_get_type = {
+export const vips_array_image_append = {
+  parameters: [
+    buf(int), // array
+    buf(int), // image
+  ],
+  result: buf(int),
+} as const;
+
+export const vips_array_image_empty = {
   parameters: [],
-  result: int,
+  result: buf(int),
 } as const;
 
-export const vips_progress_set = {
+export const vips_array_image_get = {
   parameters: [
-    int, // progress
+    buf(int), // array
+    buf(int), // n
   ],
-  result: "void",
+  result: buf(buf(int)),
 } as const;
 
-export const vips_image_invalidate_all = {
+export const vips_array_image_new = {
   parameters: [
-    buf(int), // image
+    buf(buf(int)), // array
+    int, // n
   ],
-  result: "void",
+  result: buf(int),
 } as const;
 
-export const vips_image_minimise_all = {
+export const vips_array_image_new_from_string = {
   parameters: [
-    buf(int), // image
+    cstringT, // string
+    VipsAccessT, // flags
   ],
-  result: "void",
+  result: buf(int),
 } as const;
 
-export const vips_image_is_sequential = {
+export const vips_array_image_newv = {
   parameters: [
-    buf(int), // image
+    int, // n
   ],
-  result: int,
+  result: buf(int),
 } as const;
 
-export const vips_image_set_progress = {
+export const vips_band_format_is8bit = {
   parameters: [
-    buf(int), // image
-    int, // progress
-  ],
-  result: "void",
-} as const;
-
-export const vips_image_iskilled = {
-  parameters: [
-    buf(int), // image
+    VipsBandFormatT, // format
   ],
   result: int,
 } as const;
 
-export const vips_image_set_kill = {
+export const vips_band_format_iscomplex = {
   parameters: [
-    buf(int), // image
-    int, // kill
+    VipsBandFormatT, // format
   ],
-  result: "void",
+  result: int,
+} as const;
+
+export const vips_band_format_isfloat = {
+  parameters: [
+    VipsBandFormatT, // format
+  ],
+  result: int,
+} as const;
+
+export const vips_band_format_isint = {
+  parameters: [
+    VipsBandFormatT, // format
+  ],
+  result: int,
+} as const;
+
+export const vips_band_format_isuint = {
+  parameters: [
+    VipsBandFormatT, // format
+  ],
+  result: int,
 } as const;
 
 export const vips_filename_get_filename = {
@@ -79,13 +102,120 @@ export const vips_filename_get_options = {
   result: cstringT,
 } as const;
 
-export const vips_image_new = {
+export const vips_get_disc_threshold = {
   parameters: [],
+  result: int,
+} as const;
+
+export const vips_image_copy_memory = {
+  parameters: [
+    buf(int), // image
+  ],
   result: buf(int),
 } as const;
 
-export const vips_image_new_memory = {
+export const vips_image_decode = {
+  parameters: [
+    buf(int), // in
+    buf(buf(int)), // out
+  ],
+  result: int,
+} as const;
+
+export const vips_image_decode_predict = {
+  parameters: [
+    buf(int), // in
+    buf(int), // bands
+    buf(VipsBandFormatT), // format
+  ],
+  result: int,
+} as const;
+
+export const vips_image_encode = {
+  parameters: [
+    buf(int), // in
+    buf(buf(int)), // out
+    VipsCodingT, // coding
+  ],
+  result: int,
+} as const;
+
+export const vips_image_free_buffer = {
+  parameters: [
+    buf(int), // image
+    ptr("void"), // buffer
+  ],
+  result: "void",
+} as const;
+
+export const vips_image_get_type = {
   parameters: [],
+  result: int,
+} as const;
+
+export const vips_image_hasalpha = {
+  parameters: [
+    buf(int), // image
+  ],
+  result: int,
+} as const;
+
+export const vips_image_inplace = {
+  parameters: [
+    buf(int), // image
+  ],
+  result: int,
+} as const;
+
+export const vips_image_invalidate_all = {
+  parameters: [
+    buf(int), // image
+  ],
+  result: "void",
+} as const;
+
+export const vips_image_is_sequential = {
+  parameters: [
+    buf(int), // image
+  ],
+  result: int,
+} as const;
+
+export const vips_image_isfile = {
+  parameters: [
+    buf(int), // image
+  ],
+  result: int,
+} as const;
+
+export const vips_image_iskilled = {
+  parameters: [
+    buf(int), // image
+  ],
+  result: int,
+} as const;
+
+export const vips_image_isMSBfirst = {
+  parameters: [
+    buf(int), // image
+  ],
+  result: int,
+} as const;
+
+export const vips_image_ispartial = {
+  parameters: [
+    buf(int), // image
+  ],
+  result: int,
+} as const;
+
+export const vips_image_matrix_from_array = {
+  parameters: [
+    int, // width
+    int, // height
+    buf(double), // array
+    int, // size
+  ],
   result: buf(int),
 } as const;
 
@@ -94,16 +224,30 @@ export const vips_image_memory = {
   result: buf(int),
 } as const;
 
-export const vips_image_new_from_file = {
+export const vips_image_minimise_all = {
   parameters: [
-    cstringT, // name
+    buf(int), // image
+  ],
+  result: "void",
+} as const;
+
+export const vips_image_new = {
+  parameters: [],
+  result: buf(int),
+} as const;
+
+export const vips_image_new_from_buffer = {
+  parameters: [
+    ptr("void"), // buf
+    int, // len
+    cstringT, // option_string
   ],
   result: buf(int),
 } as const;
 
-export const vips_image_new_from_file_RW = {
+export const vips_image_new_from_file = {
   parameters: [
-    cstringT, // filename
+    cstringT, // name
   ],
   result: buf(int),
 } as const;
@@ -115,6 +259,30 @@ export const vips_image_new_from_file_raw = {
     int, // ysize
     int, // bands
     int, // offset
+  ],
+  result: buf(int),
+} as const;
+
+export const vips_image_new_from_file_RW = {
+  parameters: [
+    cstringT, // filename
+  ],
+  result: buf(int),
+} as const;
+
+export const vips_image_new_from_image = {
+  parameters: [
+    buf(int), // image
+    buf(double), // c
+    int, // n
+  ],
+  result: buf(int),
+} as const;
+
+export const vips_image_new_from_image1 = {
+  parameters: [
+    buf(int), // image
+    double, // c
   ],
   result: buf(int),
 } as const;
@@ -143,15 +311,6 @@ export const vips_image_new_from_memory_copy = {
   result: buf(int),
 } as const;
 
-export const vips_image_new_from_buffer = {
-  parameters: [
-    ptr("void"), // buf
-    int, // len
-    cstringT, // option_string
-  ],
-  result: buf(int),
-} as const;
-
 export const vips_image_new_from_source = {
   parameters: [
     buf(int), // source
@@ -161,14 +320,6 @@ export const vips_image_new_from_source = {
 } as const;
 
 export const vips_image_new_matrix = {
-  parameters: [
-    int, // width
-    int, // height
-  ],
-  result: buf(int),
-} as const;
-
-export const vips_image_new_matrixv = {
   parameters: [
     int, // width
     int, // height
@@ -186,44 +337,17 @@ export const vips_image_new_matrix_from_array = {
   result: buf(int),
 } as const;
 
-export const vips_image_matrix_from_array = {
+export const vips_image_new_matrixv = {
   parameters: [
     int, // width
     int, // height
-    buf(double), // array
-    int, // size
   ],
   result: buf(int),
 } as const;
 
-export const vips_image_new_from_image = {
-  parameters: [
-    buf(int), // image
-    buf(double), // c
-    int, // n
-  ],
-  result: buf(int),
-} as const;
-
-export const vips_image_new_from_image1 = {
-  parameters: [
-    buf(int), // image
-    double, // c
-  ],
-  result: buf(int),
-} as const;
-
-export const vips_image_set_delete_on_close = {
-  parameters: [
-    buf(int), // image
-    int, // delete_on_close
-  ],
-  result: "void",
-} as const;
-
-export const vips_get_disc_threshold = {
+export const vips_image_new_memory = {
   parameters: [],
-  result: int,
+  result: buf(int),
 } as const;
 
 export const vips_image_new_temp_file = {
@@ -231,117 +355,6 @@ export const vips_image_new_temp_file = {
     cstringT, // format
   ],
   result: buf(int),
-} as const;
-
-export const vips_image_write = {
-  parameters: [
-    buf(int), // image
-    buf(int), // out
-  ],
-  result: int,
-} as const;
-
-export const vips_image_write_to_file = {
-  parameters: [
-    buf(int), // image
-    cstringT, // name
-  ],
-  result: int,
-} as const;
-
-export const vips_image_write_to_buffer = {
-  parameters: [
-    buf(int), // in
-    cstringT, // suffix
-    buf(ptr("void")), // buf
-    buf(int), // size
-  ],
-  result: int,
-} as const;
-
-export const vips_image_write_to_target = {
-  parameters: [
-    buf(int), // in
-    cstringT, // suffix
-    buf(int), // target
-  ],
-  result: int,
-} as const;
-
-export const vips_image_write_to_memory = {
-  parameters: [
-    buf(int), // in
-    buf(int), // size
-  ],
-  result: ptr("void"),
-} as const;
-
-export const vips_image_decode_predict = {
-  parameters: [
-    buf(int), // in
-    buf(int), // bands
-    buf(VipsBandFormatT), // format
-  ],
-  result: int,
-} as const;
-
-export const vips_image_decode = {
-  parameters: [
-    buf(int), // in
-    buf(buf(int)), // out
-  ],
-  result: int,
-} as const;
-
-export const vips_image_encode = {
-  parameters: [
-    buf(int), // in
-    buf(buf(int)), // out
-    VipsCodingT, // coding
-  ],
-  result: int,
-} as const;
-
-export const vips_image_isMSBfirst = {
-  parameters: [
-    buf(int), // image
-  ],
-  result: int,
-} as const;
-
-export const vips_image_isfile = {
-  parameters: [
-    buf(int), // image
-  ],
-  result: int,
-} as const;
-
-export const vips_image_ispartial = {
-  parameters: [
-    buf(int), // image
-  ],
-  result: int,
-} as const;
-
-export const vips_image_hasalpha = {
-  parameters: [
-    buf(int), // image
-  ],
-  result: int,
-} as const;
-
-export const vips_image_copy_memory = {
-  parameters: [
-    buf(int), // image
-  ],
-  result: buf(int),
-} as const;
-
-export const vips_image_wio_input = {
-  parameters: [
-    buf(int), // image
-  ],
-  result: int,
 } as const;
 
 export const vips_image_pio_input = {
@@ -358,16 +371,41 @@ export const vips_image_pio_output = {
   result: int,
 } as const;
 
-export const vips_image_inplace = {
+export const vips_image_set_delete_on_close = {
+  parameters: [
+    buf(int), // image
+    int, // delete_on_close
+  ],
+  result: "void",
+} as const;
+
+export const vips_image_set_kill = {
+  parameters: [
+    buf(int), // image
+    int, // kill
+  ],
+  result: "void",
+} as const;
+
+export const vips_image_set_progress = {
+  parameters: [
+    buf(int), // image
+    int, // progress
+  ],
+  result: "void",
+} as const;
+
+export const vips_image_wio_input = {
   parameters: [
     buf(int), // image
   ],
   result: int,
 } as const;
 
-export const vips_image_write_prepare = {
+export const vips_image_write = {
   parameters: [
     buf(int), // image
+    buf(int), // out
   ],
   result: int,
 } as const;
@@ -381,37 +419,68 @@ export const vips_image_write_line = {
   result: int,
 } as const;
 
-export const vips_band_format_isint = {
+export const vips_image_write_prepare = {
   parameters: [
-    VipsBandFormatT, // format
+    buf(int), // image
   ],
   result: int,
 } as const;
 
-export const vips_band_format_isuint = {
+export const vips_image_write_to_buffer = {
   parameters: [
-    VipsBandFormatT, // format
+    buf(int), // in
+    cstringT, // suffix
+    buf(ptr("void")), // buf
+    buf(int), // size
   ],
   result: int,
 } as const;
 
-export const vips_band_format_is8bit = {
+export const vips_image_write_to_file = {
   parameters: [
-    VipsBandFormatT, // format
+    buf(int), // image
+    cstringT, // name
   ],
   result: int,
 } as const;
 
-export const vips_band_format_isfloat = {
+export const vips_image_write_to_memory = {
   parameters: [
-    VipsBandFormatT, // format
+    buf(int), // in
+    buf(int), // size
+  ],
+  result: ptr("void"),
+} as const;
+
+export const vips_image_write_to_target = {
+  parameters: [
+    buf(int), // in
+    cstringT, // suffix
+    buf(int), // target
   ],
   result: int,
 } as const;
 
-export const vips_band_format_iscomplex = {
+export const vips_progress_set = {
   parameters: [
-    VipsBandFormatT, // format
+    int, // progress
+  ],
+  result: "void",
+} as const;
+
+export const vips_reorder_margin_hint = {
+  parameters: [
+    buf(int), // image
+    int, // margin
+  ],
+  result: "void",
+} as const;
+
+export const vips_reorder_prepare_many = {
+  parameters: [
+    buf(int), // image
+    buf(buf(int)), // regions
+    buf(int), // r
   ],
   result: int,
 } as const;
@@ -421,50 +490,6 @@ export const vips_system = {
     cstringT, // cmd_format
   ],
   result: int,
-} as const;
-
-export const vips_array_image_new = {
-  parameters: [
-    buf(buf(int)), // array
-    int, // n
-  ],
-  result: buf(int),
-} as const;
-
-export const vips_array_image_newv = {
-  parameters: [
-    int, // n
-  ],
-  result: buf(int),
-} as const;
-
-export const vips_array_image_new_from_string = {
-  parameters: [
-    cstringT, // string
-    VipsAccessT, // flags
-  ],
-  result: buf(int),
-} as const;
-
-export const vips_array_image_empty = {
-  parameters: [],
-  result: buf(int),
-} as const;
-
-export const vips_array_image_append = {
-  parameters: [
-    buf(int), // array
-    buf(int), // image
-  ],
-  result: buf(int),
-} as const;
-
-export const vips_array_image_get = {
-  parameters: [
-    buf(int), // array
-    buf(int), // n
-  ],
-  result: buf(buf(int)),
 } as const;
 
 export const vips_value_get_array_image = {
@@ -479,31 +504,6 @@ export const vips_value_set_array_image = {
   parameters: [
     buf(int), // value
     int, // n
-  ],
-  result: "void",
-} as const;
-
-export const vips_reorder_prepare_many = {
-  parameters: [
-    buf(int), // image
-    buf(buf(int)), // regions
-    buf(int), // r
-  ],
-  result: int,
-} as const;
-
-export const vips_reorder_margin_hint = {
-  parameters: [
-    buf(int), // image
-    int, // margin
-  ],
-  result: "void",
-} as const;
-
-export const vips_image_free_buffer = {
-  parameters: [
-    buf(int), // image
-    ptr("void"), // buffer
   ],
   result: "void",
 } as const;

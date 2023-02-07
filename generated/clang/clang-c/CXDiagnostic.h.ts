@@ -12,76 +12,14 @@ import {
 } from "../typeDefinitions.ts";
 
 /**
- * Determine the number of diagnostics in a CXDiagnosticSet.
+ * Retrieve the set of display options most similar to the
+ * default behavior of the clang compiler.
+ *
+ * @returns A set of display options suitable for use with `clang_formatDiagnostic().`
  */
-export const clang_getNumDiagnosticsInSet = {
-  parameters: [
-    CXDiagnosticSetT, // Diags
-  ],
+export const clang_defaultDiagnosticDisplayOptions = {
+  parameters: [],
   result: unsignedInt,
-} as const;
-
-/**
- * Retrieve a diagnostic associated with the given CXDiagnosticSet.
- *
- * @param Diags the CXDiagnosticSet to query.
- *
- * @param Index the zero-based diagnostic number to retrieve.
- * @returns the requested diagnostic. This diagnostic must be freed
- * via a call to `clang_disposeDiagnostic().`
- */
-export const clang_getDiagnosticInSet = {
-  parameters: [
-    CXDiagnosticSetT, // Diags
-    unsignedInt, // Index
-  ],
-  result: CXDiagnosticT,
-} as const;
-
-/**
- * Deserialize a set of diagnostics from a Clang diagnostics bitcode
- * file.
- *
- * @param file The name of the file to deserialize.
- *
- * @param error A pointer to a enum value recording if there was a problem
- *        deserializing the diagnostics.
- *
- * @param errorString A pointer to a CXString for recording the error string
- *        if the file was not successfully loaded.
- * @returns A loaded CXDiagnosticSet if successful, and NULL otherwise.  These
- * diagnostics should be released using clang_disposeDiagnosticSet().
- */
-export const clang_loadDiagnostics = {
-  parameters: [
-    cstringT, // file
-    buf(CXLoadDiag_ErrorT), // error
-    buf(CXStringT), // errorString
-  ],
-  result: CXDiagnosticSetT,
-} as const;
-
-/**
- * Release a CXDiagnosticSet and all of its contained diagnostics.
- */
-export const clang_disposeDiagnosticSet = {
-  parameters: [
-    CXDiagnosticSetT, // Diags
-  ],
-  result: "void",
-} as const;
-
-/**
- * Retrieve the child diagnostics of a CXDiagnostic.
- *
- * This CXDiagnosticSet does not need to be released by
- * clang_disposeDiagnosticSet.
- */
-export const clang_getChildDiagnostics = {
-  parameters: [
-    CXDiagnosticT, // D
-  ],
-  result: CXDiagnosticSetT,
 } as const;
 
 /**
@@ -90,6 +28,16 @@ export const clang_getChildDiagnostics = {
 export const clang_disposeDiagnostic = {
   parameters: [
     CXDiagnosticT, // Diagnostic
+  ],
+  result: "void",
+} as const;
+
+/**
+ * Release a CXDiagnosticSet and all of its contained diagnostics.
+ */
+export const clang_disposeDiagnosticSet = {
+  parameters: [
+    CXDiagnosticSetT, // Diags
   ],
   result: "void",
 } as const;
@@ -116,65 +64,16 @@ export const clang_formatDiagnostic = {
 } as const;
 
 /**
- * Retrieve the set of display options most similar to the
- * default behavior of the clang compiler.
+ * Retrieve the child diagnostics of a CXDiagnostic.
  *
- * @returns A set of display options suitable for use with `clang_formatDiagnostic().`
+ * This CXDiagnosticSet does not need to be released by
+ * clang_disposeDiagnosticSet.
  */
-export const clang_defaultDiagnosticDisplayOptions = {
-  parameters: [],
-  result: unsignedInt,
-} as const;
-
-/**
- * Determine the severity of the given diagnostic.
- */
-export const clang_getDiagnosticSeverity = {
+export const clang_getChildDiagnostics = {
   parameters: [
-    CXDiagnosticT,
+    CXDiagnosticT, // D
   ],
-  result: CXDiagnosticSeverityT,
-} as const;
-
-/**
- * Retrieve the source location of the given diagnostic.
- *
- * This location is where Clang would print the caret ('^') when
- * displaying the diagnostic on the command line.
- */
-export const clang_getDiagnosticLocation = {
-  parameters: [
-    CXDiagnosticT,
-  ],
-  result: CXSourceLocationT,
-} as const;
-
-/**
- * Retrieve the text of the given diagnostic.
- */
-export const clang_getDiagnosticSpelling = {
-  parameters: [
-    CXDiagnosticT,
-  ],
-  result: CXStringT,
-} as const;
-
-/**
- * Retrieve the name of the command-line option that enabled this
- * diagnostic.
- *
- * @param Diag The diagnostic to be queried.
- * @param Disable If non-NULL, will be set to the option that disables this
- * diagnostic (if any).
- * @returns A string that contains the command-line option used to enable this
- * warning, such as "-Wconversion" or "-pedantic".
- */
-export const clang_getDiagnosticOption = {
-  parameters: [
-    CXDiagnosticT, // Diag
-    buf(CXStringT), // Disable
-  ],
-  result: CXStringT,
+  result: CXDiagnosticSetT,
 } as const;
 
 /**
@@ -223,47 +122,6 @@ export const clang_getDiagnosticCategoryText = {
 } as const;
 
 /**
- * Determine the number of source ranges associated with the given
- * diagnostic.
- */
-export const clang_getDiagnosticNumRanges = {
-  parameters: [
-    CXDiagnosticT,
-  ],
-  result: unsignedInt,
-} as const;
-
-/**
- * Retrieve a source range associated with the diagnostic.
- *
- * A diagnostic's source ranges highlight important elements in the source
- * code. On the command line, Clang displays source ranges by
- * underlining them with '~' characters.
- *
- * @param Diagnostic the diagnostic whose range is being extracted.
- * @param Range the zero-based index specifying which range to
- * @returns the requested source range.
- */
-export const clang_getDiagnosticRange = {
-  parameters: [
-    CXDiagnosticT, // Diagnostic
-    unsignedInt, // Range
-  ],
-  result: CXSourceRangeT,
-} as const;
-
-/**
- * Determine the number of fix-it hints associated with the
- * given diagnostic.
- */
-export const clang_getDiagnosticNumFixIts = {
-  parameters: [
-    CXDiagnosticT, // Diagnostic
-  ],
-  result: unsignedInt,
-} as const;
-
-/**
  * Retrieve the replacement information for a given fix-it.
  *
  * Fix-its are described in terms of a source range whose contents
@@ -292,4 +150,146 @@ export const clang_getDiagnosticFixIt = {
     buf(CXSourceRangeT), // ReplacementRange
   ],
   result: CXStringT,
+} as const;
+
+/**
+ * Retrieve a diagnostic associated with the given CXDiagnosticSet.
+ *
+ * @param Diags the CXDiagnosticSet to query.
+ *
+ * @param Index the zero-based diagnostic number to retrieve.
+ * @returns the requested diagnostic. This diagnostic must be freed
+ * via a call to `clang_disposeDiagnostic().`
+ */
+export const clang_getDiagnosticInSet = {
+  parameters: [
+    CXDiagnosticSetT, // Diags
+    unsignedInt, // Index
+  ],
+  result: CXDiagnosticT,
+} as const;
+
+/**
+ * Retrieve the source location of the given diagnostic.
+ *
+ * This location is where Clang would print the caret ('^') when
+ * displaying the diagnostic on the command line.
+ */
+export const clang_getDiagnosticLocation = {
+  parameters: [
+    CXDiagnosticT,
+  ],
+  result: CXSourceLocationT,
+} as const;
+
+/**
+ * Determine the number of fix-it hints associated with the
+ * given diagnostic.
+ */
+export const clang_getDiagnosticNumFixIts = {
+  parameters: [
+    CXDiagnosticT, // Diagnostic
+  ],
+  result: unsignedInt,
+} as const;
+
+/**
+ * Determine the number of source ranges associated with the given
+ * diagnostic.
+ */
+export const clang_getDiagnosticNumRanges = {
+  parameters: [
+    CXDiagnosticT,
+  ],
+  result: unsignedInt,
+} as const;
+
+/**
+ * Retrieve the name of the command-line option that enabled this
+ * diagnostic.
+ *
+ * @param Diag The diagnostic to be queried.
+ * @param Disable If non-NULL, will be set to the option that disables this
+ * diagnostic (if any).
+ * @returns A string that contains the command-line option used to enable this
+ * warning, such as "-Wconversion" or "-pedantic".
+ */
+export const clang_getDiagnosticOption = {
+  parameters: [
+    CXDiagnosticT, // Diag
+    buf(CXStringT), // Disable
+  ],
+  result: CXStringT,
+} as const;
+
+/**
+ * Retrieve a source range associated with the diagnostic.
+ *
+ * A diagnostic's source ranges highlight important elements in the source
+ * code. On the command line, Clang displays source ranges by
+ * underlining them with '~' characters.
+ *
+ * @param Diagnostic the diagnostic whose range is being extracted.
+ * @param Range the zero-based index specifying which range to
+ * @returns the requested source range.
+ */
+export const clang_getDiagnosticRange = {
+  parameters: [
+    CXDiagnosticT, // Diagnostic
+    unsignedInt, // Range
+  ],
+  result: CXSourceRangeT,
+} as const;
+
+/**
+ * Determine the severity of the given diagnostic.
+ */
+export const clang_getDiagnosticSeverity = {
+  parameters: [
+    CXDiagnosticT,
+  ],
+  result: CXDiagnosticSeverityT,
+} as const;
+
+/**
+ * Retrieve the text of the given diagnostic.
+ */
+export const clang_getDiagnosticSpelling = {
+  parameters: [
+    CXDiagnosticT,
+  ],
+  result: CXStringT,
+} as const;
+
+/**
+ * Determine the number of diagnostics in a CXDiagnosticSet.
+ */
+export const clang_getNumDiagnosticsInSet = {
+  parameters: [
+    CXDiagnosticSetT, // Diags
+  ],
+  result: unsignedInt,
+} as const;
+
+/**
+ * Deserialize a set of diagnostics from a Clang diagnostics bitcode
+ * file.
+ *
+ * @param file The name of the file to deserialize.
+ *
+ * @param error A pointer to a enum value recording if there was a problem
+ *        deserializing the diagnostics.
+ *
+ * @param errorString A pointer to a CXString for recording the error string
+ *        if the file was not successfully loaded.
+ * @returns A loaded CXDiagnosticSet if successful, and NULL otherwise.  These
+ * diagnostics should be released using clang_disposeDiagnosticSet().
+ */
+export const clang_loadDiagnostics = {
+  parameters: [
+    cstringT, // file
+    buf(CXLoadDiag_ErrorT), // error
+    buf(CXStringT), // errorString
+  ],
+  result: CXDiagnosticSetT,
 } as const;
