@@ -417,8 +417,7 @@ export class FFIgenerator {
       'export const func = (_func: unknown) => "function" as const;',
     ];
 
-    //    for (const anyType of ctxtGl.getMemoryTypes()) {
-    //      const name = anyType.keyName;
+    // Generate plain types
     const plainTypes = ctxtGl.getMemoryTypes("plain")
       // Cannot declare "void" type
       .filter((t) => t.name !== "void");
@@ -460,7 +459,7 @@ export class FFIgenerator {
   genFFiFile(ctxtGl: ContextGlobal, fileNames: string[]): void {
     const results: string[] = [];
     const IMPORTS: string[] = ['const IMPORTS = {'];
-    for (const [fileName] of ctxtGl.FUNCTIONS_MAP) {
+    for (const fileName of [...ctxtGl.FUNCTIONS_MAP.keys()].sort()) {
       if (!fileNames.includes(fileName))
         continue;
 
