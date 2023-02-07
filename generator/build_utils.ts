@@ -411,18 +411,7 @@ export const toAnyType = (
           name: "cstringT",
           reprName: "cstringT",
         };
-        let cstringT = ctxt.getTypeByName("cstringT")
-        if (!cstringT) {
-          cstringT = {
-            kind: "plain",
-            comment: `/**
-   * \`const char *\`, C string
-   */`,
-            name: "cstringT",
-            type: "buffer",
-          };
-          ctxt.addType("cstringT", cstringT);
-        }
+        ctxt.getTypeByName("cstringT")
         return cstringResult;
       } else if (
         pointee.kind === CXTypeKind.CXType_Pointer &&
@@ -435,18 +424,7 @@ export const toAnyType = (
           name: "cstringArrayT",
           reprName: "cstringArrayT",
         };
-        let cstringArrayT = ctxt.getTypeByName("cstringArrayT");
-        if (!cstringArrayT) {
-          cstringArrayT = {
-            kind: "plain",
-            comment: `/**
-   * \`char **\`, C string array
-   */`,
-            name: "cstringArrayT",
-            type: "buffer",
-          };
-          ctxt.addType("cstringArrayT", cstringArrayT);
-        }
+        ctxt.getTypeByName("cstringArrayT");
         return cstringArrayResult;
       }
 
@@ -525,7 +503,7 @@ export const toAnyType = (
         const spellingName = toPlainTypeName(type.getSpelling());
         // const canonycalName = toPlainTypeName(type.getCanonicalType().getSpelling());
         
-        const existing = ctxt.TYPE_MEMORY.get(spellingName);
+        const existing = ctxt.getTypeByName(spellingName);
         if (existing) {
           return existing;
         }

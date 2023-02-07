@@ -119,5 +119,5 @@ export function onTypedefDecl(ctxt: ContextGl, cx: CXCursor) {
       }
     }
   }
-  ctxt.TYPE_MEMORY.set(typedefName, structDeclAnyType);
+  ctxt.addType(typedefName, structDeclAnyType);
 }

@@ -88,33 +88,33 @@ export class ContextGlobal implements ContextGl {
     
     public getTypeByName(name: string): AnyType | undefined {
         switch (name) {
-            // hardcoded opredefined types
-            // case "cstringT": {
-            //     let cstringT = this.TYPE_MEMORY.get(name);
-            //     if (!cstringT) {
-            //         cstringT = {
-            //             kind: "plain",
-            //             comment: `/**\n   * \`const char *\`, C string\n   */`,
-            //             name: "cstringT",
-            //             type: "buffer",
-            //         };
-            //         this.addType(name, cstringT);
-            //     }
-            //     return cstringT;
-            // }
-            // case "cstringArrayT": {
-            //     let cstringArrayT = this.TYPE_MEMORY.get(name);
-            //     if (!cstringArrayT) {
-            //         cstringArrayT = {
-            //             kind: "plain",
-            //             comment: `/**\n   * \`char **\`, C string array\n   */`,
-            //             name: "cstringArrayT",
-            //             type: "buffer",
-            //           };
-            //         this.addType(name, cstringArrayT);
-            //     }
-            //     return cstringArrayT;
-            // }
+            // hardcoded common predefined types
+            case "cstringT": {
+                let cstringT = this.TYPE_MEMORY.get(name);
+                if (!cstringT) {
+                    cstringT = {
+                        kind: "plain",
+                        comment: `/**\n   * \`const char *\`, C string\n   */`,
+                        name: "cstringT",
+                        type: "buffer",
+                    };
+                    this.addType(name, cstringT);
+                }
+                return cstringT;
+            }
+            case "cstringArrayT": {
+                let cstringArrayT = this.TYPE_MEMORY.get(name);
+                if (!cstringArrayT) {
+                    cstringArrayT = {
+                        kind: "plain",
+                        comment: `/**\n   * \`char **\`, C string array\n   */`,
+                        name: "cstringArrayT",
+                        type: "buffer",
+                      };
+                    this.addType(name, cstringArrayT);
+                }
+                return cstringArrayT;
+            }
             default:
                 return this.TYPE_MEMORY.get(name);
         }
