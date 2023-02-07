@@ -285,18 +285,17 @@ export const toAnyType = (
   type: CXType,
 ): AnyType => {
   const typekind = type.kind;
-  const typeMemory = ctxt.TYPE_MEMORY;
   switch (typekind) {
     case CXTypeKind.CXType_Elaborated: {
       const typeDeclaration = type.getTypeDeclaration();
       if (!typeDeclaration) throw Error('internal error "typeDeclaration" is null');
       if (typeDeclaration.kind === CXCursorKind.CXCursor_EnumDecl) {
         const name = type.getSpelling().substring(5); // drop `enum ` prefix
-        if (typeMemory.has(name)) {
-          return typeMemory.get(name)!;
+        if (ctxt.TYPE_MEMORY.has(name)) {
+          return ctxt.TYPE_MEMORY.get(name)!;
         }
         const result = toEnumType(ctxt, name, typeDeclaration);
-        typeMemory.set(name, result);
+        ctxt.TYPE_MEMORY.set(name, result);
         return result;
       } else if (typeDeclaration.kind === CXCursorKind.CXCursor_StructDecl) {
         const structDeclaration = type.getTypeDeclaration();
@@ -365,7 +364,7 @@ export const toAnyType = (
           return CXVisitorResult.CXVisit_Continue;
         });
 
-        typeMemory.set(name, structType);
+        ctxt.TYPE_MEMORY.set(name, structType);
         return structType;
       } else {
         throw new Error("Unknown elaborated type");
@@ -413,8 +412,8 @@ export const toAnyType = (
           name: "cstringT",
           reprName: "cstringT",
         };
-        if (!typeMemory.has("cstringT")) {
-          typeMemory.set("cstringT", {
+        if (!ctxt.TYPE_MEMORY.has("cstringT")) {
+          ctxt.TYPE_MEMORY.set("cstringT", {
             kind: "plain",
             comment: `/**
    * \`const char *\`, C string
@@ -435,8 +434,8 @@ export const toAnyType = (
           name: "cstringArrayT",
           reprName: "cstringArrayT",
         };
-        if (!typeMemory.has("cstringArrayT")) {
-          typeMemory.set("cstringArrayT", {
+        if (!ctxt.TYPE_MEMORY.has("cstringArrayT")) {
+          ctxt.TYPE_MEMORY.set("cstringArrayT", {
             kind: "plain",
             comment: `/**
    * \`char **\`, C string array
@@ -471,7 +470,7 @@ export const toAnyType = (
         reprName: `${typeDefName}T`,
         comment: null,
       };
-      if (!typeMemory.has(typeDefName)) {
+      if (!ctxt.TYPE_MEMORY.has(typeDefName)) {
         // Check for potentially needed system header definitions.
         const typedecl = type.getTypeDeclaration();
         if (!typedecl) throw Error(`internal error "typedecl" is null for ${typeDefName}`)
@@ -480,7 +479,7 @@ export const toAnyType = (
           const sourceType = typedecl.getTypedefDeclarationOfUnderlyingType();
           if (!sourceType) throw Error('internal error "sourceType" is null')
           const sourceAnyType = toAnyType(ctxt, sourceType);
-          typeMemory.set(typeDefName, sourceAnyType);
+          ctxt.TYPE_MEMORY.set(typeDefName, sourceAnyType);
         }
       }
       return refResult;
@@ -491,13 +490,13 @@ export const toAnyType = (
       if (name.startsWith("enum ")) {
         name = name.substring("enum ".length);
       }
-      if (typeMemory.has(name)) {
-        return typeMemory.get(name)!;
+      if (ctxt.TYPE_MEMORY.has(name)) {
+        return ctxt.TYPE_MEMORY.get(name)!;
       }
       const typeDeclaration = type.getTypeDeclaration();
       if (!typeDeclaration) throw Error('internal error "typeDeclaration" is null');
       const enumResult = toEnumType(ctxt, name, typeDeclaration);
-      typeMemory.set(name, enumResult);
+      ctxt.TYPE_MEMORY.set(name, enumResult);
       return enumResult;
     }
 
@@ -522,7 +521,7 @@ export const toAnyType = (
         const spellingName = toPlainTypeName(type.getSpelling());
         // const canonycalName = toPlainTypeName(type.getCanonicalType().getSpelling());
         
-        const existing = typeMemory.get(spellingName);
+        const existing = ctxt.TYPE_MEMORY.get(spellingName);
         if (existing) {
           return existing;
         }
@@ -532,7 +531,7 @@ export const toAnyType = (
           type: getPlainTypeInfo(typekind, type),
           comment: null,
         };
-        typeMemory.set(spellingName, plainResult);
+        ctxt.TYPE_MEMORY.set(spellingName, plainResult);
         return plainResult;
       }
     default:

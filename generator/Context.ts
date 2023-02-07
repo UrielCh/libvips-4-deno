@@ -72,9 +72,10 @@ export class ContextGlobal implements ContextGl {
     getMemoryTypes(type: "ref"): ReferenceType[];
     getMemoryTypes(): AnyType[];
     public getMemoryTypes(type?: ALL_KIND): AnyType[] {
+        const values = [...this.TYPE_MEMORY.values()];
         if (!type)
-            return [...this.TYPE_MEMORY.values()];
-        return [...this.TYPE_MEMORY.values()].filter(a => a.kind === type);
+            return values;
+        return values.filter(a => a.kind === type);
     }
 
     addType<T extends AnyType>(name: string, type: T): T {
