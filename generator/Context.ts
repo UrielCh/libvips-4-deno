@@ -83,6 +83,11 @@ export class ContextGlobal implements ContextGl {
         // if (this.TYPE_MEMORY.has(name)) {
         //     throw new Error(`Type ${name} already exists`);
         // }
+        if (type.keyName) {
+            // clone it
+            type = {...type, keyName: name};
+            //throw new Error(`can not add type twice ${name} already exists`);
+        }
         type.keyName = name;
         this.TYPE_MEMORY.set(name, type);
         return type;

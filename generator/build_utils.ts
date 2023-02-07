@@ -465,7 +465,8 @@ export const toAnyType = (
           const sourceType = typedecl.getTypedefDeclarationOfUnderlyingType();
           if (!sourceType) throw Error('internal error "sourceType" is null')
           const sourceAnyType = toAnyType(ctxt, sourceType);
-          ctxt.addType(typeDefName, sourceAnyType);
+          if (!ctxt.getTypeByName(typeDefName))
+            ctxt.addType(typeDefName, sourceAnyType);
         }
       }
       return refResult;

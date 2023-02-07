@@ -1,35 +1,45 @@
 export const ptr = (_type: unknown) => "pointer" as const;
 export const buf = (_type: unknown) => "buffer" as const;
 export const func = (_func: unknown) => "function" as const;
-export const unsignedChar = "u8" as const;
+export const __off_t = "i64" as const;
 
-export const unsignedLong = "u64" as const;
+export const char = "i8" as const;
 
-export const size_t = "u64" as const;
-
-export const int = "i32" as const;
-
-export const gint = "i32" as const;
+/**
+   * `char **`, C string array
+   */
+export const cstringArrayT = "buffer" as const;
 
 /**
    * `const char *`, C string
    */
 export const cstringT = "buffer" as const;
 
+export const double = "f64" as const;
+
+export const float = "f32" as const;
+
+export const gint = "i32" as const;
+
+export const gint64 = "i64" as const;
+
+export const gsize = "u64" as const;
+
+export const int = "i32" as const;
+
 export const long = "i64" as const;
 
-export const __off_t = "i64" as const;
+export const size_t = "u64" as const;
+
+export const unsignedChar = "u8" as const;
 
 export const unsignedInt = "u32" as const;
 
-export const double = "f64" as const;
+export const unsignedLong = "u64" as const;
 
 export const VipsArgumentTable = "i32" as const;
 
-/**
-   * `char **`, C string array
-   */
-export const cstringArrayT = "buffer" as const;
+export const VipsImage = "void" as const;
 
 /**
  * VipsPel:
@@ -39,17 +49,7 @@ export const cstringArrayT = "buffer" as const;
  */
 export const VipsPel = "u8" as const;
 
-export const VipsImage = "void" as const;
-
 export const VipsRegion = "void" as const;
-
-export const gsize = "u64" as const;
-
-export const gint64 = "i64" as const;
-
-export const char = "i8" as const;
-
-export const float = "f32" as const;
 
 /******** Start enums ********/
 export const enum _RegionType {

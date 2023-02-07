@@ -199,7 +199,7 @@ export class FFIgenerator {
     let cnt = 0;
     const RefType = new Map<string, ReferenceType>();
     // for (const anyType of ctxtGl.getMemoryTypes()) {
-    //  const name = anyType.keyName;
+    //   const name = anyType.keyName;
     for (const [name, anyType] of ctxtGl.TYPE_MEMORY) {
       if (anyType.kind === "ref") {
         RefType.set(name, anyType)
@@ -420,17 +420,15 @@ export class FFIgenerator {
       'export const func = (_func: unknown) => "function" as const;',
     ];
 
-    // for (const anyType of ctxtGl.getMemoryTypes()) {
-    //   const name = anyType.keyName;
-    for (const [name, anyType] of ctxtGl.TYPE_MEMORY) {
-      if (anyType.kind === "plain") {
-        if (anyType.name === "void") {
-          // Cannot declare "void" type
-          continue;
-        }
-        results.push(`${cmt(anyType, '')}export const ${name} = "${anyType.type}" as const;`)
-        results.push('');
-      }
+    //    for (const anyType of ctxtGl.getMemoryTypes()) {
+    //      const name = anyType.keyName;
+    const plainTypes = ctxtGl.getMemoryTypes("plain")
+      // Cannot declare "void" type
+      .filter((t) => t.name !== "void");
+    for (const anyType of plainTypes) {
+      const name = anyType.keyName;
+      results.push(`${cmt(anyType, '')}export const ${name} = "${anyType.type}" as const;`)
+      results.push('');
     }
 
     const { code: enumCode, cnt: enumCnt } = this.generateEnum(ctxtGl);
@@ -497,8 +495,8 @@ export class FFIgenerator {
 
     const availibleTypes = new Set<string>(["ptr", "buf", "func"]);
     for (const [name, anyType] of ctxtGl.TYPE_MEMORY) {
-      // for (const anyType of ctxtGl.getMemoryTypes()) {
-      // const name = anyType.keyName;
+      //for (const anyType of ctxtGl.getMemoryTypes()) {
+      //  const name = anyType.keyName;
       if (anyType.kind === "pointer") {
         if (anyType.name.includes(" ") || anyType.name.includes("*")) {
           continue;
