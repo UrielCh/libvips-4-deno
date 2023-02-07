@@ -3373,6 +3373,23 @@ export const CXCursorT = {
   ],
 } as const;
 
+export const CXCursorAndRangeVisitorCallbackDefinition = {
+  /** enum CXVisitorResult (void *, CXCursor, CXSourceRange) */
+  parameters: [
+    ptr("void"), // void *
+    CXCursorT, // CXCursor
+    CXSourceRangeT, // CXSourceRange
+  ],
+  result: CXVisitorResultT,
+} as const; /* extra */
+export const CXCursorAndRangeVisitorT = {
+  /** Struct size: 16 */
+  struct: [
+    ptr("void"), // context, offset 0, size 8
+    func(CXCursorAndRangeVisitorCallbackDefinition), // visit, offset 8, size 8
+  ],
+} as const;
+
 /**
  * Visitor invoked for each cursor found by a traversal.
  *
@@ -3793,6 +3810,114 @@ export const CXTUResourceUsageT = {
      * usage.
      */
     ptr(CXTUResourceUsageEntryT), // entries, offset 16, size 8
+  ],
+} as const;
+
+export const IndexerCallbacksAbortQueryCallbackDefinition = {
+  /** int (CXClientData, void *) */
+  parameters: [
+    CXClientDataT, // CXClientData
+    ptr("void"), // void *
+  ],
+  result: int,
+} as const; /* extra */
+export const IndexerCallbacksDiagnosticCallbackDefinition = {
+  /** void (CXClientData, CXDiagnosticSet, void *) */
+  parameters: [
+    CXClientDataT, // CXClientData
+    CXDiagnosticSetT, // CXDiagnosticSet
+    ptr("void"), // void *
+  ],
+  result: "void",
+} as const; /* extra */
+export const IndexerCallbacksEnteredMainFileCallbackDefinition = {
+  /** CXIdxClientFile (CXClientData, CXFile, void *) */
+  parameters: [
+    CXClientDataT, // CXClientData
+    CXFileT, // CXFile
+    ptr("void"), // void *
+  ],
+  result: CXIdxClientFileT,
+} as const; /* extra */
+export const IndexerCallbacksPpIncludedFileCallbackDefinition = {
+  /** CXIdxClientFile (CXClientData, const CXIdxIncludedFileInfo *) */
+  parameters: [
+    CXClientDataT, // CXClientData
+    buf(CXIdxIncludedFileInfoT), // const CXIdxIncludedFileInfo *
+  ],
+  result: CXIdxClientFileT,
+} as const; /* extra */
+export const IndexerCallbacksImportedASTFileCallbackDefinition = {
+  /** CXIdxClientASTFile (CXClientData, const CXIdxImportedASTFileInfo *) */
+  parameters: [
+    CXClientDataT, // CXClientData
+    buf(CXIdxImportedASTFileInfoT), // const CXIdxImportedASTFileInfo *
+  ],
+  result: CXIdxClientASTFileT,
+} as const; /* extra */
+export const IndexerCallbacksStartedTranslationUnitCallbackDefinition = {
+  /** CXIdxClientContainer (CXClientData, void *) */
+  parameters: [
+    CXClientDataT, // CXClientData
+    ptr("void"), // void *
+  ],
+  result: CXIdxClientContainerT,
+} as const; /* extra */
+export const IndexerCallbacksIndexDeclarationCallbackDefinition = {
+  /** void (CXClientData, const CXIdxDeclInfo *) */
+  parameters: [
+    CXClientDataT, // CXClientData
+    buf(CXIdxDeclInfoT), // const CXIdxDeclInfo *
+  ],
+  result: "void",
+} as const; /* extra */
+export const IndexerCallbacksIndexEntityReferenceCallbackDefinition = {
+  /** void (CXClientData, const CXIdxEntityRefInfo *) */
+  parameters: [
+    CXClientDataT, // CXClientData
+    buf(CXIdxEntityRefInfoT), // const CXIdxEntityRefInfo *
+  ],
+  result: "void",
+} as const; /* extra */
+/**
+ * A group of callbacks used by #clang_indexSourceFile and
+ * #clang_indexTranslationUnit.
+ */
+export const IndexerCallbacksT = {
+  /** Struct size: 64 */
+  struct: [
+    /**
+     * Called periodically to check whether indexing should be aborted.
+     * Should return 0 to continue, and non-zero to abort.
+     */
+    func(IndexerCallbacksAbortQueryCallbackDefinition), // abortQuery, offset 0, size 8
+    /**
+     * Called at the end of indexing; passes the complete diagnostic set.
+     */
+    func(IndexerCallbacksDiagnosticCallbackDefinition), // diagnostic, offset 8, size 8
+    func(IndexerCallbacksEnteredMainFileCallbackDefinition), // enteredMainFile, offset 16, size 8
+    /**
+     * Called when a file gets \#included/\#imported.
+     */
+    func(IndexerCallbacksPpIncludedFileCallbackDefinition), // ppIncludedFile, offset 24, size 8
+    /**
+     * Called when a AST file (PCH or module) gets imported.
+     *
+     * AST files will not get indexed (there will not be callbacks to index all
+     * the entities in an AST file). The recommended action is that, if the AST
+     * file is not already indexed, to initiate a new indexing job specific to
+     * the AST file.
+     */
+    func(IndexerCallbacksImportedASTFileCallbackDefinition), // importedASTFile, offset 32, size 8
+    /**
+     * Called at the beginning of indexing a translation unit.
+     */
+    func(IndexerCallbacksStartedTranslationUnitCallbackDefinition), // startedTranslationUnit, offset 40, size 8
+    func(IndexerCallbacksIndexDeclarationCallbackDefinition), // indexDeclaration, offset 48, size 8
+    /**
+     * Called to index a reference of an entity.
+     */
+    func(IndexerCallbacksIndexEntityReferenceCallbackDefinition), // indexEntityReference, offset 56, size 8
   ],
 } as const;
 

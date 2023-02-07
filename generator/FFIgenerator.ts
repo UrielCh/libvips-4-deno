@@ -27,7 +27,7 @@ import * as pc from "https://deno.land/std@0.171.0/fmt/colors.ts";
 import { walk } from "https://deno.land/std@0.171.0/fs/walk.ts";
 
 interface GeneratorContext {
-  satisfy: (types: string[]) => boolean;
+  satisfy: (name: string, types: string[], provide?: Set<string>) => void;
   selection: Set<string>;
   available: Set<string>;
 }
@@ -89,8 +89,7 @@ export class FFIgenerator {
         }
         const type = anyType.useBuffer ? "buf" : "ptr";
         const { code, dependencies } = anyTypeToString(anyType.pointee);
-        if (!genCtxt.satisfy(dependencies))
-          throw new Error(`Missing dependencies for ${anyType.name}: ${dependencies}`);
+        genCtxt.satisfy(anyType.name, dependencies);
         results.push(`${cmt(anyType, '')}export const ${anyType.name}T = ${type}(${code});`);
         genCtxt.available.add(`${anyType.name}T`);
         break;
@@ -110,8 +109,7 @@ export class FFIgenerator {
         results.push(`} as const;`);
         results.push(`${cmt(anyType, '')}export const ${anyType.reprName} = "function" as const;\n`);
         allDependencies.push(...dependencies)
-        if (!genCtxt.satisfy(allDependencies))
-          throw new Error(`Missing dependencies for ${anyType.name}: ${allDependencies}`);
+        genCtxt.satisfy(`${anyType.reprName} and ${typeName}`, allDependencies)
         genCtxt.available.add(typeName);
         genCtxt.available.add(anyType.reprName);
         break;
@@ -127,7 +125,9 @@ export class FFIgenerator {
       case "struct": {
         const prefix = [];
         const structDependencies: string[] = [];
+        const provide = new Set<string>();
         results.push(`${cmt(anyType, '')}export const ${anyType.reprName} = {`);
+        provide.add(anyType.reprName);
         results.push(`  /** Struct size: ${anyType.size} */`);
         results.push(`  struct: [`);
         for (const field of anyType.fields) {
@@ -135,6 +135,8 @@ export class FFIgenerator {
           // const { structField, extraCode, dependencies: structDependencies } = ret;
           // structDependencies.push(structField)
           structDependencies.push(...ret.dependencies)
+          if (ret.provide)
+            provide.add(ret.provide)
           // for (const type of structDependencies) {
           //   genCtxt.selection.add(type);
           // }
@@ -146,8 +148,7 @@ export class FFIgenerator {
         results.push(`} as const;\n`);
         results.unshift(...prefix);
 
-        if (!genCtxt.satisfy(structDependencies))
-          throw new Error(`Missing dependencies for ${anyType.name}: ${structDependencies}`);
+        genCtxt.satisfy(anyType.reprName, structDependencies, provide)
         genCtxt.available.add(anyType.reprName);
         break;
       }
@@ -318,19 +319,19 @@ export class FFIgenerator {
      * Generate functions fiels
      */
     const { dependencies, fileNames } = await this.genFunctionFiles(ctxtGl);
-    console.log(dependencies.has('CXStringT'))
     const available = new Set<string>();
 
     const genCtxt: GeneratorContext = {
-      satisfy: (types: string[]): boolean => {
-        let missing = 0;
+      satisfy: (name: string, types: string[], provide?: Set<string>): void => {
+        const missing = [];
         for (const t of types) {
-          if (!available.has(t)) {
-            missing++;
-            dependencies.add(t);
-          }
+          if (available.has(t)) continue;
+          if (provide && provide.has(t)) continue;
+          missing.push(t);
+          dependencies.add(t);
         }
-        return missing === 0;
+        if (missing.length)
+          throw new Error(`Missing dependencies for ${name}: ${missing.join(', ')}`);
       },
       selection: dependencies,
       available,
@@ -366,45 +367,27 @@ export class FFIgenerator {
     // const missingStruct = new Set<string>(stuctType.map(s => s.reprName));
     // console.log('Missing Struct size is', pc.green(missingStruct.size.toString()))
     let added = 1;
+    let errorSet: string[] = [];
     for (let pass = 1; added > 0; pass++) {
       added = 0;
+      errorSet = [];
       // loop: 
       for (const anyType of stuctType) {
+        if (anyType.kind === 'plain')
+          continue;
         if (processed.has(anyType.keyName))
           continue;
         if (anyType.kind === "struct") {
-          if ("CXStringT" === anyType.reprName)
-          debugger;
+          // if ("CXIdxCXXClassDeclInfoT" === anyType.reprName)
+          //   debugger;
           if (!genCtxt.selection.has(anyType.reprName))
             continue;
         }
-        // check missing type usage;
-        // const uncomplet = new Set<string>;
-        // for (const field of anyType.fields) {
-        //   const { structField, dependencies } = structFieldToDeinlineString(anyType, field);
-        //   if (missingStruct.has(structField)) {
-        //     genCtxt.selection.add(structField)
-        //     uncomplet.add(`"${structField}"`);
-        //   }
-        //   for (const dep of dependencies) {
-        //     if (missingStruct.has(dep)) {
-        //       genCtxt.selection.add(dep)
-        //       uncomplet.add(`"${dep}"`);
-        //     }
-        //   }
-        // }
-        // if (uncomplet.size) {
-        //   const missingList = [...uncomplet].join(', ');
-        //   // if (missingList.length > 100) {
-        //   //   missingList = missingList.substring(0, 100) + '...';
-        //   // }
-        //   console.log(`${pc.green(pass.toString())} Postpone generation of ${pc.red(anyType.reprName)} missing: ${missingList}`)
-        //   continue loop;
-        // }
         try {
           const { code } = this.generateOne(genCtxt, anyType);
           results.push(code);
-        } catch (_e) {
+        } catch (e) {
+          errorSet.push(e.message)
           continue;
         }
         processed.add(anyType.keyName)
@@ -416,31 +399,9 @@ export class FFIgenerator {
     // if (missingStruct.size)
     //   console.log('missingStruct:', [...missingStruct].join(', '))
 
+    console.error(errorSet.join('\n'))
 
-
-
-    //const { code: enumCode, cnt: enumCnt } = this.generateEnums(ctxtGl, genCtxt);
-    //console.log(`Generate ${pc.green(enumCnt.toString().padStart(3))} enums   in typeDefinitions.ts`)
-    //
-    //const { code: ptrCode, cnt: ptrCnt } = this.generatePrts(ctxtGl, genCtxt);
-    //console.log(`Generate ${pc.green(ptrCnt.toString().padStart(3))} ptrs    in typeDefinitions.ts`)
-    //
-    //const { code: structCode, cnt: structCnt } = this.generateStructs(ctxtGl, genCtxt);
-    //console.log(`Generate ${pc.green(structCnt.toString().padStart(3))} structs in typeDefinitions.ts`)
-    //
-    //const { code: refCode, cnt: refCnt } = this.generateRefs(ctxtGl, genCtxt);
-    //console.log(`Generate ${pc.green(refCnt.toString().padStart(3))} refs    in typeDefinitions.ts`)
-    //
-    //const { code: funcCode, cnt: funcCnt } = this.generateFunctions(ctxtGl, genCtxt);
-    //console.log(`Generate ${pc.green(funcCnt.toString().padStart(3))} fncts   in typeDefinitions.ts`)
-    //
-    //results.push(...enumCode);
-    //results.push(...ptrCode);
-    //results.push(...structCode);
-    //results.push(...refCode);
-    //results.push(...funcCode);
     //results.push('');
-
 
     /**
      * Write to file with all types

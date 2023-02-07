@@ -8,7 +8,7 @@ import {
     ReferenceType,
     StructType,
 } from "./build_utils.ts";
-import * as pc from "https://deno.land/std@0.171.0/fmt/colors.ts";
+// import * as pc from "https://deno.land/std@0.171.0/fmt/colors.ts";
 
 export interface Context {
     getTypeByName(name: string): AnyType | undefined;
@@ -44,7 +44,10 @@ export class ContextGlobal implements Context {
 
     addType<T extends AnyType>(name: string, type: T): T {
         // if (this.TYPE_MEMORY.has(name)) {
-        //     throw new Error(`Type ${name} already exists`);
+            // const oldType = this.TYPE_MEMORY.get(name)?.kind;
+            // if (oldType !== type.kind)
+            //     console.log(`Warning: type already exists ${name} K: ${type.kind} oldType: ${this.TYPE_MEMORY.get(name)?.kind}`);
+            // throw new Error(`Type ${name} already exists`);
         // }
         if (type.keyName && type.keyName !== name) {
             // clone it

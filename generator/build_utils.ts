@@ -102,7 +102,7 @@ export type AnyType =
 export const structFieldToDeinlineString = (
   struct: StructType,
   field: StructField,
-): { structField: string, extraCode?: string, dependencies: string[] } => {
+): { structField: string, extraCode?: string, dependencies: string[], provide?: string } => {
   const dependencies: string[] = [];
   if (field.type.kind !== "pointer" || field.type.pointee.kind !== "function") {
     const { code: structField, dependencies: subDependencies } = anyTypeToString(field.type);
@@ -136,7 +136,7 @@ export const structFieldToDeinlineString = (
 
   dependencies.push(...funcDependencies);
   const structField = `func(${funcCode})`;
-  return { structField, extraCode, dependencies }
+  return { structField, extraCode, dependencies, provide: functionName}
 };
 
 export const anyTypeToString = (type: AnyType): { code: string, dependencies: string[] } => {
