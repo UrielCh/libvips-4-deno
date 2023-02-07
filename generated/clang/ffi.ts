@@ -26,4 +26,4 @@ export type libShape = ReturnType<typeof Deno.dlopen<typeof IMPORTS>>;
 
 export function getLib(path: string): libShape {
   return Deno.dlopen(path, IMPORTS);
-}
+} // FAILED ME
