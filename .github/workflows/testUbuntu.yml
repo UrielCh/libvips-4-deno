@@ -58,5 +58,9 @@ jobs:
       run: |
         deno run generated/clang/ffi.ts
 
+    - name: Regen code genLibVips
+      run: |
+        deno task genLibVips
+
     - name: check for unexpected changes in generated
       run: "[ $(git status --porcelain generated | wc -l) -eq 0 ] || (echo code have changes && false)"
