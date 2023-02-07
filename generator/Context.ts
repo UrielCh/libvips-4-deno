@@ -55,7 +55,7 @@ export class ContextGlobal implements Context {
         }
         // if (name === "VipsBBits")
         //     debugger;
-        console.log(`adding ${pc.magenta(name)}`)
+        // console.log(`adding ${pc.magenta(name)}`)
         this.TYPE_MEMORY.set(name, type);
         return type;
     }

@@ -63,6 +63,51 @@ export class FFIgenerator {
     this.index = new libclang.CXIndex(false, true);
   }
 
+  generateOne(ctxtGl: ContextGlobal, anyType: AnyType): { code: string } {
+    const results: string[] = [];
+    switch (anyType.kind) {
+      case "enum": {
+        results.push(`${cmt(anyType, '')}export const enum ${anyType.name} {`);
+        for (const value of anyType.values) {
+          results.push(`${cmt(value)}  ${value.name}${value.value === null ? "" : ` = ${value.value}`},`)
+        }
+        results.push(`}`)
+        const { code } = anyTypeToString(anyType.type);
+        results.push(`${cmt(anyType, '')}export const ${anyType.reprName} = ${code};\n`); // fin push
+        break;
+      }
+      case "pointer": {
+        if (anyType.name.includes(" ") || anyType.name.includes("*")) {
+          throw new Error("Unexpected unnamed Pointer type:" + JSON.stringify(anyType));
+        }
+        const type = anyType.useBuffer ? "buf" : "ptr";
+        const { code } = anyTypeToString(anyType.pointee);
+        results.push(`${cmt(anyType, '')}export const ${anyType.name}T = ${type}(${code});`);
+        break;
+      }
+      case "function": {
+        results.push(`${cmt(anyType, '')}export const ${anyType.name}CallbackDefinition = {\n  parameters: [`);
+        for (const param of anyType.parameters) {
+          const { code } = anyTypeToString(param.type);
+          results.push(`${cmt(param, '    ')}    ${code}, // ${param.name}`);
+        }
+        results.push('  ],\n');
+        const { code } = anyTypeToString(anyType.result);
+        results.push(`  result: ${code},`);
+        results.push(`} as const;`);
+        results.push(`${cmt(anyType, '')}export const ${anyType.reprName} = "function" as const;\n`);
+        break;
+      }
+      // case "struct":
+      //   return this.generateStructs(ctxtGl, new Set());
+      default:
+        throw new Error("Unexpected type:" + JSON.stringify(anyType.kind));
+    }
+    return { code: results.join('\n') };
+  }
+
+
+
   /**
    * Generate all enums for typeDefinitions.ts
    * @param ctxtGl context
@@ -75,15 +120,10 @@ export class FFIgenerator {
     const enumsType = ctxtGl.getMemoryTypes("enum");
     if (enumsType.length) {
       for (const anyType of enumsType) {
-        results.push(`${cmt(anyType, '')}export const enum ${anyType.name} {`);
-        for (const value of anyType.values) {
-          results.push(`${cmt(value)}  ${value.name}${value.value === null ? "" : ` = ${value.value}`},`)
-        }
-        results.push(`}`)
-        const { code } = anyTypeToString(anyType.type);
-        results.push(`${cmt(anyType, '')}export const ${anyType.reprName} = ${code};\n`); // fin push
+        const { code } = this.generateOne(ctxtGl, anyType);
+        results.push(code);
         cnt++;
-      } // fin loop enum
+      }
     }
     return { code: results, cnt };
   }
@@ -99,12 +139,8 @@ export class FFIgenerator {
     const ptrType = ctxtGl.getMemoryTypes("pointer");
     if (ptrType.length) {
       for (const anyType of ptrType) {
-        if (anyType.name.includes(" ") || anyType.name.includes("*")) {
-          throw new Error("Unexpected unnamed Pointer type:" + JSON.stringify(anyType));
-        }
-        const type = anyType.useBuffer ? "buf" : "ptr";
-        const { code } = anyTypeToString(anyType.pointee);
-        results.push(`${cmt(anyType, '')}export const ${anyType.name}T = ${type}(${code});`);
+        const { code } = this.generateOne(ctxtGl, anyType);
+        results.push(code);
         cnt++;
       }
     }
@@ -218,17 +254,8 @@ export class FFIgenerator {
     const fncType = ctxtGl.getMemoryTypes("function");
     if (fncType.length) {
       for (const anyType of fncType) {
-        results.push(`${cmt(anyType, '')}export const ${anyType.name}CallbackDefinition = {\n  parameters: [`);
-        for (const param of anyType.parameters) {
-          const { code } = anyTypeToString(param.type);
-          results.push(`${cmt(param, '    ')}    ${code}, // ${param.name}`);
-        }
-
-        results.push('  ],\n');
-        const { code } = anyTypeToString(anyType.result);
-        results.push(`  result: ${code},`);
-        results.push(`} as const;`);
-        results.push(`${cmt(anyType, '')}export const ${anyType.reprName} = "function" as const;\n`);
+        const { code } = this.generateOne(ctxtGl, anyType);
+        results.push(code);
         cnt++;
       }
     }
@@ -536,7 +563,7 @@ export class FFIgenerator {
       const functionResults: string[] = [];
       const dropSumboles: string[] = [];
       let fncCount = 0;
-      for (const apiFunction of apiFunctions.sort((a,b) => a.name.localeCompare(b.name))) {
+      for (const apiFunction of apiFunctions.sort((a, b) => a.name.localeCompare(b.name))) {
         const { name, parameters, result } = apiFunction;
         let isAvailable = true;
         try {
