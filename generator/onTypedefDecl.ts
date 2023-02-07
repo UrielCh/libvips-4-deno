@@ -15,10 +15,7 @@ export function onTypedefDecl(ctxt: ContextGl, cx: CXCursor) {
 
   const originalTypeDeclaration = cx
     .getTypedefDeclarationOfUnderlyingType()!;
-  let structDeclAnyType = toAnyType(
-    ctxt.TYPE_MEMORY,
-    originalTypeDeclaration,
-  );
+  let structDeclAnyType = toAnyType(ctxt, originalTypeDeclaration);
 
   switch (structDeclAnyType.kind) {
     case "pointer": {

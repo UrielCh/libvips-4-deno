@@ -11,12 +11,12 @@ export function onFunctionDecl(ctxt: Context, cx: CXCursor) {
     // console.log('function name: ', functionName)
     const parameters: FunctionParameter[] = [];
     const resultType = cx.getResultType()!;
-    const resultAnyType = toAnyType(ctxt.TYPE_MEMORY, resultType);
+    const resultAnyType = toAnyType(ctxt, resultType);
     const length = cx.getNumberOfArguments();
     for (let i = 0; i < length; i++) {
         const argument = cx.getArgument(i)!;
         const argumentType = argument.getType()!;
-        const argumentAnyType = toAnyType(ctxt.TYPE_MEMORY, argumentType);
+        const argumentAnyType = toAnyType(ctxt, argumentType);
         const comment = cxCommentToJSDcoString(argument);
         parameters.push({
             comment,

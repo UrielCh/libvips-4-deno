@@ -9,7 +9,7 @@ import {
   CXVisitorResult,
 } from "./clang/include/typeDefinitions.ts";
 import { CXComment, CXCursor, type CXType } from "./clang/mod.ts";
-
+import { ContextGl } from "./Context.ts";
 
 export interface CommonType {
   name: string;
@@ -183,7 +183,7 @@ export const anyTypeToString = (type: AnyType): { code: string, dependencies: st
 };
 
 const toEnumType = (
-  typeMemory: Map<string, AnyType>,
+  ctxt: ContextGl,
   name: string,
   typeDeclaration: CXCursor,
 ) => {
@@ -201,7 +201,7 @@ const toEnumType = (
     kind: "enum",
     name,
     reprName: `${name}T`,
-    type: toAnyType(typeMemory, enumType),
+    type: toAnyType(ctxt, enumType),
     values,
     comment: cxCommentToJSDcoString(typeDeclaration),
   };
@@ -278,11 +278,11 @@ const toEnumType = (
 };
 
 export const toAnyType = (
-  typeMemory: Map<string, AnyType>,
+  ctxt: ContextGl,
   type: CXType,
 ): AnyType => {
   const typekind = type.kind;
-
+  const typeMemory = ctxt.TYPE_MEMORY;
   switch (typekind) {
     case CXTypeKind.CXType_Elaborated: {
       const typeDeclaration = type.getTypeDeclaration();
@@ -292,7 +292,7 @@ export const toAnyType = (
         if (typeMemory.has(name)) {
           return typeMemory.get(name)!;
         }
-        const result = toEnumType(typeMemory, name, typeDeclaration);
+        const result = toEnumType(ctxt, name, typeDeclaration);
         typeMemory.set(name, result);
         return result;
       } else if (typeDeclaration.kind === CXCursorKind.CXCursor_StructDecl) {
@@ -339,7 +339,7 @@ export const toAnyType = (
             for (let i = 0; i < length; i++) {
               fields.push({
                 name: `${baseName}[${i}]`,
-                type: toAnyType(typeMemory, elementType),
+                type: toAnyType(ctxt, elementType),
                 offset: baseOffset + i * elementSize,
                 size: elementSize,
                 comment: i === 0 ? comment : null,
@@ -349,7 +349,7 @@ export const toAnyType = (
           }
           const field: StructField = {
             name: fieldCursor.getDisplayName(),
-            type: toAnyType(typeMemory, fieldType),
+            type: toAnyType(ctxt, fieldType),
             offset: fieldCursor.getOffsetOfField() / 8,
             size: fieldType.getSizeOf(),
             comment: cxCommentToJSDcoString(fieldCursor),
@@ -381,7 +381,7 @@ export const toAnyType = (
         name: type.getSpelling(),
         parameters: [],
         reprName: `${type.getSpelling()}T`,
-        result: toAnyType(typeMemory, resultType),
+        result: toAnyType(ctxt, resultType),
       };
       const length = type.getNumberOfArgumentTypes();
       for (let i = 0; i < length; i++) {
@@ -390,7 +390,7 @@ export const toAnyType = (
         result.parameters.push({
           comment: null,
           name: argument.getSpelling(),
-          type: toAnyType(typeMemory, argument),
+          type: toAnyType(ctxt, argument),
         });
       }
       return result;
@@ -445,7 +445,7 @@ export const toAnyType = (
         return cstringArrayResult;
       }
 
-      const pointeeAnyType = toAnyType(typeMemory, pointee);
+      const pointeeAnyType = toAnyType(ctxt, pointee);
 
       const ptrResult: PointerType = {
         kind: "pointer",
@@ -476,7 +476,7 @@ export const toAnyType = (
         if (location.isInSystemHeader()) {
           const sourceType = typedecl.getTypedefDeclarationOfUnderlyingType();
           if (!sourceType) throw Error('internal error "sourceType" is null')
-          const sourceAnyType = toAnyType(typeMemory, sourceType);
+          const sourceAnyType = toAnyType(ctxt, sourceType);
           typeMemory.set(typeDefName, sourceAnyType);
         }
       }
@@ -493,7 +493,7 @@ export const toAnyType = (
       }
       const typeDeclaration = type.getTypeDeclaration();
       if (!typeDeclaration) throw Error('internal error "typeDeclaration" is null');
-      const enumResult = toEnumType(typeMemory, name, typeDeclaration);
+      const enumResult = toEnumType(ctxt, name, typeDeclaration);
       typeMemory.set(name, enumResult);
       return enumResult;
     }
