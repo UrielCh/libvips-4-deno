@@ -203,10 +203,7 @@ const toEnumType = (
     reprName: `${name}T`,
     type: toAnyType(typeMemory, enumType),
     values,
-    comment: commentToJSDcoString(
-      typeDeclaration.getParsedComment(),
-      typeDeclaration.getRawCommentText(),
-    ),
+    comment: cxCommentToJSDcoString(typeDeclaration),
   };
   let previousRawComment = "";
   typeDeclaration.visitChildren((child, parent) => {
@@ -321,10 +318,7 @@ export const toAnyType = (
           name,
           size,
           reprName: `${name}T`,
-          comment: commentToJSDcoString(
-            structDeclaration.getParsedComment(),
-            structDeclaration.getRawCommentText(),
-          ),
+          comment: cxCommentToJSDcoString(structDeclaration),
         };
         type.visitFields((fieldCursor) => {
           if (fieldCursor.kind !== CXCursorKind.CXCursor_FieldDecl) {
@@ -341,10 +335,7 @@ export const toAnyType = (
             const baseName = fieldCursor.getDisplayName();
             const baseOffset = fieldCursor.getOffsetOfField() / 8;
             const elementSize = elementType.getSizeOf();
-            const comment = commentToJSDcoString(
-              fieldCursor.getParsedComment(),
-              fieldCursor.getRawCommentText(),
-            );
+            const comment = cxCommentToJSDcoString(fieldCursor);
             for (let i = 0; i < length; i++) {
               fields.push({
                 name: `${baseName}[${i}]`,
@@ -361,10 +352,7 @@ export const toAnyType = (
             type: toAnyType(typeMemory, fieldType),
             offset: fieldCursor.getOffsetOfField() / 8,
             size: fieldType.getSizeOf(),
-            comment: commentToJSDcoString(
-              fieldCursor.getParsedComment(),
-              fieldCursor.getRawCommentText(),
-            ),
+            comment: cxCommentToJSDcoString(fieldCursor),
           };
           if (field.type.kind === "pointer") {
             // Never use `buf()` in struct fields as it doesn't really make much sense to do so.
@@ -388,10 +376,7 @@ export const toAnyType = (
       const resultType = type.getResultType();
       if (!resultType) throw Error('internal error "resultType" is null');
       const result: FunctionType = {
-        comment: commentToJSDcoString(
-          typeDeclaration.getParsedComment(),
-          typeDeclaration.getRawCommentText(),
-        ),
+        comment: cxCommentToJSDcoString(typeDeclaration),
         kind: "function",
         name: type.getSpelling(),
         parameters: [],
@@ -822,7 +807,7 @@ const paramCommandToJSDoc = (
   return lines.join("\n");
 };
 
-export const commentToJSDcoString = (
+const commentToJSDcoString = (
   comment: CXComment,
   fullCommentText: string,
 ): null | string => {
@@ -864,4 +849,11 @@ export const commentToJSDcoString = (
   }
   lines.push(" */");
   return lines.join("\n");
+};
+
+export const cxCommentToJSDcoString = (cx: CXCursor) => {
+  return commentToJSDcoString(
+    cx.getParsedComment(),
+    cx.getRawCommentText(),
+  );
 };

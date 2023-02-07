@@ -1,7 +1,7 @@
 import { CXChildVisitResult, CXCursorKind } from "./clang/include/typeDefinitions.ts";
 import { CXCursor } from "./clang/mod.ts";
 import {
-  commentToJSDcoString,
+  cxCommentToJSDcoString,
   toAnyType,
 } from "./build_utils.ts";
 import { ContextGl } from "./Context.ts";
@@ -42,20 +42,14 @@ export function onTypedefDecl(ctxt: ContextGl, cx: CXCursor) {
           ...structDeclAnyType.pointee,
           name: typedefName,
           reprName: `${typedefName}T`,
-          comment: commentToJSDcoString(
-            cx.getParsedComment(),
-            cx.getRawCommentText(),
-          ),
+          comment: cxCommentToJSDcoString(cx),
         };
 
       } else {
         structDeclAnyType = {
           ...structDeclAnyType,
           name: typedefName,
-          comment: commentToJSDcoString(
-            cx.getParsedComment(),
-            cx.getRawCommentText(),
-          ),
+          comment: cxCommentToJSDcoString(cx),
         };
       }
       break;
@@ -81,10 +75,7 @@ export function onTypedefDecl(ctxt: ContextGl, cx: CXCursor) {
           ...structDeclAnyType,
           name: typedefName,
           reprName: `${typedefName}T`,
-          comment: commentToJSDcoString(
-            cx.getParsedComment(),
-            cx.getRawCommentText(),
-          ),
+          comment: cxCommentToJSDcoString(cx),
         };
 
         break;
@@ -93,10 +84,7 @@ export function onTypedefDecl(ctxt: ContextGl, cx: CXCursor) {
       structDeclAnyType = {
         ...structDeclAnyType,
         name: typedefName,
-        comment: commentToJSDcoString(
-          cx.getParsedComment(),
-          cx.getRawCommentText(),
-        ),
+        comment: cxCommentToJSDcoString(cx),
       };
       break;
     case "struct":
@@ -104,10 +92,7 @@ export function onTypedefDecl(ctxt: ContextGl, cx: CXCursor) {
         ...structDeclAnyType,
         name: typedefName,
         reprName: `${typedefName}T`,
-        comment: commentToJSDcoString(
-          cx.getParsedComment(),
-          cx.getRawCommentText(),
-        ),
+        comment: cxCommentToJSDcoString(cx),
       };
       break;
     case "enum":
@@ -115,19 +100,13 @@ export function onTypedefDecl(ctxt: ContextGl, cx: CXCursor) {
         ...structDeclAnyType,
         name: typedefName,
         reprName: `${typedefName}T`,
-        comment: commentToJSDcoString(
-          cx.getParsedComment(),
-          cx.getRawCommentText(),
-        ),
+        comment: cxCommentToJSDcoString(cx),
       };
       break;
     case "ref":
       structDeclAnyType = {
         ...structDeclAnyType,
-        comment: commentToJSDcoString(
-          cx.getParsedComment(),
-          cx.getRawCommentText(),
-        ),
+        comment: cxCommentToJSDcoString(cx),
       };
       break;
     default:

@@ -1,6 +1,6 @@
 import { CXCursor } from "./clang/mod.ts";
 import {
-    commentToJSDcoString,
+    cxCommentToJSDcoString,
     FunctionParameter,
     toAnyType,
 } from "./build_utils.ts";
@@ -17,10 +17,7 @@ export function onFunctionDecl(ctxt: Context, cx: CXCursor) {
         const argument = cx.getArgument(i)!;
         const argumentType = argument.getType()!;
         const argumentAnyType = toAnyType(ctxt.TYPE_MEMORY, argumentType);
-        const comment = commentToJSDcoString(
-            argument.getParsedComment(),
-            argument.getRawCommentText(),
-        );
+        const comment = cxCommentToJSDcoString(argument);
         parameters.push({
             comment,
             name: argument.getDisplayName(),
@@ -58,16 +55,10 @@ export function onFunctionDecl(ctxt: Context, cx: CXCursor) {
                 );
             }
         }
-        argumentAnyType.comment = commentToJSDcoString(
-            argument.getParsedComment(),
-            argument.getRawCommentText(),
-        ) ||
+        argumentAnyType.comment = cxCommentToJSDcoString(argument) ||
             argumentAnyType.comment;
     }
-    const comment = commentToJSDcoString(
-        cx.getParsedComment(),
-        cx.getRawCommentText(),
-    );
+    const comment = cxCommentToJSDcoString(cx);
     ctxt.functions.push({
         comment,
         kind: "function",
