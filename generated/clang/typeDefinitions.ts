@@ -29,7 +29,6 @@ export const unsignedLong = "u64" as const;
 
 export const unsignedLongLong = "u64" as const;
 
-/******** Start enums ********/
 /**
  * Represents the C++ access control level to a base class for a
  * cursor with kind CX_CXXBaseSpecifier.
@@ -3013,8 +3012,6 @@ export const enum CXVisitorResult {
  */
 export const CXVisitorResultT = unsignedInt;
 
-/******** End enums ********/
-/******** Start pointer ********/
 /**
  * CXAPISet is an opaque type that represents a data structure containing all
  * the API information for a given translation unit. This can be used for a
@@ -3145,8 +3142,6 @@ export const CXTranslationUnitT = ptr("void");
  * file/directories over the real file system.
  */
 export const CXVirtualFileOverlayT = ptr("void");
-/******** End pointer ********/
-/******** Start Struct ********/
 /**
  * A parsed comment.
  */
@@ -3844,11 +3839,7 @@ export const CXIdxObjCCategoryDeclInfoT = {
   ],
 } as const;
 
-/******** End Struct ********/
-/******** Start ref ********/
 export const time_t = __time_t;
-/******** end ref ********/
-/******** Start Functions ********/
 /**
  * Visitor invoked for each cursor found by a traversal.
  *
@@ -3950,4 +3941,3 @@ export const CXInclusionVisitorCallbackDefinition = {
  */
 export const CXInclusionVisitorT = "function" as const;
 
-/******** End Functions ********/

@@ -68,13 +68,12 @@ export class FFIgenerator {
    * @param ctxtGl context
    * @returns 
    */
-  private generateEnum(ctxtGl: ContextGlobal): { code: string[], cnt: number } {
+  private generateEnums(ctxtGl: ContextGlobal): { code: string[], cnt: number } {
     const results: string[] = [];
     let cnt = 0;
     /** enums */
     const enumsType = ctxtGl.getMemoryTypes("enum");
     if (enumsType.length) {
-      results.push(`/******** Start enums ********/`)
       for (const anyType of enumsType) {
         results.push(`${cmt(anyType, '')}export const enum ${anyType.name} {`);
         for (const value of anyType.values) {
@@ -85,7 +84,6 @@ export class FFIgenerator {
         results.push(`${cmt(anyType, '')}export const ${anyType.reprName} = ${code};\n`); // fin push
         cnt++;
       } // fin loop enum
-      results.push(`/******** End enums ********/`)
     }
     return { code: results, cnt };
   }
@@ -100,7 +98,6 @@ export class FFIgenerator {
     let cnt = 0;
     const ptrType = ctxtGl.getMemoryTypes("pointer");
     if (ptrType.length) {
-      results.push(`/******** Start pointer ********/`)
       for (const anyType of ptrType) {
         if (anyType.name.includes(" ") || anyType.name.includes("*")) {
           throw new Error("Unexpected unnamed Pointer type:" + JSON.stringify(anyType));
@@ -110,7 +107,6 @@ export class FFIgenerator {
         results.push(`${cmt(anyType, '')}export const ${anyType.name}T = ${type}(${code});`);
         cnt++;
       }
-      results.push(`/******** End pointer ********/`)
     }
     return { code: results, cnt };
   }
@@ -121,14 +117,13 @@ export class FFIgenerator {
    * @param selection 
    * @returns 
    */
-  private generateStruct(ctxtGl: ContextGlobal, selection: Set<string>): { code: string[], cnt: number } {
+  private generateStructs(ctxtGl: ContextGlobal, selection: Set<string>): { code: string[], cnt: number } {
     const results: string[] = [];
     let cnt = 0;
     const stuctType = ctxtGl.getMemoryTypes("struct");
     if (stuctType.length) {
       const missingStruct = new Set<string>(stuctType.map(s => s.reprName));
       console.log('Missing Struct size is', pc.green(missingStruct.size.toString()))
-      results.push(`/******** Start Struct ********/`)
       let added = 1;
       for (let pass = 1; added > 0; pass++) {
         added = 0;
@@ -182,7 +177,6 @@ export class FFIgenerator {
           missingStruct.delete(anyType.reprName);
         }
       }
-      results.push(`/******** End Struct ********/`)
       if (missingStruct.size)
         console.log('missingStruct:', [...missingStruct].join(', '))
     }
@@ -203,14 +197,12 @@ export class FFIgenerator {
       RefType.set(name, anyType)
     }
     if (RefType.size) {
-      results.push(`/******** Start ref ********/`)
       for (const [name, anyType] of RefType) {
         const expName = name.endsWith("_t") ? name : `${name}T`;
         const curName = anyType.name.endsWith("_t") ? anyType.name : anyType.reprName;
         results.push(`${cmt(anyType)}export const ${expName} = ${curName};`);
         cnt++;
       }
-      results.push(`/******** end ref ********/`)
     }
     return { code: results, cnt };
   }
@@ -225,7 +217,6 @@ export class FFIgenerator {
     let cnt = 0;
     const fncType = ctxtGl.getMemoryTypes("function");
     if (fncType.length) {
-      results.push(`/******** Start Functions ********/`)
       for (const anyType of fncType) {
         results.push(`${cmt(anyType, '')}export const ${anyType.name}CallbackDefinition = {\n  parameters: [`);
         for (const param of anyType.parameters) {
@@ -240,7 +231,6 @@ export class FFIgenerator {
         results.push(`${cmt(anyType, '')}export const ${anyType.reprName} = "function" as const;\n`);
         cnt++;
       }
-      results.push(`/******** End Functions ********/`)
     }
     return { code: results, cnt };
   }
@@ -416,6 +406,9 @@ export class FFIgenerator {
       'export const func = (_func: unknown) => "function" as const;',
     ];
 
+
+
+
     // Generate plain types
     const plainTypes = ctxtGl.getMemoryTypes("plain")
       // Cannot declare "void" type
@@ -426,13 +419,13 @@ export class FFIgenerator {
       results.push('');
     }
 
-    const { code: enumCode, cnt: enumCnt } = this.generateEnum(ctxtGl);
+    const { code: enumCode, cnt: enumCnt } = this.generateEnums(ctxtGl);
     console.log(`Generate ${pc.green(enumCnt.toString().padStart(3))} enums   in typeDefinitions.ts`)
 
     const { code: ptrCode, cnt: ptrCnt } = this.generatePrts(ctxtGl);
     console.log(`Generate ${pc.green(ptrCnt.toString().padStart(3))} ptrs    in typeDefinitions.ts`)
 
-    const { code: structCode, cnt: structCnt } = this.generateStruct(ctxtGl, dependencies);
+    const { code: structCode, cnt: structCnt } = this.generateStructs(ctxtGl, dependencies);
     console.log(`Generate ${pc.green(structCnt.toString().padStart(3))} structs in typeDefinitions.ts`)
 
     const { code: refCode, cnt: refCnt } = this.generateRefs(ctxtGl);
@@ -447,6 +440,8 @@ export class FFIgenerator {
     results.push(...refCode);
     results.push(...funcCode);
     results.push('');
+
+
     /**
      * Write to file with all types
      */

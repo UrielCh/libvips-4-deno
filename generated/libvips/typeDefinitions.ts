@@ -51,7 +51,6 @@ export const VipsPel = "u8" as const;
 
 export const VipsRegion = "void" as const;
 
-/******** Start enums ********/
 export const enum _RegionType {
   VIPS_REGION_NONE,
   VIPS_REGION_BUFFER,
@@ -1165,11 +1164,7 @@ export const enum VSteal {
  */
 export const VStealT = unsignedInt;
 
-/******** End enums ********/
-/******** Start pointer ********/
 export const im_objectT = ptr("void");
-/******** End pointer ********/
-/******** Start Struct ********/
 export const DOUBLEMASKT = {
   /** Struct size: 40 */
   struct: [
@@ -1426,16 +1421,12 @@ export const im_packageT = {
   ],
 } as const;
 
-/******** End Struct ********/
-/******** Start ref ********/
 export const __gnuc_va_listT = __builtin_va_listT;
 export const gbooleanT = gintT;
 export const GTypeT = gsizeT;
 export const im_arg_typeT = cstringT;
 export const off_t = __off_t;
 export const va_listT = __gnuc_va_listT;
-/******** end ref ********/
-/******** Start Functions ********/
 export const im_construct_fnCallbackDefinition = {
   parameters: [
     ptr("void"), // void *
@@ -1797,4 +1788,3 @@ export const VipsTypeMapFnCallbackDefinition = {
 } as const;
 export const VipsTypeMapFnT = "function" as const;
 
-/******** End Functions ********/
