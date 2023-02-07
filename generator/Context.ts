@@ -8,6 +8,7 @@ import {
     ReferenceType,
     StructType,
 } from "./build_utils.ts";
+import * as pc from "https://deno.land/std@0.171.0/fmt/colors.ts";
 
 export interface Context {
     getTypeByName(name: string): AnyType | undefined;
@@ -45,12 +46,16 @@ export class ContextGlobal implements Context {
         // if (this.TYPE_MEMORY.has(name)) {
         //     throw new Error(`Type ${name} already exists`);
         // }
-        if (type.keyName) {
+        if (type.keyName && type.keyName !== name) {
             // clone it
             type = {...type, keyName: name};
             //throw new Error(`can not add type twice ${name} already exists`);
+        } else {
+            type.keyName = name;
         }
-        type.keyName = name;
+        // if (name === "VipsBBits")
+        //     debugger;
+        console.log(`adding ${pc.magenta(name)}`)
         this.TYPE_MEMORY.set(name, type);
         return type;
     }

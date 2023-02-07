@@ -27,24 +27,15 @@ export function onTypedefDecl(ctxt: Context, cx: CXCursor) {
           if (child.kind === CXCursorKind.CXCursor_ParmDecl) {
             const parameter = parameters[i++];
             if (!parameter) {
-              throw new Error(
-                "Parameter count mismatch between type and declaration",
-              );
+              throw new Error("Parameter count mismatch between type and declaration");
             }
             parameter.name = child.getSpelling() || parameter.name;
           }
           return CXChildVisitResult.CXChildVisit_Continue;
         });
-        structDeclAnyType = {
-          ...structDeclAnyType.pointee,
-          name: typedefName,
-          reprName: `${typedefName}T`,
-        };
+        structDeclAnyType = { ...structDeclAnyType.pointee, name: typedefName, reprName: `${typedefName}T`};
       } else {
-        structDeclAnyType = {
-          ...structDeclAnyType,
-          name: typedefName,
-        };
+        structDeclAnyType = { ...structDeclAnyType, name: typedefName};
       }
       break;
     }
@@ -57,57 +48,35 @@ export function onTypedefDecl(ctxt: Context, cx: CXCursor) {
           if (child.kind === CXCursorKind.CXCursor_ParmDecl) {
             const parameter = parameters[i++];
             if (!parameter) {
-              throw new Error(
-                "Parameter count mismatch between type and declaration",
-              );
+              throw new Error("Parameter count mismatch between type and declaration");
             }
             parameter.name = child.getSpelling() || parameter.name;
           }
           return CXChildVisitResult.CXChildVisit_Continue;
         });
-        structDeclAnyType = {
-          ...structDeclAnyType,
-          name: typedefName,
-          reprName: `${typedefName}T`,
-        };
+        structDeclAnyType = { ...structDeclAnyType, name: typedefName, reprName: `${typedefName}T` };
         break;
       }
     case "plain":
-      structDeclAnyType = {
-        ...structDeclAnyType,
-        name: typedefName,
-      };
+      structDeclAnyType = { ...structDeclAnyType, name: typedefName };
       break;
     case "struct":
-      structDeclAnyType = {
-        ...structDeclAnyType,
-        name: typedefName,
-        reprName: `${typedefName}T`,
-      };
+      structDeclAnyType = { ...structDeclAnyType, name: typedefName, reprName: `${typedefName}T` };
       break;
     case "enum":
-      structDeclAnyType = {
-        ...structDeclAnyType,
-        name: typedefName,
-        reprName: `${typedefName}T`,
-      };
+      structDeclAnyType = { ...structDeclAnyType, name: typedefName, reprName: `${typedefName}T` };
       break;
     case "ref":
-      structDeclAnyType = {
-        ...structDeclAnyType,
-      };
+      structDeclAnyType = { ...structDeclAnyType };
       break;
     default:
       throw new Error("unreachable");
   }
   structDeclAnyType.comment = cxCommentToJSDcoString(cx);
   if (structDeclAnyType.kind === "struct") {
-    for (const field of structDeclAnyType.fields) {
-      if (
-        field.type.kind === "pointer" &&
-        field.type.pointee.kind === "ref"
-      ) {
-        ctxt.POINTED_FROM_STRUCT.add(field.type.pointee.name);
+    for (const { type } of structDeclAnyType.fields) {
+      if ( type.kind === "pointer" && type.pointee.kind === "ref") {
+        ctxt.POINTED_FROM_STRUCT.add(type.pointee.name);
       }
     }
   }

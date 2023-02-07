@@ -277,17 +277,13 @@ const toEnumType = (
   ) {
     // Enum of powers of two, use hexadecimal formatting
     for (const value of values) {
-      value.value = `0x${value.value!.toString(16).padStart(maxHexadecimalLength, "0")
-        }`;
+      value.value = `0x${value.value!.toString(16).padStart(maxHexadecimalLength, "0")}`;
     }
   }
   return result;
 };
 
-export const toAnyType = (
-  ctxt: Context,
-  type: CXType,
-): AnyType => {
+export const toAnyType = (ctxt: Context, type: CXType): AnyType => {
   const typekind = type.kind;
   switch (typekind) {
     case CXTypeKind.CXType_Elaborated: {
@@ -300,6 +296,9 @@ export const toAnyType = (
           return enumType;
         }
         enumType = toEnumType(ctxt, name, typeDeclaration);
+        const prevType = ctxt.getTypeByName(name);
+        if (prevType) 
+          return prevType;
         return ctxt.addType(name, enumType);
       } else if (typeDeclaration.kind === CXCursorKind.CXCursor_StructDecl) {
         const structDeclaration = type.getTypeDeclaration();
