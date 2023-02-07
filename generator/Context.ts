@@ -73,7 +73,7 @@ export class ContextGlobal implements ContextGl {
     getMemoryTypes(): Array<AnyType & {keyName: string}>;
     public getMemoryTypes(type?: ALL_KIND): Array<AnyType & {keyName: string}> {
         const values = [...this.TYPE_MEMORY.values()] as Array<AnyType & {keyName: string}>;
-        // values.sort();
+        values.sort((a,b) => a.keyName.localeCompare(b.keyName));
         if (!type)
             return values;
         return values.filter(a => a.kind === type);
