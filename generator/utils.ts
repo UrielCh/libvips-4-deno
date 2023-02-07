@@ -1,4 +1,5 @@
 // import { FunctionType } from "./build_utils.ts";
+import * as pc from "https://deno.land/std@0.171.0/fmt/colors.ts";
 
 /**
  * format a source file using deno fmt
@@ -22,3 +23,16 @@
 //   
 // 
 // }
+
+export function writeTextFileSync(dest: string, data: string) {
+    let old = '';
+    try {
+        old = Deno.readTextFileSync(dest);
+    } catch (_e) {
+        // keep it empty
+    }
+    if (old.replaceAll(/[\r\n]+/g, '\n') !== data.replaceAll(/[\r\n]+/g, '\n')) {
+        console.log(`Writing ${pc.magenta(dest)}`)
+        Deno.writeTextFileSync(dest, data);
+    }
+}

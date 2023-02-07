@@ -22,7 +22,7 @@ import { ContextGlobal } from "./Context.ts";
 import { onEnumDecl } from "./onEnumDecl.ts";
 import { onFunctionDecl } from "./onFunctionDecl.ts";
 import { onTypedefDecl } from "./onTypedefDecl.ts";
-// import * as utils from "./utils.ts";
+import * as utils from "./utils.ts";
 import * as pc from "https://deno.land/std@0.171.0/fmt/colors.ts";
 
 import { walk } from "https://deno.land/std@0.171.0/fs/walk.ts";
@@ -472,7 +472,7 @@ export class FFIgenerator {
     /**
      * Write to file with all types
      */
-    Deno.writeTextFileSync(join(this.destination, "typeDefinitions.ts"), results.join("\n"));
+    utils.writeTextFileSync(join(this.destination, "typeDefinitions.ts"), results.join("\n"));
     // utils.formatSync(join(destination, "typeDefinitions.ts"));  
     this.genFFiFile(ctxtGl, fileNames);
   }
@@ -498,7 +498,7 @@ export class FFIgenerator {
     results.push("export function getLib(path: string): libShape {");
     results.push("  return Deno.dlopen(path, IMPORTS);");
     results.push("}");
-    Deno.writeTextFileSync(join(this.destination, "ffi.ts"), results.join("\n"));
+    utils.writeTextFileSync(join(this.destination, "ffi.ts"), results.join("\n"));
   }
 
   /**
@@ -647,7 +647,7 @@ export class FFIgenerator {
       const dst = join(this.destination, fnEx);
       if (fncCount) {
         await ensureDir(dirname(dst));
-        Deno.writeTextFileSync(dst, importText + functionResults.join("\n"));
+        utils.writeTextFileSync(dst, importText + functionResults.join("\n"));
         fileNames.push(fileName);
         console.log(`Writing ${fnEx.padEnd(longestFilename, ' ')} with ${pc.green(fncCount.toString().padStart(3, ' '))} functions, ${pc.green(dropSumboles.length.toString())} symbol dropped, need ${pc.green(imports.size.toString())} import`);
       } else {
