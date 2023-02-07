@@ -10,7 +10,7 @@ import { ContextGl } from "./Context.ts";
 export function onTypedefDecl(ctxt: ContextGl, cx: CXCursor) {
   const typedefName = cx.getDisplayName();
 
-  if (ctxt.TYPE_MEMORY.has(typedefName))
+  if (ctxt.getTypeByName(typedefName))
     return;
 
   const originalTypeDeclaration = cx

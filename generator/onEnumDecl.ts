@@ -14,7 +14,7 @@ export function onEnumDecl(ctxt: ContextGl, cx: CXCursor) {
     if (name.startsWith("enum ")) {
       name = name.substring("enum ".length);
     }
-    if (!ctxt.TYPE_MEMORY.has(name)) {
+    if (!ctxt.getTypeByName(name)) {
       const type = toAnyType(ctxt, cx.getType()!);
       ctxt.TYPE_MEMORY.set(name, type);
     }

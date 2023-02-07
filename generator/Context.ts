@@ -11,6 +11,7 @@ StructType,
 
 export interface ContextGl {
     get TYPE_MEMORY(): Map<string, AnyType>;
+    getTypeByName(name: string): AnyType | undefined;
     get RETURNED_AS_POINTER(): Set<string>;
     get PASSED_AS_POINTER_AND_NOT_RETURNED(): Map<string, boolean>;
     get POINTED_FROM_STRUCT(): Set<string>;
@@ -24,7 +25,7 @@ export interface Context extends ContextGl {
 /**
  * create a file context and register it in the global ctxt
  */
-export class ContextFile {
+export class ContextFile implements Context {
     public functions: FunctionType[] = [];
     constructor(public readonly gl: ContextGlobal, public readonly fileName: string) {
         gl.FUNCTIONS_MAP.set(fileName, this.functions);
@@ -45,9 +46,13 @@ export class ContextFile {
     get FUNCTIONS_MAP(): Map<string, FunctionType[]> {
         return this.gl.FUNCTIONS_MAP;
     }
+
+    public getTypeByName(name: string): AnyType | undefined {
+        return this.gl.getTypeByName(name);
+    }
 }
 
-export class ContextGlobal {
+export class ContextGlobal implements ContextGl {
     /**
      * Map<structName, AnyType>
      * 
@@ -64,6 +69,10 @@ export class ContextGlobal {
         return [...this.TYPE_MEMORY.values()].filter(a => a.kind === type);
     }
     // return [this.TYPE_MEMORY.values()].filter(a => a.kind === "enum") as EnumType[];
+
+    public getTypeByName(name: string): AnyType | undefined {
+        return this.TYPE_MEMORY.get(name);
+    }
 
     /**
      * Set<structName>

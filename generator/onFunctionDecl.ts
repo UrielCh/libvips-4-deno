@@ -27,7 +27,7 @@ export function onFunctionDecl(ctxt: Context, cx: CXCursor) {
             argumentAnyType.kind === "pointer" &&
             argumentAnyType.pointee.kind === "ref"
         ) {
-            const referred = ctxt.TYPE_MEMORY.get(argumentAnyType.pointee.name);
+            const referred = ctxt.getTypeByName(argumentAnyType.pointee.name);
             const data = ctxt.PASSED_AS_POINTER_AND_NOT_RETURNED.get(
                 argumentAnyType.pointee.name,
             );
@@ -77,7 +77,7 @@ export function onFunctionDecl(ctxt: Context, cx: CXCursor) {
     } else if (resultAnyType.kind === "struct") {
         ctxt.PASSED_AS_POINTER_AND_NOT_RETURNED.set(resultAnyType.name, false);
     } else if (resultAnyType.kind === "ref") {
-        const referred = ctxt.TYPE_MEMORY.get(resultAnyType.name);
+        const referred = ctxt.getTypeByName(resultAnyType.name);
         if (referred?.kind === "struct") {
             ctxt.PASSED_AS_POINTER_AND_NOT_RETURNED.set(resultAnyType.name, false);
         }
