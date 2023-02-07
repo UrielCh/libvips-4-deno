@@ -462,7 +462,7 @@ export const toAnyType = (
 
       const pointeeAnyType = toAnyType(typeMemory, pointee);
 
-      const result: PointerType = {
+      const ptrResult: PointerType = {
         kind: "pointer",
         name: type.getSpelling(),
         pointee: pointeeAnyType,
@@ -472,30 +472,30 @@ export const toAnyType = (
           pointeeAnyType.kind === "pointer" || pointeeAnyType.kind === "ref" ||
           pointeeAnyType.kind === "enum",
       };
-      return result;
+      return ptrResult;
     }
 
     case CXTypeKind.CXType_Typedef: {
-      const name = type.getTypedefName();
-      const result: ReferenceType = {
+      const typeDefName = type.getTypedefName();
+      const refResult: ReferenceType = {
         kind: "ref",
-        name,
-        reprName: `${name}T`,
+        name: typeDefName,
+        reprName: `${typeDefName}T`,
         comment: null,
       };
-      if (!typeMemory.has(name)) {
+      if (!typeMemory.has(typeDefName)) {
         // Check for potentially needed system header definitions.
         const typedecl = type.getTypeDeclaration();
-        if (!typedecl) throw Error('internal error "typedecl" is null')
+        if (!typedecl) throw Error(`internal error "typedecl" is null for ${typeDefName}`)
         const location = typedecl.getLocation();
         if (location.isInSystemHeader()) {
           const sourceType = typedecl.getTypedefDeclarationOfUnderlyingType();
           if (!sourceType) throw Error('internal error "sourceType" is null')
           const sourceAnyType = toAnyType(typeMemory, sourceType);
-          typeMemory.set(name, sourceAnyType);
+          typeMemory.set(typeDefName, sourceAnyType);
         }
       }
-      return result;
+      return refResult;
     }
 
     case CXTypeKind.CXType_Enum: {
@@ -508,9 +508,9 @@ export const toAnyType = (
       }
       const typeDeclaration = type.getTypeDeclaration();
       if (!typeDeclaration) throw Error('internal error "typeDeclaration" is null');
-      const result = toEnumType(typeMemory, name, typeDeclaration);
-      typeMemory.set(name, result);
-      return result;
+      const enumResult = toEnumType(typeMemory, name, typeDeclaration);
+      typeMemory.set(name, enumResult);
+      return enumResult;
     }
 
     case CXTypeKind.CXType_Void:
@@ -538,14 +538,14 @@ export const toAnyType = (
         if (existing) {
           return existing;
         }
-        const result: PlainType = {
+        const plainResult: PlainType = {
           kind: "plain",
           name: spellingName,
           type: getPlainTypeInfo(typekind, type),
           comment: null,
         };
-        typeMemory.set(spellingName, result);
-        return result;
+        typeMemory.set(spellingName, plainResult);
+        return plainResult;
       }
     default:
       throw new Error(
