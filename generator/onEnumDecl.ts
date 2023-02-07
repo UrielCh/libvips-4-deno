@@ -16,6 +16,6 @@ export function onEnumDecl(ctxt: ContextGl, cx: CXCursor) {
     }
     if (!ctxt.getTypeByName(name)) {
       const type = toAnyType(ctxt, cx.getType()!);
-      ctxt.TYPE_MEMORY.set(name, type);
+      ctxt.addType(name, type);
     }
 }

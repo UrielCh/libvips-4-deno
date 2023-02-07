@@ -79,9 +79,9 @@ export class ContextGlobal implements ContextGl {
     }
 
     addType<T extends AnyType>(name: string, type: T): T {
-        if (this.TYPE_MEMORY.has(name)) {
-            throw new Error(`Type ${name} already exists`);
-        }
+        // if (this.TYPE_MEMORY.has(name)) {
+        //     throw new Error(`Type ${name} already exists`);
+        // }
         this.TYPE_MEMORY.set(name, type);
         return type;
     }

@@ -55,4 +55,13 @@ jobs:
     - name: check LibClang code
       run: |
         deno run generated/clang/ffi.ts
+
+    - name: looks for change
+      run: |
+        git status
+
+    - name: list changes
+      run: |
+        git diff .
+
       

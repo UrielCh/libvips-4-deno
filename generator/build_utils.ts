@@ -296,8 +296,7 @@ export const toAnyType = (
           return enumType;
         }
         enumType = toEnumType(ctxt, name, typeDeclaration);
-        ctxt.TYPE_MEMORY.set(name, enumType);
-        return enumType;
+        return ctxt.addType(name, enumType);
       } else if (typeDeclaration.kind === CXCursorKind.CXCursor_StructDecl) {
         const structDeclaration = type.getTypeDeclaration();
         const name = type.getSpelling().substring("struct ".length);
@@ -365,8 +364,7 @@ export const toAnyType = (
           return CXVisitorResult.CXVisit_Continue;
         });
 
-        ctxt.TYPE_MEMORY.set(name, structType);
-        return structType;
+        return ctxt.addType(name, structType);
       } else {
         throw new Error("Unknown elaborated type");
       }
@@ -423,7 +421,7 @@ export const toAnyType = (
             name: "cstringT",
             type: "buffer",
           };
-          ctxt.TYPE_MEMORY.set("cstringT", cstringT);
+          ctxt.addType("cstringT", cstringT);
         }
         return cstringResult;
       } else if (
@@ -447,7 +445,7 @@ export const toAnyType = (
             name: "cstringArrayT",
             type: "buffer",
           };
-          ctxt.TYPE_MEMORY.set("cstringArrayT", cstringArrayT);
+          ctxt.addType("cstringArrayT", cstringArrayT);
         }
         return cstringArrayResult;
       }
@@ -485,7 +483,7 @@ export const toAnyType = (
           const sourceType = typedecl.getTypedefDeclarationOfUnderlyingType();
           if (!sourceType) throw Error('internal error "sourceType" is null')
           const sourceAnyType = toAnyType(ctxt, sourceType);
-          ctxt.TYPE_MEMORY.set(typeDefName, sourceAnyType);
+          ctxt.addType(typeDefName, sourceAnyType);
         }
       }
       return refResult;
@@ -503,8 +501,7 @@ export const toAnyType = (
       const typeDeclaration = type.getTypeDeclaration();
       if (!typeDeclaration) throw Error('internal error "typeDeclaration" is null');
       enumResult = toEnumType(ctxt, name, typeDeclaration);
-      ctxt.TYPE_MEMORY.set(name, enumResult);
-      return enumResult;
+      return ctxt.addType(name, enumResult);
     }
 
     case CXTypeKind.CXType_Void:
@@ -538,8 +535,7 @@ export const toAnyType = (
           type: getPlainTypeInfo(typekind, type),
           comment: null,
         };
-        ctxt.TYPE_MEMORY.set(spellingName, plainResult);
-        return plainResult;
+        return ctxt.addType(spellingName, plainResult);
       }
     default:
       throw new Error(
