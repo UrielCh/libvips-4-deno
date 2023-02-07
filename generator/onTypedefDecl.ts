@@ -4,10 +4,10 @@ import {
   commentToJSDcoString,
   toAnyType,
 } from "./build_utils.ts";
-import { ContextFile } from "./Context.ts";
+import { ContextGl } from "./Context.ts";
 
 /** call on CXCursorKind.CXCursor_TypedefDecl */
-export function onTypedefDecl(ctxt: ContextFile, cx: CXCursor) {
+export function onTypedefDecl(ctxt: ContextGl, cx: CXCursor) {
   const typedefName = cx.getDisplayName();
 
   if (ctxt.TYPE_MEMORY.has(typedefName))

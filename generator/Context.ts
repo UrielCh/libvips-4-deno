@@ -3,6 +3,18 @@ import {
     FunctionType,
 } from "./build_utils.ts";
 
+export interface ContextGl {
+    get TYPE_MEMORY(): Map<string, AnyType>;
+    get RETURNED_AS_POINTER(): Set<string>;
+    get PASSED_AS_POINTER_AND_NOT_RETURNED(): Map<string, boolean>;
+    get POINTED_FROM_STRUCT(): Set<string>;
+    get FUNCTIONS_MAP(): Map<string, FunctionType[]>;
+}
+
+export interface Context extends ContextGl {
+    get functions(): FunctionType[];   
+}
+
 /**
  * create a file context and register it in the global ctxt
  */

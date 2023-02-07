@@ -4,13 +4,11 @@ import {
     FunctionParameter,
     toAnyType,
 } from "./build_utils.ts";
-import { ContextFile } from "./Context.ts";
+import { Context } from "./Context.ts";
 
-export function onFunctionDecl(ctxt: ContextFile, cx: CXCursor) {
+export function onFunctionDecl(ctxt: Context, cx: CXCursor) {
     const functionName = cx.getMangling();
     // console.log('function name: ', functionName)
-    // if (functionName === 'vips_colourspace_issupported')
-    //     debugger;
     const parameters: FunctionParameter[] = [];
     const resultType = cx.getResultType()!;
     const resultAnyType = toAnyType(ctxt.TYPE_MEMORY, resultType);
