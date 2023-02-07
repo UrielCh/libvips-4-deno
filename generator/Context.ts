@@ -1,17 +1,18 @@
 import {
-ALL_KIND,
+    ALL_KIND,
     AnyType,
     EnumType,
     FunctionType,
-PlainType,
-PointerType,
-ReferenceType,
-StructType,
+    PlainType,
+    PointerType,
+    ReferenceType,
+    StructType,
 } from "./build_utils.ts";
 
 export interface ContextGl {
     get TYPE_MEMORY(): Map<string, AnyType>;
     getTypeByName(name: string): AnyType | undefined;
+    addType<T extends AnyType>(name: string, type: T): T;
     get RETURNED_AS_POINTER(): Set<string>;
     get PASSED_AS_POINTER_AND_NOT_RETURNED(): Map<string, boolean>;
     get POINTED_FROM_STRUCT(): Set<string>;
@@ -19,7 +20,7 @@ export interface ContextGl {
 }
 
 export interface Context extends ContextGl {
-    get functions(): FunctionType[];   
+    get functions(): FunctionType[];
 }
 
 /**
@@ -50,6 +51,10 @@ export class ContextFile implements Context {
     public getTypeByName(name: string): AnyType | undefined {
         return this.gl.getTypeByName(name);
     }
+
+    addType<T extends AnyType>(name: string, type: T): T {
+        return this.gl.addType(name, type);
+    }
 }
 
 export class ContextGlobal implements ContextGl {
@@ -65,13 +70,53 @@ export class ContextGlobal implements ContextGl {
     getMemoryTypes(type: "function"): FunctionType[];
     getMemoryTypes(type: "pointer"): PointerType[];
     getMemoryTypes(type: "ref"): ReferenceType[];
-    public getMemoryTypes(type: ALL_KIND): AnyType[] {
+    getMemoryTypes(): AnyType[];
+    public getMemoryTypes(type?: ALL_KIND): AnyType[] {
+        if (!type)
+            return [...this.TYPE_MEMORY.values()];
         return [...this.TYPE_MEMORY.values()].filter(a => a.kind === type);
     }
-    // return [this.TYPE_MEMORY.values()].filter(a => a.kind === "enum") as EnumType[];
 
+    addType<T extends AnyType>(name: string, type: T): T {
+        if (this.TYPE_MEMORY.has(name)) {
+            throw new Error(`Type ${name} already exists`);
+        }
+        this.TYPE_MEMORY.set(name, type);
+        return type;
+    }
+    
     public getTypeByName(name: string): AnyType | undefined {
-        return this.TYPE_MEMORY.get(name);
+        switch (name) {
+            // hardcoded opredefined types
+            // case "cstringT": {
+            //     let cstringT = this.TYPE_MEMORY.get(name);
+            //     if (!cstringT) {
+            //         cstringT = {
+            //             kind: "plain",
+            //             comment: `/**\n   * \`const char *\`, C string\n   */`,
+            //             name: "cstringT",
+            //             type: "buffer",
+            //         };
+            //         this.addType(name, cstringT);
+            //     }
+            //     return cstringT;
+            // }
+            // case "cstringArrayT": {
+            //     let cstringArrayT = this.TYPE_MEMORY.get(name);
+            //     if (!cstringArrayT) {
+            //         cstringArrayT = {
+            //             kind: "plain",
+            //             comment: `/**\n   * \`char **\`, C string array\n   */`,
+            //             name: "cstringArrayT",
+            //             type: "buffer",
+            //           };
+            //         this.addType(name, cstringArrayT);
+            //     }
+            //     return cstringArrayT;
+            // }
+            default:
+                return this.TYPE_MEMORY.get(name);
+        }
     }
 
     /**

@@ -355,7 +355,7 @@ export class FFIgenerator {
     };
 
     for (const returnedByPointer of ctxtGl.RETURNED_AS_POINTER) {
-      for (const type of ctxtGl.TYPE_MEMORY.values()) {
+      for (const type of ctxtGl.getMemoryTypes()) {
         markReturnedByPointer(returnedByPointer, type);
       }
       for (const funcs of ctxtGl.FUNCTIONS_MAP.values()) {
@@ -374,7 +374,7 @@ export class FFIgenerator {
       if (passedAsPointerNotReturned === false || !ctxtGl.POINTED_FROM_STRUCT.has(name)) {
         continue;
       }
-      for (const type of ctxtGl.TYPE_MEMORY.values()) {
+      for (const type of ctxtGl.getMemoryTypes()) {
         markReturnedByPointer(name, type);
       }
       for (const funcs of ctxtGl.FUNCTIONS_MAP.values()) {
