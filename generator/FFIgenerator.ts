@@ -27,6 +27,10 @@ import * as pc from "https://deno.land/std@0.171.0/fmt/colors.ts";
 
 import { walk } from "https://deno.land/std@0.171.0/fs/walk.ts";
 
+interface GeneratorContext {
+  selection: Set<string>;
+}
+
 function cmt(elm: CommonType, offset = '  '): string {
   let { comment } = elm;
   if (!comment) return '';
@@ -63,7 +67,7 @@ export class FFIgenerator {
     this.index = new libclang.CXIndex(false, true);
   }
 
-  generateOne(ctxtGl: ContextGlobal, anyType: AnyType): { code: string } {
+  generateOne(genCtxt: GeneratorContext, anyType: AnyType): { code: string } {
     const results: string[] = [];
     switch (anyType.kind) {
       case "enum": {
@@ -113,14 +117,14 @@ export class FFIgenerator {
    * @param ctxtGl context
    * @returns 
    */
-  private generateEnums(ctxtGl: ContextGlobal): { code: string[], cnt: number } {
+  private generateEnums(ctxtGl: ContextGlobal, genCtxt: GeneratorContext): { code: string[], cnt: number } {
     const results: string[] = [];
     let cnt = 0;
     /** enums */
     const enumsType = ctxtGl.getMemoryTypes("enum");
     if (enumsType.length) {
       for (const anyType of enumsType) {
-        const { code } = this.generateOne(ctxtGl, anyType);
+        const { code } = this.generateOne(genCtxt, anyType);
         results.push(code);
         cnt++;
       }
@@ -133,13 +137,13 @@ export class FFIgenerator {
    * @param ctxtGl 
    * @returns 
    */
-  private generatePrts(ctxtGl: ContextGlobal): { code: string[], cnt: number } {
+  private generatePrts(ctxtGl: ContextGlobal, genCtxt: GeneratorContext): { code: string[], cnt: number } {
     const results: string[] = [];
     let cnt = 0;
     const ptrType = ctxtGl.getMemoryTypes("pointer");
     if (ptrType.length) {
       for (const anyType of ptrType) {
-        const { code } = this.generateOne(ctxtGl, anyType);
+        const { code } = this.generateOne(genCtxt, anyType);
         results.push(code);
         cnt++;
       }
@@ -153,7 +157,7 @@ export class FFIgenerator {
    * @param selection 
    * @returns 
    */
-  private generateStructs(ctxtGl: ContextGlobal, selection: Set<string>): { code: string[], cnt: number } {
+  private generateStructs(ctxtGl: ContextGlobal, genCtxt: GeneratorContext): { code: string[], cnt: number } {
     const results: string[] = [];
     let cnt = 0;
     const stuctType = ctxtGl.getMemoryTypes("struct");
@@ -166,7 +170,7 @@ export class FFIgenerator {
         loop: for (const anyType of stuctType) {
           if (!missingStruct.has(anyType.reprName))
             continue;
-          if (!selection.has(anyType.reprName)) {
+          if (!genCtxt.selection.has(anyType.reprName)) {
             continue;
           }
           // check missing type usage;
@@ -174,12 +178,12 @@ export class FFIgenerator {
           for (const field of anyType.fields) {
             const { structField, dependencies } = structFieldToDeinlineString(anyType, field);
             if (missingStruct.has(structField)) {
-              selection.add(structField)
+              genCtxt.selection.add(structField)
               uncomplet.add(`"${structField}"`);
             }
             for (const dep of dependencies) {
               if (missingStruct.has(dep)) {
-                selection.add(dep)
+                genCtxt.selection.add(dep)
                 uncomplet.add(`"${dep}"`);
               }
             }
@@ -200,7 +204,7 @@ export class FFIgenerator {
           for (const field of anyType.fields) {
             const { structField, extraCode, dependencies: structDependencies } = structFieldToDeinlineString(anyType, field);
             for (const type of structDependencies) {
-              selection.add(type);
+              genCtxt.selection.add(type);
             }
             if (extraCode)
               results.push(extraCode)
@@ -224,7 +228,7 @@ export class FFIgenerator {
    * @param ctxtGl 
    * @returns 
    */
-  private generateRefs(ctxtGl: ContextGlobal): { code: string[], cnt: number } {
+  private generateRefs(ctxtGl: ContextGlobal, genCtxt: GeneratorContext): { code: string[], cnt: number } {
     const results: string[] = [];
     let cnt = 0;
     const RefType = new Map<string, ReferenceType>();
@@ -248,13 +252,13 @@ export class FFIgenerator {
    * @param ctxtGl 
    * @returns 
    */
-  private generateFunctions(ctxtGl: ContextGlobal): { code: string[], cnt: number } {
+  private generateFunctions(ctxtGl: ContextGlobal, genCtxt: GeneratorContext): { code: string[], cnt: number } {
     const results: string[] = [];
     let cnt = 0;
     const fncType = ctxtGl.getMemoryTypes("function");
     if (fncType.length) {
       for (const anyType of fncType) {
-        const { code } = this.generateOne(ctxtGl, anyType);
+        const { code } = this.generateOne(genCtxt, anyType);
         results.push(code);
         cnt++;
       }
@@ -424,6 +428,12 @@ export class FFIgenerator {
      */
     const { dependencies, fileNames } = await this.genFunctionFiles(ctxtGl);
 
+
+    const genCtxt: GeneratorContext = {
+      selection: dependencies,
+    }
+
+
     /**
      * Generate typeDefinitions.ts
      */
@@ -446,19 +456,19 @@ export class FFIgenerator {
       results.push('');
     }
 
-    const { code: enumCode, cnt: enumCnt } = this.generateEnums(ctxtGl);
+    const { code: enumCode, cnt: enumCnt } = this.generateEnums(ctxtGl, genCtxt);
     console.log(`Generate ${pc.green(enumCnt.toString().padStart(3))} enums   in typeDefinitions.ts`)
 
-    const { code: ptrCode, cnt: ptrCnt } = this.generatePrts(ctxtGl);
+    const { code: ptrCode, cnt: ptrCnt } = this.generatePrts(ctxtGl, genCtxt);
     console.log(`Generate ${pc.green(ptrCnt.toString().padStart(3))} ptrs    in typeDefinitions.ts`)
 
-    const { code: structCode, cnt: structCnt } = this.generateStructs(ctxtGl, dependencies);
+    const { code: structCode, cnt: structCnt } = this.generateStructs(ctxtGl, genCtxt);
     console.log(`Generate ${pc.green(structCnt.toString().padStart(3))} structs in typeDefinitions.ts`)
 
-    const { code: refCode, cnt: refCnt } = this.generateRefs(ctxtGl);
+    const { code: refCode, cnt: refCnt } = this.generateRefs(ctxtGl, genCtxt);
     console.log(`Generate ${pc.green(refCnt.toString().padStart(3))} refs    in typeDefinitions.ts`)
 
-    const { code: funcCode, cnt: funcCnt } = this.generateFunctions(ctxtGl);
+    const { code: funcCode, cnt: funcCnt } = this.generateFunctions(ctxtGl, genCtxt);
     console.log(`Generate ${pc.green(funcCnt.toString().padStart(3))} fncts   in typeDefinitions.ts`)
 
     results.push(...enumCode);
