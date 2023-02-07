@@ -136,56 +136,59 @@ export const structFieldToDeinlineString = (
 
   dependencies.push(...funcDependencies);
   const structField = `func(${funcCode})`;
-  return { structField, extraCode, dependencies, provide: functionName}
+  return { structField, extraCode, dependencies, provide: functionName }
 };
 
 export const anyTypeToString = (type: AnyType): { code: string, dependencies: string[] } => {
   const dependencies: string[] = [];
-  if (type.kind === "plain") {
-    if (type.type === "void") {
-      return { code: '"void"', dependencies };
-    }
-    dependencies.push(type.type);
-    return { code: type.name, dependencies };
-  } else if (type.kind === "function") {
-    const block: string[] = [];
-    block.push('{');
-    block.push(`  /** ${type.name} */`);
-    block.push('  parameters: [');
-    for (const param of type.parameters) {
-      const comment = param.comment ? `, ${param.comment}` : "";
-      const { code, dependencies: paramDependencies } = anyTypeToString(param.type);
-      dependencies.push(...paramDependencies);
-      block.push(`    ${code}, // ${param.name}${comment}`);
-    }
-    block.push('  ],');
-    const { code, dependencies: resultDependencies } = anyTypeToString(type.result);
-    dependencies.push(...resultDependencies);
-    block.push(`  result: ${code},`);
-    block.push('}');
-    return { code: block.join("\n"), dependencies };
-  } else if (
-    type.kind === "struct" || type.kind === "ref" ||
-    type.kind === "enum"
-  ) {
-    if (type.kind === "ref" && type.name.endsWith("_t")) {
-      dependencies.push(type.name);
+
+  switch (type.kind) {
+    case "plain":
+      if (type.type === "void") {
+        return { code: '"void"', dependencies };
+      }
+      dependencies.push(type.type);
       return { code: type.name, dependencies };
+    case "function": {
+      const block: string[] = [];
+      block.push('{');
+      block.push(`  /** ${type.name} */`);
+      block.push('  parameters: [');
+      for (const param of type.parameters) {
+        const comment = param.comment ? `, ${param.comment}` : "";
+        const { code, dependencies: paramDependencies } = anyTypeToString(param.type);
+        dependencies.push(...paramDependencies);
+        block.push(`    ${code}, // ${param.name}${comment}`);
+      }
+      block.push('  ],');
+      const { code, dependencies: resultDependencies } = anyTypeToString(type.result);
+      dependencies.push(...resultDependencies);
+      block.push(`  result: ${code},`);
+      block.push('}');
+      return { code: block.join("\n"), dependencies };
     }
-    dependencies.push(type.reprName);
-    return { code: type.reprName, dependencies };
-  } else if (type.kind === "pointer") {
-    let func: "buf" | "func" | "ptr" = "ptr";
-    if (type.pointee.kind === "function") {
-      func = "func";
-    } else if (type.useBuffer) {
-      func = "buf";
+    case "struct":
+    case "ref":
+    case "enum":
+      if (type.kind === "ref" && type.name.endsWith("_t")) {
+        dependencies.push(type.name);
+        return { code: type.name, dependencies };
+      }
+      dependencies.push(type.reprName);
+      return { code: type.reprName, dependencies };
+    case "pointer": {
+      let func: "buf" | "func" | "ptr" = "ptr";
+      if (type.pointee.kind === "function") {
+        func = "func";
+      } else if (type.useBuffer) {
+        func = "buf";
+      }
+      const { code, dependencies: pointeeDependencies } = anyTypeToString(type.pointee);
+      dependencies.push(...pointeeDependencies);
+      return { code: `${func}(${code})`, dependencies };
     }
-    const { code, dependencies: pointeeDependencies } = anyTypeToString(type.pointee);
-    dependencies.push(...pointeeDependencies);
-    return { code: `${func}(${code})`, dependencies };
-  } else {
-    throw new Error("Invalid AnyType");
+    default:
+      throw new Error(`Invalid AnyType`);
   }
 };
 
@@ -297,7 +300,7 @@ export const toAnyType = (ctxt: Context, type: CXType): AnyType => {
         }
         enumType = toEnumType(ctxt, name, typeDeclaration);
         const prevType = ctxt.getTypeByName(name);
-        if (prevType) 
+        if (prevType)
           return prevType;
         return ctxt.addType(name, enumType);
       } else if (typeDeclaration.kind === CXCursorKind.CXCursor_StructDecl) {
@@ -506,7 +509,7 @@ export const toAnyType = (ctxt: Context, type: CXType): AnyType => {
       {
         const spellingName = toPlainTypeName(type.getSpelling());
         // const canonycalName = toPlainTypeName(type.getCanonicalType().getSpelling());
-        
+
         const existing = ctxt.getTypeByName(spellingName);
         if (existing) {
           return existing;
