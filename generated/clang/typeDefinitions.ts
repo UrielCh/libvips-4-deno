@@ -66,6 +66,12 @@ export const enum CX_StorageClass {
 export const CX_StorageClassT = unsignedInt;
 
 /**
+ * CXAPISet is an opaque type that represents a data structure containing all
+ * the API information for a given translation unit. This can be used for a
+ * single symbol symbol graph for a given symbol.
+ */
+export const CXAPISetT = ptr("void");
+/**
  * Describes the availability of a particular entity, which indicates
  * whether the use of this entity will result in a warning or error due to
  * it being deprecated or unavailable.
@@ -161,6 +167,11 @@ export const enum CXChildVisitResult {
  */
 export const CXChildVisitResultT = unsignedInt;
 
+/**
+ * Opaque pointer representing client data that will be passed through
+ * to various callbacks and visitors.
+ */
+export const CXClientDataT = ptr("void");
 /**
  * Flags that can be passed to `clang_codeCompleteAt(`) to
  * modify its behavior.
@@ -373,6 +384,14 @@ export const enum CXCommentParamPassDirection {
 export const CXCommentParamPassDirectionT = unsignedInt;
 
 /**
+ * A compilation database holds all information used to compile files in a
+ * project. For each file in the database, it can be queried for the working
+ * directory or the command line used for the compiler invocation.
+ *
+ * Must be freed by `clang_CompilationDatabase_dispose`
+ */
+export const CXCompilationDatabaseT = ptr("void");
+/**
  * Error codes for Compilation Database
  */
 export const enum CXCompilationDatabase_Error {
@@ -384,6 +403,20 @@ export const enum CXCompilationDatabase_Error {
  */
 export const CXCompilationDatabase_ErrorT = unsignedInt;
 
+/**
+ * Represents the command line invocation to compile a specific file.
+ */
+export const CXCompileCommandT = ptr("void");
+/**
+ * Contains the results of a search in the compilation database
+ *
+ * When searching for the compile command for a file, the compilation db can
+ * return several commands, as the file may have been compiled with
+ * different options in different places of the project. This choice of compile
+ * commands is wrapped in this opaque data structure. It must be freed by
+ * `clang_CompileCommands_dispose.`
+ */
+export const CXCompileCommandsT = ptr("void");
 /**
  * Describes a single piece of text within a code-completion string.
  *
@@ -694,6 +727,20 @@ export const enum CXCompletionContext {
  */
 export const CXCompletionContextT = unsignedInt;
 
+/**
+ * A semantic string that describes a code-completion result.
+ *
+ * A semantic string that describes the formatting of a code-completion
+ * result as a single "template" of text that should be inserted into the
+ * source buffer when a particular code-completion result is selected.
+ * Each semantic string is made up of some number of "chunks", each of which
+ * contains some text along with a description of what that text means, e.g.,
+ * the name of the entity being referenced, whether the text chunk is part of
+ * the template, or whether it is a "placeholder" that the user should replace
+ * with actual code,of a specific kind. See `CXCompletionChunkKind` for a
+ * description of the different kinds of chunks.
+ */
+export const CXCompletionStringT = ptr("void");
 /**
  * Describes the exception specification of a cursor.
  *
@@ -1848,6 +1895,15 @@ export const enum CXCursorKind {
 export const CXCursorKindT = unsignedInt;
 
 /**
+ * A fast container representing a set of CXCursors.
+ */
+export const CXCursorSetT = ptr("void");
+/**
+ * A single diagnostic, containing the diagnostic's severity,
+ * location, text, source ranges, and fix-it hints.
+ */
+export const CXDiagnosticT = ptr("void");
+/**
  * Options to control the display of diagnostics.
  *
  * The values in this enum are meant to be combined to customize the
@@ -1916,6 +1972,10 @@ export const enum CXDiagnosticDisplayOptions {
  */
 export const CXDiagnosticDisplayOptionsT = unsignedInt;
 
+/**
+ * A group of CXDiagnostics.
+ */
+export const CXDiagnosticSetT = ptr("void");
 /**
  * Describes the severity of a particular diagnostic.
  */
@@ -1993,6 +2053,10 @@ export const enum CXErrorCode {
  */
 export const CXErrorCodeT = unsignedInt;
 
+/**
+ * Evaluation result of a cursor
+ */
+export const CXEvalResultT = ptr("void");
 export const enum CXEvalResultKind {
   CXEval_Int = 1,
   CXEval_Float = 2,
@@ -2004,6 +2068,10 @@ export const enum CXEvalResultKind {
 }
 export const CXEvalResultKindT = unsignedInt;
 
+/**
+ * A particular source file that is part of a translation unit.
+ */
+export const CXFileT = ptr("void");
 export const enum CXGlobalOptFlags {
   /**
    * Used to indicate that no special CXIndex options are needed.
@@ -2041,6 +2109,24 @@ export const enum CXIdxAttrKind {
 }
 export const CXIdxAttrKindT = unsignedInt;
 
+/**
+ * The client's data object that is associated with an AST file (PCH
+ * or module).
+ */
+export const CXIdxClientASTFileT = ptr("void");
+/**
+ * The client's data object that is associated with a semantic container
+ * of entities.
+ */
+export const CXIdxClientContainerT = ptr("void");
+/**
+ * The client's data object that is associated with a semantic entity.
+ */
+export const CXIdxClientEntityT = ptr("void");
+/**
+ * The client's data object that is associated with a CXFile.
+ */
+export const CXIdxClientFileT = ptr("void");
 export const enum CXIdxDeclInfoFlags {
   CXIdxDeclFlag_Skipped = 1,
 }
@@ -2147,6 +2233,16 @@ export const enum CXIdxObjCContainerKind {
 }
 export const CXIdxObjCContainerKindT = unsignedInt;
 
+/**
+ * An "index" that consists of a set of translation units that would
+ * typically be linked together into an executable or library.
+ */
+export const CXIndexT = ptr("void");
+/**
+ * An indexing action/session, to be applied to one or multiple
+ * translation units.
+ */
+export const CXIndexActionT = ptr("void");
 export const enum CXIndexOptFlags {
   /**
    * Used to indicate that no special indexing options are needed.
@@ -2259,6 +2355,16 @@ export const enum CXLoadDiag_Error {
  */
 export const CXLoadDiag_ErrorT = unsignedInt;
 
+/**
+ * The functions in this group provide access to information about modules.
+ *
+ * \@\{
+ */
+export const CXModuleT = ptr("void");
+/**
+ * Object encapsulating information about a module.map file.
+ */
+export const CXModuleMapDescriptorT = ptr("void");
 export const enum CXNameRefFlags {
   /**
    * Include the nested-name-specifier, e.g. Foo:: in x.Foo::y, in the
@@ -2331,6 +2437,11 @@ export const enum CXObjCPropertyAttrKind {
 export const CXObjCPropertyAttrKindT = unsignedInt;
 
 /**
+ * Opaque pointer representing a policy that controls pretty printing
+ * for `clang_getCursorPrettyPrinted.`
+ */
+export const CXPrintingPolicyT = ptr("void");
+/**
  * Properties for the printing policy.
  *
  * See `clang::PrintingPolicy` for more information.
@@ -2388,6 +2499,10 @@ export const enum CXRefQualifierKind {
 export const CXRefQualifierKindT = unsignedInt;
 
 /**
+ * A remapping of original source files and their translated files.
+ */
+export const CXRemappingT = ptr("void");
+/**
  * Flags that control the reparsing of translation units.
  *
  * The enumerators in this enumeration type are meant to be bitwise
@@ -2426,6 +2541,7 @@ export const enum CXResult {
 }
 export const CXResultT = unsignedInt;
 
+export const CXRewriterT = ptr("void");
 /**
  * Describes the kind of error that occurred (if any) in a call to
  * `clang_saveTranslationUnit().`
@@ -2512,6 +2628,11 @@ export const enum CXSymbolRole {
 export const CXSymbolRoleT = unsignedInt;
 
 /**
+ * An opaque type representing target information for a given translation
+ * unit.
+ */
+export const CXTargetInfoT = ptr("void");
+/**
  * Describes the kind of a template argument.
  *
  * See the definition of llvm::clang::TemplateArgument::ArgKind for full
@@ -2585,6 +2706,10 @@ export const enum CXTokenKind {
  */
 export const CXTokenKindT = unsignedInt;
 
+/**
+ * A single translation unit, which resides in an index.
+ */
+export const CXTranslationUnitT = ptr("void");
 /**
  * Flags that control the creation of translation units.
  *
@@ -2979,6 +3104,11 @@ export const enum CXTypeNullabilityKind {
 }
 export const CXTypeNullabilityKindT = unsignedInt;
 
+/**
+ * Object encapsulating information about overlaying virtual
+ * file/directories over the real file system.
+ */
+export const CXVirtualFileOverlayT = ptr("void");
 export const enum CXVisibilityKind {
   /**
    * This value indicates that no visibility information is available
@@ -3012,136 +3142,7 @@ export const enum CXVisitorResult {
  */
 export const CXVisitorResultT = unsignedInt;
 
-/**
- * CXAPISet is an opaque type that represents a data structure containing all
- * the API information for a given translation unit. This can be used for a
- * single symbol symbol graph for a given symbol.
- */
-export const CXAPISetT = ptr("void");
-/**
- * Opaque pointer representing client data that will be passed through
- * to various callbacks and visitors.
- */
-export const CXClientDataT = ptr("void");
-/**
- * A compilation database holds all information used to compile files in a
- * project. For each file in the database, it can be queried for the working
- * directory or the command line used for the compiler invocation.
- *
- * Must be freed by `clang_CompilationDatabase_dispose`
- */
-export const CXCompilationDatabaseT = ptr("void");
-/**
- * Represents the command line invocation to compile a specific file.
- */
-export const CXCompileCommandT = ptr("void");
-/**
- * Contains the results of a search in the compilation database
- *
- * When searching for the compile command for a file, the compilation db can
- * return several commands, as the file may have been compiled with
- * different options in different places of the project. This choice of compile
- * commands is wrapped in this opaque data structure. It must be freed by
- * `clang_CompileCommands_dispose.`
- */
-export const CXCompileCommandsT = ptr("void");
-/**
- * A semantic string that describes a code-completion result.
- *
- * A semantic string that describes the formatting of a code-completion
- * result as a single "template" of text that should be inserted into the
- * source buffer when a particular code-completion result is selected.
- * Each semantic string is made up of some number of "chunks", each of which
- * contains some text along with a description of what that text means, e.g.,
- * the name of the entity being referenced, whether the text chunk is part of
- * the template, or whether it is a "placeholder" that the user should replace
- * with actual code,of a specific kind. See `CXCompletionChunkKind` for a
- * description of the different kinds of chunks.
- */
-export const CXCompletionStringT = ptr("void");
-/**
- * A fast container representing a set of CXCursors.
- */
-export const CXCursorSetT = ptr("void");
-/**
- * A single diagnostic, containing the diagnostic's severity,
- * location, text, source ranges, and fix-it hints.
- */
-export const CXDiagnosticT = ptr("void");
-/**
- * A group of CXDiagnostics.
- */
-export const CXDiagnosticSetT = ptr("void");
-/**
- * Evaluation result of a cursor
- */
-export const CXEvalResultT = ptr("void");
-/**
- * A particular source file that is part of a translation unit.
- */
-export const CXFileT = ptr("void");
-/**
- * The client's data object that is associated with an AST file (PCH
- * or module).
- */
-export const CXIdxClientASTFileT = ptr("void");
-/**
- * The client's data object that is associated with a semantic container
- * of entities.
- */
-export const CXIdxClientContainerT = ptr("void");
-/**
- * The client's data object that is associated with a semantic entity.
- */
-export const CXIdxClientEntityT = ptr("void");
-/**
- * The client's data object that is associated with a CXFile.
- */
-export const CXIdxClientFileT = ptr("void");
-/**
- * An "index" that consists of a set of translation units that would
- * typically be linked together into an executable or library.
- */
-export const CXIndexT = ptr("void");
-/**
- * An indexing action/session, to be applied to one or multiple
- * translation units.
- */
-export const CXIndexActionT = ptr("void");
-/**
- * The functions in this group provide access to information about modules.
- *
- * \@\{
- */
-export const CXModuleT = ptr("void");
-/**
- * Object encapsulating information about a module.map file.
- */
-export const CXModuleMapDescriptorT = ptr("void");
-/**
- * Opaque pointer representing a policy that controls pretty printing
- * for `clang_getCursorPrettyPrinted.`
- */
-export const CXPrintingPolicyT = ptr("void");
-/**
- * A remapping of original source files and their translated files.
- */
-export const CXRemappingT = ptr("void");
-export const CXRewriterT = ptr("void");
-/**
- * An opaque type representing target information for a given translation
- * unit.
- */
-export const CXTargetInfoT = ptr("void");
-/**
- * A single translation unit, which resides in an index.
- */
-export const CXTranslationUnitT = ptr("void");
-/**
- * Object encapsulating information about overlaying virtual
- * file/directories over the real file system.
- */
-export const CXVirtualFileOverlayT = ptr("void");
+export const time_t = __time_t;
 /**
  * A parsed comment.
  */
@@ -3179,169 +3180,6 @@ export const CXCompletionResultT = {
 } as const;
 
 /**
- * A cursor representing some element in the abstract syntax tree for
- * a translation unit.
- *
- * The cursor abstraction unifies the different kinds of entities in a
- * program--declaration, statements, expressions, references to declarations,
- * etc.--under a single "cursor" abstraction with a common set of operations.
- * Common operation for a cursor include: getting the physical location in
- * a source file where the cursor points, getting the name associated with a
- * cursor, and retrieving cursors for any child nodes of a particular cursor.
- *
- * Cursors can be produced in two specific ways.
- * clang_getTranslationUnitCursor() produces a cursor for a translation unit,
- * from which one can use clang_visitChildren() to explore the rest of the
- * translation unit. clang_getCursor() maps from a physical source location
- * to the entity that resides at that location, allowing one to map from the
- * source code into the AST.
- */
-export const CXCursorT = {
-  /** Struct size: 32 */
-  struct: [
-    CXCursorKindT, // kind, offset 0, size 4
-    int, // xdata, offset 4, size 4
-    ptr("void"), // data[0], offset 8, size 8
-    ptr("void"), // data[1], offset 16, size 8
-    ptr("void"), // data[2], offset 24, size 8
-  ],
-} as const;
-
-/**
- * Uniquely identifies a CXFile, that refers to the same underlying file,
- * across an indexing session.
- */
-export const CXFileUniqueIDT = {
-  /** Struct size: 24 */
-  struct: [
-    unsignedLongLong, // data[0], offset 0, size 8
-    unsignedLongLong, // data[1], offset 8, size 8
-    unsignedLongLong, // data[2], offset 16, size 8
-  ],
-} as const;
-
-export const CXIdxContainerInfoT = {
-  /** Struct size: 32 */
-  struct: [
-    CXCursorT, // cursor, offset 0, size 32
-  ],
-} as const;
-
-/**
- * Source location passed to index callbacks.
- */
-export const CXIdxLocT = {
-  /** Struct size: 24 */
-  struct: [
-    ptr("void"), // ptr_data[0], offset 0, size 8
-    ptr("void"), // ptr_data[1], offset 8, size 8
-    unsignedInt, // int_data, offset 16, size 4
-  ],
-} as const;
-
-/**
- * Identifies a specific source location within a translation
- * unit.
- *
- * Use clang_getExpansionLocation() or clang_getSpellingLocation()
- * to map a source location to a particular file, line, and column.
- */
-export const CXSourceLocationT = {
-  /** Struct size: 24 */
-  struct: [
-    ptr("void"), // ptr_data[0], offset 0, size 8
-    ptr("void"), // ptr_data[1], offset 8, size 8
-    unsignedInt, // int_data, offset 16, size 4
-  ],
-} as const;
-
-/**
- * Identifies a half-open character range in the source code.
- *
- * Use clang_getRangeStart() and clang_getRangeEnd() to retrieve the
- * starting and end locations from a source range, respectively.
- */
-export const CXSourceRangeT = {
-  /** Struct size: 24 */
-  struct: [
-    ptr("void"), // ptr_data[0], offset 0, size 8
-    ptr("void"), // ptr_data[1], offset 8, size 8
-    unsignedInt, // begin_int_data, offset 16, size 4
-    unsignedInt, // end_int_data, offset 20, size 4
-  ],
-} as const;
-
-/**
- * Identifies an array of ranges.
- */
-export const CXSourceRangeListT = {
-  /** Struct size: 16 */
-  struct: [
-    /**
-     * The number of ranges in the `ranges` array.
-     */
-    unsignedInt, // count, offset 0, size 4
-    /**
-     * An array of `CXSourceRanges.`
-     */
-    ptr(CXSourceRangeT), // ranges, offset 8, size 8
-  ],
-} as const;
-
-/**
- * A character string.
- *
- * The `CXString` type is used to return strings from the interface when
- * the ownership of that string might differ from one call to the next.
- * Use `clang_getCString(`) to retrieve the string data and, once finished
- * with the string data, call `clang_disposeString(`) to free the string.
- */
-export const CXStringT = {
-  /** Struct size: 16 */
-  struct: [
-    ptr("void"), // data, offset 0, size 8
-    unsignedInt, // private_flags, offset 8, size 4
-  ],
-} as const;
-
-export const CXStringSetT = {
-  /** Struct size: 16 */
-  struct: [
-    ptr(CXStringT), // Strings, offset 0, size 8
-    unsignedInt, // Count, offset 8, size 4
-  ],
-} as const;
-
-/**
- * Describes a single preprocessing token.
- */
-export const CXTokenT = {
-  /** Struct size: 24 */
-  struct: [
-    unsignedInt, // int_data[0], offset 0, size 4
-    unsignedInt, // int_data[1], offset 4, size 4
-    unsignedInt, // int_data[2], offset 8, size 4
-    unsignedInt, // int_data[3], offset 12, size 4
-    ptr("void"), // ptr_data, offset 16, size 8
-  ],
-} as const;
-
-export const CXTUResourceUsageEntryT = {
-  /** Struct size: 16 */
-  struct: [
-    /**
-     * The memory usage category.
-     */
-    CXTUResourceUsageKindT, // kind, offset 0, size 4
-    /**
-     * Amount of resources used.
-     * The units will depend on the resource kind.
-     */
-    unsignedLong, // amount, offset 8, size 8
-  ],
-} as const;
-
-/**
  * The type of an element in the abstract syntax tree.
  */
 export const CXTypeT = {
@@ -3352,592 +3190,3 @@ export const CXTypeT = {
     ptr("void"), // data[1], offset 16, size 8
   ],
 } as const;
-
-/**
- * Provides the contents of a file that has not yet been saved to disk.
- *
- * Each CXUnsavedFile instance provides the name of a file on the
- * system along with the current contents of that file that have not
- * yet been saved to disk.
- */
-export const CXUnsavedFileT = {
-  /** Struct size: 24 */
-  struct: [
-    /**
-     * The file whose contents have not yet been saved.
-     *
-     * This file must already exist in the file system.
-     */
-    cstringT, // Filename, offset 0, size 8
-    /**
-     * A buffer containing the unsaved contents of this file.
-     */
-    cstringT, // Contents, offset 8, size 8
-    /**
-     * The length of the unsaved contents of this buffer.
-     */
-    unsignedLong, // Length, offset 16, size 8
-  ],
-} as const;
-
-/**
- * Describes a version number of the form major.minor.subminor.
- */
-export const CXVersionT = {
-  /** Struct size: 12 */
-  struct: [
-    /**
-     * The major version number, e.g., the '10' in '10.7.3'. A negative
-     * value indicates that there is no version number at all.
-     */
-    int, // Major, offset 0, size 4
-    /**
-     * The minor version number, e.g., the '7' in '10.7.3'. This value
-     * will be negative if no minor version number was provided, e.g., for
-     * version '10'.
-     */
-    int, // Minor, offset 4, size 4
-    /**
-     * The subminor version number, e.g., the '3' in '10.7.3'. This value
-     * will be negative if no minor or subminor version number was provided,
-     * e.g., in version '10' or '10.7'.
-     */
-    int, // Subminor, offset 8, size 4
-  ],
-} as const;
-
-/**
- * Contains the results of code-completion.
- *
- * This data structure contains the results of code completion, as
- * produced by `clang_codeCompleteAt().` Its contents must be freed by
- * `clang_disposeCodeCompleteResults.`
- */
-export const CXCodeCompleteResultsT = {
-  /** Struct size: 16 */
-  struct: [
-    /**
-     * The code-completion results.
-     */
-    ptr(CXCompletionResultT), // Results, offset 0, size 8
-    /**
-     * The number of code-completion results stored in the
-     * `Results` array.
-     */
-    unsignedInt, // NumResults, offset 8, size 4
-  ],
-} as const;
-
-export const CXCursorAndRangeVisitorCallbackDefinition = {
-  /** enum CXVisitorResult (void *, CXCursor, CXSourceRange) */
-  parameters: [
-    ptr("void"), // void *
-    CXCursorT, // CXCursor
-    CXSourceRangeT, // CXSourceRange
-  ],
-  result: CXVisitorResultT,
-} as const; /* extra */
-export const CXCursorAndRangeVisitorT = {
-  /** Struct size: 16 */
-  struct: [
-    ptr("void"), // context, offset 0, size 8
-    func(CXCursorAndRangeVisitorCallbackDefinition), // visit, offset 8, size 8
-  ],
-} as const;
-
-export const CXIdxAttrInfoT = {
-  /** Struct size: 64 */
-  struct: [
-    CXIdxAttrKindT, // kind, offset 0, size 4
-    CXCursorT, // cursor, offset 8, size 32
-    CXIdxLocT, // loc, offset 40, size 24
-  ],
-} as const;
-
-export const CXIdxEntityInfoT = {
-  /** Struct size: 80 */
-  struct: [
-    CXIdxEntityKindT, // kind, offset 0, size 4
-    CXIdxEntityCXXTemplateKindT, // templateKind, offset 4, size 4
-    CXIdxEntityLanguageT, // lang, offset 8, size 4
-    cstringT, // name, offset 16, size 8
-    cstringT, // USR, offset 24, size 8
-    CXCursorT, // cursor, offset 32, size 32
-    ptr(buf(CXIdxAttrInfoT)), // attributes, offset 64, size 8
-    unsignedInt, // numAttributes, offset 72, size 4
-  ],
-} as const;
-
-/**
- * Data for IndexerCallbacks#indexEntityReference.
- */
-export const CXIdxEntityRefInfoT = {
-  /** Struct size: 96 */
-  struct: [
-    CXIdxEntityRefKindT, // kind, offset 0, size 4
-    /**
-     * Reference cursor.
-     */
-    CXCursorT, // cursor, offset 8, size 32
-    CXIdxLocT, // loc, offset 40, size 24
-    /**
-     * The entity that gets referenced.
-     */
-    ptr(CXIdxEntityInfoT), // referencedEntity, offset 64, size 8
-    /**
-     * Immediate "parent" of the reference. For example:
-     *
-     * ```cpp
-     * Foo *var;
-     * ```
-     * The parent of reference of type 'Foo' is the variable 'var'.
-     * For references inside statement bodies of functions/methods,
-     * the parentEntity will be the function/method.
-     */
-    ptr(CXIdxEntityInfoT), // parentEntity, offset 72, size 8
-    /**
-     * Lexical container context of the reference.
-     */
-    ptr(CXIdxContainerInfoT), // container, offset 80, size 8
-    /**
-     * Sets of symbol roles of the reference.
-     */
-    CXSymbolRoleT, // role, offset 88, size 4
-  ],
-} as const;
-
-export const CXIdxIBOutletCollectionAttrInfoT = {
-  /** Struct size: 72 */
-  struct: [
-    ptr(CXIdxAttrInfoT), // attrInfo, offset 0, size 8
-    ptr(CXIdxEntityInfoT), // objcClass, offset 8, size 8
-    CXCursorT, // classCursor, offset 16, size 32
-    CXIdxLocT, // classLoc, offset 48, size 24
-  ],
-} as const;
-
-/**
- * Data for IndexerCallbacks#importedASTFile.
- */
-export const CXIdxImportedASTFileInfoT = {
-  /** Struct size: 48 */
-  struct: [
-    /**
-     * Top level AST file containing the imported PCH, module or submodule.
-     */
-    CXFileT, // file, offset 0, size 8
-    /**
-     * The imported module or NULL if the AST file is a PCH.
-     */
-    CXModuleT, // module, offset 8, size 8
-    /**
-     * Location where the file is imported. Applicable only for modules.
-     */
-    CXIdxLocT, // loc, offset 16, size 24
-    /**
-     * Non-zero if an inclusion directive was automatically turned into
-     * a module import. Applicable only for modules.
-     */
-    int, // isImplicit, offset 40, size 4
-  ],
-} as const;
-
-/**
- * Data for ppIncludedFile callback.
- */
-export const CXIdxIncludedFileInfoT = {
-  /** Struct size: 56 */
-  struct: [
-    /**
-     * Location of '#' in the \#include/\#import directive.
-     */
-    CXIdxLocT, // hashLoc, offset 0, size 24
-    /**
-     * Filename as written in the \#include/\#import directive.
-     */
-    cstringT, // filename, offset 24, size 8
-    /**
-     * The actual file that the \#include/\#import directive resolved to.
-     */
-    CXFileT, // file, offset 32, size 8
-    int, // isImport, offset 40, size 4
-    int, // isAngled, offset 44, size 4
-    /**
-     * Non-zero if the directive was automatically turned into a module
-     * import.
-     */
-    int, // isModuleImport, offset 48, size 4
-  ],
-} as const;
-
-export const CXIdxObjCProtocolRefInfoT = {
-  /** Struct size: 64 */
-  struct: [
-    ptr(CXIdxEntityInfoT), // protocol, offset 0, size 8
-    CXCursorT, // cursor, offset 8, size 32
-    CXIdxLocT, // loc, offset 40, size 24
-  ],
-} as const;
-
-export const CXIdxObjCProtocolRefListInfoT = {
-  /** Struct size: 16 */
-  struct: [
-    ptr(buf(CXIdxObjCProtocolRefInfoT)), // protocols, offset 0, size 8
-    unsignedInt, // numProtocols, offset 8, size 4
-  ],
-} as const;
-
-/**
- * Describes the availability of a given entity on a particular platform, e.g.,
- * a particular class might only be available on Mac OS 10.7 or newer.
- */
-export const CXPlatformAvailabilityT = {
-  /** Struct size: 72 */
-  struct: [
-    /**
-     * A string that describes the platform for which this structure
-     * provides availability information.
-     *
-     * Possible values are "ios" or "macos".
-     */
-    CXStringT, // Platform, offset 0, size 16
-    /**
-     * The version number in which this entity was introduced.
-     */
-    CXVersionT, // Introduced, offset 16, size 12
-    /**
-     * The version number in which this entity was deprecated (but is
-     * still available).
-     */
-    CXVersionT, // Deprecated, offset 28, size 12
-    /**
-     * The version number in which this entity was obsoleted, and therefore
-     * is no longer available.
-     */
-    CXVersionT, // Obsoleted, offset 40, size 12
-    /**
-     * Whether the entity is unconditionally unavailable on this platform.
-     */
-    int, // Unavailable, offset 52, size 4
-    /**
-     * An optional message to provide to a user of this API, e.g., to
-     * suggest replacement APIs.
-     */
-    CXStringT, // Message, offset 56, size 16
-  ],
-} as const;
-
-/**
- * The memory usage of a CXTranslationUnit, broken into categories.
- */
-export const CXTUResourceUsageT = {
-  /** Struct size: 24 */
-  struct: [
-    /**
-     * Private data member, used for queries.
-     */
-    ptr("void"), // data, offset 0, size 8
-    /**
-     * The number of entries in the 'entries' array.
-     */
-    unsignedInt, // numEntries, offset 8, size 4
-    /**
-     * An array of key-value pairs, representing the breakdown of memory
-     * usage.
-     */
-    ptr(CXTUResourceUsageEntryT), // entries, offset 16, size 8
-  ],
-} as const;
-
-export const CXIdxBaseClassInfoT = {
-  /** Struct size: 64 */
-  struct: [
-    ptr(CXIdxEntityInfoT), // base, offset 0, size 8
-    CXCursorT, // cursor, offset 8, size 32
-    CXIdxLocT, // loc, offset 40, size 24
-  ],
-} as const;
-
-export const CXIdxDeclInfoT = {
-  /** Struct size: 128 */
-  struct: [
-    ptr(CXIdxEntityInfoT), // entityInfo, offset 0, size 8
-    CXCursorT, // cursor, offset 8, size 32
-    CXIdxLocT, // loc, offset 40, size 24
-    ptr(CXIdxContainerInfoT), // semanticContainer, offset 64, size 8
-    /**
-     * Generally same as #semanticContainer but can be different in
-     * cases like out-of-line C++ member functions.
-     */
-    ptr(CXIdxContainerInfoT), // lexicalContainer, offset 72, size 8
-    int, // isRedeclaration, offset 80, size 4
-    int, // isDefinition, offset 84, size 4
-    int, // isContainer, offset 88, size 4
-    ptr(CXIdxContainerInfoT), // declAsContainer, offset 96, size 8
-    /**
-     * Whether the declaration exists in code or was created implicitly
-     * by the compiler, e.g. implicit Objective-C methods for properties.
-     */
-    int, // isImplicit, offset 104, size 4
-    ptr(buf(CXIdxAttrInfoT)), // attributes, offset 112, size 8
-    unsignedInt, // numAttributes, offset 120, size 4
-    unsignedInt, // flags, offset 124, size 4
-  ],
-} as const;
-
-export const CXIdxObjCContainerDeclInfoT = {
-  /** Struct size: 16 */
-  struct: [
-    ptr(CXIdxDeclInfoT), // declInfo, offset 0, size 8
-    CXIdxObjCContainerKindT, // kind, offset 8, size 4
-  ],
-} as const;
-
-export const CXIdxObjCInterfaceDeclInfoT = {
-  /** Struct size: 24 */
-  struct: [
-    ptr(CXIdxObjCContainerDeclInfoT), // containerInfo, offset 0, size 8
-    ptr(CXIdxBaseClassInfoT), // superInfo, offset 8, size 8
-    ptr(CXIdxObjCProtocolRefListInfoT), // protocols, offset 16, size 8
-  ],
-} as const;
-
-export const CXIdxObjCPropertyDeclInfoT = {
-  /** Struct size: 24 */
-  struct: [
-    ptr(CXIdxDeclInfoT), // declInfo, offset 0, size 8
-    ptr(CXIdxEntityInfoT), // getter, offset 8, size 8
-    ptr(CXIdxEntityInfoT), // setter, offset 16, size 8
-  ],
-} as const;
-
-export const IndexerCallbacksAbortQueryCallbackDefinition = {
-  /** int (CXClientData, void *) */
-  parameters: [
-    CXClientDataT, // CXClientData
-    ptr("void"), // void *
-  ],
-  result: int,
-} as const; /* extra */
-export const IndexerCallbacksDiagnosticCallbackDefinition = {
-  /** void (CXClientData, CXDiagnosticSet, void *) */
-  parameters: [
-    CXClientDataT, // CXClientData
-    CXDiagnosticSetT, // CXDiagnosticSet
-    ptr("void"), // void *
-  ],
-  result: "void",
-} as const; /* extra */
-export const IndexerCallbacksEnteredMainFileCallbackDefinition = {
-  /** CXIdxClientFile (CXClientData, CXFile, void *) */
-  parameters: [
-    CXClientDataT, // CXClientData
-    CXFileT, // CXFile
-    ptr("void"), // void *
-  ],
-  result: CXIdxClientFileT,
-} as const; /* extra */
-export const IndexerCallbacksPpIncludedFileCallbackDefinition = {
-  /** CXIdxClientFile (CXClientData, const CXIdxIncludedFileInfo *) */
-  parameters: [
-    CXClientDataT, // CXClientData
-    buf(CXIdxIncludedFileInfoT), // const CXIdxIncludedFileInfo *
-  ],
-  result: CXIdxClientFileT,
-} as const; /* extra */
-export const IndexerCallbacksImportedASTFileCallbackDefinition = {
-  /** CXIdxClientASTFile (CXClientData, const CXIdxImportedASTFileInfo *) */
-  parameters: [
-    CXClientDataT, // CXClientData
-    buf(CXIdxImportedASTFileInfoT), // const CXIdxImportedASTFileInfo *
-  ],
-  result: CXIdxClientASTFileT,
-} as const; /* extra */
-export const IndexerCallbacksStartedTranslationUnitCallbackDefinition = {
-  /** CXIdxClientContainer (CXClientData, void *) */
-  parameters: [
-    CXClientDataT, // CXClientData
-    ptr("void"), // void *
-  ],
-  result: CXIdxClientContainerT,
-} as const; /* extra */
-export const IndexerCallbacksIndexDeclarationCallbackDefinition = {
-  /** void (CXClientData, const CXIdxDeclInfo *) */
-  parameters: [
-    CXClientDataT, // CXClientData
-    buf(CXIdxDeclInfoT), // const CXIdxDeclInfo *
-  ],
-  result: "void",
-} as const; /* extra */
-export const IndexerCallbacksIndexEntityReferenceCallbackDefinition = {
-  /** void (CXClientData, const CXIdxEntityRefInfo *) */
-  parameters: [
-    CXClientDataT, // CXClientData
-    buf(CXIdxEntityRefInfoT), // const CXIdxEntityRefInfo *
-  ],
-  result: "void",
-} as const; /* extra */
-/**
- * A group of callbacks used by #clang_indexSourceFile and
- * #clang_indexTranslationUnit.
- */
-export const IndexerCallbacksT = {
-  /** Struct size: 64 */
-  struct: [
-    /**
-     * Called periodically to check whether indexing should be aborted.
-     * Should return 0 to continue, and non-zero to abort.
-     */
-    func(IndexerCallbacksAbortQueryCallbackDefinition), // abortQuery, offset 0, size 8
-    /**
-     * Called at the end of indexing; passes the complete diagnostic set.
-     */
-    func(IndexerCallbacksDiagnosticCallbackDefinition), // diagnostic, offset 8, size 8
-    func(IndexerCallbacksEnteredMainFileCallbackDefinition), // enteredMainFile, offset 16, size 8
-    /**
-     * Called when a file gets \#included/\#imported.
-     */
-    func(IndexerCallbacksPpIncludedFileCallbackDefinition), // ppIncludedFile, offset 24, size 8
-    /**
-     * Called when a AST file (PCH or module) gets imported.
-     *
-     * AST files will not get indexed (there will not be callbacks to index all
-     * the entities in an AST file). The recommended action is that, if the AST
-     * file is not already indexed, to initiate a new indexing job specific to
-     * the AST file.
-     */
-    func(IndexerCallbacksImportedASTFileCallbackDefinition), // importedASTFile, offset 32, size 8
-    /**
-     * Called at the beginning of indexing a translation unit.
-     */
-    func(IndexerCallbacksStartedTranslationUnitCallbackDefinition), // startedTranslationUnit, offset 40, size 8
-    func(IndexerCallbacksIndexDeclarationCallbackDefinition), // indexDeclaration, offset 48, size 8
-    /**
-     * Called to index a reference of an entity.
-     */
-    func(IndexerCallbacksIndexEntityReferenceCallbackDefinition), // indexEntityReference, offset 56, size 8
-  ],
-} as const;
-
-export const CXIdxCXXClassDeclInfoT = {
-  /** Struct size: 24 */
-  struct: [
-    ptr(CXIdxDeclInfoT), // declInfo, offset 0, size 8
-    ptr(buf(CXIdxBaseClassInfoT)), // bases, offset 8, size 8
-    unsignedInt, // numBases, offset 16, size 4
-  ],
-} as const;
-
-export const CXIdxObjCCategoryDeclInfoT = {
-  /** Struct size: 80 */
-  struct: [
-    ptr(CXIdxObjCContainerDeclInfoT), // containerInfo, offset 0, size 8
-    ptr(CXIdxEntityInfoT), // objcClass, offset 8, size 8
-    CXCursorT, // classCursor, offset 16, size 32
-    CXIdxLocT, // classLoc, offset 48, size 24
-    ptr(CXIdxObjCProtocolRefListInfoT), // protocols, offset 72, size 8
-  ],
-} as const;
-
-export const time_t = __time_t;
-/**
- * Visitor invoked for each cursor found by a traversal.
- *
- * This visitor function will be invoked for each cursor found by
- * clang_visitCursorChildren(). Its first argument is the cursor being
- * visited, its second argument is the parent visitor for that cursor,
- * and its third argument is the client data provided to
- * clang_visitCursorChildren().
- *
- * The visitor should return one of the `CXChildVisitResult` values
- * to direct clang_visitCursorChildren().
- */
-export const CXCursorVisitorCallbackDefinition = {
-  parameters: [
-    CXCursorT, // cursor
-    CXCursorT, // parent
-    CXClientDataT, // client_data
-  ],
-
-  result: CXChildVisitResultT,
-} as const;
-/**
- * Visitor invoked for each cursor found by a traversal.
- *
- * This visitor function will be invoked for each cursor found by
- * clang_visitCursorChildren(). Its first argument is the cursor being
- * visited, its second argument is the parent visitor for that cursor,
- * and its third argument is the client data provided to
- * clang_visitCursorChildren().
- *
- * The visitor should return one of the `CXChildVisitResult` values
- * to direct clang_visitCursorChildren().
- */
-export const CXCursorVisitorT = "function" as const;
-
-/**
- * Visitor invoked for each field found by a traversal.
- *
- * This visitor function will be invoked for each field found by
- * `clang_Type_visitFields.` Its first argument is the cursor being
- * visited, its second argument is the client data provided to
- * `clang_Type_visitFields.`
- *
- * The visitor should return one of the `CXVisitorResult` values
- * to direct `clang_Type_visitFields.`
- */
-export const CXFieldVisitorCallbackDefinition = {
-  parameters: [
-    CXCursorT, // C
-    CXClientDataT, // client_data
-  ],
-
-  result: CXVisitorResultT,
-} as const;
-/**
- * Visitor invoked for each field found by a traversal.
- *
- * This visitor function will be invoked for each field found by
- * `clang_Type_visitFields.` Its first argument is the cursor being
- * visited, its second argument is the client data provided to
- * `clang_Type_visitFields.`
- *
- * The visitor should return one of the `CXVisitorResult` values
- * to direct `clang_Type_visitFields.`
- */
-export const CXFieldVisitorT = "function" as const;
-
-/**
- * Visitor invoked for each file in a translation unit
- * (used with clang_getInclusions()).
- *
- * This visitor function will be invoked by clang_getInclusions() for each
- * file included (either at the top-level or by \#include directives) within
- * a translation unit. The first argument is the file being included, and
- * the second and third arguments provide the inclusion stack. The
- * array is sorted in order of immediate inclusion. For example,
- * the first element refers to the location that included 'included_file'.
- */
-export const CXInclusionVisitorCallbackDefinition = {
-  parameters: [
-    CXFileT, // included_file
-    buf(CXSourceLocationT), // inclusion_stack
-    unsignedInt, // include_len
-    CXClientDataT, // client_data
-  ],
-
-  result: "void",
-} as const;
-/**
- * Visitor invoked for each file in a translation unit
- * (used with clang_getInclusions()).
- *
- * This visitor function will be invoked by clang_getInclusions() for each
- * file included (either at the top-level or by \#include directives) within
- * a translation unit. The first argument is the file being included, and
- * the second and third arguments provide the inclusion stack. The
- * array is sorted in order of immediate inclusion. For example,
- * the first element refers to the location that included 'included_file'.
- */
-export const CXInclusionVisitorT = "function" as const;
-

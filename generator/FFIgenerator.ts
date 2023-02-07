@@ -27,7 +27,9 @@ import * as pc from "https://deno.land/std@0.171.0/fmt/colors.ts";
 import { walk } from "https://deno.land/std@0.171.0/fs/walk.ts";
 
 interface GeneratorContext {
+  satisfy: (types: string[]) => boolean;
   selection: Set<string>;
+  available: Set<string>;
 }
 
 function cmt(elm: CommonType, offset = '  '): string {
@@ -77,6 +79,8 @@ export class FFIgenerator {
         results.push(`}`)
         const { code } = anyTypeToString(anyType.type);
         results.push(`${cmt(anyType, '')}export const ${anyType.reprName} = ${code};\n`); // fin push
+        genCtxt.available.add(anyType.name);
+        genCtxt.available.add(anyType.reprName);
         break;
       }
       case "pointer": {
@@ -84,47 +88,67 @@ export class FFIgenerator {
           throw new Error("Unexpected unnamed Pointer type:" + JSON.stringify(anyType));
         }
         const type = anyType.useBuffer ? "buf" : "ptr";
-        const { code } = anyTypeToString(anyType.pointee);
+        const { code, dependencies } = anyTypeToString(anyType.pointee);
+        if (!genCtxt.satisfy(dependencies))
+          throw new Error(`Missing dependencies for ${anyType.name}: ${dependencies}`);
         results.push(`${cmt(anyType, '')}export const ${anyType.name}T = ${type}(${code});`);
+        genCtxt.available.add(`${anyType.name}T`);
         break;
       }
       case "function": {
-        results.push(`${cmt(anyType, '')}export const ${anyType.name}CallbackDefinition = {\n  parameters: [`);
+        const allDependencies: string[] = [];
+        const typeName = `${anyType.name}CallbackDefinition`;
+        results.push(`${cmt(anyType, '')}export const ${typeName} = {\n  parameters: [`);
         for (const param of anyType.parameters) {
-          const { code } = anyTypeToString(param.type);
-          results.push(`${cmt(param, '    ')}    ${code}, // ${param.name}`);
+          const paramRet = anyTypeToString(param.type);
+          results.push(`${cmt(param, '    ')}    ${paramRet.code}, // ${param.name}`);
+          allDependencies.push(...paramRet.dependencies)
         }
         results.push('  ],\n');
-        const { code } = anyTypeToString(anyType.result);
+        const { code, dependencies } = anyTypeToString(anyType.result);
         results.push(`  result: ${code},`);
         results.push(`} as const;`);
         results.push(`${cmt(anyType, '')}export const ${anyType.reprName} = "function" as const;\n`);
+        allDependencies.push(...dependencies)
+        if (!genCtxt.satisfy(allDependencies))
+          throw new Error(`Missing dependencies for ${anyType.name}: ${allDependencies}`);
+        genCtxt.available.add(typeName);
+        genCtxt.available.add(anyType.reprName);
         break;
       }
       case "ref": {
-          const name = anyType.keyName!;
-          const expName = name.endsWith("_t") ? name : `${name}T`;
-          const curName = anyType.name.endsWith("_t") ? anyType.name : anyType.reprName;
-          results.push(`${cmt(anyType)}export const ${expName} = ${curName};`);
+        const name = anyType.keyName!;
+        const expName = name.endsWith("_t") ? name : `${name}T`;
+        const curName = anyType.name.endsWith("_t") ? anyType.name : anyType.reprName;
+        results.push(`${cmt(anyType)}export const ${expName} = ${curName};`);
+        genCtxt.available.add(expName);
         break
       }
       case "struct": {
         const prefix = [];
+        const structDependencies: string[] = [];
         results.push(`${cmt(anyType, '')}export const ${anyType.reprName} = {`);
         results.push(`  /** Struct size: ${anyType.size} */`);
         results.push(`  struct: [`);
         for (const field of anyType.fields) {
-          const { structField, extraCode, dependencies: structDependencies } = structFieldToDeinlineString(anyType, field);
-          for (const type of structDependencies) {
-            genCtxt.selection.add(type);
-          }
-          if (extraCode)
-            prefix.push(extraCode)
-          results.push(`${cmt(field, '    ')}    ${structField}, // ${field.name}, offset ${field.offset}, size ${field.size}`);
+          const ret = structFieldToDeinlineString(anyType, field);
+          // const { structField, extraCode, dependencies: structDependencies } = ret;
+          // structDependencies.push(structField)
+          structDependencies.push(...ret.dependencies)
+          // for (const type of structDependencies) {
+          //   genCtxt.selection.add(type);
+          // }
+          if (ret.extraCode)
+            prefix.push(ret.extraCode)
+          results.push(`${cmt(field, '    ')}    ${ret.structField}, // ${field.name}, offset ${field.offset}, size ${field.size}`);
         }
         results.push(`  ],`);
         results.push(`} as const;\n`);
         results.unshift(...prefix);
+
+        if (!genCtxt.satisfy(structDependencies))
+          throw new Error(`Missing dependencies for ${anyType.name}: ${structDependencies}`);
+        genCtxt.available.add(anyType.reprName);
         break;
       }
       default:
@@ -428,9 +452,21 @@ export class FFIgenerator {
      */
     const { dependencies, fileNames } = await this.genFunctionFiles(ctxtGl);
 
+    const available = new Set<string>();
 
     const genCtxt: GeneratorContext = {
+      satisfy: (types: string[]): boolean => {
+        let missing = 0;
+        for (const t of types) {
+          if (!available.has(t)) {
+            missing++;
+            dependencies.add(t);
+          }
+        }
+        return missing === 0;
+      },
       selection: dependencies,
+      available,
     }
 
 
@@ -442,9 +478,9 @@ export class FFIgenerator {
       'export const buf = (_type: unknown) => "buffer" as const;',
       'export const func = (_func: unknown) => "function" as const;',
     ];
-
-
-
+    genCtxt.available.add("ptr");
+    genCtxt.available.add("buf");
+    genCtxt.available.add("func");
 
     // Generate plain types
     const plainTypes = ctxtGl.getMemoryTypes("plain")
@@ -454,29 +490,87 @@ export class FFIgenerator {
       const name = anyType.keyName;
       results.push(`${cmt(anyType, '')}export const ${name} = "${anyType.type}" as const;`)
       results.push('');
+      genCtxt.available.add(name);
     }
 
-    const { code: enumCode, cnt: enumCnt } = this.generateEnums(ctxtGl, genCtxt);
-    console.log(`Generate ${pc.green(enumCnt.toString().padStart(3))} enums   in typeDefinitions.ts`)
+    // let cnt = 0;
+    const stuctType = ctxtGl.getMemoryTypes();
+    const processed = new Set<string>();
+    // const missingStruct = new Set<string>(stuctType.map(s => s.reprName));
+    // console.log('Missing Struct size is', pc.green(missingStruct.size.toString()))
+    let added = 1;
+    for (let pass = 1; added > 0; pass++) {
+      added = 0;
+      // loop: 
+      for (const anyType of stuctType) {
+        if (processed.has(anyType.keyName))
+          continue;
+        if (anyType.kind === "struct") {
+          if (!genCtxt.selection.has(anyType.reprName))
+            continue;
+        }
+        // check missing type usage;
+        // const uncomplet = new Set<string>;
+        // for (const field of anyType.fields) {
+        //   const { structField, dependencies } = structFieldToDeinlineString(anyType, field);
+        //   if (missingStruct.has(structField)) {
+        //     genCtxt.selection.add(structField)
+        //     uncomplet.add(`"${structField}"`);
+        //   }
+        //   for (const dep of dependencies) {
+        //     if (missingStruct.has(dep)) {
+        //       genCtxt.selection.add(dep)
+        //       uncomplet.add(`"${dep}"`);
+        //     }
+        //   }
+        // }
+        // if (uncomplet.size) {
+        //   const missingList = [...uncomplet].join(', ');
+        //   // if (missingList.length > 100) {
+        //   //   missingList = missingList.substring(0, 100) + '...';
+        //   // }
+        //   console.log(`${pc.green(pass.toString())} Postpone generation of ${pc.red(anyType.reprName)} missing: ${missingList}`)
+        //   continue loop;
+        // }
+        try {
+          const { code } = this.generateOne(genCtxt, anyType);
+          results.push(code);
+        } catch (_e) {
+          continue;
+        }
+        processed.add(anyType.keyName)
+        added++;
+        // cnt++;
+        // missingStruct.delete(anyType.reprName);
+      }
+    }
+    // if (missingStruct.size)
+    //   console.log('missingStruct:', [...missingStruct].join(', '))
 
-    const { code: ptrCode, cnt: ptrCnt } = this.generatePrts(ctxtGl, genCtxt);
-    console.log(`Generate ${pc.green(ptrCnt.toString().padStart(3))} ptrs    in typeDefinitions.ts`)
 
-    const { code: structCode, cnt: structCnt } = this.generateStructs(ctxtGl, genCtxt);
-    console.log(`Generate ${pc.green(structCnt.toString().padStart(3))} structs in typeDefinitions.ts`)
 
-    const { code: refCode, cnt: refCnt } = this.generateRefs(ctxtGl, genCtxt);
-    console.log(`Generate ${pc.green(refCnt.toString().padStart(3))} refs    in typeDefinitions.ts`)
 
-    const { code: funcCode, cnt: funcCnt } = this.generateFunctions(ctxtGl, genCtxt);
-    console.log(`Generate ${pc.green(funcCnt.toString().padStart(3))} fncts   in typeDefinitions.ts`)
-
-    results.push(...enumCode);
-    results.push(...ptrCode);
-    results.push(...structCode);
-    results.push(...refCode);
-    results.push(...funcCode);
-    results.push('');
+    //const { code: enumCode, cnt: enumCnt } = this.generateEnums(ctxtGl, genCtxt);
+    //console.log(`Generate ${pc.green(enumCnt.toString().padStart(3))} enums   in typeDefinitions.ts`)
+    //
+    //const { code: ptrCode, cnt: ptrCnt } = this.generatePrts(ctxtGl, genCtxt);
+    //console.log(`Generate ${pc.green(ptrCnt.toString().padStart(3))} ptrs    in typeDefinitions.ts`)
+    //
+    //const { code: structCode, cnt: structCnt } = this.generateStructs(ctxtGl, genCtxt);
+    //console.log(`Generate ${pc.green(structCnt.toString().padStart(3))} structs in typeDefinitions.ts`)
+    //
+    //const { code: refCode, cnt: refCnt } = this.generateRefs(ctxtGl, genCtxt);
+    //console.log(`Generate ${pc.green(refCnt.toString().padStart(3))} refs    in typeDefinitions.ts`)
+    //
+    //const { code: funcCode, cnt: funcCnt } = this.generateFunctions(ctxtGl, genCtxt);
+    //console.log(`Generate ${pc.green(funcCnt.toString().padStart(3))} fncts   in typeDefinitions.ts`)
+    //
+    //results.push(...enumCode);
+    //results.push(...ptrCode);
+    //results.push(...structCode);
+    //results.push(...refCode);
+    //results.push(...funcCode);
+    //results.push('');
 
 
     /**
