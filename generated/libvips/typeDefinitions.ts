@@ -1428,11 +1428,11 @@ export const im_packageT = {
 
 /******** End Struct ********/
 /******** Start ref ********/
-export const gbooleanT = gintT;
-export const off_t = __off_t;
-export const im_arg_typeT = cstringT;
-export const GTypeT = gsizeT;
 export const __gnuc_va_listT = __builtin_va_listT;
+export const gbooleanT = gintT;
+export const GTypeT = gsizeT;
+export const im_arg_typeT = cstringT;
+export const off_t = __off_t;
 export const va_listT = __gnuc_va_listT;
 /******** end ref ********/
 /******** Start Functions ********/

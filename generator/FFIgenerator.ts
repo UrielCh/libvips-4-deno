@@ -198,12 +198,9 @@ export class FFIgenerator {
     const results: string[] = [];
     let cnt = 0;
     const RefType = new Map<string, ReferenceType>();
-    // for (const anyType of ctxtGl.getMemoryTypes()) {
-    //   const name = anyType.keyName;
-    for (const [name, anyType] of ctxtGl.TYPE_MEMORY) {
-      if (anyType.kind === "ref") {
-        RefType.set(name, anyType)
-      }
+    for (const anyType of ctxtGl.getMemoryTypes("ref")) {
+      const name = anyType.keyName;
+      RefType.set(name, anyType)
     }
     if (RefType.size) {
       results.push(`/******** Start ref ********/`)
@@ -494,9 +491,8 @@ export class FFIgenerator {
     const fileNames: string[] = [];
 
     const availibleTypes = new Set<string>(["ptr", "buf", "func"]);
-    for (const [name, anyType] of ctxtGl.TYPE_MEMORY) {
-      //for (const anyType of ctxtGl.getMemoryTypes()) {
-      //  const name = anyType.keyName;
+    for (const anyType of ctxtGl.getMemoryTypes()) {
+      const name = anyType.keyName;
       if (anyType.kind === "pointer") {
         if (anyType.name.includes(" ") || anyType.name.includes("*")) {
           continue;
