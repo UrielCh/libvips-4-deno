@@ -11,7 +11,10 @@ import {
 import { CXComment, CXCursor, type CXType } from "./clang/mod.ts";
 import { ContextGl } from "./Context.ts";
 
+export type ALL_KIND = "enum" | "plain" | "struct" | "function" | "pointer" | "ref";
+
 export interface CommonType {
+  kind?: ALL_KIND;
   name: string;
   comment: null | string;
 }

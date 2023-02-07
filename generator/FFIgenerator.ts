@@ -76,7 +76,7 @@ export class FFIgenerator {
     const results: string[] = [];
     let cnt = 0;
     /** enums */
-    const enumsType = [...ctxtGl.TYPE_MEMORY.values()].filter(a => a.kind === "enum") as EnumType[];
+    const enumsType = ctxtGl.getMemoryTypes("enum");
     if (enumsType.length) {
       results.push(`/******** Start enums ********/`)
       for (const anyType of enumsType) {
@@ -102,7 +102,7 @@ export class FFIgenerator {
   private generatePrts(ctxtGl: ContextGlobal): { code: string[], cnt: number } {
     const results: string[] = [];
     let cnt = 0;
-    const ptrType = [...ctxtGl.TYPE_MEMORY.values()].filter(a => a.kind === "pointer") as PointerType[];
+    const ptrType = ctxtGl.getMemoryTypes("pointer");
     if (ptrType.length) {
       results.push(`/******** Start pointer ********/`)
       for (const anyType of ptrType) {
@@ -128,7 +128,7 @@ export class FFIgenerator {
   private generateStruct(ctxtGl: ContextGlobal, selection: Set<string>): { code: string[], cnt: number } {
     const results: string[] = [];
     let cnt = 0;
-    const stuctType = [...ctxtGl.TYPE_MEMORY.values()].filter(a => a.kind === "struct") as StructType[];
+    const stuctType = ctxtGl.getMemoryTypes("struct");
     if (stuctType.length) {
       const missingStruct = new Set<string>(stuctType.map(s => s.reprName));
       console.log('Missing Struct size is', pc.green(missingStruct.size.toString()))
@@ -228,7 +228,7 @@ export class FFIgenerator {
   private generateFunctions(ctxtGl: ContextGlobal): { code: string[], cnt: number } {
     const results: string[] = [];
     let cnt = 0;
-    const fncType = [...ctxtGl.TYPE_MEMORY.values()].filter(a => a.kind === "function") as FunctionType[];
+    const fncType = ctxtGl.getMemoryTypes("function");
     if (fncType.length) {
       results.push(`/******** Start Functions ********/`)
       for (const anyType of fncType) {

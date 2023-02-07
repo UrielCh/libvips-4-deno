@@ -1,6 +1,12 @@
 import {
+ALL_KIND,
     AnyType,
+    EnumType,
     FunctionType,
+PlainType,
+PointerType,
+ReferenceType,
+StructType,
 } from "./build_utils.ts";
 
 export interface ContextGl {
@@ -47,6 +53,18 @@ export class ContextGlobal {
      * 
      */
     public TYPE_MEMORY = new Map<string, AnyType>();
+
+    getMemoryTypes(type: "enum"): EnumType[];
+    getMemoryTypes(type: "plain"): PlainType[];
+    getMemoryTypes(type: "struct"): StructType[];
+    getMemoryTypes(type: "function"): FunctionType[];
+    getMemoryTypes(type: "pointer"): PointerType[];
+    getMemoryTypes(type: "ref"): ReferenceType[];
+    public getMemoryTypes(type: ALL_KIND): AnyType[] {
+        return [...this.TYPE_MEMORY.values()].filter(a => a.kind === type);
+    }
+    // return [this.TYPE_MEMORY.values()].filter(a => a.kind === "enum") as EnumType[];
+
     /**
      * Set<structName>
      * 
