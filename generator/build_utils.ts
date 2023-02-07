@@ -291,12 +291,13 @@ export const toAnyType = (
       if (!typeDeclaration) throw Error('internal error "typeDeclaration" is null');
       if (typeDeclaration.kind === CXCursorKind.CXCursor_EnumDecl) {
         const name = type.getSpelling().substring(5); // drop `enum ` prefix
-        if (ctxt.TYPE_MEMORY.has(name)) {
-          return ctxt.TYPE_MEMORY.get(name)!;
+        let enumType = ctxt.getTypeByName(name);
+        if (enumType) {
+          return enumType;
         }
-        const result = toEnumType(ctxt, name, typeDeclaration);
-        ctxt.TYPE_MEMORY.set(name, result);
-        return result;
+        enumType = toEnumType(ctxt, name, typeDeclaration);
+        ctxt.TYPE_MEMORY.set(name, enumType);
+        return enumType;
       } else if (typeDeclaration.kind === CXCursorKind.CXCursor_StructDecl) {
         const structDeclaration = type.getTypeDeclaration();
         const name = type.getSpelling().substring("struct ".length);
@@ -412,15 +413,17 @@ export const toAnyType = (
           name: "cstringT",
           reprName: "cstringT",
         };
-        if (!ctxt.TYPE_MEMORY.has("cstringT")) {
-          ctxt.TYPE_MEMORY.set("cstringT", {
+        let cstringT = ctxt.getTypeByName("cstringT")
+        if (!cstringT) {
+          cstringT = {
             kind: "plain",
             comment: `/**
    * \`const char *\`, C string
    */`,
             name: "cstringT",
             type: "buffer",
-          });
+          };
+          ctxt.TYPE_MEMORY.set("cstringT", cstringT);
         }
         return cstringResult;
       } else if (
@@ -434,15 +437,17 @@ export const toAnyType = (
           name: "cstringArrayT",
           reprName: "cstringArrayT",
         };
-        if (!ctxt.TYPE_MEMORY.has("cstringArrayT")) {
-          ctxt.TYPE_MEMORY.set("cstringArrayT", {
+        let cstringArrayT = ctxt.getTypeByName("cstringArrayT");
+        if (!cstringArrayT) {
+          cstringArrayT = {
             kind: "plain",
             comment: `/**
    * \`char **\`, C string array
    */`,
             name: "cstringArrayT",
             type: "buffer",
-          });
+          };
+          ctxt.TYPE_MEMORY.set("cstringArrayT", cstringArrayT);
         }
         return cstringArrayResult;
       }
@@ -470,7 +475,8 @@ export const toAnyType = (
         reprName: `${typeDefName}T`,
         comment: null,
       };
-      if (!ctxt.TYPE_MEMORY.has(typeDefName)) {
+      const typeDef = ctxt.getTypeByName(typeDefName);
+      if (!typeDef) {
         // Check for potentially needed system header definitions.
         const typedecl = type.getTypeDeclaration();
         if (!typedecl) throw Error(`internal error "typedecl" is null for ${typeDefName}`)
@@ -490,12 +496,13 @@ export const toAnyType = (
       if (name.startsWith("enum ")) {
         name = name.substring("enum ".length);
       }
-      if (ctxt.TYPE_MEMORY.has(name)) {
-        return ctxt.TYPE_MEMORY.get(name)!;
+      let enumResult = ctxt.getTypeByName(name)
+      if (enumResult) {
+        return enumResult;
       }
       const typeDeclaration = type.getTypeDeclaration();
       if (!typeDeclaration) throw Error('internal error "typeDeclaration" is null');
-      const enumResult = toEnumType(ctxt, name, typeDeclaration);
+      enumResult = toEnumType(ctxt, name, typeDeclaration);
       ctxt.TYPE_MEMORY.set(name, enumResult);
       return enumResult;
     }
