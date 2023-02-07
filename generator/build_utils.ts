@@ -9,7 +9,7 @@ import {
   CXVisitorResult,
 } from "./clang/include/typeDefinitions.ts";
 import { CXComment, CXCursor, type CXType } from "./clang/mod.ts";
-import { ContextGl } from "./Context.ts";
+import { Context } from "./Context.ts";
 
 export type ALL_KIND = "enum" | "plain" | "struct" | "function" | "pointer" | "ref";
 
@@ -190,7 +190,7 @@ export const anyTypeToString = (type: AnyType): { code: string, dependencies: st
 };
 
 const toEnumType = (
-  ctxt: ContextGl,
+  ctxt: Context,
   name: string,
   typeDeclaration: CXCursor,
 ) => {
@@ -285,7 +285,7 @@ const toEnumType = (
 };
 
 export const toAnyType = (
-  ctxt: ContextGl,
+  ctxt: Context,
   type: CXType,
 ): AnyType => {
   const typekind = type.kind;

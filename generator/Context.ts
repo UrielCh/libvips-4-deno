@@ -9,75 +9,21 @@ import {
     StructType,
 } from "./build_utils.ts";
 
-export interface ContextGl {
-    // get TYPE_MEMORY(): Map<string, AnyType>;
+export interface Context {
     getTypeByName(name: string): AnyType | undefined;
     addType<T extends AnyType>(name: string, type: T): T;
     get RETURNED_AS_POINTER(): Set<string>;
     get PASSED_AS_POINTER_AND_NOT_RETURNED(): Map<string, boolean>;
     get POINTED_FROM_STRUCT(): Set<string>;
-    get FUNCTIONS_MAP(): Map<string, FunctionType[]>;
     getFunctions(filename: string): FunctionType[];
+    addFunction(filename: string, fnc: FunctionType): void;
 }
 
-export interface Context extends ContextGl {
-    addFunction(fnc: FunctionType): void;
-}
-
-/**
- * create a file context and register it in the global ctxt
- */
-export class ContextFile implements Context {
-    public functions: FunctionType[] = [];
-
-    public addFunction(fnc: FunctionType): void {
-        const colision = this.functions.find(f => f.name === fnc.name)
-        if (colision) {
-            console.error(`addFunction cause colision on fnc ${fnc.name}`);
-        } else {
-            this.functions.push(fnc);
-        }
-    }
-
-    constructor(public readonly gl: ContextGlobal, public readonly fileName: string) {
-        gl.FUNCTIONS_MAP.set(fileName, this.functions);
-    }
-
-    get TYPE_MEMORY(): Map<string, AnyType> {
-        return this.gl.TYPE_MEMORY;
-    }
-    get RETURNED_AS_POINTER(): Set<string> {
-        return this.gl.RETURNED_AS_POINTER;
-    }
-    get PASSED_AS_POINTER_AND_NOT_RETURNED(): Map<string, boolean> {
-        return this.gl.PASSED_AS_POINTER_AND_NOT_RETURNED;
-    }
-    get POINTED_FROM_STRUCT(): Set<string> {
-        return this.gl.POINTED_FROM_STRUCT;
-    }
-    get FUNCTIONS_MAP(): Map<string, FunctionType[]> {
-        return this.gl.FUNCTIONS_MAP;
-    }
-
-    getFunctions(filename: string): FunctionType[] {
-        return this.gl.getFunctions(filename);
-    }
-
-    public getTypeByName(name: string): AnyType | undefined {
-        return this.gl.getTypeByName(name);
-    }
-
-    addType<T extends AnyType>(name: string, type: T): T {
-        return this.gl.addType(name, type);
-    }
-}
-
-export class ContextGlobal implements ContextGl {
+export class ContextGlobal implements Context {
     /**
      * Map<structName, AnyType>
-     * 
      */
-    public TYPE_MEMORY = new Map<string, AnyType>();
+    private TYPE_MEMORY = new Map<string, AnyType>();
 
     getMemoryTypes(type: "enum"): Array<EnumType& {keyName: string}>;
     getMemoryTypes(type: "plain"): Array<PlainType& {keyName: string}>;
@@ -93,20 +39,6 @@ export class ContextGlobal implements ContextGl {
         if (!type)
             return values;
         return values.filter(a => a.kind === type);
-    }
-
-
-    getFunctions(filename: string): FunctionType[] {
-        let ret = this.FUNCTIONS_MAP.get(filename);
-        if (!ret) {
-            ret = [];
-            this.FUNCTIONS_MAP.set(filename, ret);
-        }
-        return ret;
-    }
-
-    listSources(): string[] {
-        return [...this.FUNCTIONS_MAP.keys()].sort();
     }
 
     addType<T extends AnyType>(name: string, type: T): T {
@@ -159,7 +91,6 @@ export class ContextGlobal implements ContextGl {
 
     /**
      * Set<structName>
-     * 
      */
     public RETURNED_AS_POINTER = new Set<string>();
     /**
@@ -170,10 +101,37 @@ export class ContextGlobal implements ContextGl {
      *
      */
     public POINTED_FROM_STRUCT = new Set<string>();
+
+
+
+
     /**
      * Map<fileName, FunctionType[]>
      */
-    public FUNCTIONS_MAP = new Map<string, FunctionType[]>();
+    private FUNCTIONS_MAP = new Map<string, FunctionType[]>();
+    
+    getFunctions(filename: string): FunctionType[] {
+        let ret = this.FUNCTIONS_MAP.get(filename);
+        if (!ret) {
+            ret = [];
+            this.FUNCTIONS_MAP.set(filename, ret);
+        }
+        return ret;
+    }
+
+    public addFunction(filename: string, fnc: FunctionType): void {
+        const functions = this.getFunctions(filename);
+        const colision = functions.find(f => f.name === fnc.name)
+        if (colision) {
+            console.error(`addFunction cause colision on fnc ${fnc.name}`);
+        } else {
+            functions.push(fnc);
+        }
+    }
+
+    listSources(): string[] {
+        return [...this.FUNCTIONS_MAP.keys()].sort();
+    }
 
     /**
      * get a function from a file or throw an error

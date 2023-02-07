@@ -6,7 +6,7 @@ import {
 } from "./build_utils.ts";
 import { Context } from "./Context.ts";
 
-export function onFunctionDecl(ctxt: Context, cx: CXCursor) {
+export function onFunctionDecl(ctxt: Context, cx: CXCursor, fileName: string) {
     const functionName = cx.getMangling();
     // console.log('function name: ', functionName)
     const parameters: FunctionParameter[] = [];
@@ -59,7 +59,7 @@ export function onFunctionDecl(ctxt: Context, cx: CXCursor) {
             argumentAnyType.comment;
     }
     const comment = cxCommentToJSDcoString(cx);
-    ctxt.addFunction({
+    ctxt.addFunction(fileName, {
         comment,
         kind: "function",
         name: functionName,

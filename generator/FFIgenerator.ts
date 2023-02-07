@@ -18,7 +18,7 @@ import {
   ReferenceType,
   structFieldToDeinlineString,
 } from "./build_utils.ts";
-import { ContextFile, ContextGlobal } from "./Context.ts";
+import { ContextGlobal } from "./Context.ts";
 import { onEnumDecl } from "./onEnumDecl.ts";
 import { onFunctionDecl } from "./onFunctionDecl.ts";
 import { onTypedefDecl } from "./onTypedefDecl.ts";
@@ -299,7 +299,7 @@ export class FFIgenerator {
 
     const headerRoot = this.headerRoot;
     const visiteHeaderFile = (ctxtGl: ContextGlobal, fileName: string) => {
-      const ctxt = new ContextFile(ctxtGl, fileName);
+      // const ctxt = new ContextFile(ctxtGl, fileName);
       const fullPathName = join(headerRoot, fileName);
       const tu = this.index.parseTranslationUnit(
         fullPathName,
@@ -313,15 +313,15 @@ export class FFIgenerator {
         }
         switch (cx.kind) {
           case CXCursorKind.CXCursor_EnumDecl: {
-            onEnumDecl(ctxt, cx);
+            onEnumDecl(ctxtGl, cx);
             break;
           }
           case CXCursorKind.CXCursor_TypedefDecl: {
-            onTypedefDecl(ctxt, cx);
+            onTypedefDecl(ctxtGl, cx);
             break;
           }
           case CXCursorKind.CXCursor_FunctionDecl: {
-            onFunctionDecl(ctxt, cx);
+            onFunctionDecl(ctxtGl, cx, fileName);
             break;
           }
         }
