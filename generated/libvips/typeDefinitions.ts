@@ -61,6 +61,18 @@ export const enum _RegionType {
 }
 export const _RegionTypeT = unsignedInt;
 
+export const DOUBLEMASKT = {
+  /** Struct size: 40 */
+  struct: [
+    int, // xsize, offset 0, size 4
+    int, // ysize, offset 4, size 4
+    double, // scale, offset 8, size 8
+    double, // offset, offset 16, size 8
+    ptr(double), // coeff, offset 24, size 8
+    cstringT, // filename, offset 32, size 8
+  ],
+} as const;
+
 export const gbooleanT = gintT;
 export const GTypeT = gsizeT;
 export const enum im_arch_type {
@@ -92,7 +104,28 @@ export const enum im_fn_flags {
 }
 export const im_fn_flagsT = unsignedInt;
 
+export const im_generate_fnCallbackDefinition = {
+  parameters: [
+    buf(int), // out
+    ptr("void"), // seq
+    ptr("void"), // a
+    ptr("void"), // b
+  ],
+
+  result: int,
+} as const;
+export const im_generate_fnT = "function" as const;
+
 export const im_objectT = ptr("void");
+export const im_print_obj_fnCallbackDefinition = {
+  parameters: [
+    im_objectT, // obj
+  ],
+
+  result: int,
+} as const;
+export const im_print_obj_fnT = "function" as const;
+
 export const enum im_type_flags {
   IM_TYPE_NONE = 0x0,
   IM_TYPE_OUTPUT = 0x1,
@@ -100,6 +133,57 @@ export const enum im_type_flags {
   IM_TYPE_RW = 0x4,
 }
 export const im_type_flagsT = unsignedInt;
+
+export const im_wrapmany_fnCallbackDefinition = {
+  parameters: [
+    buf(ptr("void")), // in
+    ptr("void"), // out
+    int, // width
+    ptr("void"), // a
+    ptr("void"), // b
+  ],
+
+  result: "void",
+} as const;
+export const im_wrapmany_fnT = "function" as const;
+
+export const im_wrapone_fnCallbackDefinition = {
+  parameters: [
+    ptr("void"), // in
+    ptr("void"), // out
+    int, // width
+    ptr("void"), // a
+    ptr("void"), // b
+  ],
+
+  result: "void",
+} as const;
+export const im_wrapone_fnT = "function" as const;
+
+export const im_wraptwo_fnCallbackDefinition = {
+  parameters: [
+    ptr("void"), // in1
+    ptr("void"), // in2
+    ptr("void"), // out
+    int, // width
+    ptr("void"), // a
+    ptr("void"), // b
+  ],
+
+  result: "void",
+} as const;
+export const im_wraptwo_fnT = "function" as const;
+
+export const IMAGE_BOXT = {
+  /** Struct size: 20 */
+  struct: [
+    int, // xstart, offset 0, size 4
+    int, // ystart, offset 4, size 4
+    int, // xsize, offset 8, size 4
+    int, // ysize, offset 12, size 4
+    int, // chsel, offset 16, size 4
+  ],
+} as const;
 
 export const enum ImMaskType {
   IM_MASK_IDEAL_HIGHPASS = 0,
@@ -123,6 +207,18 @@ export const enum ImMaskType {
   IM_MASK_FRACTAL_FLT = 18,
 }
 export const ImMaskTypeT = unsignedInt;
+
+export const INTMASKT = {
+  /** Struct size: 32 */
+  struct: [
+    int, // xsize, offset 0, size 4
+    int, // ysize, offset 4, size 4
+    int, // scale, offset 8, size 4
+    int, // offset, offset 12, size 4
+    ptr(int), // coeff, offset 16, size 8
+    cstringT, // filename, offset 24, size 8
+  ],
+} as const;
 
 export const off_t = __off_t;
 export const enum RegionType {
@@ -279,11 +375,33 @@ export const VipsBlobT = {
   ],
 } as const;
 
+export const VipsBufT = {
+  /** Struct size: 32 */
+  struct: [
+    cstringT, // base, offset 0, size 8
+    int, // mx, offset 8, size 4
+    int, // i, offset 12, size 4
+    gbooleanT, // full, offset 16, size 4
+    int, // lasti, offset 20, size 4
+    gbooleanT, // dynamic, offset 24, size 4
+  ],
+} as const;
+
 export const VipsBufferT = {
   /** Struct size: 1 */
   struct: [
   ],
 } as const;
+
+export const VipsCallbackFnCallbackDefinition = {
+  parameters: [
+    ptr("void"), // a
+    ptr("void"), // b
+  ],
+
+  result: int,
+} as const;
+export const VipsCallbackFnT = "function" as const;
 
 export const enum VipsCoding {
   VIPS_CODING_ERROR = -1,
@@ -326,6 +444,16 @@ export const VipsCompassDirectionT = unsignedInt;
 export const VipsConnectionT = {
   /** Struct size: 1 */
   struct: [
+  ],
+} as const;
+
+export const VipsDbufT = {
+  /** Struct size: 32 */
+  struct: [
+    ptr(unsignedChar), // data, offset 0, size 8
+    size_t, // allocated_size, offset 8, size 8
+    size_t, // data_size, offset 16, size 8
+    size_t, // write_point, offset 24, size 8
   ],
 } as const;
 
@@ -791,6 +919,31 @@ export const enum VipsFormatFlags {
 }
 export const VipsFormatFlagsT = unsignedInt;
 
+export const VipsGenerateFnCallbackDefinition = {
+  parameters: [
+    buf(int), // out
+    ptr("void"), // seq
+    ptr("void"), // a
+    ptr("void"), // b
+    buf(int), // stop
+  ],
+
+  result: int,
+} as const;
+export const VipsGenerateFnT = "function" as const;
+
+export const VipsImageMapFnCallbackDefinition = {
+  parameters: [
+    buf(int), // image
+    cstringT, // name
+    buf(int), // value
+    ptr("void"), // a
+  ],
+
+  result: ptr("void"),
+} as const;
+export const VipsImageMapFnT = "function" as const;
+
 export const enum VipsImageType {
   VIPS_IMAGE_ERROR = -1,
   VIPS_IMAGE_NONE,
@@ -830,6 +983,19 @@ export const VipsInterpolateT = {
   struct: [
   ],
 } as const;
+
+export const VipsInterpolateMethodCallbackDefinition = {
+  parameters: [
+    buf(VipsInterpolateT), // interpolate
+    ptr("void"), // out
+    buf(int), // in
+    double, // x
+    double, // y
+  ],
+
+  result: "void",
+} as const;
+export const VipsInterpolateMethodT = "function" as const;
 
 export const enum VipsInterpretation {
   VIPS_INTERPRETATION_ERROR = -1,
@@ -1178,6 +1344,20 @@ export const enum VipsPCS {
 }
 export const VipsPCST = unsignedInt;
 
+export const VipsPlotFnCallbackDefinition = {
+  parameters: [
+    buf(int), // image
+    int, // x
+    int, // y
+    ptr("void"), // a
+    ptr("void"), // b
+    ptr("void"), // c
+  ],
+
+  result: int,
+} as const;
+export const VipsPlotFnT = "function" as const;
+
 export const enum VipsPrecision {
   VIPS_PRECISION_INTEGER,
   VIPS_PRECISION_FLOAT,
@@ -1191,6 +1371,16 @@ export const VipsRefStringT = {
   struct: [
   ],
 } as const;
+
+export const VipsRegionFillFnCallbackDefinition = {
+  parameters: [
+    ptr("void"), // struct _VipsRegion *
+    ptr("void"), // void *
+  ],
+
+  result: int,
+} as const;
+export const VipsRegionFillFnT = "function" as const;
 
 /**
  * VipsRegionShrink:
@@ -1224,6 +1414,17 @@ export const enum VipsRegionShrink {
  * How to calculate the output pixels when shrinking a 2x2 region.
  */
 export const VipsRegionShrinkT = unsignedInt;
+
+export const VipsRegionWriteCallbackDefinition = {
+  parameters: [
+    buf(int), // region
+    buf(int), // area
+    ptr("void"), // a
+  ],
+
+  result: int,
+} as const;
+export const VipsRegionWriteT = "function" as const;
 
 /**
  *
@@ -1265,6 +1466,17 @@ export const VipsSbufT = {
   struct: [
   ],
 } as const;
+
+export const VipsSinkNotifyCallbackDefinition = {
+  parameters: [
+    buf(int), // im
+    buf(int), // rect
+    ptr("void"), // a
+  ],
+
+  result: "void",
+} as const;
+export const VipsSinkNotifyT = "function" as const;
 
 export const enum VipsSize {
   VIPS_SIZE_BOTH,
@@ -1329,6 +1541,28 @@ export const VipsSourceGInputStreamT = {
   ],
 } as const;
 
+export const VipsStartFnCallbackDefinition = {
+  parameters: [
+    buf(int), // out
+    ptr("void"), // a
+    ptr("void"), // b
+  ],
+
+  result: ptr("void"),
+} as const;
+export const VipsStartFnT = "function" as const;
+
+export const VipsStopFnCallbackDefinition = {
+  parameters: [
+    ptr("void"), // seq
+    ptr("void"), // a
+    ptr("void"), // b
+  ],
+
+  result: int,
+} as const;
+export const VipsStopFnT = "function" as const;
+
 export const VipsTargetT = {
   /** Struct size: 1 */
   struct: [
@@ -1341,11 +1575,48 @@ export const VipsTargetCustomT = {
   ],
 } as const;
 
+export const VipsThingT = {
+  /** Struct size: 4 */
+  struct: [
+    int, // i, offset 0, size 4
+  ],
+} as const;
+
+export const VipsThreadpoolProgressFnCallbackDefinition = {
+  parameters: [
+    ptr("void"), // a
+  ],
+
+  result: int,
+} as const;
+export const VipsThreadpoolProgressFnT = "function" as const;
+
 export const VipsTransformationT = {
   /** Struct size: 1 */
   struct: [
   ],
 } as const;
+
+export const VipsTypeMap2FnCallbackDefinition = {
+  parameters: [
+    int, // type
+    ptr("void"), // a
+    ptr("void"), // b
+  ],
+
+  result: ptr("void"),
+} as const;
+export const VipsTypeMap2FnT = "function" as const;
+
+export const VipsTypeMapFnCallbackDefinition = {
+  parameters: [
+    int, // type
+    ptr("void"), // a
+  ],
+
+  result: ptr("void"),
+} as const;
+export const VipsTypeMapFnT = "function" as const;
 
 export const VipsVectorT = {
   /** Struct size: 1 */
@@ -1373,6 +1644,72 @@ export const enum VSteal {
  */
 export const VStealT = unsignedInt;
 
+export const im_dest_obj_fnCallbackDefinition = {
+  parameters: [
+    im_objectT, // obj
+  ],
+
+  result: int,
+} as const;
+export const im_dest_obj_fnT = "function" as const;
+
+export const im_dispatch_fnCallbackDefinition = {
+  parameters: [
+    buf(im_objectT), // argv
+  ],
+
+  result: int,
+} as const;
+export const im_dispatch_fnT = "function" as const;
+
+export const im_init_obj_fnCallbackDefinition = {
+  parameters: [
+    buf(im_objectT), // obj
+    cstringT, // str
+  ],
+
+  result: int,
+} as const;
+export const im_init_obj_fnT = "function" as const;
+
+export const im_type_descT = {
+  /** Struct size: 32 */
+  struct: [
+    im_arg_typeT, // type, offset 0, size 8
+    int, // size, offset 8, size 4
+    im_type_flagsT, // flags, offset 12, size 4
+    im_init_obj_fnT, // init, offset 16, size 8
+    im_dest_obj_fnT, // dest, offset 24, size 8
+  ],
+} as const;
+
+export const VipsArgumentClassMapFnCallbackDefinition = {
+  parameters: [
+    buf(VipsObjectClassT), // object_class
+    buf(int), // pspec
+    buf(VipsArgumentClassT), // argument_class
+    ptr("void"), // a
+    ptr("void"), // b
+  ],
+
+  result: ptr("void"),
+} as const;
+export const VipsArgumentClassMapFnT = "function" as const;
+
+export const VipsArgumentMapFnCallbackDefinition = {
+  parameters: [
+    buf(VipsObjectT), // object
+    buf(int), // pspec
+    buf(VipsArgumentClassT), // argument_class
+    buf(VipsArgumentInstanceT), // argument_instance
+    ptr("void"), // a
+    ptr("void"), // b
+  ],
+
+  result: ptr("void"),
+} as const;
+export const VipsArgumentMapFnT = "function" as const;
+
 export const VipsClassMapFnCallbackDefinition = {
   parameters: [
     buf(VipsObjectClassT), // cls
@@ -1387,5 +1724,35 @@ export const VipsExecutorT = {
   /** Struct size: 8 */
   struct: [
     ptr(VipsVectorT), // vector, offset 0, size 8
+  ],
+} as const;
+
+export const im_arg_descT = {
+  /** Struct size: 24 */
+  struct: [
+    cstringT, // name, offset 0, size 8
+    ptr(im_type_descT), // desc, offset 8, size 8
+    im_print_obj_fnT, // print, offset 16, size 8
+  ],
+} as const;
+
+export const im_functionT = {
+  /** Struct size: 48 */
+  struct: [
+    cstringT, // name, offset 0, size 8
+    cstringT, // desc, offset 8, size 8
+    im_fn_flagsT, // flags, offset 16, size 4
+    im_dispatch_fnT, // disp, offset 24, size 8
+    int, // argc, offset 32, size 4
+    ptr(im_arg_descT), // argv, offset 40, size 8
+  ],
+} as const;
+
+export const im_packageT = {
+  /** Struct size: 24 */
+  struct: [
+    cstringT, // name, offset 0, size 8
+    int, // nfuncs, offset 8, size 4
+    ptr(buf(im_functionT)), // table, offset 16, size 8
   ],
 } as const;

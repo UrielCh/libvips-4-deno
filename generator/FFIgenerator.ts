@@ -157,139 +157,6 @@ export class FFIgenerator {
     return { code: results.join('\n') };
   }
 
-
-  /**
-   * Generate all enums for typeDefinitions.ts
-   * @param ctxtGl context
-   * @returns 
-   */
-  private generateEnums(ctxtGl: ContextGlobal, genCtxt: GeneratorContext): { code: string[], cnt: number } {
-    const results: string[] = [];
-    let cnt = 0;
-    /** enums */
-    const enumsType = ctxtGl.getMemoryTypes("enum");
-    if (enumsType.length) {
-      for (const anyType of enumsType) {
-        const { code } = this.generateOne(genCtxt, anyType);
-        results.push(code);
-        cnt++;
-      }
-    }
-    return { code: results, cnt };
-  }
-
-  /**
-   * Generate all pointer refs for typeDefinitions.ts
-   * @param ctxtGl 
-   * @returns 
-   */
-  private generatePrts(ctxtGl: ContextGlobal, genCtxt: GeneratorContext): { code: string[], cnt: number } {
-    const results: string[] = [];
-    let cnt = 0;
-    const ptrType = ctxtGl.getMemoryTypes("pointer");
-    if (ptrType.length) {
-      for (const anyType of ptrType) {
-        const { code } = this.generateOne(genCtxt, anyType);
-        results.push(code);
-        cnt++;
-      }
-    }
-    return { code: results, cnt };
-  }
-
-  /**
-   * Generate all struct for typeDefinitions.ts
-   * @param ctxtGl 
-   * @param selection 
-   * @returns 
-   */
-  private generateStructs(ctxtGl: ContextGlobal, genCtxt: GeneratorContext): { code: string[], cnt: number } {
-    const results: string[] = [];
-    let cnt = 0;
-    const stuctType = ctxtGl.getMemoryTypes("struct");
-    if (stuctType.length) {
-      const missingStruct = new Set<string>(stuctType.map(s => s.reprName));
-      console.log('Missing Struct size is', pc.green(missingStruct.size.toString()))
-      let added = 1;
-      for (let pass = 1; added > 0; pass++) {
-        added = 0;
-        loop: for (const anyType of stuctType) {
-          if (!missingStruct.has(anyType.reprName))
-            continue;
-          if (!genCtxt.selection.has(anyType.reprName)) {
-            continue;
-          }
-          // check missing type usage;
-          const uncomplet = new Set<string>;
-          for (const field of anyType.fields) {
-            const { structField, dependencies } = structFieldToDeinlineString(anyType, field);
-            if (missingStruct.has(structField)) {
-              genCtxt.selection.add(structField)
-              uncomplet.add(`"${structField}"`);
-            }
-            for (const dep of dependencies) {
-              if (missingStruct.has(dep)) {
-                genCtxt.selection.add(dep)
-                uncomplet.add(`"${dep}"`);
-              }
-            }
-          }
-          if (uncomplet.size) {
-            const missingList = [...uncomplet].join(', ');
-            // if (missingList.length > 100) {
-            //   missingList = missingList.substring(0, 100) + '...';
-            // }
-            console.log(`${pc.green(pass.toString())} Postpone generation of ${pc.red(anyType.reprName)} missing: ${missingList}`)
-            continue loop;
-          }
-          added++;
-          const { code } = this.generateOne(genCtxt, anyType);
-          results.push(code);
-          cnt++;
-          missingStruct.delete(anyType.reprName);
-        }
-      }
-      if (missingStruct.size)
-        console.log('missingStruct:', [...missingStruct].join(', '))
-    }
-    return { code: results, cnt };
-  }
-
-  /**
-   * Generate all refs for typeDefinitions.ts
-   * @param ctxtGl 
-   * @returns 
-   */
-  private generateRefs(ctxtGl: ContextGlobal, genCtxt: GeneratorContext): { code: string[], cnt: number } {
-    const results: string[] = [];
-    let cnt = 0;
-    for (const anyType of ctxtGl.getMemoryTypes("ref")) {
-      const { code } = this.generateOne(genCtxt, anyType);
-      results.push(code);
-      cnt++;
-    }
-    return { code: results, cnt };
-  }
-
-  /**
-   * Generate all function for typeDefinitions.ts
-   * @param ctxtGl 
-   * @returns 
-   */
-  private generateFunctions(ctxtGl: ContextGlobal, genCtxt: GeneratorContext): { code: string[], cnt: number } {
-    const results: string[] = [];
-    let cnt = 0;
-    const fncType = ctxtGl.getMemoryTypes("function");
-    if (fncType.length) {
-      for (const anyType of fncType) {
-        const { code } = this.generateOne(genCtxt, anyType);
-        results.push(code);
-        cnt++;
-      }
-    }
-    return { code: results, cnt };
-  }
-
   /**
    * functions files
    */
@@ -451,7 +318,7 @@ export class FFIgenerator {
      * Generate functions fiels
      */
     const { dependencies, fileNames } = await this.genFunctionFiles(ctxtGl);
-
+    console.log(dependencies.has('CXStringT'))
     const available = new Set<string>();
 
     const genCtxt: GeneratorContext = {
@@ -468,7 +335,6 @@ export class FFIgenerator {
       selection: dependencies,
       available,
     }
-
 
     /**
      * Generate typeDefinitions.ts
@@ -491,6 +357,7 @@ export class FFIgenerator {
       results.push(`${cmt(anyType, '')}export const ${name} = "${anyType.type}" as const;`)
       results.push('');
       genCtxt.available.add(name);
+      genCtxt.available.add(anyType.type);
     }
 
     // let cnt = 0;
@@ -506,6 +373,8 @@ export class FFIgenerator {
         if (processed.has(anyType.keyName))
           continue;
         if (anyType.kind === "struct") {
+          if ("CXStringT" === anyType.reprName)
+          debugger;
           if (!genCtxt.selection.has(anyType.reprName))
             continue;
         }
