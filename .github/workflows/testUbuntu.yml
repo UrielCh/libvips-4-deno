@@ -32,9 +32,9 @@ jobs:
     #   run: |
     #     sudo apt-get remove -y libclang*
 
-    - name: Install LLVM
+    - name: Install LLVM and libvips
       run: |
-        sudo apt-get install -y libclang1-14 libclang-14-dev
+        sudo apt-get install -y libclang1-14 libclang-14-dev libvips-dev
 
     - name: run test no LIBCLANG_PATH
       run: |
