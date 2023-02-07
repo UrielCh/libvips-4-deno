@@ -32,9 +32,9 @@ jobs:
     #   run: |
     #     sudo apt-get remove -y libclang*
 
-    - name: Install LLVM and libvips
+    - name: Install LLVM and libvips-dev
       run: |
-        sudo apt-get install -y libclang1-14 libclang-14-dev libvips-dev
+        sudo apt-get install -y libclang1-14 libclang-14-dev
 
     - name: run test no LIBCLANG_PATH
       run: |
@@ -58,9 +58,9 @@ jobs:
       run: |
         deno run generated/clang/ffi.ts
 
-    - name: Regen code genLibVips
-      run: |
-        deno task genLibVips
+    # - name: Regen code genLibVips
+    #   run: |
+    #     deno task genLibVips
 
     - name: check for unexpected changes in generated
       run: "[ $(git status --porcelain generated | wc -l) -eq 0 ] || (echo code have changes && false)"
