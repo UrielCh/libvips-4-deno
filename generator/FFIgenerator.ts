@@ -15,12 +15,8 @@ import {
   AnyType,
   anyTypeToString,
   CommonType,
-  EnumType,
-  FunctionType,
-  PointerType,
   ReferenceType,
   structFieldToDeinlineString,
-  StructType,
 } from "./build_utils.ts";
 import { ContextFile, ContextGlobal } from "./Context.ts";
 import { onEnumDecl } from "./onEnumDecl.ts";
@@ -202,6 +198,8 @@ export class FFIgenerator {
     const results: string[] = [];
     let cnt = 0;
     const RefType = new Map<string, ReferenceType>();
+    // for (const anyType of ctxtGl.getMemoryTypes()) {
+    //  const name = anyType.keyName;
     for (const [name, anyType] of ctxtGl.TYPE_MEMORY) {
       if (anyType.kind === "ref") {
         RefType.set(name, anyType)
@@ -422,6 +420,8 @@ export class FFIgenerator {
       'export const func = (_func: unknown) => "function" as const;',
     ];
 
+    // for (const anyType of ctxtGl.getMemoryTypes()) {
+    //   const name = anyType.keyName;
     for (const [name, anyType] of ctxtGl.TYPE_MEMORY) {
       if (anyType.kind === "plain") {
         if (anyType.name === "void") {
@@ -497,6 +497,8 @@ export class FFIgenerator {
 
     const availibleTypes = new Set<string>(["ptr", "buf", "func"]);
     for (const [name, anyType] of ctxtGl.TYPE_MEMORY) {
+      // for (const anyType of ctxtGl.getMemoryTypes()) {
+      // const name = anyType.keyName;
       if (anyType.kind === "pointer") {
         if (anyType.name.includes(" ") || anyType.name.includes("*")) {
           continue;

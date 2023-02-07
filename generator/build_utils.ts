@@ -14,6 +14,10 @@ import { ContextGl } from "./Context.ts";
 export type ALL_KIND = "enum" | "plain" | "struct" | "function" | "pointer" | "ref";
 
 export interface CommonType {
+  /**
+   * key name in the context
+   */
+  keyName?: string;
   kind?: ALL_KIND;
   name: string;
   comment: null | string;

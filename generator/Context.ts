@@ -10,7 +10,7 @@ import {
 } from "./build_utils.ts";
 
 export interface ContextGl {
-    get TYPE_MEMORY(): Map<string, AnyType>;
+    // get TYPE_MEMORY(): Map<string, AnyType>;
     getTypeByName(name: string): AnyType | undefined;
     addType<T extends AnyType>(name: string, type: T): T;
     get RETURNED_AS_POINTER(): Set<string>;
@@ -64,15 +64,16 @@ export class ContextGlobal implements ContextGl {
      */
     public TYPE_MEMORY = new Map<string, AnyType>();
 
-    getMemoryTypes(type: "enum"): EnumType[];
-    getMemoryTypes(type: "plain"): PlainType[];
-    getMemoryTypes(type: "struct"): StructType[];
-    getMemoryTypes(type: "function"): FunctionType[];
-    getMemoryTypes(type: "pointer"): PointerType[];
-    getMemoryTypes(type: "ref"): ReferenceType[];
-    getMemoryTypes(): AnyType[];
-    public getMemoryTypes(type?: ALL_KIND): AnyType[] {
-        const values = [...this.TYPE_MEMORY.values()];
+    getMemoryTypes(type: "enum"): Array<EnumType& {keyName: string}>;
+    getMemoryTypes(type: "plain"): Array<PlainType& {keyName: string}>;
+    getMemoryTypes(type: "struct"): Array<StructType& {keyName: string}>;
+    getMemoryTypes(type: "function"): Array<FunctionType& {keyName: string}>;
+    getMemoryTypes(type: "pointer"): Array<PointerType& {keyName: string}>;
+    getMemoryTypes(type: "ref"): Array<ReferenceType& {keyName: string}>;
+    getMemoryTypes(): Array<AnyType & {keyName: string}>;
+    public getMemoryTypes(type?: ALL_KIND): Array<AnyType & {keyName: string}> {
+        const values = [...this.TYPE_MEMORY.values()] as Array<AnyType & {keyName: string}>;
+        // values.sort();
         if (!type)
             return values;
         return values.filter(a => a.kind === type);
@@ -82,6 +83,7 @@ export class ContextGlobal implements ContextGl {
         // if (this.TYPE_MEMORY.has(name)) {
         //     throw new Error(`Type ${name} already exists`);
         // }
+        type.keyName = name;
         this.TYPE_MEMORY.set(name, type);
         return type;
     }
