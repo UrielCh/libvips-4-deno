@@ -15,7 +15,6 @@ import {
   AnyType,
   anyTypeToString,
   CommonType,
-  ReferenceType,
   structFieldToDeinlineString,
 } from "./build_utils.ts";
 import { ContextGlobal } from "./Context.ts";
@@ -102,14 +101,37 @@ export class FFIgenerator {
         results.push(`${cmt(anyType, '')}export const ${anyType.reprName} = "function" as const;\n`);
         break;
       }
-      // case "struct":
-      //   return this.generateStructs(ctxtGl, new Set());
+      case "ref": {
+          const name = anyType.keyName!;
+          const expName = name.endsWith("_t") ? name : `${name}T`;
+          const curName = anyType.name.endsWith("_t") ? anyType.name : anyType.reprName;
+          results.push(`${cmt(anyType)}export const ${expName} = ${curName};`);
+        break
+      }
+      case "struct": {
+        const prefix = [];
+        results.push(`${cmt(anyType, '')}export const ${anyType.reprName} = {`);
+        results.push(`  /** Struct size: ${anyType.size} */`);
+        results.push(`  struct: [`);
+        for (const field of anyType.fields) {
+          const { structField, extraCode, dependencies: structDependencies } = structFieldToDeinlineString(anyType, field);
+          for (const type of structDependencies) {
+            genCtxt.selection.add(type);
+          }
+          if (extraCode)
+            prefix.push(extraCode)
+          results.push(`${cmt(field, '    ')}    ${structField}, // ${field.name}, offset ${field.offset}, size ${field.size}`);
+        }
+        results.push(`  ],`);
+        results.push(`} as const;\n`);
+        results.unshift(...prefix);
+        break;
+      }
       default:
         throw new Error("Unexpected type:" + JSON.stringify(anyType.kind));
     }
     return { code: results.join('\n') };
   }
-
 
 
   /**
@@ -196,23 +218,9 @@ export class FFIgenerator {
             console.log(`${pc.green(pass.toString())} Postpone generation of ${pc.red(anyType.reprName)} missing: ${missingList}`)
             continue loop;
           }
-          const next: string[] = [];
           added++;
-          next.push(`${cmt(anyType, '')}export const ${anyType.reprName} = {`);
-          next.push(`  /** Struct size: ${anyType.size} */`);
-          next.push(`  struct: [`);
-          for (const field of anyType.fields) {
-            const { structField, extraCode, dependencies: structDependencies } = structFieldToDeinlineString(anyType, field);
-            for (const type of structDependencies) {
-              genCtxt.selection.add(type);
-            }
-            if (extraCode)
-              results.push(extraCode)
-            next.push(`${cmt(field, '    ')}    ${structField}, // ${field.name}, offset ${field.offset}, size ${field.size}`);
-          }
-          next.push(`  ],`);
-          next.push(`} as const;\n`);
-          results.push(next.join('\n'));
+          const { code } = this.generateOne(genCtxt, anyType);
+          results.push(code);
           cnt++;
           missingStruct.delete(anyType.reprName);
         }
@@ -231,18 +239,10 @@ export class FFIgenerator {
   private generateRefs(ctxtGl: ContextGlobal, genCtxt: GeneratorContext): { code: string[], cnt: number } {
     const results: string[] = [];
     let cnt = 0;
-    const RefType = new Map<string, ReferenceType>();
     for (const anyType of ctxtGl.getMemoryTypes("ref")) {
-      const name = anyType.keyName;
-      RefType.set(name, anyType)
-    }
-    if (RefType.size) {
-      for (const [name, anyType] of RefType) {
-        const expName = name.endsWith("_t") ? name : `${name}T`;
-        const curName = anyType.name.endsWith("_t") ? anyType.name : anyType.reprName;
-        results.push(`${cmt(anyType)}export const ${expName} = ${curName};`);
-        cnt++;
-      }
+      const { code } = this.generateOne(genCtxt, anyType);
+      results.push(code);
+      cnt++;
     }
     return { code: results, cnt };
   }
