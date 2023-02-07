@@ -59,7 +59,7 @@ export function onFunctionDecl(ctxt: Context, cx: CXCursor) {
             argumentAnyType.comment;
     }
     const comment = cxCommentToJSDcoString(cx);
-    ctxt.functions.push({
+    ctxt.addFunction({
         comment,
         kind: "function",
         name: functionName,

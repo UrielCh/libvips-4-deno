@@ -24,13 +24,6 @@ export const vips_dbuf_destroy = {
   result: "void",
 } as const;
 
-export const vips_dbuf_destroy = {
-  parameters: [
-    buf(VipsDbufT), // dbuf
-  ],
-  result: "void",
-} as const;
-
 export const vips_dbuf_get_write = {
   parameters: [
     buf(VipsDbufT), // dbuf

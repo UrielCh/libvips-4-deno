@@ -17,10 +17,11 @@ export interface ContextGl {
     get PASSED_AS_POINTER_AND_NOT_RETURNED(): Map<string, boolean>;
     get POINTED_FROM_STRUCT(): Set<string>;
     get FUNCTIONS_MAP(): Map<string, FunctionType[]>;
+    getFunctions(filename: string): FunctionType[];
 }
 
 export interface Context extends ContextGl {
-    get functions(): FunctionType[];
+    addFunction(fnc: FunctionType): void;
 }
 
 /**
@@ -28,6 +29,16 @@ export interface Context extends ContextGl {
  */
 export class ContextFile implements Context {
     public functions: FunctionType[] = [];
+
+    public addFunction(fnc: FunctionType): void {
+        const colision = this.functions.find(f => f.name === fnc.name)
+        if (colision) {
+            console.error(`addFunction cause colision on fnc ${fnc.name}`);
+        } else {
+            this.functions.push(fnc);
+        }
+    }
+
     constructor(public readonly gl: ContextGlobal, public readonly fileName: string) {
         gl.FUNCTIONS_MAP.set(fileName, this.functions);
     }
@@ -46,6 +57,10 @@ export class ContextFile implements Context {
     }
     get FUNCTIONS_MAP(): Map<string, FunctionType[]> {
         return this.gl.FUNCTIONS_MAP;
+    }
+
+    getFunctions(filename: string): FunctionType[] {
+        return this.gl.getFunctions(filename);
     }
 
     public getTypeByName(name: string): AnyType | undefined {
@@ -71,12 +86,27 @@ export class ContextGlobal implements ContextGl {
     getMemoryTypes(type: "pointer"): Array<PointerType& {keyName: string}>;
     getMemoryTypes(type: "ref"): Array<ReferenceType& {keyName: string}>;
     getMemoryTypes(): Array<AnyType & {keyName: string}>;
+
     public getMemoryTypes(type?: ALL_KIND): Array<AnyType & {keyName: string}> {
         const values = [...this.TYPE_MEMORY.values()] as Array<AnyType & {keyName: string}>;
         values.sort((a,b) => a.keyName.localeCompare(b.keyName));
         if (!type)
             return values;
         return values.filter(a => a.kind === type);
+    }
+
+
+    getFunctions(filename: string): FunctionType[] {
+        let ret = this.FUNCTIONS_MAP.get(filename);
+        if (!ret) {
+            ret = [];
+            this.FUNCTIONS_MAP.set(filename, ret);
+        }
+        return ret;
+    }
+
+    listSources(): string[] {
+        return [...this.FUNCTIONS_MAP.keys()].sort();
     }
 
     addType<T extends AnyType>(name: string, type: T): T {

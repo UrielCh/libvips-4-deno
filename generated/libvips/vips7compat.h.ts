@@ -1388,13 +1388,6 @@ export const im_init_world = {
   result: int,
 } as const;
 
-export const im_init_world = {
-  parameters: [
-    cstringT, // argv0
-  ],
-  result: int,
-} as const;
-
 export const im_insert = {
   parameters: [
     buf(int), // main

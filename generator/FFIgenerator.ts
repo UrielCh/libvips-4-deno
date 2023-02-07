@@ -353,8 +353,8 @@ export class FFIgenerator {
       for (const type of ctxtGl.getMemoryTypes()) {
         markReturnedByPointer(returnedByPointer, type);
       }
-      for (const funcs of ctxtGl.FUNCTIONS_MAP.values()) {
-        for (const func of funcs) {
+      for (const sourceFile of ctxtGl.listSources()) {
+        for (const func of ctxtGl.getFunctions(sourceFile)) {
           for (const param of func.parameters) {
             markReturnedByPointer(returnedByPointer, param.type);
           }
@@ -372,8 +372,8 @@ export class FFIgenerator {
       for (const type of ctxtGl.getMemoryTypes()) {
         markReturnedByPointer(name, type);
       }
-      for (const funcs of ctxtGl.FUNCTIONS_MAP.values()) {
-        for (const func of funcs) {
+      for (const sourceFile of ctxtGl.listSources()) {
+        for (const func of ctxtGl.getFunctions(sourceFile)) {
           for (const param of func.parameters) {
             markReturnedByPointer(name, param.type);
           }
@@ -384,7 +384,6 @@ export class FFIgenerator {
 
     // Hard-coded exceptions
     try {
-      // const INDEX_FUCNTIONS = ctxtGl.FUNCTIONS_MAP.get("Index.h")!;
       // clang_annotateTokens takes a user-defined C array of tokens, not a token pointer like tokens are usually passed around as.
       const clang_annotateTokens = ctxtGl.getExistingFunction("clang-c/Index.h", "clang_annotateTokens");
       const clang_annotateTokens_arg1 = clang_annotateTokens.parameters[1];
@@ -459,7 +458,7 @@ export class FFIgenerator {
   genFFiFile(ctxtGl: ContextGlobal, fileNames: string[]): void {
     const results: string[] = [];
     const IMPORTS: string[] = ['const IMPORTS = {'];
-    for (const fileName of [...ctxtGl.FUNCTIONS_MAP.keys()].sort()) {
+    for (const fileName of ctxtGl.listSources()) {
       if (!fileNames.includes(fileName))
         continue;
 
@@ -531,13 +530,13 @@ export class FFIgenerator {
     }
     console.log(pc.green(availibleTypes.size.toString()), 'Available Types');
     const longestType = Math.max(15, ...[...availibleTypes].map(s => s.length));
-    const longestFilename = 3 + Math.max(...[...ctxtGl.FUNCTIONS_MAP.keys()].map(s => s.length));
+    const longestFilename = 3 + Math.max(...[...ctxtGl.listSources()].map(s => s.length));
 
-    const orderedFilename = [...ctxtGl.FUNCTIONS_MAP.keys()].sort();
+    const orderedFilename = ctxtGl.listSources();
     for (const fileName of orderedFilename) {
       const fnEx = `${fileName}.ts`;
-      const apiFunctions = ctxtGl.FUNCTIONS_MAP.get(fileName);
-      if (!apiFunctions) continue;
+      const apiFunctions = ctxtGl.getFunctions(fileName);
+      if (!apiFunctions.length) continue;
       const imports = new Set<string>();
       const functionResults: string[] = [];
       const dropSumboles: string[] = [];
