@@ -39,14 +39,11 @@ export function onTypedefDecl(ctxt: Context, cx: CXCursor) {
           ...structDeclAnyType.pointee,
           name: typedefName,
           reprName: `${typedefName}T`,
-          comment: cxCommentToJSDcoString(cx),
         };
-
       } else {
         structDeclAnyType = {
           ...structDeclAnyType,
           name: typedefName,
-          comment: cxCommentToJSDcoString(cx),
         };
       }
       break;
@@ -72,16 +69,13 @@ export function onTypedefDecl(ctxt: Context, cx: CXCursor) {
           ...structDeclAnyType,
           name: typedefName,
           reprName: `${typedefName}T`,
-          comment: cxCommentToJSDcoString(cx),
         };
-
         break;
       }
     case "plain":
       structDeclAnyType = {
         ...structDeclAnyType,
         name: typedefName,
-        comment: cxCommentToJSDcoString(cx),
       };
       break;
     case "struct":
@@ -89,7 +83,6 @@ export function onTypedefDecl(ctxt: Context, cx: CXCursor) {
         ...structDeclAnyType,
         name: typedefName,
         reprName: `${typedefName}T`,
-        comment: cxCommentToJSDcoString(cx),
       };
       break;
     case "enum":
@@ -97,18 +90,17 @@ export function onTypedefDecl(ctxt: Context, cx: CXCursor) {
         ...structDeclAnyType,
         name: typedefName,
         reprName: `${typedefName}T`,
-        comment: cxCommentToJSDcoString(cx),
       };
       break;
     case "ref":
       structDeclAnyType = {
         ...structDeclAnyType,
-        comment: cxCommentToJSDcoString(cx),
       };
       break;
     default:
       throw new Error("unreachable");
   }
+  structDeclAnyType.comment = cxCommentToJSDcoString(cx);
   if (structDeclAnyType.kind === "struct") {
     for (const field of structDeclAnyType.fields) {
       if (
