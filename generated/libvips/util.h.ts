@@ -1,5 +1,6 @@
 import {
   buf,
+  cstringArrayT,
   cstringT,
   int,
   ptr,
@@ -12,6 +13,31 @@ export const vips__chomp = {
     cstringT, // str
   ],
   result: "void",
+} as const;
+
+export const vips__open = {
+  parameters: [
+    cstringT, // filename
+    int, // flags
+    int, // mode
+  ],
+  result: int,
+} as const;
+
+export const vips__open_read = {
+  parameters: [
+    cstringT, // filename
+  ],
+  result: int,
+} as const;
+
+export const vips__write = {
+  parameters: [
+    int, // fd
+    ptr("void"), // buf
+    size_t, // count
+  ],
+  result: int,
 } as const;
 
 export const vips_break_token = {
@@ -45,6 +71,21 @@ export const vips_enum_string = {
     int, // value
   ],
   result: cstringT,
+} as const;
+
+export const vips_file_length = {
+  parameters: [
+    int, // fd
+  ],
+  result: int,
+} as const;
+
+export const vips_filename_suffix_match = {
+  parameters: [
+    cstringT, // path
+    cstringArrayT, // suffixes
+  ],
+  result: int,
 } as const;
 
 export const vips_flags_from_nick = {

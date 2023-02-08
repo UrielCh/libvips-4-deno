@@ -29,6 +29,8 @@ export const int = "i32" as const;
 
 export const long = "i64" as const;
 
+export const short = "i16" as const;
+
 export const size_t = "u64" as const;
 
 export const unsignedChar = "u8" as const;
@@ -75,6 +77,19 @@ export const DOUBLEMASKT = {
 
 export const gbooleanT = gintT;
 export const GTypeT = gsizeT;
+export const im__wrapscan_fnCallbackDefinition = {
+  parameters: [
+    ptr("void"), // p
+    int, // n
+    ptr("void"), // seq
+    ptr("void"), // a
+    ptr("void"), // b
+  ],
+
+  result: int,
+} as const;
+export const im__wrapscan_fnT = "function" as const;
+
 export const enum im_arch_type {
   IM_ARCH_NATIVE,
   IM_ARCH_BYTE_SWAPPED,

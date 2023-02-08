@@ -144,6 +144,13 @@ export const vips_image_get_height = {
   result: int,
 } as const;
 
+export const vips_image_get_history = {
+  parameters: [
+    buf(int), // image
+  ],
+  result: cstringT,
+} as const;
+
 export const vips_image_get_image = {
   parameters: [
     buf(int), // image
@@ -287,6 +294,16 @@ export const vips_image_guess_format = {
 export const vips_image_guess_interpretation = {
   parameters: [
     buf(int), // image
+  ],
+  result: int,
+} as const;
+
+export const vips_image_history_args = {
+  parameters: [
+    buf(int), // image
+    cstringT, // name
+    int, // argc
+    cstringArrayT, // argv
   ],
   result: int,
 } as const;

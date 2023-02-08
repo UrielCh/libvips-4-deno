@@ -15,6 +15,106 @@ import {
   VipsPlotFnT,
 } from "./typeDefinitions.ts";
 
+// Symbol im__analyze_register not exported by lib libvips.so
+// Symbol im__balance not exported by lib libvips.so
+export const im__bandalike = {
+  parameters: [
+    cstringT, // domain
+    buf(int), // in1
+    buf(int), // in2
+    buf(int), // out1
+    buf(int), // out2
+  ],
+  result: int,
+} as const;
+
+export const im__bandalike_vec = {
+  parameters: [
+    cstringT, // domain
+    buf(buf(int)), // in
+    buf(buf(int)), // out
+    int, // n
+  ],
+  result: int,
+} as const;
+
+export const im__bandup = {
+  parameters: [
+    cstringT, // domain
+    buf(int), // in
+    buf(int), // out
+    int, // n
+  ],
+  result: int,
+} as const;
+
+// Symbol im__colour_difference not exported by lib libvips.so
+export const im__colour_unary = {
+  parameters: [
+    cstringT, // domain
+    buf(int), // in
+    buf(int), // out
+    int, // interpretation
+    im_wrapone_fnT, // buffer_fn
+    ptr("void"), // a
+    ptr("void"), // b
+  ],
+  result: int,
+} as const;
+
+// Symbol im__csv_register not exported by lib libvips.so
+// Symbol im__exr_register not exported by lib libvips.so
+// Symbol im__find_best_contrast not exported by lib libvips.so
+export const im__format_init = {
+  parameters: [],
+  result: "void",
+} as const;
+
+export const im__formatalike = {
+  parameters: [
+    buf(int), // in1
+    buf(int), // in2
+    buf(int), // out1
+    buf(int), // out2
+  ],
+  result: int,
+} as const;
+
+export const im__formatalike_vec = {
+  parameters: [
+    buf(buf(int)), // in
+    buf(buf(int)), // out
+    int, // n
+  ],
+  result: int,
+} as const;
+
+export const im__insert_base = {
+  parameters: [
+    cstringT, // domain
+    buf(int), // in1
+    buf(int), // in2
+    buf(int), // out
+  ],
+  result: buf(buf(int)),
+} as const;
+
+// Symbol im__jpeg_register not exported by lib libvips.so
+// Symbol im__magick_register not exported by lib libvips.so
+// Symbol im__png_register not exported by lib libvips.so
+// Symbol im__ppm_register not exported by lib libvips.so
+// Symbol im__tiff_register not exported by lib libvips.so
+export const im__vector_to_ink = {
+  parameters: [
+    cstringT, // domain
+    buf(int), // im
+    int, // n
+    buf(double), // vec
+  ],
+  result: buf(int),
+} as const;
+
+// Symbol im__wrapscan not exported by lib libvips.so
 export const im_abs = {
   parameters: [
     buf(int), // in
@@ -122,6 +222,14 @@ export const im_affinei_all = {
     double, // d
     double, // dx
     double, // dy
+  ],
+  result: int,
+} as const;
+
+export const im_align_bands = {
+  parameters: [
+    buf(int), // in
+    buf(int), // out
   ],
   result: int,
 } as const;
@@ -427,6 +535,15 @@ export const im_conv_f = {
   result: int,
 } as const;
 
+export const im_conv_f_raw = {
+  parameters: [
+    buf(int), // in
+    buf(int), // out
+    buf(int), // mask
+  ],
+  result: int,
+} as const;
+
 export const im_convsep = {
   parameters: [
     buf(int), // in
@@ -445,6 +562,15 @@ export const im_convsep_f = {
   result: int,
 } as const;
 
+export const im_convsep_f_raw = {
+  parameters: [
+    buf(int), // in
+    buf(int), // out
+    buf(int), // mask
+  ],
+  result: int,
+} as const;
+
 export const im_copy = {
   parameters: [
     buf(int), // in
@@ -453,12 +579,28 @@ export const im_copy = {
   result: int,
 } as const;
 
+export const im_copy_dmask_matrix = {
+  parameters: [
+    buf(int), // mask
+    buf(buf(double)), // matrix
+  ],
+  result: "void",
+} as const;
+
 export const im_copy_file = {
   parameters: [
     buf(int), // in
     buf(int), // out
   ],
   result: int,
+} as const;
+
+export const im_copy_matrix_dmask = {
+  parameters: [
+    buf(buf(double)), // matrix
+    buf(int), // mask
+  ],
+  result: "void",
 } as const;
 
 export const im_copy_morph = {
@@ -508,6 +650,23 @@ export const im_copy_swap = {
   parameters: [
     buf(int), // in
     buf(int), // out
+  ],
+  result: int,
+} as const;
+
+export const im_correl = {
+  parameters: [
+    buf(int), // ref
+    buf(int), // sec
+    int, // xref
+    int, // yref
+    int, // xsec
+    int, // ysec
+    int, // hwindowsize
+    int, // hsearchsize
+    buf(double), // correlation
+    buf(int), // x
+    buf(int), // y
   ],
   result: int,
 } as const;
@@ -668,6 +827,16 @@ export const im_divide = {
   result: int,
 } as const;
 
+export const im_dmat_alloc = {
+  parameters: [
+    int, // nrl
+    int, // nrh
+    int, // ncl
+    int, // nch
+  ],
+  result: buf(buf(double)),
+} as const;
+
 export const im_draw_circle = {
   parameters: [
     buf(int), // image
@@ -801,6 +970,14 @@ export const im_dtype2char = {
     int, // n
   ],
   result: cstringT,
+} as const;
+
+export const im_dvector = {
+  parameters: [
+    int, // nl
+    int, // nh
+  ],
+  result: buf(double),
 } as const;
 
 export const im_embed = {
@@ -1024,6 +1201,14 @@ export const im_filename_suffix = {
   result: "void",
 } as const;
 
+export const im_filename_suffix_match = {
+  parameters: [
+    cstringT, // path
+    cstringArrayT, // suffixes
+  ],
+  result: int,
+} as const;
+
 export const im_fliphor = {
   parameters: [
     buf(int), // in
@@ -1065,6 +1250,16 @@ export const im_flt_image_freq = {
   result: int,
 } as const;
 
+export const im_fmat_alloc = {
+  parameters: [
+    int, // nrl
+    int, // nrh
+    int, // ncl
+    int, // nch
+  ],
+  result: buf(buf(float)),
+} as const;
+
 export const im_fractsurf = {
   parameters: [
     buf(int), // out
@@ -1074,6 +1269,66 @@ export const im_fractsurf = {
   result: int,
 } as const;
 
+export const im_free_dmat = {
+  parameters: [
+    buf(buf(double)), // m
+    int, // nrl
+    int, // nrh
+    int, // ncl
+    int, // nch
+  ],
+  result: "void",
+} as const;
+
+export const im_free_dvector = {
+  parameters: [
+    buf(double), // v
+    int, // nl
+    int, // nh
+  ],
+  result: "void",
+} as const;
+
+export const im_free_fmat = {
+  parameters: [
+    buf(buf(float)), // m
+    int, // nrl
+    int, // nrh
+    int, // ncl
+    int, // nch
+  ],
+  result: "void",
+} as const;
+
+export const im_free_fvector = {
+  parameters: [
+    buf(float), // v
+    int, // nl
+    int, // nh
+  ],
+  result: "void",
+} as const;
+
+export const im_free_imat = {
+  parameters: [
+    buf(buf(int)), // m
+    int, // nrl
+    int, // nrh
+    int, // ncl
+    int, // nch
+  ],
+  result: "void",
+} as const;
+
+export const im_free_ivector = {
+  parameters: [
+    buf(int), // v
+    int, // nl
+    int, // nh
+  ],
+  result: "void",
+} as const;
+
 export const im_freqflt = {
   parameters: [
     buf(int), // in
@@ -1081,6 +1336,14 @@ export const im_freqflt = {
     buf(int), // out
   ],
   result: int,
+} as const;
+
+export const im_fvector = {
+  parameters: [
+    int, // nl
+    int, // nh
+  ],
+  result: buf(float),
 } as const;
 
 export const im_fwfft = {
@@ -1140,6 +1403,38 @@ export const im_generate = {
   result: int,
 } as const;
 
+export const im_getnextoption = {
+  parameters: [
+    cstringArrayT, // in
+  ],
+  result: cstringT,
+} as const;
+
+export const im_getsuboption = {
+  parameters: [
+    cstringT, // buf
+  ],
+  result: cstringT,
+} as const;
+
+export const im_global_balance = {
+  parameters: [
+    buf(int), // in
+    buf(int), // out
+    double, // gamma
+  ],
+  result: int,
+} as const;
+
+export const im_global_balancef = {
+  parameters: [
+    buf(int), // in
+    buf(int), // out
+    double, // gamma
+  ],
+  result: int,
+} as const;
+
 export const im_grad_x = {
   parameters: [
     buf(int), // in
@@ -1179,6 +1474,26 @@ export const im_grey = {
     buf(int), // out
     int, // xsize
     int, // ysize
+  ],
+  result: int,
+} as const;
+
+export const im_greyc_mask = {
+  parameters: [
+    buf(int), // in
+    buf(int), // out
+    buf(int), // mask
+    int, // iterations
+    float, // amplitude
+    float, // sharpness
+    float, // anisotropy
+    float, // alpha
+    float, // sigma
+    float, // dl
+    float, // da
+    float, // gauss_prec
+    int, // interpolation
+    int, // fast_approx
   ],
   result: int,
 } as const;
@@ -1374,6 +1689,16 @@ export const im_imask2vips = {
   result: int,
 } as const;
 
+export const im_imat_alloc = {
+  parameters: [
+    int, // nrl
+    int, // nrh
+    int, // ncl
+    int, // nch
+  ],
+  result: buf(buf(int)),
+} as const;
+
 export const im_init = {
   parameters: [
     cstringT, // filename
@@ -1455,12 +1780,28 @@ export const im_invfftr = {
   result: int,
 } as const;
 
+export const im_invmat = {
+  parameters: [
+    buf(buf(double)),
+    int,
+  ],
+  result: int,
+} as const;
+
 export const im_ismonotonic = {
   parameters: [
     buf(int), // lut
     buf(int), // out
   ],
   result: int,
+} as const;
+
+export const im_ivector = {
+  parameters: [
+    int, // nl
+    int, // nh
+  ],
+  result: buf(int),
 } as const;
 
 export const im_lab_morph = {
@@ -1780,6 +2121,76 @@ export const im_lrjoin = {
   result: int,
 } as const;
 
+export const im_lrmerge = {
+  parameters: [
+    buf(int), // ref
+    buf(int), // sec
+    buf(int), // out
+    int, // dx
+    int, // dy
+    int, // mwidth
+  ],
+  result: int,
+} as const;
+
+export const im_lrmerge1 = {
+  parameters: [
+    buf(int), // ref
+    buf(int), // sec
+    buf(int), // out
+    int, // xr1
+    int, // yr1
+    int, // xs1
+    int, // ys1
+    int, // xr2
+    int, // yr2
+    int, // xs2
+    int, // ys2
+    int, // mwidth
+  ],
+  result: int,
+} as const;
+
+export const im_lrmosaic = {
+  parameters: [
+    buf(int), // ref
+    buf(int), // sec
+    buf(int), // out
+    int, // bandno
+    int, // xref
+    int, // yref
+    int, // xsec
+    int, // ysec
+    int, // hwindowsize
+    int, // hsearchsize
+    int, // balancetype
+    int, // mwidth
+  ],
+  result: int,
+} as const;
+
+export const im_lrmosaic1 = {
+  parameters: [
+    buf(int), // ref
+    buf(int), // sec
+    buf(int), // out
+    int, // bandno
+    int, // xr1
+    int, // yr1
+    int, // xs1
+    int, // ys1
+    int, // xr2
+    int, // yr2
+    int, // xs2
+    int, // ys2
+    int, // hwindowsize
+    int, // hsearchsize
+    int, // balancetype
+    int, // mwidth
+  ],
+  result: int,
+} as const;
+
 export const im_make_xy = {
   parameters: [
     buf(int), // out
@@ -1802,6 +2213,42 @@ export const im_mask2vips = {
   parameters: [
     buf(int), // in
     buf(int), // out
+  ],
+  result: int,
+} as const;
+
+export const im_match_linear = {
+  parameters: [
+    buf(int), // ref
+    buf(int), // sec
+    buf(int), // out
+    int, // xr1
+    int, // yr1
+    int, // xs1
+    int, // ys1
+    int, // xr2
+    int, // yr2
+    int, // xs2
+    int, // ys2
+  ],
+  result: int,
+} as const;
+
+export const im_match_linear_search = {
+  parameters: [
+    buf(int), // ref
+    buf(int), // sec
+    buf(int), // out
+    int, // xr1
+    int, // yr1
+    int, // xs1
+    int, // ys1
+    int, // xr2
+    int, // yr2
+    int, // xs2
+    int, // ys2
+    int, // hwindowsize
+    int, // hsearchsize
   ],
   result: int,
 } as const;
@@ -1830,6 +2277,15 @@ export const im_maxpos_avg = {
     buf(double), // xpos
     buf(double), // ypos
     buf(double), // out
+  ],
+  result: int,
+} as const;
+
+export const im_maxpos_subpel = {
+  parameters: [
+    buf(int), // in
+    buf(double), // x
+    buf(double), // y
   ],
   result: int,
 } as const;
@@ -2027,6 +2483,7 @@ export const im_notequalconst = {
   result: int,
 } as const;
 
+// Symbol im_offsets45 not exported by lib libvips.so
 export const im_open = {
   parameters: [
     cstringT, // filename
@@ -2240,6 +2697,16 @@ export const im_remainderconst = {
     buf(int), // in
     buf(int), // out
     double, // c
+  ],
+  result: int,
+} as const;
+
+export const im_remosaic = {
+  parameters: [
+    buf(int), // in
+    buf(int), // out
+    cstringT, // old_str
+    cstringT, // new_str
   ],
   result: int,
 } as const;
@@ -2520,6 +2987,76 @@ export const im_tbjoin = {
   result: int,
 } as const;
 
+export const im_tbmerge = {
+  parameters: [
+    buf(int), // ref
+    buf(int), // sec
+    buf(int), // out
+    int, // dx
+    int, // dy
+    int, // mwidth
+  ],
+  result: int,
+} as const;
+
+export const im_tbmerge1 = {
+  parameters: [
+    buf(int), // ref
+    buf(int), // sec
+    buf(int), // out
+    int, // xr1
+    int, // yr1
+    int, // xs1
+    int, // ys1
+    int, // xr2
+    int, // yr2
+    int, // xs2
+    int, // ys2
+    int, // mwidth
+  ],
+  result: int,
+} as const;
+
+export const im_tbmosaic = {
+  parameters: [
+    buf(int), // ref
+    buf(int), // sec
+    buf(int), // out
+    int, // bandno
+    int, // xref
+    int, // yref
+    int, // xsec
+    int, // ysec
+    int, // hwindowsize
+    int, // hsearchsize
+    int, // balancetype
+    int, // mwidth
+  ],
+  result: int,
+} as const;
+
+export const im_tbmosaic1 = {
+  parameters: [
+    buf(int), // ref
+    buf(int), // sec
+    buf(int), // out
+    int, // bandno
+    int, // xr1
+    int, // yr1
+    int, // xs1
+    int, // ys1
+    int, // xr2
+    int, // yr2
+    int, // xs2
+    int, // ys2
+    int, // hwindowsize
+    int, // hsearchsize
+    int, // balancetype
+    int, // mwidth
+  ],
+  result: int,
+} as const;
+
 export const im_text = {
   parameters: [
     buf(int), // out
@@ -2767,10 +3304,129 @@ export const im_zoom = {
   result: int,
 } as const;
 
+// Symbol imb_Lab2LabS not exported by lib libvips.so
+// Symbol imb_LabS2Lab not exported by lib libvips.so
+// Symbol imb_LCh2Lab not exported by lib libvips.so
+// Symbol imb_XYZ2Lab not exported by lib libvips.so
+export const vips__deprecated_open_read = {
+  parameters: [
+    cstringT, // filename
+    int, // sequential
+  ],
+  result: buf(int),
+} as const;
+
+export const vips__deprecated_open_write = {
+  parameters: [
+    cstringT, // filename
+  ],
+  result: buf(int),
+} as const;
+
+export const vips__find_lroverlap = {
+  parameters: [
+    buf(int), // ref_in
+    buf(int), // sec_in
+    buf(int), // out
+    int, // bandno_in
+    int, // xref
+    int, // yref
+    int, // xsec
+    int, // ysec
+    int, // halfcorrelation
+    int, // halfarea
+    buf(int), // dx0
+    buf(int), // dy0
+    buf(double), // scale1
+    buf(double), // angle1
+    buf(double), // dx1
+    buf(double), // dy1
+  ],
+  result: int,
+} as const;
+
+export const vips__find_tboverlap = {
+  parameters: [
+    buf(int), // ref_in
+    buf(int), // sec_in
+    buf(int), // out
+    int, // bandno_in
+    int, // xref
+    int, // yref
+    int, // xsec
+    int, // ysec
+    int, // halfcorrelation
+    int, // halfarea
+    buf(int), // dx0
+    buf(int), // dy0
+    buf(double), // scale1
+    buf(double), // angle1
+    buf(double), // dx1
+    buf(double), // dy1
+  ],
+  result: int,
+} as const;
+
+export const vips__ink_to_vector = {
+  parameters: [
+    cstringT, // domain
+    buf(int), // im
+    buf(int), // ink
+    buf(int), // n
+  ],
+  result: buf(double),
+} as const;
+
+export const vips_check_dmask = {
+  parameters: [
+    cstringT, // domain
+    buf(int), // mask
+  ],
+  result: int,
+} as const;
+
+export const vips_check_dmask_1d = {
+  parameters: [
+    cstringT, // domain
+    buf(int), // mask
+  ],
+  result: int,
+} as const;
+
+export const vips_check_imask = {
+  parameters: [
+    cstringT, // domain
+    buf(int), // mask
+  ],
+  result: int,
+} as const;
+
+export const vips_get_option_group = {
+  parameters: [],
+  result: buf(int),
+} as const;
+
 export const vips_image_new_mode = {
   parameters: [
     cstringT, // filename
     cstringT, // mode
+  ],
+  result: buf(int),
+} as const;
+
+export const vips_popenf = {
+  parameters: [
+    cstringT, // fmt
+    cstringT, // mode
+  ],
+  result: buf(int),
+} as const;
+
+export const vips_window_ref = {
+  parameters: [
+    buf(int), // im
+    int, // top
+    int, // height
   ],
   result: buf(int),
 } as const;

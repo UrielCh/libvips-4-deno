@@ -1,5 +1,6 @@
 import {
   buf,
+  cstringT,
   int,
   ptr,
   VipsBufferT,
@@ -32,12 +33,37 @@ export const vips__demand_hint_array = {
   result: "void",
 } as const;
 
+export const vips__get_sizeof_vipsobject = {
+  parameters: [],
+  result: int,
+} as const;
+
+export const vips__image_copy_fields_array = {
+  parameters: [
+    ptr("void"), // out
+    buf(ptr("void")), // in
+  ],
+  result: int,
+} as const;
+
 // Symbol vips__image_pio_output not exported by lib libvips.so
 export const vips__image_wio_output = {
   parameters: [
     ptr("void"), // image
   ],
   result: int,
+} as const;
+
+export const vips__init = {
+  parameters: [
+    cstringT, // argv0
+  ],
+  result: int,
+} as const;
+
+export const vips__meta_init = {
+  parameters: [],
+  result: "void",
 } as const;
 
 export const vips__region_check_ownership = {
@@ -47,6 +73,7 @@ export const vips__region_check_ownership = {
   result: "void",
 } as const;
 
+// Symbol vips__region_count_pixels not exported by lib libvips.so
 export const vips__region_no_ownership = {
   parameters: [
     ptr("void"), // reg
@@ -64,6 +91,13 @@ export const vips__region_take_ownership = {
 export const vips__render_shutdown = {
   parameters: [],
   result: "void",
+} as const;
+
+export const vips__view_image = {
+  parameters: [
+    ptr("void"), // image
+  ],
+  result: int,
 } as const;
 
 export const vips_buffer_done = {
@@ -124,12 +158,21 @@ export const vips_buffer_unref_ref = {
   result: ptr(VipsBufferT),
 } as const;
 
+// Symbol vips_region_dump_all not exported by lib libvips.so
 export const vips_region_fill = {
   parameters: [
     ptr("void"), // reg
     buf(int), // r
     VipsRegionFillFnT, // fn
     ptr("void"), // a
+  ],
+  result: int,
+} as const;
+
+export const vips_region_prepare_many = {
+  parameters: [
+    buf(ptr("void")), // reg
+    buf(int), // r
   ],
   result: int,
 } as const;

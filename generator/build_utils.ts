@@ -291,9 +291,6 @@ const toEnumType = (
 export const toAnyType = (ctxt: Context, type: CXType, cx?: CXCursor): AnyType => {
   const typekind = type.kind;
   switch (typekind) {
-    // TODO ADD SUPPORT FOR THESE
-    // case CXTypeKind.CXType_IncompleteArray: {
-    // }
     case CXTypeKind.CXType_Elaborated: {
       const typeDeclaration = type.getTypeDeclaration();
       if (!typeDeclaration) throw Error('internal error "typeDeclaration" is null');
@@ -407,14 +404,13 @@ export const toAnyType = (ctxt: Context, type: CXType, cx?: CXCursor): AnyType =
       }
       return result;
     }
+    // For now support IncompleteArray as pointer
+    // TODO improve this
+    case CXTypeKind.CXType_IncompleteArray: {
+      const array = type.getArrayElementType();
+      if (!array) throw Error('internal error "pointee" is null')
 
-    case CXTypeKind.CXType_Pointer: {
-      const pointee = type.getPointeeType();
-      if (!pointee) throw Error('internal error "pointee" is null')
-
-      if (
-        pointee.kind === CXTypeKind.CXType_Char_S
-      ) {
+      if (array.kind === CXTypeKind.CXType_Char_S) {
         // `const char *` or `char *`
         const cstringResult: ReferenceType = {
           comment: null,
@@ -424,10 +420,52 @@ export const toAnyType = (ctxt: Context, type: CXType, cx?: CXCursor): AnyType =
         };
         ctxt.getTypeByName("cstringT")
         return cstringResult;
-      } else if (
-        pointee.kind === CXTypeKind.CXType_Pointer &&
-        pointee.getPointeeType()!.kind === CXTypeKind.CXType_Char_S
-      ) {
+      }
+      
+      if (array.kind === CXTypeKind.CXType_Pointer && array.getPointeeType()!.kind === CXTypeKind.CXType_Char_S) {
+        // `const char **` or `char **`
+        const cstringArrayResult: ReferenceType = {
+          comment: null,
+          kind: "ref",
+          name: "cstringArrayT",
+          reprName: "cstringArrayT",
+        };
+        ctxt.getTypeByName("cstringArrayT");
+        return cstringArrayResult;
+      }
+
+      const pointeeAnyType = toAnyType(ctxt, array);
+
+      const ptrResult: PointerType = {
+        kind: "pointer",
+        name: type.getSpelling(),
+        pointee: pointeeAnyType,
+        comment: null,
+        useBuffer: pointeeAnyType.kind === "struct" || 
+          pointeeAnyType.kind === "plain" && pointeeAnyType.type !== "void" ||
+          pointeeAnyType.kind === "pointer" || pointeeAnyType.kind === "ref" ||
+          pointeeAnyType.kind === "enum",
+      };
+      return ptrResult;
+    }
+
+
+    case CXTypeKind.CXType_Pointer: {
+      const pointee = type.getPointeeType();
+      if (!pointee) throw Error('internal error "pointee" is null')
+
+      if (pointee.kind === CXTypeKind.CXType_Char_S) {
+        // `const char *` or `char *`
+        const cstringResult: ReferenceType = {
+          comment: null,
+          kind: "ref",
+          name: "cstringT",
+          reprName: "cstringT",
+        };
+        ctxt.getTypeByName("cstringT")
+        return cstringResult;
+      } 
+      if (pointee.kind === CXTypeKind.CXType_Pointer && pointee.getPointeeType()!.kind === CXTypeKind.CXType_Char_S) {
         // `const char **` or `char **`
         const cstringArrayResult: ReferenceType = {
           comment: null,
@@ -446,7 +484,7 @@ export const toAnyType = (ctxt: Context, type: CXType, cx?: CXCursor): AnyType =
         name: type.getSpelling(),
         pointee: pointeeAnyType,
         comment: null,
-        useBuffer: pointeeAnyType.kind === "struct" ||
+        useBuffer: pointeeAnyType.kind === "struct" || 
           pointeeAnyType.kind === "plain" && pointeeAnyType.type !== "void" ||
           pointeeAnyType.kind === "pointer" || pointeeAnyType.kind === "ref" ||
           pointeeAnyType.kind === "enum",

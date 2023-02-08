@@ -23,40 +23,22 @@ export function onFunctionDecl(ctxt: Context, cx: CXCursor, fileName: string) {
             name: argument.getDisplayName(),
             type: argumentAnyType,
         });
-        if (
-            argumentAnyType.kind === "pointer" &&
-            argumentAnyType.pointee.kind === "ref"
-        ) {
-            const referred = ctxt.getTypeByName(argumentAnyType.pointee.name);
-            const data = ctxt.PASSED_AS_POINTER_AND_NOT_RETURNED.get(
-                argumentAnyType.pointee.name,
-            );
-            if (
-                referred &&
-                (referred.kind === "struct" || referred.kind === "pointer") &&
-                data === undefined
-            ) {
-                ctxt.PASSED_AS_POINTER_AND_NOT_RETURNED.set(
-                    argumentAnyType.pointee.name,
-                    true,
-                );
-            }
-        } else if (
-            argumentAnyType.kind === "pointer" &&
-            argumentAnyType.pointee.kind === "struct"
-        ) {
-            const data = ctxt.PASSED_AS_POINTER_AND_NOT_RETURNED.get(
-                argumentAnyType.pointee.name,
-            );
-            if (data === undefined) {
-                ctxt.PASSED_AS_POINTER_AND_NOT_RETURNED.set(
-                    argumentAnyType.pointee.name,
-                    true,
-                );
+        if (argumentAnyType.kind === "pointer") {
+            const { pointee } = argumentAnyType;
+            if (pointee.kind === "ref") {
+                const referred = ctxt.getTypeByName(pointee.name);
+                const data = ctxt.PASSED_AS_POINTER_AND_NOT_RETURNED.get(pointee.name);
+                if (referred && (referred.kind === "struct" || referred.kind === "pointer") && data === undefined) {
+                    ctxt.PASSED_AS_POINTER_AND_NOT_RETURNED.set(pointee.name, true);
+                }
+            } else if (pointee.kind === "struct") {
+                const data = ctxt.PASSED_AS_POINTER_AND_NOT_RETURNED.get(pointee.name);
+                if (data === undefined) {
+                    ctxt.PASSED_AS_POINTER_AND_NOT_RETURNED.set(pointee.name, true);
+                }
             }
         }
-        argumentAnyType.comment = cxCommentToJSDcoString(argument) ||
-            argumentAnyType.comment;
+        argumentAnyType.comment = cxCommentToJSDcoString(argument) || argumentAnyType.comment;
     }
     const comment = cxCommentToJSDcoString(cx);
     ctxt.addFunction(fileName, {
@@ -69,7 +51,7 @@ export function onFunctionDecl(ctxt: Context, cx: CXCursor, fileName: string) {
         loc: cx.getLocation(),
     });
     if (resultAnyType.kind === "pointer") {
-        const pointee = resultAnyType.pointee;
+        const { pointee } = resultAnyType;
         if (pointee.kind === "ref" || pointee.kind === "struct") {
             ctxt.RETURNED_AS_POINTER.add(pointee.name);
             ctxt.PASSED_AS_POINTER_AND_NOT_RETURNED.set(pointee.name, false);
