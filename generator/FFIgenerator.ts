@@ -213,6 +213,7 @@ export class FFIgenerator {
     const headerRoot = this.headerRoot;
     const visiteHeaderFile = (ctxtGl: ContextGlobal, fileName: string) => {
       // const ctxt = new ContextFile(ctxtGl, fileName);
+      // if (fileName.endsWith("rect.h")) debugger;
       const fullPathName = join(headerRoot, fileName);
       const tu = this.index.parseTranslationUnit(
         fullPathName,
@@ -392,8 +393,6 @@ export class FFIgenerator {
         }
         processed.add(anyType.keyName)
         added++;
-        // cnt++;
-        // missingStruct.delete(anyType.reprName);
       }
     }
     // if (missingStruct.size)

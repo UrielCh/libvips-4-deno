@@ -16,7 +16,7 @@ export function onFunctionDecl(ctxt: Context, cx: CXCursor, fileName: string) {
     for (let i = 0; i < length; i++) {
         const argument = cx.getArgument(i)!;
         const argumentType = argument.getType()!;
-        const argumentAnyType = toAnyType(ctxt, argumentType);
+        const argumentAnyType = toAnyType(ctxt, argumentType, cx);
         const comment = cxCommentToJSDcoString(argument);
         parameters.push({
             comment,
@@ -66,6 +66,7 @@ export function onFunctionDecl(ctxt: Context, cx: CXCursor, fileName: string) {
         parameters,
         reprName: `${functionName}T`,
         result: resultAnyType,
+        loc: cx.getLocation(),
     });
     if (resultAnyType.kind === "pointer") {
         const pointee = resultAnyType.pointee;

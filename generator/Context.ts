@@ -43,6 +43,7 @@ export class ContextGlobal implements Context {
     }
 
     addType<T extends AnyType>(name: string, type: T): T {
+        // if (name.startsWith("gboolean")) debugger;
         // if (this.TYPE_MEMORY.has(name)) {
             // const oldType = this.TYPE_MEMORY.get(name)?.kind;
             // if (oldType !== type.kind)
@@ -132,6 +133,14 @@ export class ContextGlobal implements Context {
         const colision = functions.find(f => f.name === fnc.name)
         if (colision) {
             console.error(`addFunction cause colision on fnc ${fnc.name}`);
+            if (fnc.loc && colision.loc) {
+                const colFileLoc = colision.loc.getFileLocation();
+                const newLoc = fnc.loc.getFileLocation();
+                if (colFileLoc && newLoc) {
+                    console.error(`keep fnc ${fnc.name} from ${colFileLoc.file.getName()} L:${colFileLoc.line} C:${colFileLoc.column}`);
+                    console.error(`drop fnc ${fnc.name} from ${newLoc.file.getName()} L:${newLoc.line} C:${newLoc.column}`);
+                }
+            }
         } else {
             functions.push(fnc);
         }

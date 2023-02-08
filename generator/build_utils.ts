@@ -1,3 +1,4 @@
+import { CXSourceLocation } from "./clang/CXSourceLocation.ts";
 import {
   CXChildVisitResult,
   CXCommentInlineCommandRenderKind,
@@ -70,6 +71,7 @@ export interface FunctionType extends CommonType {
   reprName: `${string}T`;
   parameters: FunctionParameter[];
   result: AnyType;
+  loc?: CXSourceLocation;
 }
 
 export interface StructField extends CommonType {
@@ -286,9 +288,12 @@ const toEnumType = (
   return result;
 };
 
-export const toAnyType = (ctxt: Context, type: CXType): AnyType => {
+export const toAnyType = (ctxt: Context, type: CXType, cx?: CXCursor): AnyType => {
   const typekind = type.kind;
   switch (typekind) {
+    // TODO ADD SUPPORT FOR THESE
+    // case CXTypeKind.CXType_IncompleteArray: {
+    // }
     case CXTypeKind.CXType_Elaborated: {
       const typeDeclaration = type.getTypeDeclaration();
       if (!typeDeclaration) throw Error('internal error "typeDeclaration" is null');
@@ -376,7 +381,6 @@ export const toAnyType = (ctxt: Context, type: CXType): AnyType => {
       }
     }
 
-
     case CXTypeKind.CXType_FunctionProto: {
       const typeDeclaration = type.getTypeDeclaration();
       if (!typeDeclaration) throw Error('internal error "typeDeclaration" is null');
@@ -389,6 +393,7 @@ export const toAnyType = (ctxt: Context, type: CXType): AnyType => {
         parameters: [],
         reprName: `${type.getSpelling()}T`,
         result: toAnyType(ctxt, resultType),
+        loc: cx?.getLocation()
       };
       const length = type.getNumberOfArgumentTypes();
       for (let i = 0; i < length; i++) {
@@ -522,10 +527,20 @@ export const toAnyType = (ctxt: Context, type: CXType): AnyType => {
         };
         return ctxt.addType(spellingName, plainResult);
       }
-    default:
+    default: {
+      if (cx) {
+        const loc = cx.getLocation();
+        const fileLoc = loc.getFileLocation();
+        if (fileLoc.file) {
+          throw new Error(
+            `Unsupported type kind: ${typekind}, spelling '${type.getSpelling()}', '${type.getKindSpelling()}' in file ${fileLoc.file.getName()} L:${fileLoc.line} C:${fileLoc.column}`,
+          );
+        }
+      }
       throw new Error(
         `Unsupported type kind: ${typekind}, spelling '${type.getSpelling()}', '${type.getKindSpelling()}'`,
       );
+    }
   }
 };
 
